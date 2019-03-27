@@ -169,6 +169,7 @@ CREATE TABLE ProbeUser (
   properties jsonb,
   creator VARCHAR(45) NOT NULL,
   creation_date TIMESTAMP NOT NULL,
+  suspended BIT default 0,
   
   CONSTRAINT PK_ProbeUser PRIMARY KEY (id),
   CONSTRAINT FK_ProbeUser_UserProfile FOREIGN KEY (user_profile) REFERENCES UserProfile (user_profile)

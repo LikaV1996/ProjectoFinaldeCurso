@@ -7,6 +7,9 @@ class ProbeuserDAO @JsonCreator constructor (result: ResultSet){
 
     val id:Int = result.getInt("id")
     val userName:String = result.getString("user_name")
-    val userProfile = result.getString("user_profile")
+    val userProfile:String = result.getString("user_profile")
+    //verificar campo properties
+    val creator:String = result.getString("creator")
+    val creation_date:String = result.getString("creation_date")
 
 }

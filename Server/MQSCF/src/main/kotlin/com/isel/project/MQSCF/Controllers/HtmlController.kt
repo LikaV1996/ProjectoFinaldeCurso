@@ -16,3 +16,5 @@ class HtmlController{
     }
 
 }
+
+//CLASSE TESTE - nao faz nada!

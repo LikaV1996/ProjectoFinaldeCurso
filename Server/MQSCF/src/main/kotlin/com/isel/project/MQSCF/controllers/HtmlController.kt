@@ -1,10 +1,8 @@
-package com.isel.project.MQSCF.Controllers
+package com.isel.project.MQSCF.controllers
 
-import com.isel.project.MQSCF.Model.Probeuser
+import com.isel.project.MQSCF.model.Probeuser
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.ui.Model
-import org.springframework.ui.set
 
 @Controller
 class HtmlController{

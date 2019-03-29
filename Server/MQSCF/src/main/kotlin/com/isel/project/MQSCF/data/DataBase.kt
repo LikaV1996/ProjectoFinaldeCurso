@@ -1,4 +1,4 @@
-package com.isel.project.MQSCF.Data
+package com.isel.project.MQSCF.data
 
 import org.springframework.stereotype.Service
 import java.sql.Connection

@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 
-data class UserFromBody @JsonCreator constructor( //Class for receiving body information about a new user
-        val username: String?,
-        val password: String?,
+data class CreateUserFromBody @JsonCreator constructor( //Class for receiving body information about a new user
+        val user_name: String?,
+        val user_password: String?,
         val user_profile: String?,
         val properties: String?,
         val creator: String?,
@@ -19,7 +19,7 @@ data class UserFromBody @JsonCreator constructor( //Class for receiving body inf
 
 
 
-//getting all users
+//getting all user
 data class ResponseGETUsers @JsonCreator constructor(val total : Int, val users : List<ProbeuserDao>)
 //getting a user by it's ID
 data class ResponseGETUserByID @JsonCreator constructor(val user : ProbeuserDao)
@@ -30,7 +30,7 @@ data class ResponsePUTUser @JsonCreator constructor(val user : ProbeuserDao)
 
 @RestController
 @RequestMapping(value = ["api/v1/"])
-//@ProtectedRoute
+@ProtectedRoute
 class UserController(val user: Probeuser){
 
     @GetMapping(path = ["/users"])
@@ -50,21 +50,21 @@ class UserController(val user: Probeuser){
 
 
     @PostMapping(path = ["/user"])  //TODO return user or id?
-    fun createUser(@RequestBody value: UserFromBody) : ResponseEntity<ResponsePOSTUser> = //Create user
+    fun createUser(@RequestBody value: CreateUserFromBody) : ResponseEntity<ResponsePOSTUser> = //Create user
             user.createUser(
-                value.username?:"",
-                value.password?:"",
+                value.user_name?:"",
+                value.user_password?:"",
                 value.user_profile?:"",
-                "",
+                value.properties?:"",
                 value.creator?:"",
                 value.suspended?:false
             ).let {
 
-                return ResponseEntity.status(201).body(ResponsePOSTUser(it))
+                return ResponseEntity.status(200).body(ResponsePOSTUser(it))
             }
 
 
-    @PutMapping(path = ["/user/{id}"])
+    @PutMapping(path = ["/user/{id}/suspend"])
     fun suspendUser(@PathVariable("id") id: Int) : ResponseEntity<ResponsePUTUser> =
             user.suspendUser(id)
                     .let {

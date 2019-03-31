@@ -1,14 +1,11 @@
 package com.isel.project.MQSCF.model
 
-import ch.qos.logback.core.db.dialect.PostgreSQLDialect
 import com.isel.project.MQSCF.dao.ProbeuserDao
 import com.isel.project.MQSCF.data.DataSrc
 import com.isel.project.MQSCF.config.InvalidParamMessage
 import com.isel.project.MQSCF.utils.JsonProblemException
-import com.sun.org.apache.bcel.internal.generic.Type
 import org.springframework.stereotype.Component
 import java.sql.SQLException
-import java.sql.SQLType
 import java.util.*
 
 
@@ -17,15 +14,49 @@ class Probeuser(private val db : DataSrc) {
 
     //Query's List
 
-    private val userFields = "id, user_name, user_password, user_profile, properties, creator, creation_date, suspended"
-    private val selectAllUserFields = "SELECT $userFields FROM probeuser"
+    private val userPKFields = "id"
+    private val userFields = "user_name, user_password, user_profile, properties, creator, creation_date, suspended"
+    private val allUserFields = "$userPKFields , $userFields"
+    private val selectAllUserFields = "SELECT $allUserFields FROM probeuser"
 
+    private val authenticateUserQuery = "$selectAllUserFields WHERE user_name = ? AND user_password = ?"
     private val getUsersQuery = selectAllUserFields
-    private val getUserQuery = "$selectAllUserFields where id = ?"
-    private val createUserQuery = "INSERT INTO ProbeUser ($userFields) VALUES (?,?,?,null,?,CURRENT_TIMESTAMP,?) returning id"
-    private val suspensionUserQuery = "UPDATE probeuser SET suspended = ? where id = ? returning id"
+    private val getUserQuery = "$selectAllUserFields WHERE id = ?"
+    private val createUserQuery = "INSERT INTO ProbeUser ($userFields) VALUES (?,?,?,?::json,?,CURRENT_TIMESTAMP,?) returning id"
+    private val suspensionUserQuery = "UPDATE probeuser SET suspended = ? WHERE id = ? returning id"
 
     //private val authenticateUserQuery = "$selectAllUserFields where user_name = ? AND user_password = ?"
+
+    fun getAuthenticatedUser(user_name: String, user_password: String): ProbeuserDao =
+            db.connection.prepareStatement(authenticateUserQuery)
+                    .also {
+                        it.setString(1,user_name)
+                        it.setString(2,user_password)
+                    }
+                    .let {
+                        try {
+                            it.executeQuery()
+                        }finally {
+                            it.connection.close()
+                        }
+                    }
+                    .let {
+                        if(it.next())
+                            ProbeuserDao(it)
+                        else
+                            throw JsonProblemException("The credentials passed do not correspond to any user, try to login again","credentials-error","User not valid",400,null, null)
+                    }
+
+
+    fun login(user_name: String, user_password: String) =
+            getAuthenticatedUser(user_name, user_password)
+                    .let {
+                        "$user_name:$user_password".toByteArray()
+                                .let {
+                                    Base64.getEncoder().encodeToString(it)!!
+                                }
+                    }
+
 
 
     fun getUsers(): ArrayList<ProbeuserDao> =
@@ -71,11 +102,10 @@ class Probeuser(private val db : DataSrc) {
                         it.setString(1,user_name)
                         it.setString(2,user_password)
                         it.setString(3,user_profile)
-                        //it.setNull(4, java.sql.Types.NULL)
-                        //it.setString(4,properties)
+                        it.setString(4,properties)
                         it.setString(5,creator)
                         //it.setDate(6,)    //current date
-                        it.setString(7, if(suspended != null && suspended) "true" else "false")
+                        it.setBoolean(6, if(suspended != null && suspended) true else false)
                     }
                     .let {
                         try {
@@ -94,7 +124,7 @@ class Probeuser(private val db : DataSrc) {
                                                     }
                                         }
                                         else
-                                            throw Exception()
+                                            throw err
                                     }
                         }finally {
                             it.connection.close()
@@ -109,7 +139,7 @@ class Probeuser(private val db : DataSrc) {
         val user = getUserByID(id)
         db.connection.prepareStatement(suspensionUserQuery)
                 .also {
-                    it.setString(1, if (!user.suspended) "true" else "false")  //toggle
+                    it.setBoolean(1, if (!user.suspended) true else false)  //toggle
                     it.setInt(2, user.id)
                 }.let {
                     try {

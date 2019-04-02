@@ -28,8 +28,8 @@ class JsonProblemException(
    instance?.let {
     map.put("instance", it)
    }
-   if(!invalid_params.isNullOrEmpty())
-    map.put("invalid-params",invalid_params)
+   //if(!invalid_params.isNullOrEmpty())
+    //map.put("invalid-params",invalid_params)
   }
 
  }

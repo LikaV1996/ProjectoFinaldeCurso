@@ -25,7 +25,7 @@ class Config : WebMvcConfigurer {
     lateinit var user : Probeuser
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(AuthInterceptor(user)).excludePathPatterns("/api/v1/login")
+     //   registry.addInterceptor(AuthInterceptor(user)).excludePathPatterns("/api/v1/login")
     }
 
 

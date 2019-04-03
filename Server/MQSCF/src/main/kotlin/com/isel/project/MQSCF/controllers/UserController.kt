@@ -34,10 +34,10 @@ data class ResponsePUTUser @JsonCreator constructor(val user : ProbeuserDao)
 class UserController(val user: Probeuser){
 
     @GetMapping(path = ["/users"])
-    fun getUsers() : ResponseEntity<List<ProbeuserDao>> =
+    fun getUsers() : ResponseEntity<ResponseGETUsers> =
             user.getUsers()
                     .let {
-                        ResponseEntity.ok(it)
+                        ResponseEntity.ok().body(ResponseGETUsers(it.count(),it))
                     }
 
 

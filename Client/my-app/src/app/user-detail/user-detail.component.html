@@ -1,0 +1,17 @@
+<div *ngIf="user">
+
+
+  <h2>{{user.user_name}} Details</h2>
+  <div><span>id: </span>{{user.id}}</div>
+  <div><span>user_profile: </span>{{user.user_profile}}</div>
+  <div><span>creator: </span>{{user.creator}}</div>
+  <div><span>creation_date: </span>{{user.creation_date}}</div>
+  <div><span>suspended: </span>{{user.suspended}}</div>
+
+  <div>
+    <label>name:
+      <input [(ngModel)]="user.user_name" placeholder="name"/>
+    </label>
+  </div>
+
+</div>

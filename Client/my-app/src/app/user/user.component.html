@@ -1,0 +1,32 @@
+
+<mat-list-item [matMenuTriggerFor]="menu">
+    <mat-icon>unfold_more</mat-icon>
+    <a matline>Example</a>
+</mat-list-item>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="onSidenavClose()">View profile</button>
+  <button mat-menu-item (click)="onSidenavClose()">Add contact</button>
+</mat-menu>
+
+
+
+<p>
+  List of all users !
+</p>
+
+
+
+<script src="/script.js"></script>
+<ul class="users">
+  <li *ngFor="let user of users">
+    <a routerLink="/user/{{user.id}}">
+      <span class="badge">{{user.id}}</span> {{user.user_name}}
+    </a>
+  </li>
+</ul>
+
+<div class="map"
+     leaflet
+     (leafletMapReady)="onMapReady($event)"
+     [leafletOptions]="options">
+</div>

@@ -14,7 +14,8 @@ class AuthInterceptor(val user : Probeuser) : HandlerInterceptor {
 
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-        if(handler is HandlerMethod && handler.method.declaringClass.isAnnotationPresent(ProtectedRoute::class.java)) {
+        if(handler is HandlerMethod /*&& handler.method.declaringClass.isAnnotationPresent(ProtectedRoute::class.java)*/) {
+            val allHeaders = request.headerNames
             val authHeader = request.getHeader("Authorization")?.split(" ")
             if (authHeader?.get(0) != "Basic") {
                 throw JsonProblemException("You must provide a token to access that resource","token-error","no token",401,null,null)

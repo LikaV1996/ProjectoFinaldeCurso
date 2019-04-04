@@ -57,18 +57,15 @@ export class LoginComponent implements OnInit {
      
      //console.log("Json data : ", JSON.stringify(this.data));
      
-     this.getLoginToken().subscribe(tokenobj => {
-      if(tokenobj.token != null){
-        const navExtras : NavigationExtras = {state: {userToken: tokenobj.token}};
-        this.router.navigate(["users"], navExtras);
-       }else {
-         alert("Invalid credentials");
-       }
-    })
-    
-    
-    
+     this.getLoginToken().subscribe( 
+      tokenobj => {
+        if(tokenobj.token != null){
+          const navExtras : NavigationExtras = {state: {userToken: tokenobj.token}};
+          this.router.navigate(["users"], navExtras);
+        }
+      },
+      err => alert("Invalid credentials")
+    )
   }
-
 
 }

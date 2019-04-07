@@ -4,33 +4,28 @@ import { Users } from './Model/Users';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
+import { Routes } from "./routes"
+import { CookieHandler } from "./cookie.service";
 
+
+const routes = new Routes
 
 @Injectable({
   providedIn: 'root'
 })
-
-
 export class UserService {
   
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private cookieHandler: CookieHandler
   ) { }
     
-  // Web API Urls
-  private GetUsersUrl = 'http://localhost:8080/api/v1/users';
- 
 
   //Get all users from the server
   getUsers (userToken: string): Observable<Users> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': ['Basic', userToken].join(' ')
-      })
-    }
     
-    return this.http.get<Users>(this.GetUsersUrl, httpOptions)
+    
+    return this.http.get<Users>(routes.getUsers)
       /*
       .pipe(
         tap(_ => this.log('fetched heroes')),

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { CookieHandler } from "../cookie.service";
 
 import {ActivatedRoute} from '@angular/router';
 
@@ -7,13 +8,19 @@ import { User } from '../Model/User';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
+import { Routes } from "../routes"
+
+//logout
+import {Router, NavigationExtras} from '@angular/router';
+
 
 let httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type':  'application/json',
-    'Authorization': 'Basic dGVzdGVyOnRlc3Rlcg=='
+    'Content-Type':  'application/json'
   })
 }
+
+let routes = new Routes
 
 @Component({
   selector: 'app-user-detail',
@@ -23,12 +30,20 @@ let httpOptions = {
 export class UserDetailComponent implements OnInit {
   @Input() user: User;
 
+  private cookie: String;
+
   private id: number;
 
   constructor(
+    //logout
+    private router: Router,
+
     private route: ActivatedRoute,
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+    private cookieHandler: CookieHandler
+  ) {
+    this.cookie = cookieHandler.getAuthToken()
+  }
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
@@ -43,9 +58,22 @@ export class UserDetailComponent implements OnInit {
   }
 
   getUser() : Observable<{user: User}> {
-    const getUserByIDUrl = 'http://localhost:8080/api/v1/user/' + this.id;
+    const getUserByIDUrl = routes.getUserByID.replace(":id", this.id.toString());
     //httpOptions.headers.set('Authorization', ['Basic', userToken].join(' '))
-    return this.http.get<{user: User}>(getUserByIDUrl, httpOptions)
+
+    console.log(this.cookieHandler.getAuthToken() == undefined)
+
+    
+    return this.http.get<{user: User}>(getUserByIDUrl)
   }
 
+
+
+
+
+
+  logout(){
+    this.cookieHandler.removeAuthToken()
+    this.router.navigate(["login"]);
+  }
 }

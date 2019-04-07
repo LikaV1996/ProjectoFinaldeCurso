@@ -49,7 +49,7 @@ class UserController(val user: Probeuser){
                     }
 
 
-    @PostMapping(path = ["/user"])  //TODO return user or id?
+    @PostMapping(path = ["/users"])  //TODO return user or id?
     fun createUser(@RequestBody value: CreateUserFromBody) : ResponseEntity<ResponsePOSTUser> = //Create user
             user.createUser(
                 value.user_name?:"",

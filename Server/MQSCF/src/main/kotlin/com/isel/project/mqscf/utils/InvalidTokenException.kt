@@ -1,4 +1,4 @@
-package com.isel.project.MQSCF.utils
+package com.isel.project.mqscf.utils
 
 import java.lang.Exception
 

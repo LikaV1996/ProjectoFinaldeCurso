@@ -1,4 +1,4 @@
-package com.isel.project.MQSCF.dao
+package com.isel.project.mqscf.dao
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import java.sql.ResultSet

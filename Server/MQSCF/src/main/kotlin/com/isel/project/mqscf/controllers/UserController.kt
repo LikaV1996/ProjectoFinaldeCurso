@@ -1,9 +1,8 @@
-package com.isel.project.MQSCF.controllers
+package com.isel.project.mqscf.controllers
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.isel.project.MQSCF.config.ProtectedRoute
-import com.isel.project.MQSCF.dao.ProbeuserDao
-import com.isel.project.MQSCF.model.Probeuser
+import com.isel.project.mqscf.dao.ProbeuserDao
+import com.isel.project.mqscf.model.Probeuser
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -30,7 +29,6 @@ data class ResponsePUTUser @JsonCreator constructor(val user : ProbeuserDao)
 
 @RestController
 @RequestMapping(value = ["api/v1/"])
-@ProtectedRoute
 class UserController(val user: Probeuser){
 
     @GetMapping(path = ["/users"])
@@ -40,6 +38,10 @@ class UserController(val user: Probeuser){
                         ResponseEntity.ok().body(ResponseGETUsers(it.count(),it))
                     }
 
+
+    /**
+     *maybe should only be used the get all users
+     */
 
     @GetMapping(path = ["/user/{id}"])
     fun getUserByID(@PathVariable("id") id: Int) : ResponseEntity<ResponseGETUserByID> =

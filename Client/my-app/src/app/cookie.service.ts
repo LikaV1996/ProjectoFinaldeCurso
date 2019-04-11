@@ -34,14 +34,17 @@ export class CookieHandler{
     */
 
     insertAuthToken(token: string){
+        console.log("inserting authtoken cookie")
         this._cookieService.put(cookieName, ['Basic', token].join(' '));
     }
 
     removeAuthToken(){
+        console.log("removing authtoken cookie")
         this._cookieService.remove(cookieName)
     }
 
     getAuthToken(){
+        console.log("getting authtoken cookie")
         return this._cookieService.get(cookieName)
     }
 

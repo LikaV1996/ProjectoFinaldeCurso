@@ -1,28 +1,37 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="!(isHandset$ | async)">
+  <mat-sidenav #drawer class="sidenav"
+      fixedInViewport="true"
+      [mode]="side"
+      [opened]="false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
+      <a mat-list-item href="http://localhost:4200/users">All users</a>
+      <a mat-list-item href="#">All OBUs</a>
       <a mat-list-item href="#">Link 3</a>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content id="nav-content">
     <mat-toolbar color="primary">
       <button
         style="float: right"
         type="button"
         aria-label="Toggle sidenav"
-        mat-icon-button
+        mat-button
         (click)="drawer.toggle()">
-        BUTTON!!!
+        <!--<mdb-icon fas icon="bars"></mdb-icon>-->
+        SideNav
       </button>
-      <span>my-app</span>
-      
+      <button
+        style="float: right"
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-button
+        (click)="logout()">
+        LOGOUT
+      </button>
     </mat-toolbar>
+    <!--<ng-include src="../user/user.component.html"></ng-include>-->
+    <span>WHY THO</span>
     <!-- Add Content Here -->
   </mat-sidenav-content>
 </mat-sidenav-container>

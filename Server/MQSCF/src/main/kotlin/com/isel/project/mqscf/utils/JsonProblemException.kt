@@ -1,6 +1,6 @@
-package com.isel.project.MQSCF.utils
+package com.isel.project.mqscf.utils
 
-import com.isel.project.MQSCF.config.InvalidParamMessage
+import com.isel.project.mqscf.config.InvalidParamMessage
 import java.lang.Exception
 
 class JsonProblemException(

@@ -1,3 +1,6 @@
+<!--
+<app-nav-menu></app-nav-menu>
+
 <div *ngIf="user">
 
 
@@ -15,8 +18,65 @@
   </div>
 
 
-  <div><span>cookie: </span>{{cookie}}</div>
+  !-<div><span>cookie: </span>{{cookie}}</div>->
 
-  <button mat-raised-button (click)="logout()">logout</button>
+  !-<button mat-raised-button (click)="logout()">logout</button>->
 
 </div>
+
+-->
+
+
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav"
+        fixedInViewport="true"
+        [mode]="side"
+        [opened]="false">
+      <mat-toolbar>Menu</mat-toolbar>
+      <mat-nav-list>
+        <a mat-list-item href="http://localhost:4200/users">All users</a>
+        <a mat-list-item href="#">All OBUs</a>
+        <a mat-list-item href="#">Link 3</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content id="nav-content">
+      <mat-toolbar color="primary">
+        <button
+          style="float: right"
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()">
+          SideNav
+        </button>
+        <span class="fill-remaining-space"></span>
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="logout()">
+          logout
+        </button>
+      </mat-toolbar>
+      <!-- Add Content Here -->
+      <div *ngIf="user">
+
+
+          <h2>{{user.user_name}} Details</h2>
+          <div><span>id: </span>{{user.id}}</div>
+          <div><span>user_profile: </span>{{user.user_profile}}</div>
+          <div><span>creator: </span>{{user.creator}}</div>
+          <div><span>creation_date: </span>{{user.creation_date}}</div>
+          <div><span>suspended: </span>{{user.suspended}}</div>
+        
+          <!--
+          <div>
+            <label>name:
+              <input [(ngModel)]="user.user_name" placeholder="name"/>
+            </label>
+          </div>
+          -->
+        
+        </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>

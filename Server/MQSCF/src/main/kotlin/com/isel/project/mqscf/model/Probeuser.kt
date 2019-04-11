@@ -1,9 +1,9 @@
-package com.isel.project.MQSCF.model
+package com.isel.project.mqscf.model
 
-import com.isel.project.MQSCF.dao.ProbeuserDao
-import com.isel.project.MQSCF.data.DataSrc
-import com.isel.project.MQSCF.config.InvalidParamMessage
-import com.isel.project.MQSCF.utils.JsonProblemException
+import com.isel.project.mqscf.dao.ProbeuserDao
+import com.isel.project.mqscf.data.DataSrc
+import com.isel.project.mqscf.config.InvalidParamMessage
+import com.isel.project.mqscf.utils.JsonProblemException
 import org.springframework.stereotype.Component
 import java.sql.SQLException
 import java.util.*

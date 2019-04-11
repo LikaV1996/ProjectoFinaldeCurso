@@ -1,4 +1,4 @@
-package com.isel.project.MQSCF.data
+package com.isel.project.mqscf.data
 
 import java.sql.Connection
 

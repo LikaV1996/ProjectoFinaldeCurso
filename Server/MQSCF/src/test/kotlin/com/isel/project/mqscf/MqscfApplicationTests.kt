@@ -1,4 +1,4 @@
-package com.isel.project.MQSCF
+package com.isel.project.mqscf
 
 import org.junit.Test
 import org.junit.runner.RunWith

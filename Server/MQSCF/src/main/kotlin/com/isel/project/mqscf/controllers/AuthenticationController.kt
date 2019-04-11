@@ -1,9 +1,9 @@
-package com.isel.project.MQSCF.controllers
+package com.isel.project.mqscf.controllers
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.isel.project.MQSCF.config.InvalidParamMessage
-import com.isel.project.MQSCF.model.Probeuser
-import com.isel.project.MQSCF.utils.JsonProblemException
+import com.isel.project.mqscf.config.InvalidParamMessage
+import com.isel.project.mqscf.model.Probeuser
+import com.isel.project.mqscf.utils.JsonProblemException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

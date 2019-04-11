@@ -1,9 +1,8 @@
-package com.isel.project.MQSCF.config
+package com.isel.project.mqscf.config
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.isel.project.MQSCF.utils.JsonProblemException
-import com.isel.project.MQSCF.model.Probeuser
-import org.apache.catalina.filters.HttpHeaderSecurityFilter
+import com.isel.project.mqscf.utils.JsonProblemException
+import com.isel.project.mqscf.model.Probeuser
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
@@ -25,7 +24,8 @@ class Config : WebMvcConfigurer {
     lateinit var user : Probeuser
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-         registry.addInterceptor(AuthInterceptor(user)).excludePathPatterns("/api/v1/login")
+        registry.addInterceptor(AuthInterceptor(user)).excludePathPatterns("/api/v1/login")
+        registry.addInterceptor(TestInterceptor()).excludePathPatterns("/api/v1/login")
     }
 
 

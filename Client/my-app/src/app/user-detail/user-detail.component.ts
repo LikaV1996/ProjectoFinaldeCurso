@@ -52,7 +52,7 @@ export class UserDetailComponent implements OnInit {
         this.id = params['id'];
     */
    this.getUser().subscribe(userObj => {
-     console.log(userObj)
+     //console.log(userObj)
      this.user = userObj.user
    })
   }
@@ -60,8 +60,6 @@ export class UserDetailComponent implements OnInit {
   getUser() : Observable<{user: User}> {
     const getUserByIDUrl = routes.getUserByID.replace(":id", this.id.toString());
     //httpOptions.headers.set('Authorization', ['Basic', userToken].join(' '))
-
-    console.log(this.cookieHandler.getAuthToken() == undefined)
 
     
     return this.http.get<{user: User}>(getUserByIDUrl)
@@ -71,9 +69,10 @@ export class UserDetailComponent implements OnInit {
 
 
 
-
+/*
   logout(){
     this.cookieHandler.removeAuthToken()
     this.router.navigate(["login"]);
   }
+  */
 }

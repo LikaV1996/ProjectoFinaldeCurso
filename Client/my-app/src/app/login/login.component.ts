@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    //this.cookieHandler.removeAuthToken()
     if(this.cookieHandler.getAuthToken() != null)
       this.router.navigate(["home"]);
   }

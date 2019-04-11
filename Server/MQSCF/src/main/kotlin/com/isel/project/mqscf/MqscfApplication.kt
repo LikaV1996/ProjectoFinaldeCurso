@@ -1,4 +1,4 @@
-package com.isel.project.MQSCF
+package com.isel.project.mqscf
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

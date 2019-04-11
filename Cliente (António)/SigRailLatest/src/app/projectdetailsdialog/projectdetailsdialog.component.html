@@ -1,0 +1,97 @@
+<h2 mat-dialog-title class="custom">
+	{{getTitle()}}
+</h2>
+<div class="tabsContainer">
+	<div class="tabs">
+		<div class="tab" [class.selected]="currentTab === 0" (click)="currentTab = 0">General</div>
+		<div class="tab" [class.selected]="currentTab === 1" (click)="currentTab = 1">Members</div>
+		<div class="tab" [class.selected]="currentTab === 2" (click)="currentTab = 2">Information</div>
+	</div>
+	<div class="tabContent" *ngIf="currentTab === 0">
+		<mat-form-field style="width:100%">
+			<input matInput placeholder="Name" [(ngModel)]="_project.name">
+		</mat-form-field>
+		<mat-form-field style="width:100%">
+			<input matInput placeholder="Description" [(ngModel)]="_project.comment">
+		</mat-form-field>
+		<mat-form-field style="float: left">
+			<input matInput [readonly]="true" [disabled]="true" placeholder="State" [(ngModel)]="project.state">
+		</mat-form-field>
+		<mat-form-field style="float: right">
+			<input matInput [readonly]="true" [disabled]="true" placeholder="Coord. System" [(ngModel)]="_project.coordinateSystem">
+		</mat-form-field>
+	</div>
+	<div class="tabContent" *ngIf="currentTab === 1">
+		Content2
+	</div>
+	<div class="tabContent" *ngIf="currentTab === 2">
+		Content3
+	</div>
+</div>
+
+<mat-dialog-content class="custom" *ngIf="false">
+	<mat-tab-group dynamicHeight="true">
+		<mat-tab label="Info">
+			<mat-form-field style="width:100%">
+				<input matInput
+					placeholder="Name" [(ngModel)]="_project.name">
+			</mat-form-field>
+			<mat-form-field *ngIf="project.id > 0">
+				<input matInput [readonly]="true" 
+					placeholder="State" [(ngModel)]="project.state">
+			</mat-form-field>
+			<mat-form-field style="width:100%">
+				<input matInput placeholder="Comment" [(ngModel)]="_project.comment">
+			</mat-form-field>
+			<mat-form-field>
+			<input matInput placeholder="Coord. System" [(ngModel)]="_project.coordinateSystem">
+			</mat-form-field>
+		</mat-tab>
+		<mat-tab label="Details" *ngIf="project.id > 0">
+			<div>
+				<mat-form-field>
+					<input matInput [readonly]="true" 
+					placeholder="Railways" [(ngModel)]="projectDetails.railwayCount">
+				</mat-form-field>
+				<mat-form-field>
+					<input matInput [readonly]="true" 
+					placeholder="Clutters" [(ngModel)]="projectDetails.clutterCount">
+				</mat-form-field>
+			</div>
+			<div>
+			<mat-form-field>
+				<input matInput [readonly]="true" 
+					placeholder="Created" [(ngModel)]="project.created">
+			</mat-form-field>
+			<mat-form-field>
+				<input matInput [readonly]="true" 
+					placeholder="Created by" [(ngModel)]="project.creator">
+			</mat-form-field>
+			</div>
+			<div>
+			<mat-form-field>
+				<input matInput [readonly]="true" 
+					placeholder="Last modified" [(ngModel)]="project.modified">
+			</mat-form-field>
+			<mat-form-field>
+				<input matInput [readonly]="true" 
+					placeholder="Last modified by" [(ngModel)]="project.modifier">
+			</mat-form-field>
+			</div>
+			<div *ngIf="project.state == 'Published'">
+			<mat-form-field>
+				<input matInput [readonly]="true" 
+					placeholder="Published" [(ngModel)]="project.published">
+			</mat-form-field>
+			<mat-form-field>
+				<input matInput [readonly]="true" 
+					placeholder="Published by" [(ngModel)]="project.publisher">
+			</mat-form-field>
+			</div>
+		</mat-tab>	
+	</mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-raised-button color="primary" (click)="saveProject()">Save</button>
+	<button mat-raised-button color="accent" (click)="cancel()">Cancel</button>
+</mat-dialog-actions>

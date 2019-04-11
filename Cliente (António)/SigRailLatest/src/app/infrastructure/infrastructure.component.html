@@ -1,0 +1,6 @@
+<div id="container" *ngIf="infrastructure.properties.editMode">
+	<span>{{infrastructure.name}}</span>
+	<button mat-mini-fab (click)="newElement()">+</button>
+	<button mat-raised-button color="primary" (click)="saveInfrastructure()">Apply</button>
+	<button mat-raised-button color="contrast" (click)="cancel()">Close</button>
+</div>

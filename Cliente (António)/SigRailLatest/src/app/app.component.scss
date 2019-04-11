@@ -1,0 +1,48 @@
+.flex100 > div {
+    display: flex;
+}
+
+:host fa-icon {
+    font-size: 150%;
+}
+
+#headerArea a {
+    text-decoration: none;
+}
+
+#appLogo {
+	display: flex;
+	align-items: center;
+}
+
+#projectTitle {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#userIcons {
+	align-items: center;
+}
+
+fa-icon {
+    margin: .5em;
+}
+
+#bodyArea {
+	flex-grow: 100;
+	position: relative;
+}
+
+#footerArea {
+ 	border-top: 1px solid #aaa;
+	background-color: lightgray;
+	padding: 3px;
+	font-size: 80%;
+	color: #888;
+}
+
+app-footerinfo {
+	display: flex;
+	justify-content: space-between;
+}

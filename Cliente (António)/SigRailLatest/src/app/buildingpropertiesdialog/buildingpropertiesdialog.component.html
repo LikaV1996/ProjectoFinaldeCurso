@@ -1,0 +1,25 @@
+<h2 mat-dialog-title class="custom">
+	{{getTitle()}}
+</h2>
+<mat-dialog-content class="custom">
+	<mat-form-field style="width:100%">
+		<input matInput [readonly]="true"
+			placeholder="Layer" [(ngModel)]="buildingGroup.name">
+	</mat-form-field>
+	<mat-form-field>
+		<input matInput [placeholder]="'Name (' + building.id + ')'" [(ngModel)]="_building.name">
+	</mat-form-field>
+	<br />
+	<mat-form-field>
+		<input matInput placeholder="Elevation" [(ngModel)]="_building.elevation">
+	</mat-form-field>
+	<mat-form-field>
+		<input matInput placeholder="Nr of points" [readonly]="true" [(ngModel)]="_building.perimeter.coordinates[0].length">
+	</mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-raised-button color="primary" (click)="saveBuilding()">Save</button>
+	<button mat-raised-button color="primary" (click)="cancel()">Cancel</button>
+</mat-dialog-actions>
+
+

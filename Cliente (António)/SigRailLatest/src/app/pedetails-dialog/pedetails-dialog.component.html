@@ -1,0 +1,27 @@
+<h2 mat-dialog-title class="custom">
+	{{getTitle()}}
+</h2>
+<div class="tabsContainer">
+	<div class="tabs">
+		<div class="tab" [class.selected]="currentTab === 0" (click)="currentTab = 0">General</div>
+		<div class="tab" [class.selected]="currentTab === 1" (click)="currentTab = 1">Layers</div>
+		<div class="tab" [class.selected]="currentTab === 2" (click)="currentTab = 2">Information</div>
+	</div>
+	<div class="tabContent" *ngIf="currentTab === 0">
+		<mat-form-field style="width:100%">
+			<input matInput placeholder="Name" [(ngModel)]="_pe.name">
+		</mat-form-field>
+		<mat-form-field style="width:100%">
+			<input matInput placeholder="Resolution (m)" [(ngModel)]="_pe.resolution">
+		</mat-form-field>
+	</div>
+	<div class="tabContent" *ngIf="currentTab === 1">
+		Content2
+	</div>
+	<div class="tabContent" *ngIf="currentTab === 2">
+		Content3
+	</div>
+</div>
+<button mat-raised-button color="primary" (click)="savePE()">Save</button>
+<!-- 	<button mat-raised-button color="primary" (click)="delRailway()">Delete</button> -->
+	<button mat-raised-button color="primary" (click)="cancel()">Cancel</button>

@@ -1,0 +1,16 @@
+<ng-container *ngFor="let building of buildings">
+	<app-building [map]="map" [project]="project" [buildingGroup]="buildingGroup" [building]="building"
+		[groupEditMode]="buildingGroup.properties?.editMode"
+		[editMode]="building.properties?.editMode" [visible]="buildingGroup.properties?.visible"
+		[color]="buildingGroup.properties?.color"
+		[layerGroup]="layerGroup"
+		[layerMenu]="layerMenu" [buildingMenu]="buildingMenu"
+		[pointMenu]="pointMenu">
+	</app-building>
+</ng-container>
+<div id="container" *ngIf="buildingGroup.properties?.editMode">
+	<span>{{buildingGroup.name}}</span>
+	<button mat-mini-fab (click)="newBuilding($event)">+</button>
+	<!-- <button mat-raised-button color="primary" (click)="saveBuildingGroup()">Apply</button> -->
+	<button mat-raised-button color="contrast" (click)="cancel()">Close</button>
+</div>

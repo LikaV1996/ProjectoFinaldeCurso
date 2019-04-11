@@ -1,0 +1,9 @@
+<span>
+	<ng-container *ngIf="progressRef.state | async; let state">
+		<mat-progress-spinner  mode="indeterminate" *ngIf="state.active" [value]="state.value" [diameter]="15"></mat-progress-spinner>
+	</ng-container>
+</span>
+<span>
+	<span *ngIf="lastMenuCommand">Last command: {{lastMenuCommand}}</span>
+</span>
+<span>&copy; Solvit 2018 - v0.003</span>

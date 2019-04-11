@@ -1,0 +1,386 @@
+<div id="projectContainer" class="fill-height-or-more">
+<!-- <div style="height: 4px; margin-top: -4px">
+<ng-container *ngIf="progressRef.state | async; let state">
+   	<mat-progress-bar  mode="indeterminate" *ngIf="state.active" [value]="state.value"></mat-progress-bar>
+</ng-container>
+</div> -->
+<div id="projectMenu">
+<button mat-button color="primary" [matMenuTriggerFor]="projectMenu">Project</button>
+	<mat-menu #projectMenu="matMenu" [overlapTrigger]="false" class="no-padding-menu">
+	<mat-list>
+	  <button mat-menu-item (click)="newProject()">
+	  	<fa-icon icon="file"></fa-icon>
+	  	<span>New</span>
+	  </button>
+	  <button mat-menu-item (click)="openProject()">
+	  	<fa-icon icon="folder-open"></fa-icon>
+	  	<span>Open...</span>
+	  </button>
+	  <button mat-menu-item routerLink="/projects" disabled="true">
+	  	<fa-icon icon="copy"></fa-icon>
+	  	<span>Copy Project...</span>
+	  </button>
+	  <button mat-menu-item (click)="editProject()">
+	  	<fa-icon icon="cogs"></fa-icon>
+	  	<span>Properties</span>
+	  </button>
+	  <button mat-menu-item (click)="deleteProject()">
+	  	<fa-icon icon="trash"></fa-icon>
+	  	<span>Delete Project</span>
+	  </button>
+	  <mat-divider></mat-divider>
+	  <button mat-menu-item (click)="closeProject()">
+	  	<fa-icon icon="window-close"></fa-icon>
+	  	<span>Close Project</span>
+	  </button>
+	  
+	  <mat-divider></mat-divider>
+	  
+	  	  
+	  
+	  
+	  
+	  
+	  </mat-list>
+	</mat-menu>
+	<button mat-button color="primary" [matMenuTriggerFor]="layerMenu" [disabled]="router.url.lastIndexOf('/project') !== 0">Layer</button>
+	<mat-menu #layerMenu="matMenu" [overlapTrigger]="false" class="no-padding-menu">
+	  <button mat-menu-item [matMenuTriggerFor]="createLayerMenu">Create Layer</button>
+	  <!-- <button mat-menu-item [matMenuTriggerFor]="addLayerMenu">Add Published Layer</button> -->
+	  <button mat-menu-item (click)="addLayer()">Add Published Layer</button>
+	</mat-menu>
+	<mat-menu #createLayerMenu="matMenu" [overlapTrigger]="false" class="no-padding-menu">
+		<button mat-menu-item (click)="newRailway()">Railway</button>
+	  	<button mat-menu-item (click)="newInfrastructure()">Railway Infrastructure</button>
+	  	<button mat-menu-item>Clutter</button>
+	  	<button mat-menu-item (click)="newBuildingGroup()">Building Group</button>
+	  	<button mat-menu-item>Image</button>
+	</mat-menu>
+	<!-- <mat-menu #addLayerMenu="matMenu" [overlapTrigger]="false" class="no-padding-menu">
+	  	<button mat-menu-item>Railway</button>
+	  	<button mat-menu-item>Railway Infrastructure</button>
+	  	<button mat-menu-item>Clutter</button>
+	  	<button mat-menu-item>Building Group</button>
+	  	<button mat-menu-item>Image</button>
+	</mat-menu> -->
+	
+	<button mat-button color="primary" [matMenuTriggerFor]="peMenu" [disabled]="router.url.lastIndexOf('/project') !== 0">Propagation Environment</button>
+	<mat-menu #peMenu="matMenu" [overlapTrigger]="false" class="no-padding-menu">
+		<a mat-menu-item (click)="newPE()">Create Propagation Environment</a>
+	</mat-menu>
+
+	<button mat-button color="primary" [matMenuTriggerFor]="networkMenu" [disabled]="router.url.lastIndexOf('/project') !== 0">Network</button>
+	<mat-menu #networkMenu="matMenu" [overlapTrigger]="false" class="no-padding-menu">
+		<a mat-menu-item routerLink="/help">About</a>
+	</mat-menu>
+	
+	<button mat-button color="primary" [matMenuTriggerFor]="simulationMenu" [disabled]="router.url.lastIndexOf('/project') !== 0">Simulation</button>
+	<mat-menu #simulationMenu="matMenu" [overlapTrigger]="false" class="no-padding-menu">
+		<a mat-menu-item routerLink="/help">About</a>
+	</mat-menu>
+	
+</div>
+
+<div id="sidenav">
+	
+<mat-sidenav-container class="sidenav-container" autosize>
+<mat-sidenav #sidenav mode="side" position="start" [opened]="sidenavOpened">
+	<div style="height: 4px">
+			<mat-progress-bar mode="determinate" *ngIf="project?.properties?.loadersTotal > 0"
+				[value]="100 - (project.properties.loadersBusy / project.properties.loadersTotal) * 100"
+				(animationEnd)="layersPBCompleted($event)">
+			</mat-progress-bar>
+	</div>
+<nav>
+	<mat-expansion-panel class="navMenu">
+		<mat-expansion-panel-header [collapsedHeight]="'50px'" [expandedHeight]="'50px'">
+			<mat-panel-title>Layers
+				<span *ngIf="(railways ? railways.length : 0) + (infrastructures ? infrastructures.length : 0) +
+				(clutters ? clutters.length : 0) + (buildingGroups ? buildingGroups.length : 0) > 0">
+					&nbsp;({{railways?.length + infrastructures?.length + clutters?.length + buildingGroups?.length}})
+				</span>
+			</mat-panel-title>
+		</mat-expansion-panel-header>
+
+		<mat-list id="layersList" class="no-padding">
+			<mat-list-item  *ngFor="let layer of layers; let i = index" class="listEntry"  [contextMenu]="layer.properties? layerContextMenu: invalidLayerContextMenu" [contextMenuSubject]="layer"
+			[ngClass]="layer.properties?.editMode ? 'editMode' : ''">
+				<fa-icon *ngIf="true || layer.properties" [icon]="isRailway(layer) ? 'bacon' : isBuildingGroup(layer) ? 'building' : isClutter(layer) ? 'map-marked' : 'map-marker'"
+					style="margin-right: .5em">
+				</fa-icon>
+				<!-- [style.color]="layer.properties.color"> -->
+				<span class="layer-name" style="flex-basis: 100%" (dblclick)="isApproachLayerPossible(layer) ? fitBoundsLayer(layer) : true;">{{layer.name}}</span>
+				<span class="layer-icons">
+					<fa-icon icon="lock" *ngIf="layer.state && layer.state == 'Locked'" style="margin-left: .5em" matTooltip="Locked Layer"></fa-icon>
+					<fa-icon icon="share" *ngIf="layer.state && layer.state == 'Published'" style="margin-left: .5em" matTooltip="Published Layer"></fa-icon>
+					<fa-icon icon="eye-slash" *ngIf="layer.properties && !layer.properties.visible" style="margin-left: .5em" matTooltip="Hidden Layer, click to unhide" (click)="showLayer(layer)"></fa-icon>
+					<fa-icon icon="pencil-alt" *ngIf="layer.properties?.editMode" style="color: green; margin-left: .5em" matTooltip="Editable Layer"></fa-icon>
+					<fa-icon icon="times" *ngIf="layer.error" style="color: red; margin-left: .5em" matTooltip="{{layer.error}}"></fa-icon>
+				</span>
+			</mat-list-item>
+		</mat-list>
+
+	</mat-expansion-panel>
+
+	<mat-expansion-panel class="navMenu" *ngIf="projectPE">
+		<mat-expansion-panel-header [collapsedHeight]="'50px'" [expandedHeight]="'50px'">
+			<mat-panel-title>Propagation Environment <span *ngIf="peLayers && peLayers.length > 0">({{peLayers?.length}})</span></mat-panel-title>
+		</mat-expansion-panel-header>
+		<!-- <mat-list id="scenarioList" class="no-padding">
+			<app-layerlistentry *ngFor="let r of scenario; let i = index" class="listEntry"
+				[layer]="r" (clickedItem)="railwayMenuClickHandler($event)"
+				[editing]="r.properties.editMode" [inScenario]="true"></app-layerlistentry>
+		</mat-list> -->
+	</mat-expansion-panel>
+
+	<mat-expansion-panel class="navMenu">
+		<mat-expansion-panel-header [collapsedHeight]="'50px'" [expandedHeight]="'50px'">
+			<mat-panel-title>Networks</mat-panel-title>
+		</mat-expansion-panel-header>
+		<mat-list id="networkList" class="no-padding">
+		</mat-list>
+	</mat-expansion-panel>
+
+</nav>
+
+<!-- <button (click)="setLayerOrder()">Order</button> -->
+
+
+</mat-sidenav>
+
+
+<mat-sidenav-content>
+
+
+<div id="mainMap" [class.add-point-cursor]="isPointBeingAdded() || projectService.pointAddCursor"
+	leaflet
+	[leafletOptions]="options" 
+	[leafletLayers]="mapLayers"
+	[leafletLayersControl]="layersControl"
+	[leafletCenter]="center" [leafletZoom]="zoom"
+	(leafletMapReady)="onMapReady($event)"
+	(keyup)="onKey($event)">
+	<!-- [leafletFitBounds]="fitBounds" -->
+
+	<ng-container *ngFor="let r of railways">
+		<app-railway *ngIf="r.railwayPoints && r.properties?.visible" [map]="map" [railway]="r" [contextMenu]="layerContextMenu"
+			[polylinesMap]="railwayPolylines">
+		</app-railway>
+	</ng-container>
+
+	<div id="layerEditArea">
+		<ng-container *ngFor="let r of railways">
+			<app-railwayedit  *ngIf="r.properties?.editMode" [map]="map"
+				[project]="project"
+				[railway]="r"
+				[pointMenu]="pointContextMenu"
+				(changeEvent)="railwayEditChange($event)"
+				(cancelEvent)="railwayEditCancel($event)"
+				(saveEvent)="saveRailway($event)">
+			</app-railwayedit>
+		</ng-container>
+
+		<ng-container *ngFor="let inf of infrastructures">
+			<app-infrastructure *ngIf="inf.properties" [editMode]="inf.properties?.editMode" [visible]="inf.properties?.visible"
+				[map]="map" [project]="project" [infrastructure]="inf" [elements]="infrastructureElements.get(inf)" [projectRailways]="railways"
+				[elementMenu]="elementContextMenu" [layerMenu]="layerContextMenu" [elementMarkersMap]="infrastructureElementsLayersMap.get(inf)"
+				[mapLayerGroup]="infrastructureMapLayerGroups.get(inf)" 
+				[color]="inf.properties?.color" 
+				(cancelEvent)="infrastructureEditCancel($event)"
+				(saveEvent)="infrastructureEditSave($event)">
+			</app-infrastructure>
+		</ng-container>
+
+		<ng-container *ngFor="let bg of buildingGroups">
+			<app-buildinggroup *ngIf="bg.properties?.visible" [map]="map"
+				[project]="project" [buildingGroup]="bg" [buildings]="buildings.get(bg)"
+				[editMode] = "bg.properties?.editMode"
+				[layerGroup] = "buildingsMapLayerGroups.get(bg)"
+				[layerMenu]="layerContextMenu" [buildingMenu]="buildingContextMenu" [pointMenu]="buildingPointContextMenu"
+				(cancelEvent)="editLayerCancel(bg)">
+			</app-buildinggroup>
+		</ng-container>
+
+	</div>
+</div>
+
+<div id="mouseCoordsArea"><pre>{{mousePos.lat | number : '2.14-14'}},{{mousePos.lng | number : '2.14-14'}}</pre></div>
+
+</mat-sidenav-content>
+
+</mat-sidenav-container>
+
+</div>
+
+</div>
+
+
+<context-menu #invalidLayerContextMenu [menuClass]="'mat-menu-panel'">
+	<div class="mat-menu-content">
+		<ng-template contextMenuItem let-item>
+		    <button mat-menu-item (click)="removeLayer(item)">
+		    	<fa-icon icon="times"></fa-icon>Remove invalid Layer
+		    </button>
+		</ng-template>
+	</div>
+</context-menu>
+
+<context-menu #layerContextMenu [menuClass]="'mat-menu-panel'">
+	<div class="mat-menu-content">
+		<ng-template contextMenuItem let-item>
+		    <button mat-menu-item (click)="fitBoundsLayer(item)" [disabled]="!isApproachLayerPossible(item)">
+		    	<fa-icon icon="search"></fa-icon>Approach Layer
+		    </button>
+	    </ng-template>
+	    <ng-template contextMenuItem let-item [visible]="isLayerInvisible">
+		    <button mat-menu-item (click)="showLayer(item)">
+		    	<fa-icon icon="eye"></fa-icon>View
+		    </button>
+	    </ng-template>
+	    <ng-template contextMenuItem let-item [visible]="isLayerVisible">
+		    <button mat-menu-item (click)="hideLayer(item)" [disabled]="item.properties.editMode">
+		    	<fa-icon icon="eye-slash"></fa-icon>Hide
+		    </button>
+	    </ng-template>
+		<ng-template contextMenuItem let-item [visible]="isLayerEditable">
+		    <button mat-menu-item (click)="editLayer(item)" [disabled]="item.state != 'Unlocked' || !item.properties.visible">
+		    	<fa-icon icon="edit"></fa-icon>Edit Layer
+		    </button>
+	    </ng-template>
+	    <ng-template contextMenuItem let-item [visible]="isLayerinEditMode">
+		    <button mat-menu-item (click)="editLayerCancel(item)">
+		    	<fa-icon icon="edit"></fa-icon>Close Edit
+		    </button>
+		</ng-template>
+	    <ng-template contextMenuItem let-item [visible]="isAddElementPossible">
+		    <button mat-menu-item (click)="infrastructureAddElement(item)">
+		    	<fa-icon icon="map-marker"></fa-icon>Add Element
+		    </button>
+	    </ng-template>
+	    <ng-template contextMenuItem let-item [visible]="isRemoveLayerPossible">
+		    <button mat-menu-item (click)="removeLayer(item)">
+		    	<fa-icon icon="trash"></fa-icon>Remove
+		    </button>
+	    </ng-template>
+	    <ng-template contextMenuItem let-item [visible]="isDuplicateLayerPossible">
+		    <button mat-menu-item (click)="cloneLayer(item)" [disabled]="item.state === 'Unlocked'">
+		    	<fa-icon icon="copy"></fa-icon>Duplicate
+		    </button>
+		</ng-template>
+		<ng-template contextMenuItem let-item>
+		    <button mat-menu-item (click)="layerMoveUp(item)">
+		    	<fa-icon icon="angle-up"></fa-icon>Move up
+		    </button>
+		</ng-template>
+		<ng-template contextMenuItem let-item>
+		    <button mat-menu-item (click)="layerMoveDown(item)">
+		    	<fa-icon icon="angle-down"></fa-icon>Move down
+		    </button>
+		</ng-template>
+		<ng-template contextMenuItem divider="true"></ng-template>
+		<ng-template contextMenuItem let-item [visible]="isLayerLockable">
+		    <button mat-menu-item (click)="lockLayer(item)">
+		    	<fa-icon icon="lock"></fa-icon>Lock Layer
+		    </button>
+	    </ng-template>
+		<ng-template contextMenuItem let-item [visible]="isLayerUnlockable">
+		    <button mat-menu-item (click)="unlockLayer(item)">
+		    	<fa-icon icon="lock-open"></fa-icon>Unlock Layer
+		    </button>
+	    </ng-template>
+		<ng-template contextMenuItem let-item [visible]="isPublishLayerPossible">
+		    <button mat-menu-item (click)="publishLayer(item)" [disabled]="item.properties.editMode">
+		    	<fa-icon icon="share-square"></fa-icon>Publish
+		    </button>
+		</ng-template>
+		<ng-template contextMenuItem let-item [visible]="isAddToPEPossible">
+		    <button mat-menu-item (click)="addToPE(item)" [disabled]="item.properties.editMode">
+				<fa-icon icon="folder-plus"></fa-icon>Add to Propagation Environment
+		    </button>
+		</ng-template>
+		<ng-template contextMenuItem divider="true"></ng-template>
+		<ng-template contextMenuItem let-item>
+		    <button mat-menu-item (click)="layerProperties(item)">
+		    <fa-icon icon="cogs"></fa-icon>Properties</button>
+		</ng-template>
+		
+<!-- 	OLD MENU	     -->
+<!-- 	<a mat-menu-item *ngIf="!inScenario" (click)="clickHandler('AddToScenario', layer)">Add to Propagation Environment</a> -->
+<!-- 	<a mat-menu-item *ngIf="inScenario" (click)="clickHandler('RemoveFromScenario', layer)">Remove from Propagation Environment</a> -->
+<!-- 	<mat-divider></mat-divider> -->
+<!-- 	<a mat-menu-item (click)="clickHandler('Properties', layer)">Properties</a> -->
+<!-- 	<a mat-menu-item (click)="clickHandler('MoveUp', layer)">Up</a> -->
+<!-- 	<a mat-menu-item (click)="clickHandler('MoveDown', layer)">Down</a> -->
+<!-- 	<a mat-menu-item *ngIf="!inScenario" (click)="clickHandler('Save', layer)">Save</a> -->
+	</div>
+	</context-menu>
+	    
+    <context-menu #elementContextMenu style="pointer-events:all" [menuClass]="'mat-menu-panel'">
+	<div class="mat-menu-content">
+		<ng-template contextMenuItem let-item>
+		    <button mat-menu-item (click)="elementProperties(item[0], item[1])">
+		    <mat-icon fontSet="fa" fontIcon="fa-pencil"></mat-icon>Edit
+		    </button>
+	    </ng-template>
+	    <ng-template contextMenuItem let-item>
+		    <button mat-menu-item (click)="deleteElement(item[0], item[1])">
+		    	<mat-icon fontSet="fa" fontIcon="fa-times-circle-o"></mat-icon>Delete
+		    </button>
+	    </ng-template>
+    </div>
+	</context-menu>
+    
+    <context-menu #pointContextMenu [menuClass]="'mat-menu-panel'">
+	<div class="mat-menu-content">
+		<ng-template contextMenuItem let-item>
+			<button mat-menu-item (click)="railwayEditPoint(item[0], item[1])">
+				<fa-icon icon="pencil-alt"></fa-icon>Edit
+			</button>
+	    </ng-template>
+	    <ng-template contextMenuItem let-item>
+			<button mat-menu-item (click)="railwayPointDelete(item[0], item[1])">
+				<fa-icon icon="times-circle"></fa-icon>Delete
+			</button>
+	    </ng-template>
+	</div>
+	</context-menu>
+
+	<context-menu #buildingPointContextMenu [menuClass]="'mat-menu-panel'">
+	<div class="mat-menu-content">
+		<!-- <ng-template contextMenuItem let-item>
+			<button mat-menu-item (click)="buildingEditPoint(item[0], item[1])">
+				<fa-icon icon="pencil-alt"></fa-icon>Edit
+			</button>
+	    </ng-template> -->
+	    <ng-template contextMenuItem let-item>
+			<button mat-menu-item (click)="buildingPointDelete(item[0], item[1])" [disabled]="!isDeleteBuildingPointPossible(item[0])">
+				<fa-icon icon="times-circle"></fa-icon>Delete
+			</button>
+	    </ng-template>
+	</div>
+	</context-menu>
+    
+    <context-menu #buildingContextMenu [menuClass]="'mat-menu-panel'">
+	<div class="mat-menu-content">
+		<ng-template contextMenuItem let-item>
+			<button mat-menu-item (click)="buildingProperties(item[0], item[1])">
+				<fa-icon icon="cogs"></fa-icon>Properties
+			</button>
+	    </ng-template>
+		<ng-template contextMenuItem let-item [visible]="isBuildingEditPossible">
+			<button mat-menu-item (click)="editBuilding(item[0], item[1])">
+				<fa-icon icon="pencil-alt"></fa-icon>Edit Building
+			</button>
+		</ng-template>
+		<ng-template contextMenuItem let-item [visible]="isBuildingEditActive">
+			<button mat-menu-item (click)="editBuildingCancel(item[0], item[1])">
+				<fa-icon icon="edit"></fa-icon>Cancel Edit Buiilding
+			</button>
+		</ng-template>
+	    <ng-template contextMenuItem let-item>
+			<button mat-menu-item (click)="deleteBuilding(item[0], item[1])">
+				<fa-icon icon="times-circle"></fa-icon>Delete
+			</button>
+	    </ng-template>
+    </div>
+</context-menu>

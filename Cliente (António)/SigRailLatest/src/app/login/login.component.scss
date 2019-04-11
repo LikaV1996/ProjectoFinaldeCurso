@@ -1,0 +1,28 @@
+:host {
+    position: absolute;
+    left: 0; top: 0; bottom: 0; right: 0;
+    background-image: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(../../assets/estacao-comboios.jpg);
+    background-size: cover;
+    color: #fff;
+}
+
+
+.login-card {
+    background-color: transparent;
+    margin:auto;
+    padding: 2.5em;
+    width: 30%;
+
+    input {
+         width: 100%;
+         padding: 8px;
+         margin-top: 16px;
+    }
+    button {
+        width: 50%;
+    }
+}
+
+#mainLogo {
+    width: 100%;
+}

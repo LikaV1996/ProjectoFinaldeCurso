@@ -1,0 +1,28 @@
+/* Clear floats after the columns */
+.tabsContainer:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.tabs {
+    float: left; 
+    width: 30%;
+    /* height: 100%; */
+    background-color: lightgray;
+}
+
+.tabs .tab {
+    cursor: pointer;
+    padding: 10px;
+    transition: 0.3s;
+}
+.tabs .selected {
+    background-color: white;
+}
+
+.tabContent {
+    float: left;
+    width: 66%;
+    padding: 2%;
+}

@@ -1,0 +1,49 @@
+<section class="fill-height-or-more">
+<div id="headerArea" *ngIf="router.url != '/login'">
+	<mat-toolbar color="primary">
+		<div class="flex100">
+          <div id="appLogo">
+				<button mat-icon-button
+					matTooltip="Main menu" 
+					(click)="router.url.lastIndexOf('/project') === 0 ? appService.menuCommand(['project', 'toggleNav']) : appService.menuCommand(['homepage', 'toggleNav'])">
+                  <fa-icon id="mainMenuIcon" icon="bars"></fa-icon>
+				</button>
+				<a routerLink="/" matTooltip="SigRail home" style="margin-left: 1em">
+					<app-logo></app-logo>
+				</a>
+			</div>
+			<div id="projectTitle">
+				<span *ngIf="!titleEditable" (click)="titleEdit(true)">{{appService.currentProject?.name}}</span>
+				<span *ngIf="titleEditable">
+					<mat-form-field style="width: 700px; text-align: center">
+						<input matInput id="pName" [(ngModel)]="appService.currentProject.name" (blur)="titleEdit(false)" style="font-size: 110%">
+					</mat-form-field>
+				</span>
+			</div>
+			<div id="userIcons">
+              <fa-icon icon="bell"></fa-icon>
+                <fa-icon icon="user-circle" [matMenuTriggerFor]="userMenu" matTooltip="{{auth.currentUser?.name}}"></fa-icon>
+				<mat-menu #userMenu="matMenu" [overlapTrigger]="false" class="no-padding-menu">
+				  <button mat-menu-item>
+                    <fa-icon icon="user"></fa-icon>
+				  	<span>Preferences</span>
+				  </button>
+				  <button mat-menu-item>
+                    <fa-icon icon="sign-out-alt"></fa-icon>
+				  	<span (click)="auth.logout()">Logout</span>
+				  </button>
+				</mat-menu>
+			</div>
+		</div>
+	</mat-toolbar>
+	
+</div>
+
+<div id="bodyArea">
+	<router-outlet (activate)="onActivate($event)"></router-outlet>
+</div>
+
+<div id="footerArea">
+	<app-footerinfo></app-footerinfo>
+</div>
+</section>

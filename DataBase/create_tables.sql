@@ -5,7 +5,7 @@ CREATE TABLE Hardware (
   serial_number VARCHAR(45) UNIQUE NOT NULL,
   properties jsonb,
   creator VARCHAR(45) NOT NULL,
-  creation_date TIMESTAMP NOT NULL,
+  creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),
   
   CONSTRAINT PK_Hardware PRIMARY KEY (id)
 );
@@ -15,7 +15,7 @@ CREATE TABLE Config (
   activation_date TIMESTAMP NOT NULL,
   properties jsonb NOT NULL,
   creator VARCHAR(45) NOT NULL,
-  creation_date TIMESTAMP NOT NULL,
+  creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),
   
   CONSTRAINT PK_Config PRIMARY KEY (id)
 );
@@ -26,7 +26,7 @@ CREATE TABLE TestPlan (
   stop_date TIMESTAMP NOT NULL,
   properties jsonb NOT NULL,
   creator VARCHAR(45) NOT NULL,
-  creation_date TIMESTAMP NOT NULL,
+  creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),
   
   CONSTRAINT PK_TestPlan PRIMARY KEY (id)
 );
@@ -35,7 +35,7 @@ CREATE TABLE Setup (
   id BIGSERIAL,
   properties jsonb NOT NULL,
   creator VARCHAR(45) NOT NULL,
-  creation_date TIMESTAMP NOT NULL,
+  creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),
   
   CONSTRAINT PK_Setup PRIMARY KEY (id)
 );
@@ -73,14 +73,14 @@ CREATE TYPE ObuState AS ENUM ('READY', 'ACTIVE', 'DEACTIVATED');
 CREATE TABLE Obu (
   id BIGSERIAL,
   hardware_id BIGINT NOT NULL,
-  obu_state ObuState NOT NULL,
+  obu_state ObuState NOT NULL DEFAULT 'READY',
   current_config_id BIGINT NULL,
   current_test_plan_id BIGINT NULL,
   obu_name VARCHAR(45) NOT NULL,
   obu_password VARCHAR(45) NOT NULL,
   properties jsonb NOT NULL,
   creator VARCHAR(45) NOT NULL,
-  creation_date TIMESTAMP NOT NULL,
+  creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),
   
   CONSTRAINT PK_Obu PRIMARY KEY (id),
   CONSTRAINT FK_Obu_Hardware FOREIGN KEY (hardware_id) REFERENCES Hardware (id),
@@ -168,7 +168,7 @@ CREATE TABLE ProbeUser (
   user_profile VARCHAR(15) NOT NULL,
   properties jsonb,
   creator VARCHAR(45) NOT NULL,
-  creation_date TIMESTAMP NOT NULL,
+  creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),
   suspended BOOLEAN default false NOT NULL,
   
   CONSTRAINT PK_ProbeUser PRIMARY KEY (id),
@@ -189,10 +189,6 @@ CREATE TABLE ServerLog (
   
   CONSTRAINT PK_ServerLog PRIMARY KEY (id)
 );
-
-
-
-
 
 CREATE OR REPLACE VIEW view_probeuser
 as SELECT pu.id,

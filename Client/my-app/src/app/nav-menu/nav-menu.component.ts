@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CookieHandler } from '../cookie.service';
+import { LocalStorageService } from '../localStorage.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -15,12 +16,15 @@ export class NavMenuComponent {
   constructor(
     private router: Router,
     private breakpointObserver: BreakpointObserver,
-    private cookieHandler: CookieHandler
+    private _authService: AuthService
   ) {}
 
+
+
+
   logout(){
-    this.cookieHandler.removeAuthToken()
-    this.router.navigate(["login"]);
+    this._authService.logout()
+    this.router.navigate(["/login"]);
   }
 
 }

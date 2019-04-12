@@ -9,8 +9,8 @@ import {
 } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { CookieHandler } from "../cookie.service";
-import { Routes } from "../routes";
+import { LocalStorageService } from "../localStorage.service";
+import { Routes } from "../httproutes";
 import { Router } from '@angular/router';
 
 
@@ -20,30 +20,36 @@ const routes = new Routes
 export class HttpsRequestInterceptor implements HttpInterceptor {
   constructor(
     private router: Router,
-    private cookieHandler: CookieHandler
+    private localStorageService: LocalStorageService
   ){}
 
- intercept(
-  req: HttpRequest<any>,
-  next: HttpHandler,
- ): Observable<HttpEvent<any>> {
-   
-  const authToken = this.cookieHandler.getAuthToken();
-  const request = req.clone({ headers: req.headers.set('Content-Type',  'application/json')})
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler,
+  ): Observable<HttpEvent<any>> {
 
-   if(req.url == routes.login)  //login route, let through
-    return next.handle(request);
+    console.log("I'm in interceptor with route: " + req.url)
+    const request = req.clone({ headers: req.headers.set('Content-Type',  'application/json')})
 
-    if(authToken != undefined){ //check if logged in
-      const dupReq = request.clone({
-        headers: req.headers.set('Authorization', authToken),
-      });
-      return next.handle(dupReq);
+    if(req.url == routes.login) { //login route, let through
+      return next.handle(request);
     }
-    else{ //if not logged in, return to login page (and kill request)
-      this.router.navigate(['login'])
-      return EMPTY
-      //ERROR ???
+    else{
+
+      const authToken = this.localStorageService.getAuthToken();
+  
+  
+      if(authToken != null){ //check if logged in
+        const dupReq = request.clone({
+          headers: req.headers.set('Authorization', authToken),
+        });
+        return next.handle(dupReq);
+     }
+      else{ //if not logged in, return to login page (and kill request)
+        this.router.navigate(['/login'])
+        return EMPTY
+        //ERROR ???
+      }
     }
   }
 }

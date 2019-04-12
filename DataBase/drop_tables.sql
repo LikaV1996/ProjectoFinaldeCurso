@@ -1,5 +1,7 @@
 BEGIN;
 
+DROP VIEW IF EXISTS view_probeuser;
+
 DROP TABLE IF EXISTS ServerLog;
 DROP TYPE IF EXISTS AccessType;
 

@@ -12,6 +12,8 @@ export class HomemapComponent implements OnInit {
 
   constructor() { }
 
+
+  //TODO insert user data into mat-toolbar
   ngOnInit() {
   }
   

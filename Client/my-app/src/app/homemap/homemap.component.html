@@ -1,13 +1,10 @@
-<!--
-<app-nav-menu></app-nav-menu>
-
 <div class="map"
      leaflet
      (leafletMapReady)="onMapReady($event)"
      [leafletOptions]="options">
 </div>
--->
 
+<!--
 <mat-sidenav-container class="sidenav-container">
         <mat-sidenav #drawer class="sidenav"
             fixedInViewport="true"
@@ -39,11 +36,16 @@
               logout
             </button>
           </mat-toolbar>
-          <!-- Add Content Here -->
+
+
             <div class="map"
                 leaflet
                 (leafletMapReady)="onMapReady($event)"
                 [leafletOptions]="options">
             </div>
+
+
         </mat-sidenav-content>
       </mat-sidenav-container>
+
+    -->

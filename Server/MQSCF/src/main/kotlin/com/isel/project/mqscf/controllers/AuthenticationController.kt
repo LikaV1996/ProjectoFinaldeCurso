@@ -2,6 +2,7 @@ package com.isel.project.mqscf.controllers
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.isel.project.mqscf.config.InvalidParamMessage
+import com.isel.project.mqscf.dao.ProbeuserDao
 import com.isel.project.mqscf.model.Probeuser
 import com.isel.project.mqscf.utils.JsonProblemException
 import org.springframework.http.ResponseEntity

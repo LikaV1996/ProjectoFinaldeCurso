@@ -20,8 +20,9 @@ class Probeuser(private val db : DataSrc) {
     private val selectAllUserFields = "SELECT $allUserFields FROM probeuser"
 
     private val authenticateUserQuery = "$selectAllUserFields WHERE user_name = ? AND user_password = ?"
+    private val getUserByNameQuery = "$selectAllUserFields WHERE user_name = ?"
     private val getUsersQuery = selectAllUserFields
-    private val getUserQuery = "$selectAllUserFields WHERE id = ?"
+    private val getUserByIDQuery = "$selectAllUserFields WHERE id = ?"
     private val createUserQuery = "INSERT INTO ProbeUser ($userFields) VALUES (?,?,?,?::json,?,CURRENT_TIMESTAMP,?) returning id"
     private val suspensionUserQuery = "UPDATE probeuser SET suspended = ? WHERE id = ? returning id"
 
@@ -59,6 +60,8 @@ class Probeuser(private val db : DataSrc) {
 
 
 
+
+
     fun getUsers(): ArrayList<ProbeuserDao> =
             db.connection.prepareStatement(getUsersQuery)
                     .let {
@@ -77,7 +80,7 @@ class Probeuser(private val db : DataSrc) {
 
 
     fun getUserByID(id: Int) : ProbeuserDao =
-            db.connection.prepareStatement(getUserQuery)
+            db.connection.prepareStatement(getUserByIDQuery)
                     .also {
                         it.setInt(1,id)
                     }
@@ -93,6 +96,25 @@ class Probeuser(private val db : DataSrc) {
                             ProbeuserDao(it)
                         else
                             throw JsonProblemException("User with id $id not found",null,"User doesn't exist",400,null, null)
+                    }
+
+    fun getUserByName(user_name: String): ProbeuserDao =
+            db.connection.prepareStatement(getUserByNameQuery)
+                    .also {
+                        it.setString(1,user_name)
+                    }
+                    .let {
+                        try {
+                            it.executeQuery()
+                        }finally {
+                            it.connection.close()
+                        }
+                    }
+                    .let {
+                        if(it.next())
+                            ProbeuserDao(it)
+                        else
+                            throw JsonProblemException("User with user_name $user_name not found",null,"User doesn't exist",400,null, null)
                     }
 
 
@@ -156,9 +178,6 @@ class Probeuser(private val db : DataSrc) {
                     throw JsonProblemException("User with id $id not found",null,"User doesn't exist",400,null, null)
                 }
     }
-
-
-
 
 
 

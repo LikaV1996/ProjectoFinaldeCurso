@@ -6,4 +6,6 @@ export class User { //export default class User {
     creator: string;
     creation_date: Date;
     suspended: boolean;
+
+    user_level: number;
 }

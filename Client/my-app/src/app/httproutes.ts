@@ -4,7 +4,9 @@ export class Routes{
     login = this.basePath + "/login";
 
     getUsers = this.basePath + "/users";
-    getUserByID = this.basePath + "/user/:id";
+    //getUserByID = this.basePath + "/user/:id";
+    //getUserByName = this.basePath + "/user/:username";
+    getUserByParam = this.basePath + "/user/:param";
     createUser = this.basePath + "/user";
     suspendUser = this.basePath + "/user/:id/suspend";
 }

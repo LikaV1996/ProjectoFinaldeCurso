@@ -21,7 +21,11 @@ data class CreateUserFromBody @JsonCreator constructor( //Class for receiving bo
 //getting all user
 data class ResponseGETUsers @JsonCreator constructor(val total : Int, val users : List<ProbeuserDao>)
 //getting a user by it's ID
-data class ResponseGETUserByID @JsonCreator constructor(val user : ProbeuserDao)
+//data class ResponseGETUserByID @JsonCreator constructor(val user : ProbeuserDao)
+//getting a user by it's Name
+//data class ResponseGETUserByName @JsonCreator constructor(val user : ProbeuserDao)
+//getting a user by it's ID or Name
+data class ResponseGETUserByParam @JsonCreator constructor(val user : ProbeuserDao)
 //creating a user
 data class ResponsePOSTUser @JsonCreator constructor(val id : Int)
 //updating a user
@@ -43,12 +47,44 @@ class UserController(val user: Probeuser){
      *maybe should only be used the get all users
      */
 
+    @GetMapping(path = ["/user/{param}"])
+    fun getUserByParam(@PathVariable("param") param: String) : ResponseEntity<ResponseGETUserByParam> {
+        var ret : ProbeuserDao
+        try {
+            val id = param.toInt()
+            // id case
+            user.getUserByID(id)
+                    .let {
+                        ret = it
+                    }
+        } catch (e: NumberFormatException) {
+            // username case
+            val user_name = param
+            user.getUserByName(user_name)
+                    .let {
+                        ret = it
+                    }
+        }
+        catch (e: Exception){ throw e }
+
+        return ResponseEntity.ok().body(ResponseGETUserByParam(ret))
+    }
+
+    /*
     @GetMapping(path = ["/user/{id}"])
     fun getUserByID(@PathVariable("id") id: Int) : ResponseEntity<ResponseGETUserByID> =
             user.getUserByID(id)
                     .let {
                         ResponseEntity.ok().body(ResponseGETUserByID(it))
                     }
+
+    @GetMapping(path = ["/user/{username}"])
+    fun getUserByName(@PathVariable("username") user_name: String) : ResponseEntity<ResponseGETUserByName> =
+            user.getLoggedInUser(user_name)
+                    .let {
+                        ResponseEntity.ok().body(ResponseGETUserByName(it))
+                    }
+    */
 
 
     @PostMapping(path = ["/users"])  //TODO return user or id?

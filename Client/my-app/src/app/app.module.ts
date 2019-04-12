@@ -17,10 +17,12 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 
 import { CookieService } from "angular2-cookie/services/cookies.service";
+
 import { HomemapComponent } from './homemap/homemap.component';
 import { HttpinterceptorModule } from './httpinterceptor/httpinterceptor.module';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { LayoutModule } from '@angular/cdk/layout';
+
 
 
 @NgModule({

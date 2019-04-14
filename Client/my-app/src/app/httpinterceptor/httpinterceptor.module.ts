@@ -28,7 +28,7 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
 
-    console.log("I'm in interceptor with route: " + req.url)
+    console.log("HTTP intercepted for route: " + req.url)
     const request = req.clone({ headers: req.headers.set('Content-Type',  'application/json')})
 
     if(req.url == routes.login) { //login route, let through
@@ -45,11 +45,13 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
         });
         return next.handle(dupReq);
      }
+     /*
       else{ //if not logged in, return to login page (and kill request)
         this.router.navigate(['/login'])
         return EMPTY
         //ERROR ???
       }
+      */
     }
   }
 }

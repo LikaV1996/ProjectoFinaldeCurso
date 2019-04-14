@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
       let url = state.url
-      console.log("I'm in AuthGuard!!! with url =" + url)
+      console.log("AuthGuard intercepted call to url =" + url)
       //let path = url.split("localhost:4200/")
       //let min_user_level = routingClearance.filter( obj => obj.url == path[path.length-1] )[0].clearance
       return this.checkLogin(url) 

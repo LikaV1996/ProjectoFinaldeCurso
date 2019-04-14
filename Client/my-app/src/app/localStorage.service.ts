@@ -48,7 +48,7 @@ export class LocalStorageService{
         let lsTokenUnparsed = localStorage.getItem(this.lsTokenName)
 
         if(lsTokenUnparsed == null){
-            console.log("localStorage: " + null)
+            //console.log("localStorage: " + null)
             return null
         } 
 

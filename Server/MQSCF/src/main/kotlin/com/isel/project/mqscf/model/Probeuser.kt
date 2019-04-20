@@ -15,9 +15,10 @@ class Probeuser(private val db : DataSrc) {
     //Query's List
 
     private val userPKFields = "id"
-    private val userFields = "user_name, user_password, user_profile, properties, creator, creation_date, suspended"
-    private val allUserFields = "$userPKFields , $userFields"
-    private val selectAllUserFields = "SELECT $allUserFields FROM probeuser"
+    private val userFields = "user_name, user_password, user_profile, properties, creator, creation_date, modifier, modified_date, suspended"
+    private val viewUserFields = "user_level"
+    private val allUserFields = "$userPKFields , $userFields, $viewUserFields"
+    private val selectAllUserFields = "SELECT $allUserFields FROM view_probeuser"
 
     private val authenticateUserQuery = "$selectAllUserFields WHERE user_name = ? AND user_password = ?"
     private val getUserByNameQuery = "$selectAllUserFields WHERE user_name = ?"
@@ -118,6 +119,7 @@ class Probeuser(private val db : DataSrc) {
                     }
 
 
+    //TODO check how to insert nulls into postgreSQL
     fun createUser(user_name: String, user_password: String, user_profile: String, properties: String, creator: String, suspended: Boolean?) : Int =
             db.connection.prepareStatement(createUserQuery)
                     .also {
@@ -127,7 +129,7 @@ class Probeuser(private val db : DataSrc) {
                         it.setString(4,properties)
                         it.setString(5,creator)
                         //it.setDate(6,)    //current date
-                        it.setBoolean(6, if(suspended != null && suspended) true else false)
+                        it.setBoolean(6, suspended != null && suspended)
                     }
                     .let {
                         try {

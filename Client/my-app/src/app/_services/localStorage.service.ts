@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { User } from "./Model/User";
+import { User } from "../Model/User";
 
 
 class localStorageToken {
@@ -66,7 +66,7 @@ export class LocalStorageService{
         if(lsToken.expirationDate.getTime() >= curDate.getTime()) {
             return lsToken.token
         }
-        else {
+        else {  //token has expired, removed
             this.removeAuthToken()
             return null
         }
@@ -93,6 +93,7 @@ export class LocalStorageService{
         return userDetailsUnparsed != null ? JSON.parse(userDetailsUnparsed) : null
     }
 
+    /*
 
     checkLoggedUserSuspention() : {cleared : boolean, message : string} {
         let userDetails = this.getCurrentUserDetails()
@@ -105,18 +106,7 @@ export class LocalStorageService{
         {cleared: false, message: "User is suspended. Cannot access any resources"} :   //maybe create a you are suspended page xP
         {cleared: true, message: "User is cleared"}
     }
-
-    checkLoggedUserClearance(min_user_level : number) : {cleared : boolean, message : string} {
-        let userDetails = this.getCurrentUserDetails()
-        
-        if(userDetails == null){
-            return {cleared: false, message: "Something went wrong"}
-        }
-
-        return userDetails.user_level < min_user_level ? 
-        {cleared: false, message: "User doesn't have a high enough level. Cannot access this resource"} :   //these are not the droids you're looking for (github)
-        {cleared: true, message: "User is cleared"}
-    }
+*/
 
 
 

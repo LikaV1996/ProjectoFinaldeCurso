@@ -1,6 +1,7 @@
 package com.isel.project.mqscf.controllers
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.isel.project.mqscf.config.AdminRoute
 import com.isel.project.mqscf.dao.ProbeuserDao
 import com.isel.project.mqscf.model.Probeuser
 import org.springframework.http.ResponseEntity
@@ -31,9 +32,11 @@ data class ResponsePOSTUser @JsonCreator constructor(val id : Int)
 //updating a user
 data class ResponsePUTUser @JsonCreator constructor(val user : ProbeuserDao)
 
+
 @RestController
 @RequestMapping(value = ["api/v1/"])
 class UserController(val user: Probeuser){
+
 
     @GetMapping(path = ["/users"])
     fun getUsers() : ResponseEntity<ResponseGETUsers> =
@@ -43,11 +46,24 @@ class UserController(val user: Probeuser){
                     }
 
 
-    /**
-     *maybe should only be used the get all users
-     */
 
-    @GetMapping(path = ["/user/{param}"])
+    /*
+    @GetMapping(path = ["/user/{id}"])
+    fun getUserByID(@PathVariable("id") id: Int) : ResponseEntity<ResponseGETUserByID> =
+            user.getUserByID(id)
+                    .let {
+                        ResponseEntity.ok().body(ResponseGETUserByID(it))
+                    }
+
+    @GetMapping(path = ["/user/{username}"])
+    fun getUserByName(@PathVariable("username") user_name: String) : ResponseEntity<ResponseGETUserByName> =
+            user.getLoggedInUser(user_name)
+                    .let {
+                        ResponseEntity.ok().body(ResponseGETUserByName(it))
+                    }
+    */
+
+    @GetMapping(path = ["/user/{param}"])   //get user by ID or user_name (used afterlogging in)
     fun getUserByParam(@PathVariable("param") param: String) : ResponseEntity<ResponseGETUserByParam> {
         var ret : ProbeuserDao
         try {
@@ -70,24 +86,9 @@ class UserController(val user: Probeuser){
         return ResponseEntity.ok().body(ResponseGETUserByParam(ret))
     }
 
-    /*
-    @GetMapping(path = ["/user/{id}"])
-    fun getUserByID(@PathVariable("id") id: Int) : ResponseEntity<ResponseGETUserByID> =
-            user.getUserByID(id)
-                    .let {
-                        ResponseEntity.ok().body(ResponseGETUserByID(it))
-                    }
-
-    @GetMapping(path = ["/user/{username}"])
-    fun getUserByName(@PathVariable("username") user_name: String) : ResponseEntity<ResponseGETUserByName> =
-            user.getLoggedInUser(user_name)
-                    .let {
-                        ResponseEntity.ok().body(ResponseGETUserByName(it))
-                    }
-    */
 
 
-    @PostMapping(path = ["/users"])  //TODO return user or id?
+    @PostMapping(path = ["/users"])  //TODO return user or id ???
     fun createUser(@RequestBody value: CreateUserFromBody) : ResponseEntity<ResponsePOSTUser> = //Create user
             user.createUser(
                 value.user_name?:"",

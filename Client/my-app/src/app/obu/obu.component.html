@@ -1,0 +1,20 @@
+<p>
+  List of all obus !
+</p>
+
+
+
+
+<script src="/script.js"></script>
+<div id="content">
+  <ul class="obus">
+    <li class="obus" *ngFor="let obu of obus">
+      <a routerLink="/obu/{{obu.id}}">
+        <span class="badge">{{obu.id}}</span>
+        <span class="obu">
+          <span>name:{{obu.obu_name}}</span>
+        </span>
+      </a>
+    </li>
+  </ul>
+</div>

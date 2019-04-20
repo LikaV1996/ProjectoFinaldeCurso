@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { User } from './Model/User';
-import { Users } from './Model/Users';
+import { User } from '../Model/User';
+import { Users } from '../Model/Users';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Routes } from "./httproutes"
+import { Routes } from "../httproutes"
 import { LocalStorageService } from "./localStorage.service";
 
 
@@ -23,16 +23,10 @@ export class UserService {
   
 
   //Get all users from the server
-  getUsers (userToken: string): Observable<Users> {
+  getUsers(): Observable<Users> {
     
     
     return this.http.get<Users>(routes.getUsers)
-      /*
-      .pipe(
-        tap(_ => this.log('fetched heroes')),
-        catchError(this.handleError('getHeroes', []))
-      );
-      */
   }
 
   getUserByParam(param): Observable<{user: User}> {

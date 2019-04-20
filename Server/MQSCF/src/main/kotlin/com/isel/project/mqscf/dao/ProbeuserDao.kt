@@ -11,6 +11,10 @@ class ProbeuserDao @JsonCreator constructor (result: ResultSet) {
     var properties: String? = /*ObjectMapper*/(result.getString("properties"))   //verificar campo properties
     var creator: String = result.getString("creator")
     var creation_date: String = result.getString("creation_date")
+
+    var user_level: Int = result.getInt("user_level")
     var suspended: Boolean = result.getBoolean("suspended")
+    var modifier: String? = result.getString("modifier")
+    var modified_date: String? = result.getString("modified_date")
 
 }

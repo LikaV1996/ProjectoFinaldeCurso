@@ -3,7 +3,7 @@ package com.isel.project.mqscf.dao
 import com.fasterxml.jackson.annotation.JsonCreator
 import java.sql.ResultSet
 
-class ObuDao @JsonCreator constructor (result: ResultSet) {
+class OBUDao @JsonCreator constructor (result: ResultSet) {
 
     val id: Int = result.getInt("id")
     var hardware_id: Int = result.getInt("hardware_id")
@@ -15,6 +15,8 @@ class ObuDao @JsonCreator constructor (result: ResultSet) {
     var properties: String? = /*ObjectMapper*/(result.getString("properties"))   //verificar campo properties
     var creator: String = result.getString("creator")
     var creation_date: String = result.getString("creation_date")
+    var modifier: String = result.getString("modifier")
+    var modified_date: String = result.getString("modified_date")
 
 
 }

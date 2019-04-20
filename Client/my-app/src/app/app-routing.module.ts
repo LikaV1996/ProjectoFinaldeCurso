@@ -8,6 +8,8 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
 import { HomemapComponent } from './homemap/homemap.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { AuthGuard } from './auth/auth.guard';
+import { UserProfile } from './Model/UserProfile';
+import { OBUComponent } from './obu/obu.component'
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -17,8 +19,9 @@ const routes: Routes = [
   { path: 'home', component: NavMenuComponent,
       children: [
         { path: 'map', component: HomemapComponent, canActivate: [AuthGuard] },
-        { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
-        { path: 'user/:id', component: UserDetailComponent, canActivate: [AuthGuard] }
+        { path: 'users', component: UserComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SuperUser }},
+        //{ path: 'user/:id', component: UserDetailComponent, canActivate: [AuthGuard] },
+        { path: 'obus', component: OBUComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SuperUser }}
       ]
   }
 

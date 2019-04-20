@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Routes } from "../httproutes"
-import { LocalStorageService } from '../localStorage.service';
+import { LocalStorageService } from '../_services/localStorage.service';
 import { User } from '../Model/User';
 
 
@@ -64,16 +64,22 @@ export class AuthService {
     return this._localStorageService.getAuthToken() != null
   }
 
+
   hasClearance(min_user_level : number): boolean {
-    console.log("authservice hasClearance: " + this._localStorageService.checkLoggedUserClearance(min_user_level).message)
-    return this._localStorageService.checkLoggedUserClearance(min_user_level).cleared
+    let userDetails = this._localStorageService.getCurrentUserDetails()
+    console.log("authservice curClearance: " + userDetails.user_level + " || minClearance: " + min_user_level)
+    
+    if(!min_user_level) return true
+
+    return userDetails && userDetails.user_level >= min_user_level
   }
 
+/*
   hasNoSuspention(): boolean {
     console.log("authservice hasNoSuspention: " + this._localStorageService.checkLoggedUserSuspention().message)
     return this._localStorageService.checkLoggedUserSuspention().cleared
   }
-
+*/
 
 
 

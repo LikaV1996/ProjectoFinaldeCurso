@@ -6,6 +6,8 @@ CREATE TABLE Hardware (
   properties jsonb,
   creator VARCHAR(45) NOT NULL,
   creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),
+	modifier VARCHAR(45),
+	modified_date TIMESTAMP,
   
   CONSTRAINT PK_Hardware PRIMARY KEY (id)
 );
@@ -16,6 +18,8 @@ CREATE TABLE Config (
   properties jsonb NOT NULL,
   creator VARCHAR(45) NOT NULL,
   creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),
+	modifier VARCHAR(45),
+	modified_date TIMESTAMP,
   
   CONSTRAINT PK_Config PRIMARY KEY (id)
 );
@@ -27,6 +31,8 @@ CREATE TABLE TestPlan (
   properties jsonb NOT NULL,
   creator VARCHAR(45) NOT NULL,
   creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),
+	modifier VARCHAR(45),
+	modified_date TIMESTAMP,
   
   CONSTRAINT PK_TestPlan PRIMARY KEY (id)
 );
@@ -36,6 +42,8 @@ CREATE TABLE Setup (
   properties jsonb NOT NULL,
   creator VARCHAR(45) NOT NULL,
   creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),
+	modifier VARCHAR(45),
+	modified_date TIMESTAMP,
   
   CONSTRAINT PK_Setup PRIMARY KEY (id)
 );
@@ -81,6 +89,8 @@ CREATE TABLE Obu (
   properties jsonb NOT NULL,
   creator VARCHAR(45) NOT NULL,
   creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),
+	modifier VARCHAR(45),
+	modified_date TIMESTAMP,
   
   CONSTRAINT PK_Obu PRIMARY KEY (id),
   CONSTRAINT FK_Obu_Hardware FOREIGN KEY (hardware_id) REFERENCES Hardware (id),
@@ -169,10 +179,21 @@ CREATE TABLE ProbeUser (
   properties jsonb,
   creator VARCHAR(45) NOT NULL,
   creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),
+	modifier VARCHAR(45),
+	modified_date TIMESTAMP,
   suspended BOOLEAN default false NOT NULL,
   
   CONSTRAINT PK_ProbeUser PRIMARY KEY (id),
   CONSTRAINT FK_ProbeUser_UserProfile FOREIGN KEY (user_profile) REFERENCES UserProfile (user_profile)
+);
+
+CREATE TABLE Probeuser_Obu (
+	probeuser_id BIGINT NOT NULL,
+	obu_id BIGINT NOT NULL,
+	
+	CONSTRAINT FK_Probeuser_Obu_Probeuser FOREIGN KEY (probeuser_id) REFERENCES Probeuser (id) ON DELETE CASCADE,
+	CONSTRAINT FK_Probeuser_Obu_Obu FOREIGN KEY (obu_id) REFERENCES Obu (id) ON DELETE CASCADE
+	
 );
 
 CREATE TYPE AccessType AS ENUM ('OBU', 'USER');
@@ -190,6 +211,7 @@ CREATE TABLE ServerLog (
   CONSTRAINT PK_ServerLog PRIMARY KEY (id)
 );
 
+
 CREATE OR REPLACE VIEW view_probeuser
 as SELECT pu.id,
     pu.user_name,
@@ -199,9 +221,30 @@ as SELECT pu.id,
     pu.properties,
     pu.creator,
     pu.creation_date,
+	pu.modifier,
+	pu.modified_date,
     pu.suspended
    FROM probeuser pu
-     JOIN userprofile up ON pu.user_profile = up.user_profile;
+     JOIN userprofile up ON pu.user_profile = up.user_profile
+	ORDER BY pu.id;
+	
+/*
+CREATE OR REPLACE FUNCTION funcFor_trg_insertAdminOn_Probeuser_Obu()
+RETURNS TRIGGER
+LANGUAGE 'plpgsql'
+AS $$
+BEGIN
+	INSERT INTO Probeuser_Obu(probeuser_id, obu_id) VALUES (new.id, /*?????*/)
+
+	RETURN NULL;
+END
+$$ END
+	
+CREATE TRIGGER trg_insertAdminOn_Probeuser_Obu AFTER INSERT ON Probeuser
+FOR EACH ROW
+EXECUTE PROCEDURE funcFor_trg_insertAdminOn_Probeuser_Obu();
+*/
+
 
 
 COMMIT;

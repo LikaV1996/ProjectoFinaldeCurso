@@ -9,7 +9,7 @@ import {
 } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { LocalStorageService } from "../localStorage.service";
+import { LocalStorageService } from "../_services/localStorage.service";
 import { Routes } from "../httproutes";
 import { Router } from '@angular/router';
 

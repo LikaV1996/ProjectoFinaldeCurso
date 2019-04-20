@@ -1,5 +1,6 @@
 package com.isel.project.mqscf.config
 
+import com.isel.project.mqscf.dao.ProbeuserDao
 import com.isel.project.mqscf.model.Probeuser
 import com.isel.project.mqscf.utils.JsonProblemException
 import org.springframework.stereotype.Component
@@ -10,15 +11,16 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class TestInterceptor/*(val user : Probeuser)*/ : HandlerInterceptor {
+class TestInterceptor(val user : Probeuser) : HandlerInterceptor {
 
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-        if(handler is HandlerMethod /*&& handler.method.declaringClass.isAnnotationPresent(ProtectedRoute::class.java)*/) {
-            if(request.getAttribute("userIDForTests") != null) {
-                var x = 0
+        val userID = request.getAttribute("userIDForTests")
+        if(handler is HandlerMethod) {
+            if(userID != null) {
+                val probeuser = user.getUserByID( (userID as Int) )
+                checkUserProfile(probeuser, handler)
             }
-            return true
             /*
             val authHeader = request.getHeader("Authorization")?.split(" ")
             if (authHeader?.get(0) != "Basic") {
@@ -31,22 +33,17 @@ class TestInterceptor/*(val user : Probeuser)*/ : HandlerInterceptor {
 
         return true
     }
-/*
-    fun verify(token : String) =
-            token
+
+    private val user_profiles = arrayListOf("NORMAL_USER","SUPER_USER","ADMIN")
+    fun checkUserProfile(probeuser: ProbeuserDao, handler: HandlerMethod) =
+            probeuser
                 .let {
-                    String(Base64.getDecoder().decode(it)).split(":")
+                    if( ! user_profiles.contains(it.user_profile) )
+                        throw Exception("User_Profile does not exist")  //API error
+                    val lol = handler.method.annotations
+                    if( ! (handler.method.isAnnotationPresent(AdminRoute::class.java) && it.user_profile == user_profiles[2]) ||
+                           ! (handler.method.isAnnotationPresent(SuperUserRoute::class.java) && it.user_profile == user_profiles[1]) )
+                        throw JsonProblemException("User does not have enough clearance to check this resource","user_profile-error","User low clearance",401,null, null)
                 }
-                .also {
-                    if(it.size != 2)
-                        throw JsonProblemException("Token provided is not valid, Authentication must be Basic","token-error","Invalid token",401,null,null)
-                }.let {
-                    user.getAuthenticatedUser(it[0],it[1])
-                }.also {
-                    if(it.suspended)
-                        throw JsonProblemException("User is suspended and cannot access any resources","user-suspended","User suspended",403,null,null)
-                }.let{
-                    it.id
-                }
-*/
+
 }

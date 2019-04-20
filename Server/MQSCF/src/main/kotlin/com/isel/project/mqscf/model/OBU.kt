@@ -1,21 +1,20 @@
 package com.isel.project.mqscf.model
 
-import com.isel.project.mqscf.dao.ObuDao
-import com.isel.project.mqscf.dao.ProbeuserDao
+import com.isel.project.mqscf.dao.OBUDao
 import com.isel.project.mqscf.data.DataSrc
 import com.isel.project.mqscf.utils.JsonProblemException
 import org.springframework.stereotype.Component
 import java.util.ArrayList
 
 @Component
-class Obu(private val db : DataSrc) {
+class OBU(private val db : DataSrc) {
 
     //Query's List
-    private val getObusQuery = "SELECT * FROM obu"
-    private val getObuByIdQuery = "Select * FROM obu where id = ?"
+    private val getOBUsQuery = "SELECT * FROM obu"
+    private val getOBUByIdQuery = "SELECT * FROM obu WHERE id = ?"
 
-    fun getObus(): ArrayList<ObuDao> =
-            db.connection.prepareStatement(getObusQuery)
+    fun getOBUs(): ArrayList<OBUDao> =
+            db.connection.prepareStatement(getOBUsQuery)
                     .let {
                         try {
                             it.executeQuery()
@@ -24,14 +23,14 @@ class Obu(private val db : DataSrc) {
                         }
                     }
                     .let {
-                        val res = ArrayList<ObuDao>()
+                        val res = ArrayList<OBUDao>()
                         while (it.next())
-                            res.add(ObuDao(it))
+                            res.add(OBUDao(it))
                         return res
                     }
 
-    fun getObuByID(id: Int) : ObuDao =
-            db.connection.prepareStatement(getObuByIdQuery)
+    fun getOBUByID(id: Int) : OBUDao =
+            db.connection.prepareStatement(getOBUByIdQuery)
                     .also {
                         it.setInt(1,id)
                     }
@@ -44,9 +43,9 @@ class Obu(private val db : DataSrc) {
                     }
                     .let {
                         if(it.next())
-                            ObuDao(it)
+                            OBUDao(it)
                         else
-                            throw JsonProblemException("User with id $id not found",null,"User doesn't exist",400,null, null)
+                            throw JsonProblemException("OBU with id $id not found",null,"OBU doesn't exist",400,null, null)
                     }
 
 }

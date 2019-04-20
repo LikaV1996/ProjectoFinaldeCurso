@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../Model/User';
 import { Users } from '../Model/Users';
-import { UserService } from '../user.service';
+import { UserService } from '../_services/user.service';
 
 import {Router} from '@angular/router';
 
@@ -12,11 +12,11 @@ import {Router} from '@angular/router';
 })
 export class UserComponent implements OnInit {
 
-  private token: string;
+  //private token: string;
 
   constructor(
     //private router: Router,
-    private userService: UserService
+    private _userService: UserService
   ) {
     /*
     const navigation = this.router.getCurrentNavigation();
@@ -29,9 +29,9 @@ export class UserComponent implements OnInit {
 
 
   ngOnInit() {
-    this.userService.getUsers(this.token)
-    .subscribe(users => {
-      this.users = users.users
+    this._userService.getUsers()
+    .subscribe(usersObj => {
+      this.users = usersObj.users
     });
 
   }

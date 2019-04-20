@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth/auth.service'
-import { LocalStorageService } from "../localStorage.service";
+import { AuthService } from '../_services/auth.service'
+import { LocalStorageService } from "../_services/localStorage.service";
 
 import { Injectable } from '@angular/core';
 import { User } from '../Model/User';
@@ -10,8 +10,8 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Routes } from "../httproutes"
 
 //meus imports
-import {Router} from '@angular/router';
-import { UserService } from '../user.service';
+import {Router, ActivatedRoute} from '@angular/router';
+import { UserService } from '../_services/user.service';
 
 
 
@@ -26,10 +26,11 @@ const routes = new Routes
 })
 export class LoginComponent implements OnInit {
 
-  //redirectUrl : string
+  redirectUrl: string
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private http: HttpClient,
     private _userService: UserService,
     private _localStorageService: LocalStorageService,
@@ -43,12 +44,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.redirectUrl = this.route.snapshot.queryParams['redirectUrl'] || '/home';
     let isLoggedIn = this._authService.isLoggedIn()
-    console.log("init login | isLoggedIn=" + isLoggedIn)
+    console.log("init login, isLoggedIn=" + isLoggedIn)
     if(isLoggedIn) {
       console.log("User is already logged in")
-      //this.router.navigateByUrl(this.redirectUrl);
-      this.router.navigate(["/home"]);
+      this.router.navigate([this.redirectUrl]);
     }
   }
 
@@ -74,7 +75,7 @@ export class LoginComponent implements OnInit {
               // Redirect the user
               this.router.navigateByUrl(redirect);
               */
-             this.router.navigate(["/home"]);
+             this.router.navigate([this.redirectUrl]);
             },
             err => alert("error fetching logged in user")
           )

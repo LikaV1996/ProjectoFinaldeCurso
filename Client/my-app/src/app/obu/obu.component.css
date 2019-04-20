@@ -3,13 +3,13 @@
     background-color: #CFD8DC !important;
     color: white;
   }
-  .users {
+  .obus {
     margin: 0 0 2em 0;
     list-style-type: none;
     padding: 0;
     width: auto;
   }
-  .users li {
+  .obus li {
     cursor: pointer;
     position: relative;
     left: 0;
@@ -19,20 +19,20 @@
     height: 1.6em;
     border-radius: 4px;
   }
-  .users li.selected:hover {
+  .obus li.selected:hover {
     background-color: #BBD8DC !important;
     color: white;
   }
-  .users li:hover {
+  .obus li:hover {
     color: #607D8B;
     background-color: #DDD;
     left: .1em;
   }
-  .users .text {
+  .obus .text {
     position: relative;
     top: -3px;
   }
-  .users .badge {
+  .obus .badge {
     display: inline-block;
     font-size: small;
     color: red;
@@ -49,6 +49,6 @@
 
 
 
-  .users .user {
+  .obus .obu {
     justify-content: space-evenly
   }

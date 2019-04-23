@@ -11,9 +11,7 @@
     <li class="obus" *ngFor="let obu of obus">
       <a routerLink="/obu/{{obu.id}}">
         <span class="badge">{{obu.id}}</span>
-        <span class="obu">
-          <span>name:{{obu.obu_name}}</span>
-        </span>
+        <span>name:{{obu.obu_name}}</span>
       </a>
     </li>
   </ul>

@@ -11,12 +11,12 @@ class OBUDao @JsonCreator constructor (result: ResultSet) {
     var current_config_id: Int? = result.getInt("current_config_id")
     var current_test_plan_id: Int? = result.getInt("current_test_plan_id")
     var obu_name: String = result.getString("obu_name")
-    var obu_password: String = result.getString("obu_password") //Possivelmente não ficará aqui!
+    //var obu_password: String = result.getString("obu_password") //Possivelmente não ficará aqui!
     var properties: String? = /*ObjectMapper*/(result.getString("properties"))   //verificar campo properties
     var creator: String = result.getString("creator")
     var creation_date: String = result.getString("creation_date")
-    var modifier: String = result.getString("modifier")
-    var modified_date: String = result.getString("modified_date")
+    var modifier: String? = result.getString("modifier")
+    var modified_date: String? = result.getString("modified_date")
 
 
 }

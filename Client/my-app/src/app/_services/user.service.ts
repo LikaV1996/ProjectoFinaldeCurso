@@ -5,7 +5,6 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Routes } from "../httproutes"
-import { LocalStorageService } from "./localStorage.service";
 
 
 const routes = new Routes
@@ -16,8 +15,7 @@ const routes = new Routes
 export class UserService {
   
   constructor(
-    private http: HttpClient,
-    private localStorageService: LocalStorageService
+    private http: HttpClient
   ) { }
     
   

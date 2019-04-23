@@ -18,7 +18,7 @@ export class OBUComponent implements OnInit {
   ngOnInit() {
     this._obuService.getOBUs()
     .subscribe(obuObj => {
-      this.obus = obuObj.OBUs
+      this.obus = obuObj.obus
     });
   }
 

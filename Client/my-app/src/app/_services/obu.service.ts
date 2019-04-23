@@ -5,7 +5,6 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Routes } from "../httproutes"
-import { LocalStorageService } from "./localStorage.service";
 
 
 const routes = new Routes
@@ -22,7 +21,7 @@ export class OBUService {
   
 
   //Get all users from the server
-  getOBUs (): Observable<OBUs> {
+  getOBUs(): Observable<OBUs> {
     return this.http.get<OBUs>(routes.getOBUs)
   }
 

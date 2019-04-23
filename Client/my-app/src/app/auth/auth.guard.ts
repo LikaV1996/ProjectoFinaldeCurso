@@ -61,6 +61,7 @@ export class AuthGuard implements CanActivate {
       }
       else
       { // role not authorized so redirect to home page
+        console.log('user has no clearance')
         this.router.navigate(['/home']);
         return false
       }

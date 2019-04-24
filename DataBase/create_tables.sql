@@ -234,7 +234,7 @@ RETURNS TRIGGER
 LANGUAGE 'plpgsql'
 AS $$
 BEGIN
-	INSERT INTO Probeuser_Obu(probeuser_id, obu_id) VALUES (new.id, /*?????*/)
+	INSERT INTO Probeuser_Obu(probeuser_id, obu_id) VALUES (new.id,) --?????)
 
 	RETURN NULL;
 END

@@ -2,10 +2,13 @@ package com.isel.project.mqscf.controllers
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.isel.project.mqscf.config.AdminRoute
+import com.isel.project.mqscf.config.InvalidParamMessage
 import com.isel.project.mqscf.dao.ProbeuserDao
 import com.isel.project.mqscf.model.Probeuser
+import com.isel.project.mqscf.utils.JsonProblemException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletRequest
 
 
 data class CreateUserFromBody @JsonCreator constructor( //Class for receiving body information about a new user
@@ -88,24 +91,47 @@ class UserController(val user: Probeuser){
 
 
 
-    @PostMapping(path = ["/users"])  //TODO return user or id ???
-    fun createUser(@RequestBody value: CreateUserFromBody) : ResponseEntity<ResponsePOSTUser> = //Create user
+    @PostMapping(path = ["/users"])
+    fun createUser(@RequestBody value: CreateUserFromBody) : ResponseEntity<ResponsePOSTUser> { //Create user
+        val invalidParams = ArrayList<InvalidParamMessage>()
+        if (value.user_name.isNullOrEmpty())
+            invalidParams.add(InvalidParamMessage("user_name", "user_name can't be null"))
+        if (value.user_password.isNullOrEmpty())
+            invalidParams.add(InvalidParamMessage("user_password", "user_password can't be null"))
+        if (value.user_profile.isNullOrEmpty())
+            invalidParams.add(InvalidParamMessage("user_profile", "user_profile can't be null"))
+        if (value.creator.isNullOrEmpty())
+            invalidParams.add(InvalidParamMessage("creator", "creator can't be null"))
+        /*
+        if (value.suspended == null)
+            invalidParams.add(InvalidParamMessage("suspended", "suspended can't be null"))
+        */
+
+        if (!invalidParams.isEmpty())
+            throw JsonProblemException("The body passed is missing values", "create-user-error", "Empty body/Missing params", 400, null, invalidParams.toTypedArray())
+        else {
             user.createUser(
-                value.user_name?:"",
-                value.user_password?:"",
-                value.user_profile?:"",
-                value.properties?:"",
-                value.creator?:"",
-                value.suspended?:false
+                    value.user_name!!,
+                    value.user_password!!,
+                    value.user_profile!!,
+                    value.properties,
+                    value.creator!!,
+                    value.suspended ?: false
             ).let {
 
                 return ResponseEntity.status(200).body(ResponsePOSTUser(it))
             }
+        }
+    }
 
 
     @PutMapping(path = ["/user/{id}/suspend"])
-    fun suspendUser(@PathVariable("id") id: Int) : ResponseEntity<ResponsePUTUser> =
-            user.suspendUser(id)
+    fun suspendUser(request: HttpServletRequest, @PathVariable("id") id: Int) : ResponseEntity<ResponsePUTUser> =
+            request.getAttribute("userName")
+                    .let { it as String }
+                    .let {
+                        user.suspendUser(id, modifier = it)
+                    }
                     .let {
                         ResponseEntity.ok().body(ResponsePUTUser(it))
                     }

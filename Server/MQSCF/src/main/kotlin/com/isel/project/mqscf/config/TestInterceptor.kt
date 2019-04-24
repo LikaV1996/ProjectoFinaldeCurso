@@ -2,6 +2,7 @@ package com.isel.project.mqscf.config
 
 import com.isel.project.mqscf.dao.ProbeuserDao
 import com.isel.project.mqscf.model.Probeuser
+import com.isel.project.mqscf.model.ServerLog
 import com.isel.project.mqscf.utils.JsonProblemException
 import org.springframework.stereotype.Component
 import org.springframework.web.method.HandlerMethod
@@ -11,15 +12,22 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class TestInterceptor(val user : Probeuser) : HandlerInterceptor {
+class TestInterceptor(val user: Probeuser , val serverlog : ServerLog) : HandlerInterceptor {
 
+    /*
+    override fun afterCompletion(request: HttpServletRequest, response: HttpServletResponse, handler: Any, ex: java.lang.Exception?) {
+        if(handler is HandlerMethod) {
+            serverlog.createServerLog(request.requestURL.toString(), "something something bla bla")
+        }
+    }
+    */
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-        val userID = request.getAttribute("userIDForTests")
+        val userID = request.getAttribute("userID")
         if(handler is HandlerMethod) {
             if(userID != null) {
                 val probeuser = user.getUserByID( (userID as Int) )
-                checkUserProfile(probeuser, handler)
+                //checkUserProfile(probeuser, handler)
             }
             /*
             val authHeader = request.getHeader("Authorization")?.split(" ")

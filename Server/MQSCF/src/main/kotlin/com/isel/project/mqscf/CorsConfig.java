@@ -8,10 +8,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableWebMvc
 public class CorsConfig extends WebMvcConfigurerAdapter {
-//This classe is just to let us test httpRequests from Client to Server in localhost
+//This class is just to let us test httpRequests from Client to Server in localhost
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
+        registry.addMapping("/**")
+                .allowedMethods("*");
     }
 }

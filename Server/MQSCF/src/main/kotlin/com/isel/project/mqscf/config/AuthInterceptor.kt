@@ -19,8 +19,10 @@ class AuthInterceptor(val user : Probeuser) : HandlerInterceptor {
             if (authHeader?.get(0) != "Basic") {
                 throw JsonProblemException("You must provide a token to access that resource","token-error","no token",401,null,null)
             }
-            val userID = verify(authHeader?.get(1))
-            request.setAttribute("userIDForTests",userID)
+            val user = verify(authHeader?.get(1))
+            request.setAttribute("userID",user.id)
+            request.setAttribute("userName",user.user_name)
+            //request.setAttribute("userProfile",user.user_profile)
         }
 
         return true
@@ -39,8 +41,6 @@ class AuthInterceptor(val user : Probeuser) : HandlerInterceptor {
                 }.also {
                     if(it.suspended)
                         throw JsonProblemException("User is suspended and cannot access any resources","user-suspended","User suspended",403,null,null)
-                }.let{
-                    it.id
                 }
 
 }

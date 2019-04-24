@@ -6,6 +6,7 @@ import com.isel.project.mqscf.config.InvalidParamMessage
 import com.isel.project.mqscf.utils.JsonProblemException
 import org.springframework.stereotype.Component
 import java.sql.SQLException
+import java.sql.Types
 import java.util.*
 
 
@@ -14,18 +15,19 @@ class Probeuser(private val db : DataSrc) {
 
     //Query's List
 
-    private val userPKFields = "id"
-    private val userFields = "user_name, user_password, user_profile, properties, creator, creation_date, modifier, modified_date, suspended"
+    //private val userInsertFields = "user_name, user_password, user_profile, properties, creator, creation_date, suspended"
+    private val userFields = "id, user_name, user_password, user_profile, properties, creator, creation_date, modifier, modified_date, suspended"
     private val viewUserFields = "user_level"
-    private val allUserFields = "$userPKFields , $userFields, $viewUserFields"
-    private val selectAllUserFields = "SELECT $allUserFields FROM view_probeuser"
+    private val selectAllViewUserFields = "SELECT $userFields, $viewUserFields  FROM view_probeuser"
+    private val selectAllUserFields = "SELECT $userFields FROM probeuser"
 
     private val authenticateUserQuery = "$selectAllUserFields WHERE user_name = ? AND user_password = ?"
-    private val getUserByNameQuery = "$selectAllUserFields WHERE user_name = ?"
-    private val getUsersQuery = selectAllUserFields
+    private val getUsersQuery = selectAllViewUserFields
     private val getUserByIDQuery = "$selectAllUserFields WHERE id = ?"
-    private val createUserQuery = "INSERT INTO ProbeUser ($userFields) VALUES (?,?,?,?::json,?,CURRENT_TIMESTAMP,?) returning id"
-    private val suspensionUserQuery = "UPDATE probeuser SET suspended = ? WHERE id = ? returning id"
+    private val getUserByNameQuery = "$selectAllUserFields WHERE user_name = ?"
+    private val createUserQuery = "INSERT INTO ProbeUser (user_name, user_password, user_profile, properties, creator, creation_date, suspended) " +
+                                                "VALUES (?,"            +"?,"        +"?,"      + "?::json," + "?," +"CURRENT_TIMESTAMP," +"?) returning id"
+    private val suspensionUserQuery = "UPDATE probeuser SET suspended = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ? returning id"
 
     //private val authenticateUserQuery = "$selectAllUserFields where user_name = ? AND user_password = ?"
 
@@ -80,6 +82,7 @@ class Probeuser(private val db : DataSrc) {
                     }
 
 
+
     fun getUserByID(id: Int) : ProbeuserDao =
             db.connection.prepareStatement(getUserByIDQuery)
                     .also {
@@ -118,15 +121,50 @@ class Probeuser(private val db : DataSrc) {
                             throw JsonProblemException("User with user_name $user_name not found",null,"User doesn't exist",400,null, null)
                     }
 
+    /* TODO not tested
+    fun getUserByParam(param: String): ProbeuserDao =
+        try {
+            //id case
+            val id = param.toInt()
+            db.connection.prepareStatement(getUserByIDQuery)
+                    .also {
+                        it.setInt(1,id)
+                    }
+        }
+        catch (e: NumberFormatException) {
+            // username case
+            val user_name = param
+            db.connection.prepareStatement(getUserByNameQuery)
+                    .also {
+                        it.setString(1, user_name)
+                    }
+        }
+        catch (e: Exception){ throw e }
+                .let {
+                    try {
+                        it.executeQuery()
+                    } finally {
+                        it.connection.close()
+                    }
+                }
+                .let {
+                    if (it.next())
+                        ProbeuserDao(it)
+                    else
+                        throw JsonProblemException("User not found", null, "User doesn't exist", 400, null, null)
+                }
+    */
+
+
 
     //TODO check how to insert nulls into postgreSQL
-    fun createUser(user_name: String, user_password: String, user_profile: String, properties: String, creator: String, suspended: Boolean?) : Int =
+    fun createUser(user_name: String, user_password: String, user_profile: String, properties: String?, creator: String, suspended: Boolean?) : Int =
             db.connection.prepareStatement(createUserQuery)
                     .also {
                         it.setString(1,user_name)
                         it.setString(2,user_password)
                         it.setString(3,user_profile)
-                        it.setString(4,properties)
+                        if (properties.isNullOrEmpty()) it.setObject(4,null) else it.setString(4,properties)
                         it.setString(5,creator)
                         //it.setDate(6,)    //current date
                         it.setBoolean(6, suspended != null && suspended)
@@ -159,12 +197,14 @@ class Probeuser(private val db : DataSrc) {
                     }
 
 
-    fun suspendUser(id: Int): ProbeuserDao {
+    fun suspendUser(id: Int, modifier: String): ProbeuserDao {
         val user = getUserByID(id)
         db.connection.prepareStatement(suspensionUserQuery)
                 .also {
-                    it.setBoolean(1, if (!user.suspended) true else false)  //toggle
-                    it.setInt(2, user.id)
+                    it.setBoolean(1, !user.suspended)  //toggle
+                    it.setString(2, modifier)
+
+                    it.setInt(3, user.id)
                 }.let {
                     try {
                         it.executeQuery()
@@ -177,7 +217,7 @@ class Probeuser(private val db : DataSrc) {
                         return user
                     }
 
-                    throw JsonProblemException("User with id $id not found",null,"User doesn't exist",400,null, null)
+                    throw JsonProblemException(/*"User with id $id not found"*/"Something went wrong",null,/*"User doesn't exist"*/"",400,null, null)
                 }
     }
 

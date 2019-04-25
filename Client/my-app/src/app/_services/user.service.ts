@@ -33,4 +33,10 @@ export class UserService {
     return this.http.get<{user: User}>(getUserByParamUrl)
   }
 
+  suspendUser(id: number): Observable<{user: User}>{
+    const suspendUserUrl = routes.suspendUser.replace(":id", id.toString());
+
+    return this.http.put<{user: User}>(suspendUserUrl,{})
+  }
+
 }

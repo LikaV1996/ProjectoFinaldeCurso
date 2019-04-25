@@ -17,7 +17,8 @@ class ProbeuserDao @JsonCreator constructor (result: ResultSet) {
     var modifier: String? = result.getString("modifier")
     var modified_date: String? = result.getString("modified_date")
 
-    var user_level: Int? =
+    var user_level: Int = result.getInt("user_level")
+            /*
             try{
                 result.getInt("user_level")
             }catch (e : SQLException){
@@ -29,5 +30,6 @@ class ProbeuserDao @JsonCreator constructor (result: ResultSet) {
                             else { throw e }
                         }
             }
+            */
 
 }

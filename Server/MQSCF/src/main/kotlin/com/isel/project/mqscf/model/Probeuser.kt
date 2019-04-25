@@ -19,12 +19,12 @@ class Probeuser(private val db : DataSrc) {
     private val userFields = "id, user_name, user_password, user_profile, properties, creator, creation_date, modifier, modified_date, suspended"
     private val viewUserFields = "user_level"
     private val selectAllViewUserFields = "SELECT $userFields, $viewUserFields  FROM view_probeuser"
-    private val selectAllUserFields = "SELECT $userFields FROM probeuser"
+    //private val selectAllUserFields = "SELECT $userFields FROM probeuser"
 
-    private val authenticateUserQuery = "$selectAllUserFields WHERE user_name = ? AND user_password = ?"
+    private val authenticateUserQuery = "$selectAllViewUserFields WHERE user_name = ? AND user_password = ?"
     private val getUsersQuery = selectAllViewUserFields
-    private val getUserByIDQuery = "$selectAllUserFields WHERE id = ?"
-    private val getUserByNameQuery = "$selectAllUserFields WHERE user_name = ?"
+    private val getUserByIDQuery = "$selectAllViewUserFields WHERE id = ?"
+    private val getUserByNameQuery = "$selectAllViewUserFields WHERE user_name = ?"
     private val createUserQuery = "INSERT INTO ProbeUser (user_name, user_password, user_profile, properties, creator, creation_date, suspended) " +
                                                 "VALUES (?,"            +"?,"        +"?,"      + "?::json," + "?," +"CURRENT_TIMESTAMP," +"?) returning id"
     private val suspensionUserQuery = "UPDATE probeuser SET suspended = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ? returning id"
@@ -203,7 +203,7 @@ class Probeuser(private val db : DataSrc) {
                 .also {
                     it.setBoolean(1, !user.suspended)  //toggle
                     it.setString(2, modifier)
-
+                    
                     it.setInt(3, user.id)
                 }.let {
                     try {

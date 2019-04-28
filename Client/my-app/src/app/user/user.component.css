@@ -1,4 +1,4 @@
-
+/*
 .selected {
     background-color: #CFD8DC !important;
     color: white;
@@ -49,6 +49,11 @@
 
 
 
-  .users .user {
+  .users-user {
     justify-content: space-evenly
+  }
+  */
+
+  .ui.suspend.button{
+    color: black;
   }

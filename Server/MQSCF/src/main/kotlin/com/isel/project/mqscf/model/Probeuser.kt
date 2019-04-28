@@ -203,7 +203,7 @@ class Probeuser(private val db : DataSrc) {
                 .also {
                     it.setBoolean(1, !user.suspended)  //toggle
                     it.setString(2, modifier)
-                    
+
                     it.setInt(3, user.id)
                 }.let {
                     try {

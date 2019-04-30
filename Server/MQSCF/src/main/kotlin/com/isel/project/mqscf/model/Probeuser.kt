@@ -54,7 +54,13 @@ class Probeuser(private val db : DataSrc) {
 
     fun login(user_name: String, user_password: String) =
             getAuthenticatedUser(user_name, user_password)
-                    .let {
+                    /*
+                    .also {
+                        if(it.suspended)
+                            throw JsonProblemException("User is suspended and can not login","user-suspended","User is suspended",403,null, null)
+                    }
+                    */
+                    .let{
                         "$user_name:$user_password".toByteArray()
                                 .let {
                                     Base64.getEncoder().encodeToString(it)!!

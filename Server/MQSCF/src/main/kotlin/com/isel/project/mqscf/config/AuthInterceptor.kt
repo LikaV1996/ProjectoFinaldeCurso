@@ -36,11 +36,14 @@ class AuthInterceptor(val user : Probeuser) : HandlerInterceptor {
                 .also {
                     if(it.size != 2)
                         throw JsonProblemException("Token provided is not valid, Authentication must be Basic","token-error","Invalid token",401,null,null)
-                }.let {
+                }
+                .let {
                     user.getAuthenticatedUser(it[0],it[1])
-                }.also {
+                }
+                .also {
                     if(it.suspended)
                         throw JsonProblemException("User is suspended and cannot access any resources","user-suspended","User suspended",403,null,null)
                 }
+
 
 }

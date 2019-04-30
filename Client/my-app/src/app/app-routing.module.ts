@@ -10,18 +10,19 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { AuthGuard } from './auth/auth.guard';
 import { UserProfile } from './Model/UserProfile';
 import { OBUComponent } from './obu/obu.component'
+import { LogoutComponent } from './logout/logout.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'logout', component: LogoutComponent },
   
   { path: 'home', redirectTo: '/home/map', pathMatch: 'full' },
-  { path: 'home', component: NavMenuComponent,
+  { path: 'home', component: NavMenuComponent, canActivate: [AuthGuard],
       children: [
-        { path: 'map', component: HomemapComponent, canActivate: [AuthGuard] },
-        { path: 'users', component: UserComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SuperUser }},
-        //{ path: 'user/:id', component: UserDetailComponent, canActivate: [AuthGuard] },
-        { path: 'obus', component: OBUComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SuperUser }}
+      { path: 'map', component: HomemapComponent/*, canActivate: [AuthGuard] */},
+        { path: 'users', component: UserComponent/*, canActivate: [AuthGuard] */, data: { min_user_profile: UserProfile.SuperUser }},
+        { path: 'obus', component: OBUComponent/*, canActivate: [AuthGuard] */, data: { min_user_profile: UserProfile.SuperUser }}
       ]
   }
 

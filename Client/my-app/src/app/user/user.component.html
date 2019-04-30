@@ -1,9 +1,3 @@
-<p>
-  List of all users !
-</p>
-
-
-
 
 <script src="/script.js"></script>
 <div id="content" class="ui container">
@@ -16,48 +10,54 @@
       <div class="four wide column"></div>
     </div>
     
+
     <div class="ui divider"></div>
 
-    <div class="ui ">
+
+    <div class="ui" style="height: 70%;">
       <div class="ui segment" *ngFor="let user of users">
         <div class="ui middle aligned grid">
           <div class="four wide column">{{user.user_name}}</div>
           <div class="four wide column">{{user.user_profile}}</div>
           <div class="four wide column">{{user.suspended}}</div>
           <div class="four wide right aligned column">
-            <div class="ui suspend button" *ngIf="isActiveUser(user.id)" (click)="suspend(user.id)" data-tooltip="fuck youuuu">Suspend</div>
+            <div class="ui suspend button" *ngIf="suspendable(user.id)" (click)="suspend(user.id)" data-tooltip="fuck youuuu">Suspend</div>
             <a class="ui empty circular label" [style.background-color]="user.suspended ? 'red' : 'green'"></a>
           </div>
         </div>
       </div>
     </div>
+
+
     <div class="ui hidden divider"></div>
 
+
     <div class="ui grid">
-        <div class="four wide column">
-          <div class="ui fluid input">
-            <input type="text" placeholder="Name...">
-          </div>
-        </div>
-
-        <div class="four wide column">
-            <select class="ui dropdown" >
-                <option value="">Gender</option>
-                <option value="1">Male</option>
-                <option value="0">Female</option>
-              </select>        
-        </div>
-
-        <div class="four wide column">
-          <div class="ui fluid input">
-            <input type="text" placeholder="Name...">
-          </div>
-        </div>
-
-        <div class="four wide right aligned column">
-            <div class="ui blue fluid button"> Create</div>
+      <div class="four wide column">
+        <div class="ui fluid input">
+          <input type="text" [(ngModel)]="user_name" placeholder="Name...">
         </div>
       </div>
+
+      <div class="four wide column">
+        <div class="ui fluid input">
+          <input type="text" [(ngModel)]="user_password" placeholder="Password...">
+        </div>
+      </div>
+
+      <div class="four wide column">
+        <select class="ui dropdown" [(ngModel)]="user_profile" placeholder="Profile">
+          <option value="">Profile</option>
+          <option value="ADMIN">ADMIN</option>
+          <option value="SUPER_USER">SUPER_USER</option>
+          <option value="NORMAL_USER">NORMAL_USER</option>
+        </select>        
+      </div>        
+
+      <div class="four wide right aligned column">
+        <div class="ui blue fluid button" (click)="createUser()">Create</div>
+      </div>
+    </div>
   </div>
 
     

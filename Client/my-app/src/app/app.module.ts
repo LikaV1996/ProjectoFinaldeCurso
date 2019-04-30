@@ -23,6 +23,7 @@ import { HttpinterceptorModule } from './httpinterceptor/httpinterceptor.module'
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { OBUComponent } from './obu/obu.component';
+import { LogoutComponent } from './logout/logout.component';
 
 
 
@@ -34,7 +35,8 @@ import { OBUComponent } from './obu/obu.component';
     UserDetailComponent,
     HomemapComponent,
     NavMenuComponent,
-    OBUComponent
+    OBUComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

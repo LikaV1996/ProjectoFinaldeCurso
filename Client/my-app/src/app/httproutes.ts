@@ -7,7 +7,7 @@ export class Routes{
     //getUserByID = this.basePath + "/user/:id";
     //getUserByName = this.basePath + "/user/:username";
     getUserByParam = this.basePath + "/user/:param";
-    createUser = this.basePath + "/user";
+    createUser = this.basePath + "/users";
     suspendUser = this.basePath + "/user/:id/suspend";
 
     getOBUs = this.basePath + "/obus";

@@ -20,11 +20,8 @@ export class NavMenuComponent {
   ) {}
 
 
-
-
   logout(){
-    this._authService.logout()
-    this.router.navigate(["/login"]);
+    this.router.navigate(['/logout']);
   }
 
 }

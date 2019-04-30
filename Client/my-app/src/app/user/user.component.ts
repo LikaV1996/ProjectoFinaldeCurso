@@ -20,9 +20,6 @@ export class UserComponent implements OnInit {
     private _localStorage: LocalStorageService,
     private _userService: UserService
   ) {
-    $('.ui.dropdown')
-  .dropdown()
-  ;
     /*
     const navigation = this.router.getCurrentNavigation();
     const state = navigation.extras.state as {userToken: string};
@@ -31,15 +28,20 @@ export class UserComponent implements OnInit {
    }
 
   private users: User[];
-   private user : User;
+  private user : User;
+
+
+  user_name: string;
+  user_password: string;
+  user_profile: string;
 
   ngOnInit() {
+
     this._userService.getUsers()
     .subscribe(usersObj => {
       this.users = usersObj.users
     });
 
-    
   }
 
 
@@ -57,11 +59,29 @@ export class UserComponent implements OnInit {
     });
   }
 
-  isActiveUser(id: number){
+  suspendable(id: number){  //function for displaying (or not) the "suspend" button
     if(!this.user)
       this.user = this._localStorage.getCurrentUserDetails()
     //console.log("curID: " + id + " LS ID: " + this._localStorage.getCurrentUserDetails().id)
+
+    let idx = this.users.findIndex( u => u.id == id)
+
     return this.user.id != id
+      && this.user.user_level >= this.users[idx].user_level
   }
 
+
+
+  createUser(){
+    console.log("creating user")
+    if(!this.user_name || !this.user_password || !this.user_profile){
+      alert("Not all fields are filled")
+    }
+    else{
+      this._userService.createUser(this.user_name, this.user_password, this.user_profile)
+        .subscribe(userObj => {
+          this.users.push(userObj.user)
+        })
+    }
+  }
 }

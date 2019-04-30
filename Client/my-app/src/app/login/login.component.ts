@@ -5,13 +5,14 @@ import { LocalStorageService } from "../_services/localStorage.service";
 import { Injectable } from '@angular/core';
 import { User } from '../Model/User';
 import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Routes } from "../httproutes"
 
 //meus imports
 import {Router, ActivatedRoute} from '@angular/router';
 import { UserService } from '../_services/user.service';
+import { BackgroundService } from '../_services/background.service';
 
 
 
@@ -32,8 +33,11 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
+    /*
     private _userService: UserService,
+    private _backgroundService: BackgroundService,
     private _localStorageService: LocalStorageService,
+    */
     private _authService: AuthService
   ) {
     /*
@@ -44,13 +48,16 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.redirectUrl = this.route.snapshot.queryParams['redirectUrl'] || '/home';
-    let isLoggedIn = this._authService.isLoggedIn()
-    console.log("init login, isLoggedIn=" + isLoggedIn)
-    if(isLoggedIn) {
+    this.redirectUrl = this.route.snapshot.queryParams['redirectUrl'];
+    if( !this.redirectUrl || this.redirectUrl.includes('logout')){
+      this.redirectUrl = '/home'
+    }
+    
+    if(this._authService.isLoggedIn()) {
       console.log("User is already logged in")
       this.router.navigate([this.redirectUrl]);
     }
+    
   }
 
   //NgModel
@@ -59,38 +66,39 @@ export class LoginComponent implements OnInit {
    
 
     login() {
+      if(!this.username || !this.password){ return }
      
       this._authService.login(this.username, this.password).subscribe(isLoggedIn => {
         //console.log("isloggedin " + isLoggedIn)
         if(isLoggedIn){
-          this._userService.getUserByParam(this.username).subscribe(
-            userobj => {
-              let user = userobj.user
-              this._localStorageService.insertCurrentUserDetails(user)
-
-              /*
-              console.log("redirectUrl in login = " + this.redirectUrl)
-              let redirect = this.redirectUrl ? this.router.parseUrl(this.redirectUrl) : '/home';
- 
-              // Redirect the user
-              this.router.navigateByUrl(redirect);
-              */
-             this.router.navigate([this.redirectUrl]);
-            },
-            err => alert("error fetching logged in user")
-          )
+          
+          this.router.navigate([this.redirectUrl]);
 
         }
       },
-      err => alert("Invalid credentials")
+      err => {
+        //if(err instanceof HttpErrorResponse) console.log("error is HttperrorResponse: " JSON.stringify(err))
+        console.log("err: " + JSON.stringify(err))
+        let e //: HttpErrorResponse = err
+          = err.error
+
+        if(e.status == 403 && e.type == 'user-suspended')
+          this.router.navigate(['/logout'], {state: {alertMsg: 'User is suspended'}});
+        else if(e.status == 400)// && e.type == 'login-error')
+          alert("Invalid credentials")
+        else {
+          console.error("Something went wrong on login!!")
+        }
+      }
     )
 
   }
 
-
+/*
   getUserDetails(){
     return this.http.get<{user: User}>(routes.getUserByParam)
   }
+*/
 
 
 

@@ -17,7 +17,7 @@ data class CreateUserFromBody @JsonCreator constructor( //Class for receiving bo
         val user_profile: String?,
         val properties: String?,
         val creator: String?,
-        val suspended: Boolean? //TODO is it String???
+        val suspended: Boolean?
 )
 
 
@@ -31,7 +31,7 @@ data class ResponseGETUsers @JsonCreator constructor(val total : Int, val users 
 //getting a user by it's ID or Name
 data class ResponseGETUserByParam @JsonCreator constructor(val user : ProbeuserDao)
 //creating a user
-data class ResponsePOSTUser @JsonCreator constructor(val id : Int)
+data class ResponsePOSTUser @JsonCreator constructor(val user : ProbeuserDao)
 //updating a user
 data class ResponsePUTUser @JsonCreator constructor(val user : ProbeuserDao)
 
@@ -92,7 +92,7 @@ class UserController(val user: Probeuser){
 
 
     @PostMapping(path = ["/users"])
-    fun createUser(@RequestBody value: CreateUserFromBody) : ResponseEntity<ResponsePOSTUser> { //Create user
+    fun createUser(request: HttpServletRequest, @RequestBody value: CreateUserFromBody) : ResponseEntity<ResponsePOSTUser> { //Create user
         val invalidParams = ArrayList<InvalidParamMessage>()
         if (value.user_name.isNullOrEmpty())
             invalidParams.add(InvalidParamMessage("user_name", "user_name can't be null"))
@@ -100,9 +100,9 @@ class UserController(val user: Probeuser){
             invalidParams.add(InvalidParamMessage("user_password", "user_password can't be null"))
         if (value.user_profile.isNullOrEmpty())
             invalidParams.add(InvalidParamMessage("user_profile", "user_profile can't be null"))
+        /*
         if (value.creator.isNullOrEmpty())
             invalidParams.add(InvalidParamMessage("creator", "creator can't be null"))
-        /*
         if (value.suspended == null)
             invalidParams.add(InvalidParamMessage("suspended", "suspended can't be null"))
         */
@@ -110,12 +110,15 @@ class UserController(val user: Probeuser){
         if (!invalidParams.isEmpty())
             throw JsonProblemException("The body passed is missing values", "create-user-error", "Empty body/Missing params", 400, null, invalidParams.toTypedArray())
         else {
+            val userName = request.getAttribute("userName") as String
+
             user.createUser(
                     value.user_name!!,
                     value.user_password!!,
                     value.user_profile!!,
                     value.properties,
-                    value.creator!!,
+                    //value.creator!!,
+                    userName,
                     value.suspended ?: false
             ).let {
 

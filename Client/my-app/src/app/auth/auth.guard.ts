@@ -19,7 +19,10 @@ const routingClearance = [
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private _authService: AuthService, private router: Router) {}
+  constructor(
+    private _authService: AuthService,
+    private router: Router
+  ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -29,19 +32,22 @@ export class AuthGuard implements CanActivate {
       //let path = url.split("localhost:4200/")
       //let min_user_level = routingClearance.filter( obj => obj.url == path[path.length-1] )[0].clearance
       return this.checkLogin(url) && this.checkClearance(route)
-      // && this.checkNoSuspention()  //these should be made elsewhere!!!!!!!!!!!!! not in AuthGuard
+      // && this.checkNotSuspended(url)
   }
+
+
+
 
   checkLogin(url: string): boolean {
 
     if (this._authService.isLoggedIn()) { return true; }
     else {
       console.log("User is not logged in")
-      this._authService.logout()
 
       // Navigate to the login page with last url
       console.log('authguard queryparams: ' + url)
-      this.router.navigate(['/login'], {queryParams: {redirectUrl: url}});
+      this.router.navigate(['/logout'], {queryParams: {redirectUrl: url}});
+
       return false;
     }
   }
@@ -60,7 +66,7 @@ export class AuthGuard implements CanActivate {
         return true
       }
       else
-      { // role not authorized so redirect to home page
+      { //profile not authorized so redirect to home page
         console.log('user has no clearance')
         this.router.navigate(['/home']);
         return false
@@ -76,19 +82,21 @@ export class AuthGuard implements CanActivate {
   }
 
 /*
-  checkNoSuspention(){
-    if (this._authService.hasNoSuspention()) { return true; }
-    else{
+  checkNotSuspended(url: string){
+    if (this._authService.hasSuspention()) {
       console.log("User is suspended")
       //this.router.navigate(['/suspended']);
-      this._authService.logout()
-      // Navigate to the login page with extras
-      this.router.navigate(['/login']//, 
-      //{state: {redirectUrl: url}}
-    );
+
+      this.router.navigate(['/logout']);
+
       return false;
+    }
+    else
+    {
+      return true;
     }
   }
 */
+
   
 }

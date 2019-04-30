@@ -26,7 +26,7 @@ class Probeuser(private val db : DataSrc) {
     private val getUserByIDQuery = "$selectAllViewUserFields WHERE id = ?"
     private val getUserByNameQuery = "$selectAllViewUserFields WHERE user_name = ?"
     private val createUserQuery = "INSERT INTO ProbeUser (user_name, user_password, user_profile, properties, creator, creation_date, suspended) " +
-                                                "VALUES (?,"            +"?,"        +"?,"      + "?::json," + "?," +"CURRENT_TIMESTAMP," +"?) returning id"
+                                                "VALUES (?,"            +"?,"        +"?,"      + "?::json," + "?," +"CURRENT_TIMESTAMP," +"?) returning *"
     private val suspensionUserQuery = "UPDATE probeuser SET suspended = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ? returning id"
 
     //private val authenticateUserQuery = "$selectAllUserFields where user_name = ? AND user_password = ?"
@@ -164,7 +164,7 @@ class Probeuser(private val db : DataSrc) {
 
 
     //TODO check how to insert nulls into postgreSQL
-    fun createUser(user_name: String, user_password: String, user_profile: String, properties: String?, creator: String, suspended: Boolean?) : Int =
+    fun createUser(user_name: String, user_password: String, user_profile: String, properties: String?, creator: String, suspended: Boolean?) : ProbeuserDao =
             db.connection.prepareStatement(createUserQuery)
                     .also {
                         it.setString(1,user_name)
@@ -199,7 +199,7 @@ class Probeuser(private val db : DataSrc) {
                         }
                     }.let {
                         it.next()
-                        return it.getInt("id")
+                        ProbeuserDao(it)
                     }
 
 

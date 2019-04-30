@@ -1,17 +1,20 @@
 import { Injectable, NgModule } from '@angular/core';
-import { Observable, of, EMPTY } from 'rxjs';
+import { Observable, throwError} from 'rxjs';
 import { CommonModule } from '@angular/common';
 import {
  HttpEvent,
  HttpInterceptor,
  HttpHandler,
  HttpRequest,
+ HttpErrorResponse,
 } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { LocalStorageService } from "../_services/localStorage.service";
 import { Routes } from "../httproutes";
 import { Router } from '@angular/router';
+import { AuthService } from '../_services/auth.service';
+import { retry, catchError } from 'rxjs/operators';
 
 
 const routes = new Routes
@@ -20,7 +23,8 @@ const routes = new Routes
 export class HttpsRequestInterceptor implements HttpInterceptor {
   constructor(
     private router: Router,
-    private localStorageService: LocalStorageService
+    private _localStorageService: LocalStorageService,
+    private _authService: AuthService
   ){}
 
   intercept(
@@ -35,25 +39,31 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
     else{
-
-      const authToken = this.localStorageService.getAuthToken();
   
-  
-      if(authToken != null){ //check if logged in
+      if(this._authService.isLoggedIn()){ //check if logged in
         const dupReq = request.clone({
-          headers: req.headers.set('Authorization', authToken),
+          headers: req.headers.set('Authorization', this._localStorageService.getAuthToken()),
         });
-        return next.handle(dupReq);
-     }
-     /*
-      else{ //if not logged in, return to login page (and kill request)
-        this.router.navigate(['/login'])
-        return EMPTY
-        //ERROR ???
+        return next.handle(dupReq)
+        /*
+        .pipe(
+          retry(1),
+          catchError(this.errorHandler)
+        )
+        */
       }
-      */
     }
   }
+
+
+  errorHandler(e: HttpErrorResponse) {
+    if(e.error.status == 403 && e.error.type == 'user-suspended'){
+      this.router.navigate(['/logout'], {state: {alertMsg: 'User is suspended'}})
+    }
+    
+    return throwError(e)
+  }
+
 }
     
     

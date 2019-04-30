@@ -67,27 +67,23 @@ class UserController(val user: Probeuser){
     */
 
     @GetMapping(path = ["/user/{param}"])   //get user by ID or user_name (used afterlogging in)
-    fun getUserByParam(@PathVariable("param") param: String) : ResponseEntity<ResponseGETUserByParam> {
-        var ret : ProbeuserDao
+    fun getUserByParam(@PathVariable("param") param: String) : ResponseEntity<ResponseGETUserByParam> =
         try {
             val id = param.toInt()
             // id case
             user.getUserByID(id)
                     .let {
-                        ret = it
+                        return ResponseEntity.ok().body(ResponseGETUserByParam(it))
                     }
         } catch (e: NumberFormatException) {
             // username case
             val user_name = param
             user.getUserByName(user_name)
                     .let {
-                        ret = it
+                        return ResponseEntity.ok().body(ResponseGETUserByParam(it))
                     }
         }
         catch (e: Exception){ throw e }
-
-        return ResponseEntity.ok().body(ResponseGETUserByParam(ret))
-    }
 
 
 

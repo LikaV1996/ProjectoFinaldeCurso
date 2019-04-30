@@ -18,11 +18,11 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent },
   
   { path: 'home', redirectTo: '/home/map', pathMatch: 'full' },
-  { path: 'home', component: NavMenuComponent, canActivate: [AuthGuard],
+  { path: 'home', component: NavMenuComponent,
       children: [
-      { path: 'map', component: HomemapComponent/*, canActivate: [AuthGuard] */},
-        { path: 'users', component: UserComponent/*, canActivate: [AuthGuard] */, data: { min_user_profile: UserProfile.SuperUser }},
-        { path: 'obus', component: OBUComponent/*, canActivate: [AuthGuard] */, data: { min_user_profile: UserProfile.SuperUser }}
+      { path: 'map', component: HomemapComponent, canActivate: [AuthGuard] },
+        { path: 'users', component: UserComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SuperUser }},
+        { path: 'obus', component: OBUComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SuperUser }}
       ]
   }
 

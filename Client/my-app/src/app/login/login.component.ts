@@ -77,18 +77,7 @@ export class LoginComponent implements OnInit {
         }
       },
       err => {
-        //if(err instanceof HttpErrorResponse) console.log("error is HttperrorResponse: " JSON.stringify(err))
-        console.log("err: " + JSON.stringify(err))
-        let e //: HttpErrorResponse = err
-          = err.error
-
-        if(e.status == 403 && e.type == 'user-suspended')
-          this.router.navigate(['/logout'], {state: {alertMsg: 'User is suspended'}});
-        else if(e.status == 400)// && e.type == 'login-error')
-          alert("Invalid credentials")
-        else {
-          console.error("Something went wrong on login!!")
-        }
+        //console.log("err: " + JSON.stringify(err))
       }
     )
 

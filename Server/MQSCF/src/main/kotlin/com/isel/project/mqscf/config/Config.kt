@@ -9,6 +9,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
@@ -24,10 +25,18 @@ class Config : WebMvcConfigurer {
     lateinit var user : Probeuser
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(AuthInterceptor(user)).excludePathPatterns("/api/v1/login")
-        //registry.addInterceptor(TestInterceptor(user)).excludePathPatterns("/api/v1/login")
+        registry.addInterceptor(AuthInterceptor(user))
+                .excludePathPatterns("/api/v1/login")
+
+        registry.addInterceptor(UserRoleInterceptor())
+                .excludePathPatterns("/api/v1/login")
+                //.addPathPatterns("/api/v1/user/{param}")
     }
 
+    override fun addCorsMappings(registry: CorsRegistry) {
+        registry.addMapping("/**")
+                .allowedMethods("*")
+    }
 
     @ExceptionHandler
     fun catchAllError(err : JsonProblemException) =
@@ -45,5 +54,9 @@ class Config : WebMvcConfigurer {
                     .status(status!!)
                     .contentType(MediaType.parseMediaType("application/problem+json"))
                     .body(map)
+
 }
+
+
+
 data class InvalidParamMessage @JsonCreator constructor(val name : String, val reason: String)

@@ -3,6 +3,7 @@ package com.isel.project.mqscf.controllers
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.isel.project.mqscf.config.AdminRoute
 import com.isel.project.mqscf.config.InvalidParamMessage
+import com.isel.project.mqscf.config.SuperUserRoute
 import com.isel.project.mqscf.dao.ProbeuserDao
 import com.isel.project.mqscf.model.Probeuser
 import com.isel.project.mqscf.utils.JsonProblemException
@@ -41,6 +42,7 @@ data class ResponsePUTUser @JsonCreator constructor(val user : ProbeuserDao)
 class UserController(val user: Probeuser){
 
 
+    @SuperUserRoute
     @GetMapping(path = ["/users"])
     fun getUsers() : ResponseEntity<ResponseGETUsers> =
             user.getUsers()
@@ -67,26 +69,36 @@ class UserController(val user: Probeuser){
     */
 
     @GetMapping(path = ["/user/{param}"])   //get user by ID or user_name (used afterlogging in)
-    fun getUserByParam(@PathVariable("param") param: String) : ResponseEntity<ResponseGETUserByParam> =
-        try {
-            val id = param.toInt()
-            // id case
-            user.getUserByID(id)
-                    .let {
-                        return ResponseEntity.ok().body(ResponseGETUserByParam(it))
-                    }
-        } catch (e: NumberFormatException) {
-            // username case
-            val user_name = param
-            user.getUserByName(user_name)
-                    .let {
-                        return ResponseEntity.ok().body(ResponseGETUserByParam(it))
-                    }
-        }
-        catch (e: Exception){ throw e }
+    fun getUserByParam(request: HttpServletRequest, @PathVariable("param") param: String) : ResponseEntity<ResponseGETUserByParam> =
+            try {
+
+                val id = param.toInt()
+
+                // id case
+                if (request.getAttribute("userProfile") == "NORMAL_USER" && request.getAttribute("userID") != id)
+                    throw JsonProblemException("User can only get self", "get-normal-user-error", "Not allowed to get resource", 403, null, null)
+
+                user.getUserByID(id)
+                        .let {
+                            return ResponseEntity.ok().body(ResponseGETUserByParam(it))
+                        }
+
+            } catch (e: NumberFormatException) {
+
+                val username = param
+                // username case
+                if (request.getAttribute("userProfile") == "NORMAL_USER" && request.getAttribute("userName") != username)
+                    throw JsonProblemException("User can only get self", "get-normal-user-error", "Not allowed to get resource", 403, null, null)
+
+                user.getUserByName(username)
+                        .let {
+                            return ResponseEntity.ok().body(ResponseGETUserByParam(it))
+                        }
+
+            } catch (e: Exception) { throw e }
 
 
-
+    @AdminRoute
     @PostMapping(path = ["/users"])
     fun createUser(request: HttpServletRequest, @RequestBody value: CreateUserFromBody) : ResponseEntity<ResponsePOSTUser> { //Create user
         val invalidParams = ArrayList<InvalidParamMessage>()
@@ -94,9 +106,9 @@ class UserController(val user: Probeuser){
             invalidParams.add(InvalidParamMessage("user_name", "user_name can't be null"))
         if (value.user_password.isNullOrEmpty())
             invalidParams.add(InvalidParamMessage("user_password", "user_password can't be null"))
+        /*
         if (value.user_profile.isNullOrEmpty())
             invalidParams.add(InvalidParamMessage("user_profile", "user_profile can't be null"))
-        /*
         if (value.creator.isNullOrEmpty())
             invalidParams.add(InvalidParamMessage("creator", "creator can't be null"))
         if (value.suspended == null)
@@ -111,9 +123,8 @@ class UserController(val user: Probeuser){
             user.createUser(
                     value.user_name!!,
                     value.user_password!!,
-                    value.user_profile!!,
+                    //value.user_profile!!,
                     value.properties,
-                    //value.creator!!,
                     userName,
                     value.suspended ?: false
             ).let {
@@ -124,15 +135,16 @@ class UserController(val user: Probeuser){
     }
 
 
+    @SuperUserRoute
     @PutMapping(path = ["/user/{id}/suspend"])
     fun suspendUser(request: HttpServletRequest, @PathVariable("id") id: Int) : ResponseEntity<ResponsePUTUser> =
-            request.getAttribute("userName")
-                    .let { it as String }
+            request.getAttribute("userID")
+                    .let { it as Int }
                     .let {
-                        user.suspendUser(id, modifier = it)
+                        user.suspendUser(id, modifierID = it)
                     }
                     .let {
-                        ResponseEntity.ok().body(ResponsePUTUser(it))
+                        return ResponseEntity.ok().body(ResponsePUTUser(it))
                     }
 
 

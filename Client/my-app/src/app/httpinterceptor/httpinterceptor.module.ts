@@ -33,36 +33,75 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
 
     console.log("HTTP intercepted for route: " + req.url)
-    const request = req.clone({ headers: req.headers.set('Content-Type',  'application/json')})
-
-    if(req.url == routes.login) { //login route, let through
-      return next.handle(request);
-    }
-    else{
-  
+    let request : HttpRequest<any> = req.clone({ headers: req.headers.set( 'Content-Type', 'application/json' )})
+ 
+    if(req.url != routes.login) { //if login route -> don't add token
       if(this._authService.isLoggedIn()){ //check if logged in
-        const dupReq = request.clone({
-          headers: req.headers.set('Authorization', this._localStorageService.getAuthToken()),
-        });
-        return next.handle(dupReq)
-        /*
-        .pipe(
-          retry(1),
-          catchError(this.errorHandler)
-        )
-        */
+        request = request.clone({ headers: req.headers.set( 'Authorization', this._localStorageService.getAuthToken() )});
       }
     }
+
+    return next.handle(request)
+        .pipe(
+          //retry(1),
+          catchError(this.errorHandler())
+        )
   }
 
-
-  errorHandler(e: HttpErrorResponse) {
-    if(e.error.status == 403 && e.error.type == 'user-suspended'){
-      this.router.navigate(['/logout'], {state: {alertMsg: 'User is suspended'}})
-    }
+  loginErrorHandler(e: HttpErrorResponse){
     
+
     return throwError(e)
   }
+
+  errorHandler() {
+    return (e: HttpErrorResponse) => {
+      let unknownError = false;
+
+      console.log("ERROR_HANDLER, err = " + JSON.stringify(e))
+
+      if(e.status == 0) {
+        console.error("API not responding. Maybe not running")
+      }
+      else if(e.error.status >= 400 && e.error.status < 500) {
+        unknownError = this.errorHandler4XX(e)
+      }
+
+      if(unknownError){
+        console.error("Uknown error --- type: " + e.error.type + " status: " + (e.error ? e.error.status : e.status) + " \n\nfull error: " + JSON.stringify(e))
+      }
+    
+      return throwError(e)
+    }
+  }
+
+  //4XX errors handler
+  private errorHandler4XX(e: HttpErrorResponse) : boolean { //returns if the error was handled or if unknown
+    if(e.error.status == 400){  //400
+      if(e.error.type == 'login-error'){
+        alert("Invalid Credentials")
+        return false
+      }
+      if(e.error.type == 'create-user-error'){
+        alert("Body isn't fully complete")
+        return false
+      }
+    }
+    else if(e.error.status == 403){ //403
+      if(e.error.type == 'user_profile-error'){
+        alert("You are not allowed to do this action")
+      }
+      else if(e.error.type == 'user-suspended-error') {
+        this.router.navigate(['/logout'], {state: {alertMsg: 'User has been been suspended'}})
+        return false
+      }
+    }
+
+    return true
+  }
+
+
+
 
 }
     

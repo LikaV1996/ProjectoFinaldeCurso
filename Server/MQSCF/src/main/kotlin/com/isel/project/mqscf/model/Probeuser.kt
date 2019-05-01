@@ -26,7 +26,7 @@ class Probeuser(private val db : DataSrc) {
     private val getUserByIDQuery = "$selectAllViewUserFields WHERE id = ?"
     private val getUserByNameQuery = "$selectAllViewUserFields WHERE user_name = ?"
     private val createUserQuery = "INSERT INTO ProbeUser (user_name, user_password, user_profile, properties, creator, creation_date, suspended) " +
-                                                "VALUES (?,"            +"?,"        +"?,"      + "?::json," + "?," +"CURRENT_TIMESTAMP," +"?) returning *"
+                                                "VALUES (?,"            +"?,"      +"'NORMAL_USER',"+"?::json,"+ "?," +"CURRENT_TIMESTAMP,"+"?) returning *"
     private val suspensionUserQuery = "UPDATE probeuser SET suspended = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ? returning id"
 
     //private val authenticateUserQuery = "$selectAllUserFields where user_name = ? AND user_password = ?"
@@ -164,16 +164,16 @@ class Probeuser(private val db : DataSrc) {
 
 
     //TODO check how to insert nulls into postgreSQL
-    fun createUser(user_name: String, user_password: String, user_profile: String, properties: String?, creator: String, suspended: Boolean?) : ProbeuserDao =
+    fun createUser(user_name: String, user_password: String,/* user_profile: String,*/ properties: String?, creator: String, suspended: Boolean?) : ProbeuserDao =
             db.connection.prepareStatement(createUserQuery)
                     .also {
                         it.setString(1,user_name)
                         it.setString(2,user_password)
-                        it.setString(3,user_profile)
-                        if (properties.isNullOrEmpty()) it.setObject(4,null) else it.setString(4,properties)
-                        it.setString(5,creator)
-                        //it.setDate(6,)    //current date
-                        it.setBoolean(6, suspended != null && suspended)
+                        //it.setString(3,user_profile)
+                        if (properties.isNullOrEmpty()) it.setObject(3,null) else it.setString(4,properties)
+                        it.setString(4,creator)
+                        //it.setDate(5,)    //current date
+                        it.setBoolean(5, suspended != null && suspended)
                     }
                     .let {
                         try {
@@ -203,12 +203,17 @@ class Probeuser(private val db : DataSrc) {
                     }
 
 
-    fun suspendUser(id: Int, modifier: String): ProbeuserDao {
+    fun suspendUser(id: Int, modifierID: Int): ProbeuserDao {
         val user = getUserByID(id)
+        val modifier = getUserByID(modifierID)
+
+        if(user.user_level!! >= modifier.user_level!!)
+            throw JsonProblemException("User cannot be suspended because he has a higher profile/role",null,"lower-role-error",400,null, null)
+
         db.connection.prepareStatement(suspensionUserQuery)
                 .also {
                     it.setBoolean(1, !user.suspended)  //toggle
-                    it.setString(2, modifier)
+                    it.setString(2, modifier.user_name)
 
                     it.setInt(3, user.id)
                 }.let {

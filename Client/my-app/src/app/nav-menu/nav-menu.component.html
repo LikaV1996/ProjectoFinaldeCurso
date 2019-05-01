@@ -7,7 +7,7 @@
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list id="menulist" on-release="closeMenuOnSelect()">
       <a mat-list-item [routerLink] = "['./map']">Home</a>
-      <a mat-list-item [routerLink] = "['./users']">All users</a>
+      <a mat-list-item [routerLink] = "['./users']" *ngIf="display_AllUsers_Button">All users</a>
       <a mat-list-item [routerLink] = "['./obus']">All OBUs</a>
     </mat-nav-list>
   </mat-sidenav>

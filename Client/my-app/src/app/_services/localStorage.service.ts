@@ -20,6 +20,7 @@ export class LocalStorageService{
 
     insertAuthToken(token: string) : void {
         console.log("inserting authtoken on localStorage")
+        console.trace()
 
         let expirationDate = new Date()
         expirationDate.setDate( (new Date()).getDate() + 1 )

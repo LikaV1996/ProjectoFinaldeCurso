@@ -39,8 +39,8 @@ export class UserService {
     return this.http.put<{user: User}>(suspendUserUrl,null)
   }
 
-  createUser(user_name: string, user_password: string, user_profile: string){
-    return this.http.post<{user: User}>(routes.createUser,{user_name: user_name, user_password: user_password, user_profile: user_profile})
+  createUser(user_name: string, user_password: string/*, user_profile: string*/){
+    return this.http.post<{user: User}>(routes.createUser,{user_name: user_name, user_password: user_password/*, user_profile: user_profile*/, properties: null})
   }
 
 }

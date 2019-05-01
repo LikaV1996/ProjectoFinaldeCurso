@@ -5,6 +5,7 @@ import { UserService } from '../_services/user.service';
 
 import {Router} from '@angular/router';
 import { LocalStorageService } from '../_services/localStorage.service';
+import { UserProfile } from '../Model/UserProfile';
 
 @Component({
   selector: 'app-user',
@@ -33,9 +34,10 @@ export class UserComponent implements OnInit {
 
   user_name: string;
   user_password: string;
-  user_profile: string;
+  //user_profile: string;
 
   ngOnInit() {
+    this.user = this._localStorage.getCurrentUserDetails()
 
     this._userService.getUsers()
     .subscribe(usersObj => {
@@ -59,29 +61,33 @@ export class UserComponent implements OnInit {
     });
   }
 
-  suspendable(id: number){  //function for displaying (or not) the "suspend" button
-    if(!this.user)
-      this.user = this._localStorage.getCurrentUserDetails()
-    //console.log("curID: " + id + " LS ID: " + this._localStorage.getCurrentUserDetails().id)
+  suspendable(id: number) : boolean{  //function for displaying (or not) the "suspend" button
+    //console.log("curID: " + id + " LStorage ID: " + this._localStorage.getCurrentUserDetails().id)
 
     let idx = this.users.findIndex( u => u.id == id)
 
     return this.user.id != id
-      && this.user.user_level >= this.users[idx].user_level
+      && this.user.user_level > this.users[idx].user_level
   }
 
 
 
   createUser(){
     console.log("creating user")
-    if(!this.user_name || !this.user_password || !this.user_profile){
+    if(!this.user_name || !this.user_password/* || !this.user_profile*/){
       alert("Not all fields are filled")
     }
     else{
-      this._userService.createUser(this.user_name, this.user_password, this.user_profile)
+      this._userService.createUser(this.user_name, this.user_password/*, this.user_profile*/)
         .subscribe(userObj => {
           this.users.push(userObj.user)
         })
     }
   }
+
+  canCreateUsers() : boolean{
+    return this.user.user_level >= UserProfile.Admin
+  }
+
+
 }

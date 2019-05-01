@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Routes } from "../httproutes"
 import { LocalStorageService } from '../_services/localStorage.service';
@@ -36,7 +36,7 @@ export class AuthService {
   login(username: string, password: string) : Observable<boolean>{
     
     return new Observable<boolean>(observer => {
-      
+
       this.getLoginToken(username, password).subscribe( 
         loginObj => {
 
@@ -46,14 +46,17 @@ export class AuthService {
           if(token){
             this._localStorageService.insertAuthToken(token)
 
+            //get logged in user
             this._userService.getUserByParam(username).subscribe(
               userObj => {
                 let user = userObj.user
                 
                 this.loginInit(user)
 
+                
                 observer.next( this.isLoggedIn() )
                 observer.complete()
+                
               },
               err => observer.error(err) 
             )
@@ -69,8 +72,6 @@ export class AuthService {
   private loginInit(user: User){
     //insert into localStorage
     this._localStorageService.insertCurrentUserDetails(user)
-    //setup periodic update for User
-    this._backgroundService.setupPeriodicUserUpdate(user.id)
   }
   
   getLoginToken(username: string, password: string) : Observable<{token: string}> {
@@ -96,10 +97,34 @@ export class AuthService {
   }
 
 
+  hasSuspension() : Observable<boolean>{
+    let userID = this._localStorageService.getCurrentUserDetails().id
+
+    return new Observable<boolean>(observer => {
+      this._userService.getUserByParam(userID)
+        .subscribe( userObj => {
+          //console.log(JSON.stringify(userObj.user))
+          this._localStorageService.insertCurrentUserDetails(userObj.user)
+          observer.next(false)
+          observer.complete()
+        },
+        err => {
+          if(err.error.status == 403 && err.error.type == 'user-suspended'){
+            observer.next(true)
+            observer.complete()
+          }
+          else{
+            observer.error(err)
+          }
+        })
+    })
+  }
+
+
 
 
   logoutProcedures(){
-    this._backgroundService.removePeriodicUpdates()
+    //this._backgroundService.removePeriodicUpdates()
     this._localStorageService.removeAllInfo()
   }
 

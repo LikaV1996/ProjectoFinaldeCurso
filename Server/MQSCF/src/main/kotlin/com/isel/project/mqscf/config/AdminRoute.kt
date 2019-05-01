@@ -1,4 +1,4 @@
 package com.isel.project.mqscf.config
 
-@Target(AnnotationTarget.CLASS)
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
 annotation class AdminRoute

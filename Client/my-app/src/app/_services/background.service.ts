@@ -14,18 +14,18 @@ export class BackgroundService {
     private _localStorageService: LocalStorageService
   ) { }
 
-
+  /*
   private userInterval;
   private userPeriod = 5 * 60 * 1000 //5 minutes
                        //30 * 1000 //30 seconds
-
+  */
   /*
   private tokenExpirationInterval;
   private tokenExpirationPeriod = //5 * 60 * 1000 //5 minutes
                                   60 * 1000 //1 min
   private tokenExpirationStart;
   */
-
+/*
   setupPeriodicUserUpdate(userID: number){
 
     console.log("started periodicUserUpdate")
@@ -53,6 +53,7 @@ export class BackgroundService {
       this.userPeriod
     )
   }
+*/
 
 /*
   setupPeriodicTokenCheck(){
@@ -76,7 +77,7 @@ export class BackgroundService {
   */
 
 
-
+  /*
   removePeriodicUserUpdate(){
     console.log("stopped periodicUserUpdate")
     clearInterval(this.userInterval)
@@ -91,4 +92,5 @@ export class BackgroundService {
   private logoutWithAlert(alertMsg: string){
     this.router.navigate(['/logout'], {state: {alertMsg: alertMsg}});
   }
+  */
 }

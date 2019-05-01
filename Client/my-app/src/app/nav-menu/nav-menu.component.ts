@@ -13,12 +13,22 @@ import { AuthService } from '../_services/auth.service';
 })
 export class NavMenuComponent {
 
+  private display_AllUsers_Button : boolean
+
   constructor(
     private router: Router,
     private breakpointObserver: BreakpointObserver,
-    private _authService: AuthService
-  ) {}
+    private _authService: AuthService,
+    private _localStorageService: LocalStorageService
+  ) {
+    this.displayButtons()
+  }
 
+  displayButtons(){
+    console.log("sidenav things")
+    let curUser = this._localStorageService.getCurrentUserDetails()
+    this.display_AllUsers_Button = curUser.user_level > 0
+  }
 
   logout(){
     this.router.navigate(['/logout']);

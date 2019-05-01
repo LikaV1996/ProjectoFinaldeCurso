@@ -22,7 +22,7 @@ class AuthInterceptor(val user : Probeuser) : HandlerInterceptor {
             val user = verify(authHeader?.get(1))
             request.setAttribute("userID",user.id)
             request.setAttribute("userName",user.user_name)
-            //request.setAttribute("userProfile",user.user_profile)
+            request.setAttribute("userProfile",user.user_profile)//.toUpperCase())
         }
 
         return true
@@ -42,7 +42,7 @@ class AuthInterceptor(val user : Probeuser) : HandlerInterceptor {
                 }
                 .also {
                     if(it.suspended)
-                        throw JsonProblemException("User is suspended and cannot access any resources","user-suspended","User suspended",403,null,null)
+                        throw JsonProblemException("User is suspended and cannot access any resources","user-suspended-error","User suspended",403,null,null)
                 }
 
 

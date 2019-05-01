@@ -28,36 +28,46 @@
       </div>
     </div>
 
+    <div *ngIf="canCreateUsers()">
+      <div class="ui hidden divider"></div>
 
-    <div class="ui hidden divider"></div>
 
-
-    <div class="ui grid">
-      <div class="four wide column">
-        <div class="ui fluid input">
-          <input type="text" [(ngModel)]="user_name" placeholder="Name...">
+      <div class="ui grid">
+        <div class="five wide column">
+          <div class="ui fluid input">
+            <input type="text" [(ngModel)]="user_name" placeholder="Name...">
+          </div>
         </div>
-      </div>
 
-      <div class="four wide column">
-        <div class="ui fluid input">
-          <input type="text" [(ngModel)]="user_password" placeholder="Password...">
+        <div class="one wide column"></div>
+
+        <div class="five wide column">
+          <div class="ui fluid input">
+            <input type="text" [(ngModel)]="user_password" type="password" placeholder="Password...">
+          </div>
         </div>
-      </div>
 
-      <div class="four wide column">
-        <select class="ui dropdown" [(ngModel)]="user_profile" placeholder="Profile">
-          <option value="">Profile</option>
-          <option value="ADMIN">ADMIN</option>
-          <option value="SUPER_USER">SUPER_USER</option>
-          <option value="NORMAL_USER">NORMAL_USER</option>
-        </select>        
-      </div>        
+        <div class="one wide column">
+          <!-- insert password visibility button thingy here -->
+        </div>
 
-      <div class="four wide right aligned column">
-        <div class="ui blue fluid button" (click)="createUser()">Create</div>
+        <!-- 
+        <div class="four wide column">
+          <select class="ui dropdown" [(ngModel)]="user_profile" placeholder="Profile">
+            <option value="">Profile</option>
+            <option value="ADMIN">ADMIN</option>
+            <option value="SUPER_USER">SUPER_USER</option>
+            <option value="NORMAL_USER">NORMAL_USER</option>
+          </select>        
+        </div>        
+        -->
+      
+        <div class="four wide right aligned column">
+          <div class="ui blue fluid button" (click)="createUser()">Create</div>
+        </div>
       </div>
     </div>
+    
   </div>
 
     

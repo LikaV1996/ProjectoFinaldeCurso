@@ -28,6 +28,8 @@ class Probeuser(private val db : DataSrc) {
     private val createUserQuery = "INSERT INTO ProbeUser (user_name, user_password, user_profile, properties, creator, creation_date, suspended) " +
                                                 "VALUES (?,"            +"?,"      +"'NORMAL_USER',"+"?::json,"+ "?," +"CURRENT_TIMESTAMP,"+"?) returning *"
     private val suspensionUserQuery = "UPDATE probeuser SET suspended = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ? returning id"
+    private val changeRoleUserQuery = "UPDATE probeuser SET user_profile = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ? returning id"
+
 
     //private val authenticateUserQuery = "$selectAllUserFields where user_name = ? AND user_password = ?"
 
@@ -127,7 +129,8 @@ class Probeuser(private val db : DataSrc) {
                             throw JsonProblemException("User with user_name $user_name not found",null,"User doesn't exist",400,null, null)
                     }
 
-    /* TODO not tested
+
+    //TODO not tested
     fun getUserByParam(param: String): ProbeuserDao =
         try {
             //id case
@@ -159,7 +162,7 @@ class Probeuser(private val db : DataSrc) {
                     else
                         throw JsonProblemException("User not found", null, "User doesn't exist", 400, null, null)
                 }
-    */
+
 
 
 
@@ -208,7 +211,7 @@ class Probeuser(private val db : DataSrc) {
         val modifier = getUserByID(modifierID)
 
         if(user.user_level!! >= modifier.user_level!!)
-            throw JsonProblemException("User cannot be suspended because he has a higher profile/role",null,"lower-role-error",400,null, null)
+            throw JsonProblemException("User cannot be suspended because he has a higher profile/role",null,"lower-role-error",403,null, null)
 
         db.connection.prepareStatement(suspensionUserQuery)
                 .also {
@@ -234,6 +237,34 @@ class Probeuser(private val db : DataSrc) {
 
 
 
+    fun changeRoleUser(id: Int, modifierID: Int): ProbeuserDao {
+        val user = getUserByID(id)
+        val modifier = getUserByID(modifierID)
+
+        if(user.user_level!! >= modifier.user_level!! )
+            throw JsonProblemException("User cannot have a role change because he has a higher profile/role",null,"lower-role-error",403,null, null)
+
+        db.connection.prepareStatement(changeRoleUserQuery)
+                .also {
+                    it.setString(1, if(user.user_level == 0) "SUPER_USER" else "NORMAL_USER" )  //toggle
+                    it.setString(2, modifier.user_name)
+
+                    it.setInt(3, user.id)
+                }.let {
+                    try {
+                        it.executeQuery()
+                    } finally {
+                        it.connection.close()
+                    }
+                }.let {
+                    if (it.next()){
+                        user.suspended = !user.suspended
+                        return user
+                    }
+
+                    throw JsonProblemException(/*"User with id $id not found"*/"Something went wrong",null,/*"User doesn't exist"*/"",400,null, null)
+                }
+    }
 
 /*
 

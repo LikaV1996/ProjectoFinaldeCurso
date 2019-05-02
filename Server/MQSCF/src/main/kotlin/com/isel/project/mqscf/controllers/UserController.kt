@@ -148,6 +148,16 @@ class UserController(val user: Probeuser){
                     }
 
 
-
+    @AdminRoute
+    @PutMapping(path = ["/user/{id}/change-role"])  //toggle (for now at least) (Admin can only be achieved through DB insert)
+    fun changeRoleUser(request: HttpServletRequest, @PathVariable("id") id: Int) : ResponseEntity<ResponsePUTUser> =
+            request.getAttribute("userID")
+                    .let { it as Int }
+                    .let {
+                        user.changeRoleUser(id, modifierID = it)
+                    }
+                    .let {
+                        return ResponseEntity.ok().body(ResponsePUTUser(it))
+                    }
 
 }

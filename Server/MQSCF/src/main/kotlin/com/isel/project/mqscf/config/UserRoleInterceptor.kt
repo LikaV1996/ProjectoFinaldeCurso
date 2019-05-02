@@ -30,9 +30,14 @@ class UserRoleInterceptor(/*val user: Probeuser , val serverlog : ServerLog*/) :
             if(handler is HandlerMethod) {
                 val curUserProfile = user_profiles.indexOf( request.getAttribute("userProfile") as String )
 
-                checkUserProfileClearance(curUserProfile, request, handler)
+                //check if method is reserved to admins or superusers
+                if( (handler.hasMethodAnnotation(SuperUserRoute::class.java) && curUserProfile < 1) || //super_user and above
+                        (handler.hasMethodAnnotation(AdminRoute::class.java) && curUserProfile < 2)){  //admin (and above)
+                    throw JsonProblemException("User does not have enough clearance to use this resource","user_profile-error","User low clearance",403,null, null)
+                }
 
-                canGetUserByID(curUserProfile, request)
+
+                //canGetUserByID(curUserProfile, request)
             }
 
         }catch (e: Exception){
@@ -42,17 +47,9 @@ class UserRoleInterceptor(/*val user: Probeuser , val serverlog : ServerLog*/) :
         return true
     }
 
-    //                                           0             1          2
+    //--------------------------------------     0             1          2
     private val user_profiles = arrayListOf("NORMAL_USER","SUPER_USER","ADMIN")
 
-    fun checkUserProfileClearance(userProfile: Int, req: HttpServletRequest, handler: HandlerMethod) : Boolean{ //checks if user has clearance to access the method
-
-        if( (handler.hasMethodAnnotation(SuperUserRoute::class.java) && userProfile < 1) || //super_user and above
-                (handler.hasMethodAnnotation(AdminRoute::class.java) && userProfile < 2)){  //admin (and above)
-            throw JsonProblemException("User does not have enough clearance to use this resource","user_profile-error","User low clearance",403,null, null)
-        }
-        return true
-    }
 
 
     fun canGetUserByID(userProfile: Int, req: HttpServletRequest) : Boolean {   //checks if the user can make the request (normal_users can get themselves, but not others)

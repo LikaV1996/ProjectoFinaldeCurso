@@ -24,6 +24,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { OBUComponent } from './obu/obu.component';
 import { LogoutComponent } from './logout/logout.component';
+import { ObuDetailComponent } from './obu-detail/obu-detail.component';
 
 
 
@@ -36,7 +37,8 @@ import { LogoutComponent } from './logout/logout.component';
     HomemapComponent,
     NavMenuComponent,
     OBUComponent,
-    LogoutComponent
+    LogoutComponent,
+    ObuDetailComponent
   ],
   imports: [
     BrowserModule,

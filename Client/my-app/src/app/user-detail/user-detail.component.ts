@@ -11,6 +11,7 @@ import { Routes } from "../httproutes"
 
 import {Router, NavigationExtras} from '@angular/router';
 import { UserService } from '../_services/user.service';
+import {Location} from '@angular/common';
 
 
 
@@ -31,7 +32,8 @@ export class UserDetailComponent implements OnInit {
     private router: Router,
     private _userService: UserService,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private _location: Location
   ) {}
 
   ngOnInit() {
@@ -43,8 +45,17 @@ export class UserDetailComponent implements OnInit {
    })
   }
 
-  
-
-
+  goBack(){
+    this._location.back();
+  }
+  saveChanges(){
+    console.log("updating user")
+    this._userService.updateUser(this.user.id, this.user.user_name, this.user.user_profile, this.user.suspended)
+    .subscribe(userObj => {
+      //this.users.push(userObj.user)
+      console.log("user updated")
+    })
+  }
+ 
 
 }

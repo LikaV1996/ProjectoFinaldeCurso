@@ -17,7 +17,7 @@ export class UserComponent implements OnInit {
   //private token: string;
 
   constructor(
-    //private router: Router,
+    private router: Router,
     private _localStorage: LocalStorageService,
     private _userService: UserService
   ) {
@@ -88,6 +88,11 @@ export class UserComponent implements OnInit {
   canCreateUsers() : boolean{
     return this.user.user_level >= UserProfile.Admin
   }
+  
 
+  edit(id: number){
+    this.router.navigate(['home/user/'+id+'/edit']);
+  }
+  
 
 }

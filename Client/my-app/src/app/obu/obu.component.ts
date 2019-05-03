@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OBUService } from '../_services/obu.service';
-import { OBU } from '../Model/Obu';
+import { OBU } from '../Model/OBU';
 
 @Component({
   selector: 'app-obu',

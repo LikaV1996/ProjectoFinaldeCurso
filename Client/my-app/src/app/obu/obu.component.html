@@ -1,18 +1,30 @@
-<p>
-  List of all obus !
-</p>
-
-
-
 
 <script src="/script.js"></script>
-<div id="content">
-  <ul class="obus">
-    <li class="obus" *ngFor="let obu of obus">
-      <a routerLink="/obu/{{obu.id}}">
-        <span class="badge">{{obu.id}}</span>
-        <span>name:{{obu.obu_name}}</span>
-      </a>
-    </li>
-  </ul>
+<div id="content" class="ui container">
+  
+    <div class="ui segment">
+      <div class="ui grid">
+        <div class="four wide column">Obu_name</div>
+        <div class="four wide column">Obu_state</div>
+        <div class="four wide column">Current_config_id</div>
+        <!-- <div class="four wide column">Current_test_plan_id</div> -->
+        <div class="four wide column"></div>
+      </div>
+      <div class="ui divider"></div>
+  
+  
+      <div class="ui" style="height: 70%;">
+        <div class="ui segment" *ngFor="let obu of obus">
+          <div class="ui middle aligned grid">
+            <div class="four wide column">{{obu.obu_name}}</div>
+            <div class="four wide column">{{obu.obu_state}}</div>
+            <div class="four wide column">{{obu.Current_config_id}}</div>
+            <!-- <div class="four wide column">{{obu.Current_test_plan_id}}</div> -->
+            <div class="four wide right aligned column">
+              <div class="ui suspend button" (click)="edit(user.id)" data-tooltip="Edit User">Edit</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
 </div>

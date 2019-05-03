@@ -4,9 +4,9 @@
   
   <div class="ui segment">
     <div class="ui grid">
-      <div class="four wide column">name</div>
-      <div class="four wide column">profile</div>
-      <div class="four wide column">suspended</div>
+      <div class="four wide column">Name</div>
+      <div class="four wide column">Profile</div>
+      <div class="four wide column">Suspended</div>
       <div class="four wide column"></div>
     </div>
     
@@ -21,8 +21,9 @@
           <div class="four wide column">{{user.user_profile}}</div>
           <div class="four wide column">{{user.suspended}}</div>
           <div class="four wide right aligned column">
-            <div class="ui suspend button" *ngIf="suspendable(user.id)" (click)="suspend(user.id)" data-tooltip="hi, I'm a data-tooltip">Suspend</div>
             <a class="ui empty circular label" [style.background-color]="user.suspended ? 'red' : 'green'"></a>
+            <div class="ui suspend button" *ngIf="suspendable(user.id)" (click)="suspend(user.id)" data-tooltip="Suspend User">Suspend</div>
+            <div class="ui suspend button" (click)="edit(user.id)" data-tooltip="Edit User">Edit</div>
           </div>
         </div>
       </div>

@@ -1,0 +1,2 @@
+DateTime;Latitude;Longitude;Height;Heading;Speed
+        2019 - 01 - 30T21:00:00;0.0;0.0;0.0;0;50;{"eventType": "SYSTEM_START", "eventLevel": 0, "cause": "BLABLA"}

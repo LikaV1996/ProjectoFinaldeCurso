@@ -4,6 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { OBUService } from '../_services/obu.service';
 import {Router, NavigationExtras} from '@angular/router';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-obu-detail',
@@ -11,7 +12,7 @@ import {Router, NavigationExtras} from '@angular/router';
   styleUrls: ['./obu-detail.component.css']
 })
 export class ObuDetailComponent implements OnInit {
-  @Input() user: OBU;
+  @Input() obu: OBU;
 
 
   private id: number;
@@ -25,6 +26,16 @@ export class ObuDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.id = this.route.snapshot.params['id'];
+    
+    this._obuService.getOBUByID(this.id).subscribe(obuObj => {
+     //console.log(userObj)
+     this.obu = obuObj.obu
+   })
+  }
+
+  goBack(){
+    this._location.back();
   }
 
 }

@@ -32,4 +32,8 @@ export class OBUService {
     return this.http.get<{obu: OBU}>(getOBUByIDUrl)
   }
 
+  createObu(obu_name: string, obu_password: string){//verificar ****** 
+    return this.http.post<{obu: OBU}>(routes.createObu,{obu_name: obu_name, obu_password: obu_password, properties: "null", hardware_id:-1, current_config_id:-1,current_test_plan_id:-1 })
+  }
+
 }

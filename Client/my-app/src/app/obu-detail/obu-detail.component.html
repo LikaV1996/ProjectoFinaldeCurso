@@ -1,3 +1,45 @@
-<p>
-  obu-detail works!
-</p>
+<div *ngIf="obu">
+    <h2>Obu Details</h2>
+    <div><b>id: </b>{{obu.id}}</div>
+    <div><b>hardware_id: </b>{{obu.hardware_id}}</div>
+    <div>
+        <b>obu_name: 
+        <mat-form-field appearance="standard">
+        <mat-label>{{obu.obu_name}}</mat-label>
+        <input matInput placeholder="obu_name">
+        </mat-form-field>
+        </b>
+    </div>
+
+    <b>obu_state: </b>
+    <mat-form-field>
+    <select matNativeControl required [value]="obu.obu_state">
+        <option value="READY">READY</option>
+        <option value="ACTIVE">ACTIVE</option>
+        <option value="DEACTIVATED">DEACTIVATED</option>
+    </select>
+    </mat-form-field>
+    
+    <div><b>current_config_id: </b>{{obu.current_config_id}}</div>
+    <div><b>current_test_plan_id: </b>{{obu.current_test_plan_id}}</div>
+
+    <div>
+        <b>properties:
+        <input [(ngModel)]="obu.properties" placeholder="properties"/>
+        </b>
+    </div>
+
+    <div><b>creator: </b>{{obu.creator}}</div>
+
+    <div><b>creation_date: </b>{{obu.creation_date}}</div>
+
+    <div><b>modifier: </b>{{obu.modifier}}</div>
+
+    <div><b>modified_date: </b>{{obu.modified_date}}</div>
+      
+</div>
+
+<div style="margin-top:30px;">
+        <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
+        <div class="ui suspend button" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
+</div>

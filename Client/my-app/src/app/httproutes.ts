@@ -13,4 +13,5 @@ export class Routes{
 
     getOBUs = this.basePath + "/obus";
     getOBUByID = this.basePath + "/obu/:id";
+    createObu = this.basePath + "/obus";
 }

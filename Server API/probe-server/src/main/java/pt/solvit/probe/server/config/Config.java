@@ -50,7 +50,7 @@ public class Config extends WebMvcConfigurationSupport{// implements WebMvcConfi
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns(AppConfiguration.URL_LOGIN, AppConfiguration.URL_GET_LOGGEDIN_USER);
+                .excludePathPatterns("/backoffice"+AppConfiguration.URL_LOGIN, AppConfiguration.URL_GET_LOGGEDIN_USER);
 
         registry.addInterceptor(loggingInterceptor);
 

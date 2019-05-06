@@ -12,6 +12,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { UserProfile } from './Model/UserProfile';
 import { OBUComponent } from './obu/obu.component'
 import { LogoutComponent } from './logout/logout.component';
+import { ConfigurationComponent } from './configuration/configuration.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -25,7 +26,8 @@ const routes: Routes = [
         { path: 'users', component: UserComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SuperUser }},
         { path: 'obus', component: OBUComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SuperUser }},
         { path: 'user/:id/edit', component: UserDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SuperUser }},
-        { path: 'obu/:id/edit', component: ObuDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SuperUser }}
+        { path: 'obu/:id/edit', component: ObuDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SuperUser }},
+        { path: 'configs', component: ConfigurationComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SuperUser }}
       ]
   }
 

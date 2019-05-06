@@ -78,6 +78,6 @@ public class CreatorModel {
     @JsonIgnore
     @ApiModelProperty(value = "Modified date")
     public String getModifiedDate() {
-        return ISO8601_DATE_FORMATTER.format(modifiedDate);
+        return modifiedDate != null ? ISO8601_DATE_FORMATTER.format(modifiedDate) : null;
     }
 }

@@ -19,9 +19,10 @@
         <div class="ui middle aligned grid">
           <div class="four wide column">{{user.user_name}}</div>
           <div class="four wide column">{{user.user_profile}}</div>
-          <div class="four wide column">{{user.suspended}}</div>
+          <div class="four wide column">
+            <div class="ui empty circular label" [style.background-color]="user.suspended ? 'red' : 'green'"></div>
+          </div>
           <div class="four wide right aligned column">
-            <a class="ui empty circular label" [style.background-color]="user.suspended ? 'red' : 'green'"></a>
             <div class="ui suspend button" *ngIf="suspendable(user.id)" (click)="suspend(user.id)" data-tooltip="Suspend User">Suspend</div>
             <div class="ui suspend button" (click)="edit(user.id)" data-tooltip="Edit User">Edit</div>
           </div>
@@ -49,19 +50,8 @@
         </div>
 
         <div class="one wide column">
-          <!-- insert password visibility button thingy here -->
+        
         </div>
-
-        <!-- 
-        <div class="four wide column">
-          <select class="ui dropdown" [(ngModel)]="user_profile" placeholder="Profile">
-            <option value="">Profile</option>
-            <option value="ADMIN">ADMIN</option>
-            <option value="SUPER_USER">SUPER_USER</option>
-            <option value="NORMAL_USER">NORMAL_USER</option>
-          </select>        
-        </div>        
-        -->
       
         <div class="four wide right aligned column">
           <div class="ui blue fluid button" (click)="createUser()">Create</div>

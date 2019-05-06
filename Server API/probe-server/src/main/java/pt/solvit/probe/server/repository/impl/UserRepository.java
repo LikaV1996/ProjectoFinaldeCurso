@@ -38,7 +38,7 @@ public class UserRepository implements IUserRepository {
 
     private static final String INSERT_POSTGRES = "INSERT INTO ProbeUser (user_name, user_password, user_profile, properties, creator, creation_date, modifier, modified_date, suspended) VALUES (?, ?, ?, cast(? as jsonb), ?, ?, ?, ?, ?) RETURNING id;";
     private static final String INSERT_MYSQL = "INSERT INTO ProbeUser (user_name, user_password, user_profile, properties, creator, creation_date, modifier, modified_date, suspended) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private static final String SELECT_ALL = "SELECT id, user_name AS userName, user_password AS userPassword, user_profile AS userProfile, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate, suspended FROM ProbeUser;";
+    private static final String SELECT_ALL = "SELECT id, user_name AS userName, user_password AS userPassword, user_profile AS userProfile, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate, suspended FROM ProbeUser";
     private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
     private static final String SELECT_BY_USERNAME = SELECT_ALL + " WHERE user_name = ?;";
     private static final String UPDATE_POSTGRES = "UPDATE ProbeUser SET user_name = ?, user_password = ?, user_profile = ?, properties = ?, modifier = ?, modified_date = ?, suspended = ? WHERE id = ?;";
@@ -77,7 +77,7 @@ public class UserRepository implements IUserRepository {
     public long add(UserDao userDao) {
         if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
             return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, userDao.getUserName(), userDao.getUserPassword(), userDao.getUserProfile(),
-                    userDao.getProperties(), userDao.getCreator(), userDao.getCreationDate());
+                    userDao.getProperties(), userDao.getCreator(), userDao.getCreationDate(), userDao.getModifier(),userDao.getModifiedDate(),userDao.getSuspended());
         }
 
         //mysql
@@ -92,8 +92,16 @@ public class UserRepository implements IUserRepository {
                 statement.setString(4, userDao.getProperties());
                 statement.setString(5, userDao.getCreator());
                 statement.setTimestamp(6, userDao.getCreationDate());
-                statement.setString(7, userDao.getModifier());
-                statement.setTimestamp(8,userDao.getModifiedDate());
+
+                if(userDao.getModifier() != null)
+                    statement.setString(7, userDao.getModifier());
+                else
+                    statement.setObject(7, null);
+
+                if(userDao.getModifiedDate() != null)
+                    statement.setTimestamp(8, userDao.getModifiedDate());
+                else
+                    statement.setObject(8, null);
                 statement.setBoolean(9, userDao.getSuspended());
                 return statement;
             }

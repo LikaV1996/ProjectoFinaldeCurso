@@ -1,0 +1,36 @@
+<p>
+  configuration works!
+</p>
+
+<script src="/script.js"></script>
+<div id="content" class="ui container">
+  
+  <div class="ui segment">
+    <div class="ui grid">
+      <div class="four wide column">ID</div>
+      <div class="four wide column">Creator</div>
+      <div class="four wide column">Creation Date</div>
+      <div class="four wide column"></div>
+    </div>
+    
+    <div class="ui divider"></div>
+
+    <div class="ui" style="height: 70%;">
+        <div class="ui segment" *ngFor="let config of configs">
+          <div class="ui middle aligned grid">
+            <div class="four wide column">{{config.id}}</div>
+            <div class="four wide column">{{config.creator}}</div>
+            <div class="four wide column">{{config.creation_date}}</div>
+            <div class="four wide right aligned column">
+              <div class="ui suspend button" (click)="edit(obu.id)" data-tooltip="Edit Obu">Edit</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    
+
+    
+
+</div>

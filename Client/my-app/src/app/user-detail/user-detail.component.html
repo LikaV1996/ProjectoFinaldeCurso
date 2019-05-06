@@ -1,13 +1,8 @@
-<!---->
+<div class="ui raised very padded text container segment">
+
 <div *ngIf="user">
   <h2>User Details</h2>
   <div><b>id: </b>{{user.id}}</div>
-
-  <div>
-      <label>user_name:
-        <input [(ngModel)]="user.user_name" placeholder="user_name"/>
-      </label>
-  </div>
 
   <div>
     <b>user_name: 
@@ -45,13 +40,16 @@
     </select>
   </mat-form-field>
 
-  <div><b>modifier: </b>{{user.modifier}}</div>
-
-  <div><b>modified_date: </b>{{user.modified_date}}</div>
+  <div *ngIf="user.modified_date!=null || user.modifier!=null">
+      <div><b>modifier: </b>{{user.modifier}}</div>
+      <div><b>modified_date: </b>{{user.modified_date}}</div>
+      </div>
    
 </div>
 
 <div style="margin-top:30px;">
     <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
     <div class="ui suspend button" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
+</div>
+
 </div>

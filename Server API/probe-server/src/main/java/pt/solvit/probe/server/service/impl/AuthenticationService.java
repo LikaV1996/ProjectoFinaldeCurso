@@ -78,7 +78,7 @@ public class AuthenticationService implements IAuthenticationService {
 
         return new User(userDao.getId(), userDao.getUserName(), userDao.getUserPassword(), userProfile,
                 userDao.getCreator(), userDao.getCreationDate().toLocalDateTime(),
-                userDao.getModifier(), userDao.getModifiedDate().toLocalDateTime(),
+                userDao.getModifier(), userDao.getModifiedDate() != null ? userDao.getModifiedDate().toLocalDateTime() : null,
                 userDao.getSuspended()
         );
     }

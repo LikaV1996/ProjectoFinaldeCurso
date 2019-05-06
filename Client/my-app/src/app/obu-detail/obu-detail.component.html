@@ -1,9 +1,11 @@
+<div class="ui raised very padded text container segment">
+
 <div *ngIf="obu">
     <h2>Obu Details</h2>
     <div><b>id: </b>{{obu.id}}</div>
     <div><b>hardware_id: </b>{{obu.hardware_id}}</div>
     <div>
-        <b>obu_name: 
+        <b>obu_name:
         <mat-form-field appearance="standard">
         <mat-label>{{obu.obu_name}}</mat-label>
         <input matInput placeholder="obu_name">
@@ -33,13 +35,16 @@
 
     <div><b>creation_date: </b>{{obu.creation_date}}</div>
 
+    <div *ngIf="obu.modified_date!=null || obu.modifier!=null">
     <div><b>modifier: </b>{{obu.modifier}}</div>
-
     <div><b>modified_date: </b>{{obu.modified_date}}</div>
-      
+    </div>
+
 </div>
 
 <div style="margin-top:30px;">
         <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
         <div class="ui suspend button" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
+</div>
+
 </div>

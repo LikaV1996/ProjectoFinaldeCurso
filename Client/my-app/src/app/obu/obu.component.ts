@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OBUService } from '../_services/obu.service';
 import { OBU } from '../Model/OBU';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { User } from '../Model/User';
 import { LocalStorageService } from '../_services/localStorage.service';
 import { UserProfile } from '../Model/UserProfile';

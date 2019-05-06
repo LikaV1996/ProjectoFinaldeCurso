@@ -67,7 +67,7 @@ public interface IUserController {
     )
     @RequestMapping(
             method = RequestMethod.POST, 
-            value = AppConfiguration.URL_GET_USERS,
+            value = AppConfiguration.URL_CREATE_USER,
             consumes = {MediaType.APPLICATION_JSON_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )

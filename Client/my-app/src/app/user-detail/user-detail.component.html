@@ -7,15 +7,15 @@
   <div>
     <b>user_name: 
       <mat-form-field appearance="standard">
-        <mat-label>{{user.user_name}}</mat-label>
+        <mat-label>{{user.userName}}</mat-label>
         <input matInput placeholder="user_name">
       </mat-form-field>
     </b>
   </div>
 
-<b>user_profile: </b>
+<b>userProfile: </b>
 <mat-form-field>
-  <select matNativeControl required [value]="user.user_profile">
+  <select matNativeControl required [value]="user.userProfile">
     <option value="ADMIN">ADMIN</option>
     <option value="SUPER_USER">SUPER_USER</option>
     <option value="NORMAL_USER">NORMAL_USER</option>
@@ -30,7 +30,7 @@
 
   <div><b>creator: </b>{{user.creator}}</div>
 
-  <div><b>creation_date: </b>{{user.creation_date}}</div>
+  <div><b>creation_date: </b>{{user.creationDate}}</div>
 
   <b>suspended: </b>
   <mat-form-field>
@@ -40,9 +40,9 @@
     </select>
   </mat-form-field>
 
-  <div *ngIf="user.modified_date!=null || user.modifier!=null">
+  <div *ngIf="user.modifiedDate!=null || user.modifier!=null">
       <div><b>modifier: </b>{{user.modifier}}</div>
-      <div><b>modified_date: </b>{{user.modified_date}}</div>
+      <div><b>modifiedDate: </b>{{user.modifiedDate}}</div>
       </div>
    
 </div>

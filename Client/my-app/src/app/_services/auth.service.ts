@@ -47,7 +47,7 @@ export class AuthService {
             this._localStorageService.insertAuthToken(token)
 
             //get logged in user
-            this.getLoginUser(token).subscribe(
+            this.getLoginUser().subscribe(
               user => {
                 console.log(JSON.stringify(user))
 
@@ -78,7 +78,7 @@ export class AuthService {
     return this.http.post<{token: string}>(routes.login, {username: username, password: password})
   }
 
-  getLoginUser(token: string) : Observable<User> {
+  getLoginUser() : Observable<User> {
     return this.http.get<User>(routes.loginUser)
   }
 
@@ -103,7 +103,7 @@ export class AuthService {
     let userID = this._localStorageService.getCurrentUserDetails().id
 
     return new Observable<boolean>(observer => {
-      this._userService.getUserByParam(userID)
+      this.getLoginUser()
         .subscribe( user => {
           //console.log(JSON.stringify(userObj.user))
           this._localStorageService.insertCurrentUserDetails(user)

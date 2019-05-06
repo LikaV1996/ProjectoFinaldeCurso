@@ -73,11 +73,11 @@ export class UserComponent implements OnInit {
 
   createUser(){
     console.log("creating user")
-    if(!this.user_name || !this.user_password/* || !this.user_profile*/){
+    if(!this.user_name || !this.user_password){
       alert("Not all fields are filled")
     }
     else{
-      this._userService.createUser(this.user_name, this.user_password/*, this.user_profile*/)
+      this._userService.createUser(this.user_name, this.user_password)
         .subscribe(user => {
           this.users.push(user)
         })

@@ -27,7 +27,7 @@ export class NavMenuComponent {
   displayButtons(){
     console.log("sidenav things")
     let curUser = this._localStorageService.getCurrentUserDetails()
-    this.display_AllUsers_Button = curUser.user_level > 0
+    this.display_AllUsers_Button = true//curUser.userProfile > 0
   }
 
   logout(){

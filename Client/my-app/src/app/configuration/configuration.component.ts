@@ -36,7 +36,7 @@ export class ConfigurationComponent implements OnInit {
   }
 
   canCreateConfig() : boolean{
-    return this.user.user_level >= UserProfile.Admin
+    return true//this.user.user_level >= UserProfile.Admin
   }
 
   /*

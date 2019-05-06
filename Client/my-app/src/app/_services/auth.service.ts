@@ -47,10 +47,10 @@ export class AuthService {
             this._localStorageService.insertAuthToken(token)
 
             //get logged in user
-            this._userService.getUserByParam(username).subscribe(
-              userObj => {
-                let user = userObj.user
-                
+            this.getLoginUser(token).subscribe(
+              user => {
+                console.log(JSON.stringify(user))
+
                 this.loginInit(user)
 
                 
@@ -75,10 +75,12 @@ export class AuthService {
   }
   
   getLoginToken(username: string, password: string) : Observable<{token: string}> {
-    return this.http.post<{token: string}>(routes.login, {user_name: username, user_password: password})
+    return this.http.post<{token: string}>(routes.login, {username: username, password: password})
   }
 
-
+  getLoginUser(token: string) : Observable<User> {
+    return this.http.get<User>(routes.loginUser)
+  }
 
 
 
@@ -89,11 +91,11 @@ export class AuthService {
 
   hasClearance(min_user_level : number): boolean {
     let userDetails = this._localStorageService.getCurrentUserDetails()
-    console.log("curUserClearance: " + userDetails.user_level + " vs minUserClearance: " + min_user_level)
+    //console.log("curUserClearance: " + userDetails.user_level + " vs minUserClearance: " + min_user_level)
     
     if(!min_user_level) return true
 
-    return userDetails && userDetails.user_level >= min_user_level
+    return true//userDetails && userDetails.user_level >= min_user_level
   }
 
 
@@ -102,9 +104,9 @@ export class AuthService {
 
     return new Observable<boolean>(observer => {
       this._userService.getUserByParam(userID)
-        .subscribe( userObj => {
+        .subscribe( user => {
           //console.log(JSON.stringify(userObj.user))
-          this._localStorageService.insertCurrentUserDetails(userObj.user)
+          this._localStorageService.insertCurrentUserDetails(user)
           observer.next(false)
           observer.complete()
         },

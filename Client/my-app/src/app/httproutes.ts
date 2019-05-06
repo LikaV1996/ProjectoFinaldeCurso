@@ -1,7 +1,8 @@
 export class Routes{
-    private basePath = "http://localhost:8080/api/v1";
+    private basePath = "http://localhost:8080/backoffice";
 
     login = this.basePath + "/login";
+    loginUser = this.basePath + "/login/user"
 
     getUsers = this.basePath + "/users";
     getUserByID = this.basePath + "/user/:id";

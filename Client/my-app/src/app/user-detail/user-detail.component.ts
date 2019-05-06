@@ -39,9 +39,9 @@ export class UserDetailComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     
-    this._userService.getUserByParam(this.id).subscribe(userObj => {
+    this._userService.getUserByParam(this.id).subscribe(user => {
      //console.log(userObj)
-     this.user = userObj.user
+     this.user = user
    })
   }
 
@@ -50,7 +50,8 @@ export class UserDetailComponent implements OnInit {
   }
   saveChanges(){
     console.log("updating user")
-    this._userService.updateUser(this.user.id, this.user.user_name, this.user.user_profile, this.user.suspended)
+   
+    this._userService.updateUser(this.user.id, this.user.userName, this.user.userProfile, this.user.suspended)
     .subscribe(userObj => {
       //this.users.push(userObj.user)
       console.log("user updated")

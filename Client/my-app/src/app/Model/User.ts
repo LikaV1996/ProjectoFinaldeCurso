@@ -1,7 +1,7 @@
 export class User { //export default class User {
     id: number
-    user_name: string
-    user_profile: string
+    userName: string
+    userProfile: string
     properties: string
     creator: string
     creation_date: Date
@@ -9,5 +9,5 @@ export class User { //export default class User {
 	modified_date: Date
     suspended: boolean
 
-    user_level: number
+    //user_level: number
 }

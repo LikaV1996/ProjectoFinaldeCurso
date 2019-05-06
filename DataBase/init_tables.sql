@@ -28,4 +28,66 @@ BEGIN
 	INSERT INTO Obu (hardware_id, obu_name, obu_password, properties, creator) VALUES (hw_id_3,'OBU003','0000','{"sims":[{"modemType":"PLMN","msisdn":"968995024","simPin":"","simPuk":"Unknown","apn":"internet","apnUser":"","apnPass":""},{"modemType":"GSMR","msisdn":"703801156","simPin":"","simPuk":"Unknown","iccid":"110101001791","apn":"exploracao.refertelecom.pt","apnUser":"","apnPass":""}]}'::jsonb,'rita');
 END $$;
 
+
+INSERT INTO config (properties, creator) VALUES ('{
+    "activationDate": "2018-12-11T15:30:00",
+    "archive": {
+        "expiration": 2592000,
+        "period": 86400,
+        "referenceDate": "2018-12-10T10:00:00"
+    },
+    "controlConnection": {
+        "referenceDate": "2018-12-10T10:00:00.000",
+        "period": 600,
+        "retryDelay": 60,
+        "maxRetries": 3
+    },
+    "core": {
+    	"maxSystemLogSize": 10485760,
+    	"storageMonitorPeriod": 300,
+    	"storageWarningThreshold": 524288000,
+    	"storageCriticalThreshold": 209715200
+    },
+    "data": {
+        "defaultMessage": "SOLVIT Probe default message"
+    },
+    "download": {
+        "retryDelay": 120,
+        "maxRetries": 3
+    },
+    "scanning": {
+        "enableMonitor": false,
+        "enableCsq": true,
+        "enableMoni": true,
+        "enableMonp": true,
+        "enableSmond": true,
+        "enableSmonc": true,
+        "sampleTime": 60
+    },
+    "server": {
+        "serverInterface": "MODEM_GSMR",
+        "registrationRetryDelay": 60,
+        "serverAddress": "10.228.101.29:8080",
+        "serverUser": "probe",
+        "serverPassword": "probe"
+    },
+    "testPlan": {
+        "defaultMaxRetries": 3,
+        "defaultRetryDelay": 60,
+        "maxLogSize": 10485760
+    },
+    "upload": {
+        "autoUpload": true,
+        "referenceDate": "2018-12-10T10:05:00.000",
+        "period": 86400,
+        "retryDelay": 60,
+        "maxRetries": 3,
+        "maxUploadSize": 5242880
+    },
+    "voice": {
+        "defaultCallDuration": 300,
+        "incomingCallTimeout": 3600
+    }
+}','tester');
+
 COMMIT;

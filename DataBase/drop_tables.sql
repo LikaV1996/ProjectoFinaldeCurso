@@ -5,6 +5,7 @@ DROP VIEW IF EXISTS view_probeuser;
 DROP TABLE IF EXISTS ServerLog;
 DROP TYPE IF EXISTS AccessType;
 
+DROP TABLE IF EXISTS probeuser_obu;
 DROP TABLE IF EXISTS ProbeUser;
 DROP TABLE IF EXISTS UserProfile;
 

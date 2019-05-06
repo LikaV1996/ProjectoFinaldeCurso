@@ -14,7 +14,7 @@ CREATE TABLE Hardware (
 
 CREATE TABLE Config (
   id BIGSERIAL,
-  activation_date TIMESTAMP NOT NULL,
+  activation_date TIMESTAMP,
   properties jsonb NOT NULL,
   creator VARCHAR(45) NOT NULL,
   creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),

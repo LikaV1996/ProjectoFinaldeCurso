@@ -17,8 +17,8 @@
     <div class="ui" style="height: 70%;">
       <div class="ui segment" *ngFor="let user of users">
         <div class="ui middle aligned grid">
-          <div class="four wide column">{{user.user_name}}</div>
-          <div class="four wide column">{{user.user_profile}}</div>
+          <div class="four wide column">{{user.userName}}</div>
+          <div class="four wide column">{{user.userProfile}}</div>
           <div class="four wide column">
             <div class="ui empty circular label" [style.background-color]="user.suspended ? 'red' : 'green'"></div>
           </div>

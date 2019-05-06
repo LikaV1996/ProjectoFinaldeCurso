@@ -40,8 +40,8 @@ export class UserComponent implements OnInit {
     this.user = this._localStorage.getCurrentUserDetails()
 
     this._userService.getUsers()
-    .subscribe(usersObj => {
-      this.users = usersObj.users
+    .subscribe(users => {
+      this.users = users
     });
 
   }
@@ -51,8 +51,7 @@ export class UserComponent implements OnInit {
     //console.log("userID: " + userID)
 
     this._userService.suspendUser(userID)
-    .subscribe(userObj => {
-      let user = userObj.user
+    .subscribe(user => {
       let idx = this.users.findIndex( u => u.id == user.id)
       this.users[idx] = user
       //console.log("user.suspended = " + user.suspended)
@@ -66,8 +65,8 @@ export class UserComponent implements OnInit {
 
     let idx = this.users.findIndex( u => u.id == id)
 
-    return this.user.id != id
-      && this.user.user_level > this.users[idx].user_level
+    return this.user.id != id 
+    //&& this.user.userProfile > this.users[idx].userProfile
   }
 
 
@@ -79,14 +78,14 @@ export class UserComponent implements OnInit {
     }
     else{
       this._userService.createUser(this.user_name, this.user_password/*, this.user_profile*/)
-        .subscribe(userObj => {
-          this.users.push(userObj.user)
+        .subscribe(user => {
+          this.users.push(user)
         })
     }
   }
 
   canCreateUsers() : boolean{
-    return this.user.user_level >= UserProfile.Admin
+    return true//this.user.user_level >= UserProfile.Admin
   }
   
 

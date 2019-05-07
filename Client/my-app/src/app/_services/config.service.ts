@@ -20,8 +20,8 @@ export class ConfigService {
     
   
 
-  getConfigs(): Observable<Configs> {
-    return this.http.get<Configs>(routes.getConfigs)
+  getConfigs(): Observable<Config[]> {
+    return this.http.get<Config[]>(routes.getConfigs)
   }
 
 

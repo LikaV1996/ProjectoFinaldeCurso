@@ -65,7 +65,7 @@ public class UserController implements IUserController {
 
         URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_GET_USER_BY_ID, userId);
 
-        return ResponseEntity.created(createdURI).build();
+        return ResponseEntity.created(createdURI).body(addUser);
     }
 
     @Override

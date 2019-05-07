@@ -180,6 +180,7 @@ public class Config extends CreatorModel {
 
     public static ConfigDao transformToConfigDao(Config config) {
         return new ConfigDao(null, Timestamp.valueOf(config.getActivationLocalDateTime()), config.getPropertiesString(),
-                config.getCreator(), Timestamp.valueOf(config.getCreationLocalDateTime()), config.getModifier(), Timestamp.valueOf(config.getModifiedDate()));
+                config.getCreator(), Timestamp.valueOf(config.getCreationLocalDateTime()),
+                config.getModifier(), config.getModifiedLocalDateTime() != null ? Timestamp.valueOf(config.getModifiedLocalDateTime()) : null);
     }
 }

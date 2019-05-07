@@ -30,8 +30,8 @@ export class ConfigurationComponent implements OnInit {
     this.user = this._localStorage.getCurrentUserDetails()
 
     this._configService.getConfigs()
-    .subscribe(configObj => {
-      this.configs = configObj.configs
+    .subscribe(config => {
+      this.configs = config
     });
   }
 

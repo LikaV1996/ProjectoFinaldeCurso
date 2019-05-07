@@ -1,6 +1,3 @@
-<p>
-  configuration works!
-</p>
 
 <script src="/script.js"></script>
 <div id="content" class="ui container">
@@ -20,9 +17,9 @@
           <div class="ui middle aligned grid">
             <div class="four wide column">{{config.id}}</div>
             <div class="four wide column">{{config.creator}}</div>
-            <div class="four wide column">{{config.creation_date}}</div>
+            <div class="four wide column">{{config.creationDate}}</div>
             <div class="four wide right aligned column">
-              <div class="ui suspend button" (click)="edit(obu.id)" data-tooltip="Edit Obu">Edit</div>
+              <div class="ui suspend button" (click)="edit(config.id)" data-tooltip="Edit Configuration">Edit</div>
             </div>
           </div>
         </div>

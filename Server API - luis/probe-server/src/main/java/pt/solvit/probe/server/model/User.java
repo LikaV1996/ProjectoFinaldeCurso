@@ -70,7 +70,7 @@ public class User extends CreatorModel {
     public static UserDao transformToUserDao(User user) {
         return new UserDao(user.getId(), user.getUserName(), user.getUserPassword(), user.getUserProfile().name(),
                 null, user.getCreator(), Timestamp.valueOf(user.getCreationLocalDateTime()),
-                user.getModifier(), user.getModifiedDate()!= null ? Timestamp.valueOf(user.getModifiedDate()) : null,
+                user.getModifier(), user.getModifiedLocalDateTime() != null ? Timestamp.valueOf(user.getModifiedLocalDateTime()) : null,
                 user.getSuspended()
         );
     }

@@ -28,6 +28,9 @@ public class ObuDao extends CreatorDao{
     private String obuPassword;
     private String properties;
 
+    public ObuDao(){
+        super();
+    }
 
     public ObuDao(Long id, long hardwareId, String obuState, Long currentConfigId, Long currentTestPlanId,
                   String obuName, String obuPassword, String properties,
@@ -117,6 +120,6 @@ public class ObuDao extends CreatorDao{
                 properties.isAuthenticate(), properties.isUploadRequest(), properties.isClearAlarmsRequest(),
                 properties.isResetRequest(), properties.isShutdownRequest(),
                 obuDao.getCreator(), obuDao.getCreationDate().toLocalDateTime(),
-                obuDao.getModifier(), obuDao.getModifiedDate().toLocalDateTime());
+                obuDao.getModifier(), (obuDao.getModifiedDate() != null ? obuDao.getModifiedDate().toLocalDateTime() : null));
     }
 }

@@ -95,21 +95,23 @@ public class ObuController implements IObuController {
     }
 
     @Override
-    public ResponseEntity<Void> updateObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
+    public ResponseEntity<Obu> updateObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @PathVariable("obu-id") long obuId, @RequestBody InputObu body) {
 
-        //User user = userService.checkUserCredentials(authorization);
+        User user = (User) request.getAttribute("user");
 
         body.validate();
         Obu obu = obuService.getObu(obuId);
-        obu.setHardwareId(body.getHardwareId());
+        //obu.setHardwareId(body.getHardwareId());
         obu.setSims(body.getSims());
+        obu.setObuName(body.getObuName());
+        obu.setModifier(user.getUserName());
         obuService.updateObu(obu);
-
+        obu = obuService.getObu(obuId);
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.PUT, HttpStatus.OK, AppConfiguration.URL_OBU_ID, obuId);
         //serverLogService.createServerLog(serverLog);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(obu);
     }
 
     @Override

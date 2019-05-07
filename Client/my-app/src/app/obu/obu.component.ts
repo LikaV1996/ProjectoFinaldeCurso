@@ -30,12 +30,12 @@ export class OBUComponent implements OnInit {
     this.user = this._localStorage.getCurrentUserDetails()
 
     this._obuService.getOBUs()
-    .subscribe(obuObj => {
-      this.obus = obuObj.obus
+    .subscribe(obus => {
+      this.obus = obus
     });
   }
 
-  canCreateUsers() : boolean{
+  canCreateObu() : boolean{
     return true//this.user.user_level >= UserProfile.Admin
   }
 

@@ -33,9 +33,11 @@ public class InputUser {
     @NotNull(message = "An userPassword must be provided.")
     private String userPassword;
 
+
     @JsonProperty("userProfile")
     @NotNull(message = "An userProfile must be provided.")
     private String userProfile;
+
 
     @ApiModelProperty(example = "username", required = true, value = "User name")
     public String getUserName() {

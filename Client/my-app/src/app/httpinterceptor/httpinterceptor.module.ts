@@ -58,7 +58,7 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
     return (e: HttpErrorResponse) => {
       let unknownError = false;
 
-      console.log("ERROR_HANDLER, err = " + JSON.stringify(e))
+      console.error("ERROR_HANDLER, err = " + JSON.stringify(e))
 
       if(e.status == 0) {
         console.error("API not responding. Maybe not running")

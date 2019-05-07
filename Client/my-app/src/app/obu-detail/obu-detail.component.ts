@@ -28,14 +28,25 @@ export class ObuDetailComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     
-    this._obuService.getOBUByID(this.id).subscribe(obuObj => {
+    this._obuService.getOBUByID(this.id).subscribe(obu => {
      //console.log(userObj)
-     this.obu = obuObj.obu
+     this.obu = obu
    })
   }
 
   goBack(){
     this._location.back();
+  }
+
+  saveChanges(){
+    console.log("updating obu")
+    this._obuService.updateObu(this.obu.id, this.obu.hardwareId, this.obu.obuName, this.obu.properties)
+    .subscribe(obu => {
+      console.log(JSON.stringify(obu))
+      this.obu = obu
+      //this.users.push(userObj.user)
+      console.log("obu updated")
+    })
   }
 
 }

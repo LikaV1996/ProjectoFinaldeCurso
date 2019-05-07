@@ -94,7 +94,7 @@ public interface IObuController {
             consumes = {MediaType.APPLICATION_JSON_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> updateObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
+    public ResponseEntity<Obu> updateObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @PathVariable("obu-id") long obuId, @RequestBody InputObu body);
 
     @ApiOperation(value = "Deletes a obu", tags = {"Obu",})

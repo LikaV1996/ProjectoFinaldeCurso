@@ -37,13 +37,13 @@ public class ObuRepository implements IObuRepository {
 
     private static final String INSERT_POSTGRES = "INSERT INTO Obu (hardware_id, obu_state, current_config_id, current_test_plan_id, obu_name, obu_password, properties, creator, creation_date) VALUES (?, ?::ObuState, ?, ?, ?, ?, cast(? as jsonb), ?, ?)";
     private static final String INSERT_MYSQL = "INSERT INTO Obu (hardware_id, obu_state, current_config_id, current_test_plan_id, obu_name, obu_password, properties, creator, creation_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private static final String SELECT_BY_ID = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate FROM Obu WHERE id = ?;";
+    private static final String SELECT_BY_ID = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM Obu WHERE id = ?;";
     private static final String SELECT_READY_POSTGRES = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate FROM Obu WHERE hardware_id = ? AND obu_state <> 'DEACTIVATED'::ObuState;";
     private static final String SELECT_READY_MYSQL = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate FROM Obu WHERE hardware_id = ? AND obu_state <> 'DEACTIVATED';";
     private static final String SELECT_BY_HARDWARE_ID = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate FROM Obu WHERE hardware_id = ?;";
     private static final String SELECT_ALL = "SELECT * FROM Obu;";
-    private static final String UPDATE_POSTGRES = "UPDATE Obu SET obu_state = ?::ObuState, current_config_id = ?, current_test_plan_id = ?, properties = cast(? as jsonb) WHERE id = ?;";
-    private static final String UPDATE_MYSQL = "UPDATE Obu SET obu_state = ?, current_config_id = ?, current_test_plan_id = ?, properties = ? WHERE id = ?;";
+    private static final String UPDATE_POSTGRES = "UPDATE Obu SET obu_name = ?, obu_state = ?::ObuState, current_config_id = ?, current_test_plan_id = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
+    private static final String UPDATE_MYSQL = "UPDATE Obu SET obu_name = ?, obu_state = ?, current_config_id = ?, current_test_plan_id = ?, properties = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
     private static final String DELETE_BY_ID = "DELETE FROM Obu WHERE id = ?;";
     private static final String DELETE_ALL = "DELETE FROM Obu;";
 
@@ -131,19 +131,21 @@ public class ObuRepository implements IObuRepository {
                 } else { //mysql
                     statement = con.prepareStatement(UPDATE_MYSQL);
                 }
-                statement.setString(1, obuDao.getObuState());
+                statement.setString(1, obuDao.getObuName());
+                statement.setString(2, obuDao.getObuState());
                 if (obuDao.getCurrentConfigId() == null) {
-                    statement.setNull(2, java.sql.Types.BIGINT);
-                } else {
-                    statement.setLong(2, obuDao.getCurrentConfigId());
-                }
-                if (obuDao.getCurrentTestPlanId() == null) {
                     statement.setNull(3, java.sql.Types.BIGINT);
                 } else {
-                    statement.setLong(3, obuDao.getCurrentTestPlanId());
+                    statement.setLong(3, obuDao.getCurrentConfigId());
                 }
-                statement.setString(4, obuDao.getProperties());
-                statement.setLong(5, obuDao.getId());
+                if (obuDao.getCurrentTestPlanId() == null) {
+                    statement.setNull(4, java.sql.Types.BIGINT);
+                } else {
+                    statement.setLong(4, obuDao.getCurrentTestPlanId());
+                }
+                statement.setString(5, obuDao.getProperties());
+                statement.setString(6, obuDao.getModifier());
+                statement.setLong(7, obuDao.getId());
                 return statement;
             }
         });

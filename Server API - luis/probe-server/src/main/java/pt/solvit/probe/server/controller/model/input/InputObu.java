@@ -30,6 +30,10 @@ public class InputObu {
     @Valid
     private List<SimCard> sims;
 
+    @JsonProperty("obuName")
+    @Valid
+    private String obuName;
+
     @ApiModelProperty(example = "1", required = true, value = "Hardware identifier")
     public Long getHardwareId() {
         return hardwareId;
@@ -38,6 +42,11 @@ public class InputObu {
     @ApiModelProperty(value = "SIM list")
     public List<SimCard> getSims() {
         return sims;
+    }
+
+    @ApiModelProperty(value = "SIM list")
+    public String getObuName() {
+        return obuName;
     }
 
     @ApiModelProperty(hidden = true)
@@ -50,5 +59,9 @@ public class InputObu {
                 curSim.validate();
             }
         }
+        if(obuName == null){
+            throw new BadRequestException("Invalid obu.", "obuName is null.", "string", "about:blank");
+        }
+
     }
 }

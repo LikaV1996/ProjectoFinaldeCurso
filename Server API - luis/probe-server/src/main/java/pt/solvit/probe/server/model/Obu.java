@@ -41,7 +41,7 @@ public class Obu extends CreatorModel {
     @JsonProperty("obuState")
     private ObuState obuState;
 
-    @JsonView(Profile.ExtendedView.class)
+    @JsonView(Profile.ShortView.class)
     @JsonProperty("obuName")
     private String obuName;
 
@@ -143,6 +143,10 @@ public class Obu extends CreatorModel {
         return obuName;
     }
 
+    public void setObuName(String obuName) {
+        this.obuName = obuName;
+    }
+
     public String getObuPassword() {
         return obuPassword;
     }
@@ -234,6 +238,6 @@ public class Obu extends CreatorModel {
         return new ObuDao(obu.getId(), obu.getHardwareId(), obu.getObuState().name(),
                 obu.getCurrentConfigId(), obu.getCurrentTestPlanId(), obu.getObuName(), obu.getObuPassword(),
                 obu.getPropertiesString(), obu.getCreator(), Timestamp.valueOf(obu.getCreationLocalDateTime()),
-                obu.getModifier(), Timestamp.valueOf(obu.getModifiedLocalDateTime()));
+                obu.getModifier(), obu.getModifiedLocalDateTime()!= null ? Timestamp.valueOf(obu.getModifiedLocalDateTime()) : null);
     }
 }

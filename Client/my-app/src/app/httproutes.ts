@@ -12,9 +12,10 @@ export class Routes{
     suspendUser = this.basePath + "/user/:id/suspend";
     updateUser = this.basePath + "user/:id/edit"
 
-    getOBUs = this.basePath + "/obus";
+    getOBUs = this.basePath + "/obu";
     getOBUByID = this.basePath + "/obu/:id";
     createObu = this.basePath + "/obus";
+    updateObu = this.basePath + "/obu/:id";
 
-    getConfigs = this.basePath + "/configs";
+    getConfigs = this.basePath + "/config";
 }

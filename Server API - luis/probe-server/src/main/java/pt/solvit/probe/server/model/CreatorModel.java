@@ -64,10 +64,13 @@ public class CreatorModel {
         return ISO8601_DATE_FORMATTER.format(creationDate);
     }
 
-    @JsonIgnore
     @ApiModelProperty(value = "Modifier")
     public String getModifier() {
         return modifier;
+    }
+
+    public void setModifier(String modifier){
+        this.modifier = modifier;
     }
 
     @JsonIgnore
@@ -75,7 +78,6 @@ public class CreatorModel {
         return modifiedDate;
     }
 
-    @JsonIgnore
     @ApiModelProperty(value = "Modified date")
     public String getModifiedDate() {
         return modifiedDate != null ? ISO8601_DATE_FORMATTER.format(modifiedDate) : null;

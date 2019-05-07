@@ -52,8 +52,9 @@ export class UserDetailComponent implements OnInit {
     console.log("updating user")
    
     this._userService.updateUser(this.user.id, this.user.userName, this.user.userProfile, this.user.suspended)
-    .subscribe(userObj => {
+    .subscribe(user => {
       //this.users.push(userObj.user)
+      this.user = user
       console.log("user updated")
     })
   }

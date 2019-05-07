@@ -4,9 +4,9 @@
   
     <div class="ui segment">
       <div class="ui grid">
-        <div class="four wide column">Obu_name</div>
-        <div class="four wide column">Obu_state</div>
-        <div class="four wide column">Current_config_id</div>
+        <div class="four wide column">Obu Name</div>
+        <div class="four wide column">Obu State</div>
+        <div class="four wide column">Current Obu Configuration</div>
         <!-- <div class="four wide column">Current_test_plan_id</div> -->
         <div class="four wide column"></div>
       </div>
@@ -16,10 +16,10 @@
       <div class="ui" style="height: 70%;">
         <div class="ui segment" *ngFor="let obu of obus">
           <div class="ui middle aligned grid">
-            <div class="four wide column">{{obu.obu_name}}</div>
-            <div class="four wide column">{{obu.obu_state}}</div>
-            <div class="four wide column" *ngIf="obu.Current_config_id!=null">{{obu.Current_config_id}}</div>
-            <div class="four wide column" *ngIf="obu.Current_config_id==null">No Configuration</div>
+            <div class="four wide column">{{obu.obuName}}</div>
+            <div class="four wide column">{{obu.obuState}}</div>
+            <div class="four wide column" *ngIf="obu.CurrentConfigId!=null">{{obu.CurrentConfigId}}</div>
+            <div class="four wide column" *ngIf="obu.CurrentConfigId==null">No Configuration</div>
             <!-- <div class="four wide column">{{obu.Current_test_plan_id}}</div> -->
             <div class="four wide right aligned column">
               <div class="ui suspend button" (click)="edit(obu.id)" data-tooltip="Edit Obu">Edit</div>
@@ -29,7 +29,7 @@
       </div>
 
 
-      <div *ngIf="canCreateUsers()">
+      <div *ngIf="canCreateObu()">
           <div class="ui hidden divider"></div>
           <div class="ui grid">
             <div class="five wide column">

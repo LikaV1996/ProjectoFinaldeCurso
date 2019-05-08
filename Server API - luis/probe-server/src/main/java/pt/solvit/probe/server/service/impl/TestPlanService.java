@@ -224,10 +224,12 @@ public class TestPlanService implements ITestPlanService {
         TestPlanProperties properties = GSON.fromJson(testPlanDao.getProperties(), TestPlanProperties.class);
 
         return new TestPlan(testPlanDao.getId(), testPlanDao.getStartDate().toLocalDateTime(), testPlanDao.getStopDate().toLocalDateTime(),
-                properties.getTriggerCoordinates(), properties.getPeriod(), setupList, properties.getMaxRetries(),
+                properties.getTriggerCoordinates(), properties.getPeriod(),
+                setupList,
+                properties.getMaxRetries(),
                 properties.getRetryDelay(), properties.getRedialTriggers(),
                 testPlanDao.getCreator(), testPlanDao.getCreationDate().toLocalDateTime(),
-                testPlanDao.getModifier(), testPlanDao.getModifiedDate().toLocalDateTime());
+                testPlanDao.getModifier(), (testPlanDao.getModifiedDate() != null ? testPlanDao.getModifiedDate().toLocalDateTime() : null));
     }
 
     private ObuTestPlanDao transformToObuTestPlanDao(ObuTestPlan obuTestPlan) {

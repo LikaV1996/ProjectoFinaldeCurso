@@ -91,6 +91,83 @@ INSERT INTO config (properties, creator) VALUES ('{
 }','tester');
 
 
+INSERT INTO testplan (start_date, stop_date, properties, creator) VALUES (
+    '2018-12-14T18:55:00',
+    '2018-12-16T20:00:00',
+    '{
+        "period": "P1D",
+        "setups": [
+            {
+                "modemType": "GSMR",
+                "scanning": {
+                    "enableScanning": false,
+                    "enableCsq": true,
+                    "enableMoni": true,
+                    "enableMonp": true,
+                    "enableSmond": true,
+                    "enableSmonc": true,
+                    "sampleTime": 2
+                },
+                "tests": [
+                    {
+                        "index": 1,
+                        "type": "P2P",
+                        "destination": ["703802800"],
+                        "duration": 30
+                    },
+                    {
+                        "index": 2,
+                        "delay": 60,
+                        "type": "SMS",
+                        "destination": ["703801160"],
+                        "message": "Hello, I am back!"
+                    },
+                    {
+                        "index": 3,
+                        "delay": 60,
+                        "type": "VGC",
+                        "priority": "2",
+                        "destination": ["201"],
+                        "duration": 30
+                    },
+                    {
+                        "index": 4,
+                        "delay": 60,
+                        "type": "VBC",
+                        "priority": "2",
+                        "destination": ["201"],
+                        "duration": 30
+                    },
+                    {
+                        "index": 5,
+                        "delay": 60,
+                        "type": "VGC",
+                        "priority": "0",
+                        "destination": ["598"],
+                        "duration": 30
+                    },
+                    {
+                        "index": 6,
+                        "delay": 60,
+                        "type": "VGC",
+                        "priority": "0",
+                        "destination": ["298"],
+                        "duration": 15
+                    },
+                    {
+                        "index": 7,
+                        "delay": 60,
+                        "type": "P2P",
+                        "destination": ["703801160"],
+                        "duration": 30
+                    }
+                ]
+            }
+        ]
+    }',
+    'tester');
+
+
 
 INSERT INTO ProbeUser (user_name, user_password, user_profile, creator) VALUES ('tester1','tester','SUPER_USER','rita');
 INSERT INTO ProbeUser (user_name, user_password, user_profile, creator) VALUES ('tester2','tester','NORMAL_USER','rita');

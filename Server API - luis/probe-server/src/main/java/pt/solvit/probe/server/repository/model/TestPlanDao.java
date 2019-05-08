@@ -5,6 +5,9 @@
  */
 package pt.solvit.probe.server.repository.model;
 
+import pt.solvit.probe.server.model.TestPlan;
+import pt.solvit.probe.server.model.properties.TestPlanProperties;
+import static pt.solvit.probe.server.util.ServerUtil.GSON;
 import java.sql.Timestamp;
 
 /**
@@ -18,6 +21,9 @@ public class TestPlanDao extends CreatorDao{
     private Timestamp stopDate;
     private String properties;
 
+    public TestPlanDao(){
+        super();
+    }
 
     public TestPlanDao(Long id, Timestamp startDate, Timestamp stopDate, String properties,
                        String creator, Timestamp creationDate, String modifier, Timestamp modifiedDate) {
@@ -59,5 +65,7 @@ public class TestPlanDao extends CreatorDao{
     public void setProperties(String properties) {
         this.properties = properties;
     }
+
+
 
 }

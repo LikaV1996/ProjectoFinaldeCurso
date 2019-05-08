@@ -26,6 +26,8 @@ import { OBUComponent } from './obu/obu.component';
 import { LogoutComponent } from './logout/logout.component';
 import { ObuDetailComponent } from './obu-detail/obu-detail.component';
 import { ConfigurationComponent } from './configuration/configuration.component';
+import { ConfigurationDetailComponent } from './configuration-detail/configuration-detail.component';
+import { TestPlansComponent } from './test-plans/test-plans.component';
 
 
 
@@ -40,7 +42,9 @@ import { ConfigurationComponent } from './configuration/configuration.component'
     OBUComponent,
     LogoutComponent,
     ObuDetailComponent,
-    ConfigurationComponent
+    ConfigurationComponent,
+    ConfigurationDetailComponent,
+    TestPlansComponent
   ],
   imports: [
     BrowserModule,

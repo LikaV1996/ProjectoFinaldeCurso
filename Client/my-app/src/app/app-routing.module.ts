@@ -6,6 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { ObuDetailComponent } from './obu-detail/obu-detail.component';
+import { ConfigurationDetailComponent } from './configuration-detail/configuration-detail.component';
 import { HomemapComponent } from './homemap/homemap.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { AuthGuard } from './auth/auth.guard';
@@ -13,6 +14,7 @@ import { UserProfile } from './Model/UserProfile';
 import { OBUComponent } from './obu/obu.component'
 import { LogoutComponent } from './logout/logout.component';
 import { ConfigurationComponent } from './configuration/configuration.component';
+import { TestPlansComponent } from './test-plans/test-plans.component'
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -27,7 +29,10 @@ const routes: Routes = [
         { path: 'obus', component: OBUComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'user/:id/edit', component: UserDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'obu/:id/edit', component: ObuDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
-        { path: 'configs', component: ConfigurationComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }}
+        { path: 'configs', component: ConfigurationComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'config/:id/edit', component: ConfigurationDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'testPlans', component: TestPlansComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        
       ]
   }
 

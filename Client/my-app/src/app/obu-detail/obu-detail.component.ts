@@ -45,6 +45,7 @@ export class ObuDetailComponent implements OnInit {
       console.log(JSON.stringify(obu))
       this.obu = obu
       //this.users.push(userObj.user)
+      alert("Obu updated!")
       console.log("obu updated")
     })
   }

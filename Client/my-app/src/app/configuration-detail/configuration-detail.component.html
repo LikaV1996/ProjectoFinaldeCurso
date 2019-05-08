@@ -1,0 +1,43 @@
+<div class="ui raised very padded text container segment">
+
+  <div *ngIf="config">
+      <h2>Configuration Details</h2>
+      <div><b>id: </b>{{config.id}}</div>
+
+      <div><b>creator: </b>{{config.creator}}</div>
+  
+      <div><b>creation_date: </b>{{config.creationDate}}</div>
+
+      <div *ngIf="config.activationDate!=null"  ><b>activation_date: </b>{{config.activationDate}}</div>
+      
+
+
+      <div *ngIf="config.archive!=null" class="ui container segment" >
+        <h4>Archive</h4>
+        <div><b>expiration: </b>{{config.archive.expiration}}</div>
+        <div><b>period: </b>{{config.archive.period}}</div>
+        <div><b>referenceDate: </b>{{config.archive.referenceDate}}</div>
+      </div>
+
+      <div *ngIf="config.testPlan!=null" class="ui container segment" >
+          <h4>TestPlan</h4>
+          <div><b>defaultMaxRetries: </b>{{config.testPlan.defaultMaxRetries}}</div>
+          <div><b>defaultRetryDelay: </b>{{config.testPlan.defaultRetryDelay}}</div>
+          <div><b>maxLogSize: </b>{{config.testPlan.maxLogSize}}</div>
+      </div>
+
+      
+  
+      <div *ngIf="config.modified_date!=null || config.modifier!=null">
+      <div><b>modifier: </b>{{config.modifier}}</div>
+      <div><b>modified_date: </b>{{config.modifiedDate}}</div>
+      </div>
+  
+  </div>
+  
+  <div style="margin-top:30px;">
+          <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
+          <div class="ui suspend button" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
+  </div>
+  
+  </div>

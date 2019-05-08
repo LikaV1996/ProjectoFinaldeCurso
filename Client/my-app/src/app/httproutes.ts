@@ -18,4 +18,8 @@ export class Routes{
     updateObu = this.basePath + "/obu/:id";
 
     getConfigs = this.basePath + "/config";
+    getConfigById = this.basePath + "/config/:id"
+
+    getTestPlans = this.basePath + "/test-plan";
+    getTestPlanById = this.basePath + "/test-plan/:id";
 }

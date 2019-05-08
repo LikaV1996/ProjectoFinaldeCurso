@@ -25,17 +25,17 @@ export class ConfigService {
   }
 
 
-  /*
-  getOBUByID(id: number): Observable<{obu: OBU}> {
-    const getOBUByIDUrl = routes.getOBUByID.replace(":id", id.toString());
+  
+  getConfigById(id: number): Observable<Config> {
+    const getConfigByIdUrl = routes.getConfigById.replace(":id", id.toString());
 
-    return this.http.get<{obu: OBU}>(getOBUByIDUrl)
+    return this.http.get<Config>(getConfigByIdUrl)
   }
 
-  createObu(obu_name: string, obu_password: string){//verificar ****** 
+  /*
+  createConfig(obu_name: string, obu_password: string){//verificar ****** 
     return this.http.post<{obu: OBU}>(routes.createObu,{obu_name: obu_name, obu_password: obu_password, properties: "null", hardware_id:-1, current_config_id:-1,current_test_plan_id:-1 })
   }
-
   */
 
 }

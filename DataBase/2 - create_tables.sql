@@ -166,7 +166,7 @@ CREATE TABLE ObuStatus (
 
 CREATE TABLE UserProfile (
   user_profile VARCHAR(15) NOT NULL,
-  user_level INT NOT NULL,
+  user_level INT UNIQUE NOT NULL,
   
   CONSTRAINT PK_UserProfile PRIMARY KEY (user_profile)
 );
@@ -187,10 +187,14 @@ CREATE TABLE ProbeUser (
   CONSTRAINT FK_ProbeUser_UserProfile FOREIGN KEY (user_profile) REFERENCES UserProfile (user_profile)
 );
 
+CREATE TYPE PO_Role AS ENUM ('EDITOR', 'VIEWER');
+
 CREATE TABLE Probeuser_Obu (
 	probeuser_id BIGINT NOT NULL,
 	obu_id BIGINT NOT NULL,
+  role PO_Role NOT NULL,
 	
+  CONSTRAINT PK_ProbeUser_Obu PRIMARY KEY (probeuser_id, obu_id),
 	CONSTRAINT FK_Probeuser_Obu_Probeuser FOREIGN KEY (probeuser_id) REFERENCES Probeuser (id) ON DELETE CASCADE,
 	CONSTRAINT FK_Probeuser_Obu_Obu FOREIGN KEY (obu_id) REFERENCES Obu (id) ON DELETE CASCADE
 	
@@ -210,40 +214,6 @@ CREATE TABLE ServerLog (
   
   CONSTRAINT PK_ServerLog PRIMARY KEY (id)
 );
-
-
-CREATE OR REPLACE VIEW view_probeuser
-as SELECT pu.id,
-    pu.user_name,
-    pu.user_password,
-    pu.user_profile,
-    up.user_level,
-    pu.properties,
-    pu.creator,
-    pu.creation_date,
-	pu.modifier,
-	pu.modified_date,
-    pu.suspended
-   FROM probeuser pu
-     JOIN userprofile up ON pu.user_profile = up.user_profile
-	ORDER BY pu.id;
-	
-/*
-CREATE OR REPLACE FUNCTION funcFor_trg_insertAdminOn_Probeuser_Obu()
-RETURNS TRIGGER
-LANGUAGE 'plpgsql'
-AS $$
-BEGIN
-	INSERT INTO Probeuser_Obu(probeuser_id, obu_id) VALUES (new.id,) --?????)
-
-	RETURN NULL;
-END
-$$ END
-	
-CREATE TRIGGER trg_insertAdminOn_Probeuser_Obu AFTER INSERT ON Probeuser
-FOR EACH ROW
-EXECUTE PROCEDURE funcFor_trg_insertAdminOn_Probeuser_Obu();
-*/
 
 
 

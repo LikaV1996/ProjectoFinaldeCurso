@@ -90,4 +90,14 @@ INSERT INTO config (properties, creator) VALUES ('{
     }
 }','tester');
 
+
+
+INSERT INTO ProbeUser (user_name, user_password, user_profile, creator) VALUES ('tester1','tester','SUPER_USER','rita');
+INSERT INTO ProbeUser (user_name, user_password, user_profile, creator) VALUES ('tester2','tester','NORMAL_USER','rita');
+
+
+INSERT INTO ProbeUser_Obu (probeuser_id, obu_id, role) VALUES (2,1,'EDITOR');
+INSERT INTO ProbeUser_Obu (probeuser_id, obu_id, role) VALUES (3,1,'VIEWER');
+
+
 COMMIT;

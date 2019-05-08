@@ -36,7 +36,7 @@ export class OBUComponent implements OnInit {
   }
 
   canCreateObu() : boolean{
-    return true//this.user.user_level >= UserProfile.Admin
+    return UserProfile.getValueFromString(this.user.userProfile) >= UserProfile.ADMIN
   }
 
   createObu(){

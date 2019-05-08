@@ -31,6 +31,8 @@ export class UserComponent implements OnInit {
   private users: User[];
   private user : User;
 
+  private loggedInUserProfile: number;
+
 
   user_name: string;
   user_password: string;
@@ -38,6 +40,8 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.user = this._localStorage.getCurrentUserDetails()
+
+    this.loggedInUserProfile = UserProfile.getValueFromString(this.user.userProfile)
 
     this._userService.getUsers()
     .subscribe(users => {
@@ -60,15 +64,6 @@ export class UserComponent implements OnInit {
     });
   }
 
-  suspendable(id: number) : boolean{  //function for displaying (or not) the "suspend" button
-    //console.log("curID: " + id + " LStorage ID: " + this._localStorage.getCurrentUserDetails().id)
-
-    let idx = this.users.findIndex( u => u.id == id)
-
-    return this.user.id != id 
-    //&& this.user.userProfile > this.users[idx].userProfile
-  }
-
 
 
   createUser(){
@@ -84,8 +79,26 @@ export class UserComponent implements OnInit {
     }
   }
 
-  canCreateUsers() : boolean{
-    return true//this.user.user_level >= UserProfile.Admin
+  canCreateUsers() : boolean {
+    return this.loggedInUserProfile >= UserProfile.ADMIN
+  }
+
+  canEditUsers(id: number) : boolean {
+    let idx = this.users.findIndex( u => u.id == id)
+    let curUserProfile = UserProfile.getValueFromString(this.users[idx].userProfile)
+
+    return this.user.id == id
+    || this.loggedInUserProfile > curUserProfile
+  }
+
+  canBeSuspended(id: number) : boolean{  //function for displaying (or not) the "suspend" button
+    //console.log("curID: " + id + " LStorage ID: " + this._localStorage.getCurrentUserDetails().id)
+
+    let idx = this.users.findIndex( u => u.id == id)
+    let curUserProfile = UserProfile.getValueFromString(this.users[idx].userProfile)
+
+    return this.user.id != id 
+    && this.loggedInUserProfile > curUserProfile
   }
   
 

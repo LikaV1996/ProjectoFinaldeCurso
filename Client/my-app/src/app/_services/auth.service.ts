@@ -9,6 +9,8 @@ import { User } from '../Model/User';
 import { BackgroundService } from './background.service';
 import { UserService } from './user.service';
 import { Router } from '@angular/router';
+import { UserProfile } from '../Model/UserProfile';
+import { MAT_CHECKBOX_CONTROL_VALUE_ACCESSOR } from '@angular/material';
 
 
 const routes = new Routes
@@ -89,13 +91,13 @@ export class AuthService {
   }
 
 
-  hasClearance(min_user_level : number): boolean {
+  hasClearance(min_user_profile : UserProfile): boolean {
     let userDetails = this._localStorageService.getCurrentUserDetails()
-    //console.log("curUserClearance: " + userDetails.user_level + " vs minUserClearance: " + min_user_level)
+    console.log("curUserClearance: " + UserProfile.getValueFromString(userDetails.userProfile) + " vs minUserClearance: " + min_user_profile)
     
-    if(!min_user_level) return true
+    if(!min_user_profile) return true
 
-    return true//userDetails && userDetails.user_level >= min_user_level
+    return userDetails && UserProfile.getValueFromString(userDetails.userProfile) >= min_user_profile
   }
 
 

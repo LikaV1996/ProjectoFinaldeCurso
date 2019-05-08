@@ -23,8 +23,8 @@
             <div class="ui empty circular label" [style.background-color]="user.suspended ? 'red' : 'green'"></div>
           </div>
           <div class="four wide right aligned column">
-            <div class="ui suspend button" *ngIf="suspendable(user.id)" (click)="suspend(user.id)" data-tooltip="Suspend User">Suspend</div>
-            <div class="ui suspend button" (click)="edit(user.id)" data-tooltip="Edit User">Edit</div>
+            <div class="ui suspend button" *ngIf="canBeSuspended(user.id)" (click)="suspend(user.id)" data-tooltip="Suspend User">Suspend</div>
+            <div class="ui suspend button" *ngIf="canEditUsers(user.id)" (click)="edit(user.id)" data-tooltip="Edit User">Edit</div>
           </div>
         </div>
       </div>

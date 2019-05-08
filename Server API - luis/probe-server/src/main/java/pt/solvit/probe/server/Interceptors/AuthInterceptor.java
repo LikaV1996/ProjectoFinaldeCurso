@@ -29,19 +29,22 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if(handler instanceof HandlerMethod /*&& handler.method.declaringClass.isAnnotationPresent(ProtectedRoute::class.java)*/) {
 
-            String[] authHeader = request.getHeader("Authorization").split(" ");
-            if (authHeader.length != 2 || !authHeader[0].equals("Basic")) {
-                throw new UnauthorizedException("Invalid token.", "Token is null or not Basic.", "string", "about:blank");
-            }
+            String authHeader = request.getHeader("Authorization");
+            if(authHeader != null) {
+                String[] authHeaderArr = authHeader.split(" ");
+                if (authHeaderArr.length != 2 && !authHeaderArr[0].equals("Basic")) {
+                    throw new UnauthorizedException("Invalid token.", "Token is null or not Basic.", "string", "about:blank");
+                }
 
-            User user = verify(authHeader[1]);
+                User user = verify(authHeaderArr[1]);
 
-            request.setAttribute("user",user);
+                request.setAttribute("user", user);
             /*
             request.setAttribute("userID",user.getId());
             request.setAttribute("userName",user.getUserName());
             request.setAttribute("userProfile",user.getUserProfile());//.toUpperCase());
             */
+            }
         }
 
         return true;

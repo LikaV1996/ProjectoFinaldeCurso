@@ -59,7 +59,7 @@ public interface IHardwareController {
             consumes = {MediaType.APPLICATION_JSON_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> createHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
+    public ResponseEntity<Hardware> createHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @RequestBody InputHardware body);
 
     @ApiOperation(value = "Returns a hardware", tags = {"Hardware",})

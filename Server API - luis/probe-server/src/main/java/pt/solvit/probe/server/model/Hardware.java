@@ -70,6 +70,7 @@ public class Hardware extends CreatorModel {
 
     public static HardwareDao transformToHardwareDao(Hardware hardware) {
         return new HardwareDao(hardware.getId(), hardware.getSerialNumber(), hardware.getPropertiesString(),
-                hardware.getCreator(), Timestamp.valueOf(hardware.getCreationLocalDateTime()), hardware.getModifier(), Timestamp.valueOf(hardware.getModifiedDate()));
+                hardware.getCreator(), Timestamp.valueOf(hardware.getCreationLocalDateTime()),
+                hardware.getModifier(), hardware.getModifiedDate() != null ? Timestamp.valueOf(hardware.getModifiedDate()) : null);
     }
 }

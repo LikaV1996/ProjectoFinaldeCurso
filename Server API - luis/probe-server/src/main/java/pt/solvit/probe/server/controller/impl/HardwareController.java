@@ -60,7 +60,7 @@ public class HardwareController implements IHardwareController {
     }
 
     @Override
-    public ResponseEntity<Void> createHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
+    public ResponseEntity<Hardware> createHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @RequestBody InputHardware body) {
 
         User user = (User) request.getAttribute("user");
@@ -77,7 +77,7 @@ public class HardwareController implements IHardwareController {
 
         URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_HARDWARE_ID, hardwareId);
 
-        return ResponseEntity.created(createdURI).build();
+        return ResponseEntity.created(createdURI).body(hardware);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class HardwareController implements IHardwareController {
         User user = (User) request.getAttribute("user");
 
         userService.checkUserPermissions(user, UserProfile.ADMIN);
-        
+
         hardwareService.deleteHardware(hardwareId, user);
 
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.DELETE, HttpStatus.OK, AppConfiguration.URL_HARDWARE_ID, hardwareId);

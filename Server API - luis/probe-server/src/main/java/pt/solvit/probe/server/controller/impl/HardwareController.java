@@ -24,6 +24,7 @@ import pt.solvit.probe.server.controller.model.input.InputHardware;
 import pt.solvit.probe.server.model.Hardware;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.ServerLog;
+import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.service.api.IServerLogService;
 import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.controller.api.IHardwareController;
@@ -46,14 +47,16 @@ public class HardwareController implements IHardwareController {
     @Override
     public ResponseEntity<List<Hardware>> getAllHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization) {
 
-        //User user = userService.checkUserCredentials(authorization);
+        User user = (User) request.getAttribute("user");
+
+        userService.checkUserPermissions(user, UserProfile.ADMIN);
 
         List<Hardware> hardwareList = hardwareService.getAllHardware();
 
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_HARDWARE);
         //serverLogService.createServerLog(serverLog);
 
-        return ResponseEntity.ok(hardwareList);
+        return ResponseEntity.ok().body(hardwareList);
     }
 
     @Override
@@ -62,9 +65,12 @@ public class HardwareController implements IHardwareController {
 
         User user = (User) request.getAttribute("user");
 
+        userService.checkUserPermissions(user, UserProfile.ADMIN);
+
         body.validate();
         Hardware hardware = transformToHardware(body, user.getUserName());
         long hardwareId = hardwareService.createHardware(hardware);
+        hardware = hardwareService.getHardware(hardwareId);
 
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_HARDWARE);
         //serverLogService.createServerLog(serverLog);
@@ -78,7 +84,9 @@ public class HardwareController implements IHardwareController {
     public ResponseEntity<Hardware> getHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @PathVariable("hardware-id") long hardwareId) {
 
-        //User user = userService.checkUserCredentials(authorization);
+        User user = (User) request.getAttribute("user");
+
+        userService.checkUserPermissions(user, UserProfile.ADMIN);
 
         Hardware hardware = hardwareService.getHardware(hardwareId);
 
@@ -94,6 +102,8 @@ public class HardwareController implements IHardwareController {
 
         User user = (User) request.getAttribute("user");
 
+        userService.checkUserPermissions(user, UserProfile.ADMIN);
+        
         hardwareService.deleteHardware(hardwareId, user);
 
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.DELETE, HttpStatus.OK, AppConfiguration.URL_HARDWARE_ID, hardwareId);

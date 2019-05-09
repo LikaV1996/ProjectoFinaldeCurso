@@ -132,17 +132,17 @@ public class AppConfiguration {
      * **************
      * AUTHENTICATION ROUTES **************
      */
-    public static final String URL_LOGIN = "/login",
-            URL_GET_LOGGEDIN_USER = "/login/user";
+    public static final String URL_LOGIN = "/backoffice/login",
+            URL_GET_LOGGEDIN_USER = "/backoffice/login/user";
 
     /**
      * **************
      * USER ROUTES **************
      */
-    public static final String URL_GET_USERS = "/users",
-            URL_GET_USER_BY_ID = "/user/{user-id}",
-            URL_CREATE_USER = "/user",
-            URL_DELETE_USER = "/user";
+    public static final String URL_GET_USERS = "/backoffice/users",
+            URL_GET_USER_BY_ID = "/backoffice/user/{user-id}",
+            URL_CREATE_USER = "/backoffice/user",
+            URL_DELETE_USER = "/backoffice/user";
 
     /**
      * **************

@@ -22,6 +22,10 @@ public class HardwareDao extends CreatorDao{
     private String serialNumber;
     private String properties;
 
+    public HardwareDao(){
+        super();
+    }
+
     public HardwareDao(Long id, String serialNumber, String properties,
                        String creator, Timestamp creationDate, String modifier, Timestamp modifiedDate) {
         super(creator, creationDate, modifier, modifiedDate);
@@ -58,6 +62,7 @@ public class HardwareDao extends CreatorDao{
         HardwareProperties properties = GSON.fromJson(hardwareDao.getProperties(), HardwareProperties.class);
 
         return new Hardware(hardwareDao.getId(), hardwareDao.getSerialNumber(), properties.getComponents(),
-                hardwareDao.getCreator(), hardwareDao.getCreationDate().toLocalDateTime(), hardwareDao.getModifier(), hardwareDao.getModifiedDate().toLocalDateTime());
+                hardwareDao.getCreator(), hardwareDao.getCreationDate().toLocalDateTime(),
+                hardwareDao.getModifier(), hardwareDao.getModifiedDate() != null ? hardwareDao.getModifiedDate().toLocalDateTime() : null);
     }
 }

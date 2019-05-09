@@ -37,9 +37,9 @@ public class HardwareRepository implements IHardwareRepository {
 
     private static final String INSERT_POSTGRES = "INSERT INTO Hardware (serial_number, properties, creator, creation_date) VALUES (?, cast(? as jsonb), ?, ?) RETURNING id";
     private static final String INSERT_MYSQL = "INSERT INTO Hardware (serial_number, properties, creator, creation_date) VALUES (?, ?, ?, ?);";
-    private static final String SELECT_BY_ID = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate FROM Hardware WHERE id = ?;";
-    private static final String SELECT_BY_SERIAL_NUMBER = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate FROM Hardware WHERE serial_number = ?;";
-    private static final String SELECT_ALL = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate FROM Hardware;";
+    private static final String SELECT_BY_ID = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate, modifier, modified_date AS modifiedDate FROM Hardware WHERE id = ?;";
+    private static final String SELECT_BY_SERIAL_NUMBER = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate, modifier, modified_date AS modifiedDate FROM Hardware WHERE serial_number = ?;";
+    private static final String SELECT_ALL = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate, modifier, modified_date AS modifiedDate FROM Hardware;";
     private static final String UPDATE_POSTGRES = "UPDATE Hardware SET serial_number = ?, properties = ? WHERE id = ?;";
     private static final String UPDATE_MYSQL = "UPDATE Hardware SET serial_number = ?, properties = cast(? as jsonb) WHERE id = ?;";
     private static final String DELETE_BY_ID = "DELETE FROM Hardware WHERE id = ?;";

@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author AnaRita
  */
-@RequestMapping(path = {"/backoffice"})
+//@RequestMapping(path = {"/backoffice"})
 public interface IUserController {
 
     @ApiOperation(value = "Returns all users", tags = {"User",})

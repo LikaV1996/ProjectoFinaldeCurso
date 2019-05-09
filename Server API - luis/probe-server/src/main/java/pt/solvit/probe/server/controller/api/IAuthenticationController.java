@@ -20,7 +20,7 @@ import pt.solvit.probe.server.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RequestMapping(path = {"/backoffice"})
+//@RequestMapping(path = {"/backoffice"})
 public interface IAuthenticationController {
 
     @ApiOperation(value = "Returns login token", tags = {"Token",})

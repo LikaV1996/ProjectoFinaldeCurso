@@ -50,10 +50,8 @@ export class UserComponent implements OnInit {
 
   }
 
-
   suspend(userID: number){
     //console.log("userID: " + userID)
-
     this._userService.suspendUser(userID)
     .subscribe(user => {
       let idx = this.users.findIndex( u => u.id == user.id)
@@ -63,7 +61,6 @@ export class UserComponent implements OnInit {
       alert(`User with id ${user.id} ` + (user.suspended ? 'was suspended :(' : 'was unsuspended :)'))
     });
   }
-
 
 
   createUser(){

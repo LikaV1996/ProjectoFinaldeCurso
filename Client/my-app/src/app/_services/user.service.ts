@@ -22,20 +22,16 @@ export class UserService {
 
   //Get all users from the server
   getUsers(): Observable<User[]> {
-    
-    
     return this.http.get<User[]>(routes.getUsers)
   }
 
   getUserByParam(param): Observable<User> {
     const getUserByParamUrl = routes.getUserByParam.replace(":param", param.toString());
-
     return this.http.get<User>(getUserByParamUrl)
   }
 
   suspendUser(id: number): Observable<User>{
     const suspendUserUrl = routes.suspendUser.replace(":id", id.toString());
-
     return this.http.put<User>(suspendUserUrl,null)
   }
 

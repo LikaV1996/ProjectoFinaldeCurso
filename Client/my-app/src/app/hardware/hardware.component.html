@@ -1,0 +1,61 @@
+<p></p>
+
+<script src="/script.js"></script>
+<div id="content" class="ui container">
+  
+    <div class="ui segment">
+      <div class="ui grid">
+        <div class="six wide column"><h3>Serial Number</h3></div>
+        <div class="six wide column"><h3>Creator</h3></div>
+        <!--<div class="four wide column">Current Obu Configuration</div>-->
+        <!-- <div class="four wide column">Current_test_plan_id</div> -->
+        <div class="four wide column"></div>
+      </div>
+      
+      <div class="ui divider"></div>
+
+      <div class="ui" style="height: 70%;">
+        <div class="ui segment" *ngFor="let hardware of hardwares">
+          <div class="ui middle aligned grid">
+            <div class="six wide column">{{hardware.serialNumber}}</div>
+            <div class="six wide column">{{hardware.creator}}</div>
+            <!-- <div class="four wide column" *ngIf="obu.CurrentConfigId!=null">{{obu.CurrentConfigId}}</div> -->
+            <!-- <div class="four wide column" *ngIf="obu.CurrentConfigId==null">No Configuration</div> -->
+            <!-- <div class="four wide column">{{obu.Current_test_plan_id}}</div> -->
+            <div class="four wide right aligned column"> 
+              <!-- para o butao ficar max á direita basta eight wide right... -->
+              <div class="ui suspend button" (click)="edit(hardware.id)" data-tooltip="Edit Hardware">Edit</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div *ngIf="canCreateHardware()">
+          <div class="ui hidden divider"></div>
+          <div class="ui grid">
+            <div class="five wide column">
+              <div class="ui fluid input">
+                <input type="text" [(ngModel)]="obu_name" placeholder="Obu Name...A mudar">
+              </div>
+            </div>
+    
+            <div class="one wide column"></div>
+    
+            <div class="five wide column">
+              <div class="ui fluid input">
+                <input type="text" [(ngModel)]="obu_password" type="password" placeholder="Obu Password...">
+              </div>
+            </div>
+    
+            <div class="one wide column">
+            </div>
+
+            <div class="four wide right aligned column">
+              <div class="ui blue fluid button" (click)="createHardware()">Create</div>
+            </div>
+          </div>
+        </div>
+
+
+</div>

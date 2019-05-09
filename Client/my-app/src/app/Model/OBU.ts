@@ -8,7 +8,7 @@ export class OBU{
     //obu_password: string
     properties: string
     creator: string
-    creationate: Date
+    creation_date: Date
     modified: string
 	modified_date: Date
 }

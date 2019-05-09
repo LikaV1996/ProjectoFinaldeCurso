@@ -28,6 +28,8 @@ import { ObuDetailComponent } from './obu-detail/obu-detail.component';
 import { ConfigurationComponent } from './configuration/configuration.component';
 import { ConfigurationDetailComponent } from './configuration-detail/configuration-detail.component';
 import { TestPlansComponent } from './test-plans/test-plans.component';
+import { HardwareComponent } from './hardware/hardware.component';
+import { HardwareDetailComponent } from './hardware-detail/hardware-detail.component';
 
 
 
@@ -44,7 +46,9 @@ import { TestPlansComponent } from './test-plans/test-plans.component';
     ObuDetailComponent,
     ConfigurationComponent,
     ConfigurationDetailComponent,
-    TestPlansComponent
+    TestPlansComponent,
+    HardwareComponent,
+    HardwareDetailComponent
   ],
   imports: [
     BrowserModule,

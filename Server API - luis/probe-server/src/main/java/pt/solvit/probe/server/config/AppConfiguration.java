@@ -143,7 +143,7 @@ public class AppConfiguration {
             URL_GET_USER_BY_ID = "/backoffice/user/{user-id}",
             URL_CREATE_USER = "/backoffice/user",
             URL_DELETE_USER = "/backoffice/user",
-            URL_SUSPEND_USER_WITH_ID = "/backoffice/user/{user-id}";
+            URL_SUSPEND_USER_WITH_ID = "/backoffice/user/{user-id}/suspend";
 
     /**
      * **************

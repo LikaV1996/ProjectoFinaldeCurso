@@ -21,9 +21,12 @@ public interface IUserService {
 
     public List<User> getAllUsers();
 
-    public void deleteUser(long userId, User user);
+    public void deleteUser(long userId, User loggedInUser);
+
+    public void suspendUser(User suspendedUser, User loggedInUser);
 
     //public User checkUserCredentials(String authorization);
 
-    public void checkUserPermissions(User user, UserProfile requiredProfile);
+    public void checkUserPermissionsForUpdate(User user, User loggedInUser);
+    public void checkUserPermissions(User loggedInUser, UserProfile requiredProfile);
 }

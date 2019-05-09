@@ -5,6 +5,7 @@
  */
 package pt.solvit.probe.server.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.sql.Timestamp;
@@ -22,12 +23,17 @@ public class User extends CreatorModel {
 
     @JsonProperty("id")
     private Long id;
+
     @JsonProperty("userName")
     private String userName;
+
     @JsonProperty("userPassword")
+    //@JsonIgnore
     private String userPassword;
+
     @JsonProperty("userProfile")
     private UserProfile userProfile;
+
     @JsonProperty("suspended")
     private Boolean suspended;
 
@@ -59,6 +65,24 @@ public class User extends CreatorModel {
     public Boolean getSuspended() {
         return suspended;
     }
+
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
+
+    public void setSuspended(Boolean suspended) {
+        this.suspended = suspended;
+    }
+
 
 
     public static User makeUser(InputUser inputUser, String creator){

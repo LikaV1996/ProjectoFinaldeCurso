@@ -94,4 +94,21 @@ public class UserController implements IUserController {
         return ResponseEntity.ok().build();
     }
 
+    @Override
+    public ResponseEntity<User> suspendUser(HttpServletRequest request, @PathVariable("user-id") long userId){
+
+        User user = (User) request.getAttribute("user");
+
+        User suspendedUser = userService.getUser(userId);
+
+        suspendedUser.setSuspended( !suspendedUser.getSuspended() );
+        userService.suspendUser(suspendedUser, user);
+
+        suspendedUser = userService.getUser(userId);
+        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.DELETE, HttpStatus.OK, AppConfiguration.URL_GET_USER_BY_ID, userId);
+        //serverLogService.createServerLog(serverLog);
+
+        return ResponseEntity.ok().body(suspendedUser);
+    }
+
 }

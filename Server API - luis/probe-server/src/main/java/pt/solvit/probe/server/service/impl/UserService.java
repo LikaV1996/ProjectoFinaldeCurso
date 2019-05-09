@@ -62,8 +62,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void deleteUser(long userId, User user) {
-        checkUserPermissions(user, UserProfile.ADMIN);
+    public void deleteUser(long userId, User loggedInUser) {
+        checkUserPermissions(loggedInUser, UserProfile.ADMIN);
 
         LOGGER.log(Level.INFO, "Checking if user {0} exists", userId);
         UserDao userDao = userRepository.findById(userId);
@@ -75,6 +75,15 @@ public class UserService implements IUserService {
         LOGGER.log(Level.INFO, "Deleting user {0}", userId);
         userRepository.deleteById(userId);
     }
+
+    @Override
+    public void suspendUser(User suspendedUser, User loggedInUser) {
+        checkUserPermissionsForUpdate(suspendedUser, loggedInUser);
+
+        LOGGER.log(Level.INFO, "Suspending user {0}", suspendedUser.getId());
+        userRepository.updateUser(User.transformToUserDao(suspendedUser), loggedInUser.getUserName());
+    }
+
 
     /*
     @Override
@@ -107,9 +116,17 @@ public class UserService implements IUserService {
     */
 
     @Override
-    public void checkUserPermissions(User user, UserProfile requiredProfile) {
+    public void checkUserPermissionsForUpdate(User user, User loggedInUser) {
         LOGGER.log(Level.INFO, "Checking user {0} permissions", user.getUserName());
-        if (user.getUserProfile().getLevel() < requiredProfile.getLevel()) {
+        if (user.getUserProfile().getLevel() >= loggedInUser.getUserProfile().getLevel()) {
+            throw new PermissionException();
+        }
+    }
+
+    @Override
+    public void checkUserPermissions(User loggedInUser, UserProfile requiredProfile) {
+        LOGGER.log(Level.INFO, "Checking user {0} permissions", loggedInUser.getUserName());
+        if (loggedInUser.getUserProfile().getLevel() < requiredProfile.getLevel()) {
             throw new PermissionException();
         }
     }

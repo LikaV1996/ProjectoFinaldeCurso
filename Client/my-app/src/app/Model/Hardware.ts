@@ -3,7 +3,7 @@ export class Hardware{
     serialNumber: string
     properties: string
     creator: string
-    creation_date: Date
-    modified: string
-	modified_date: Date
+    creationDate: Date
+    modifier: string
+	modifiedDate: Date
 }

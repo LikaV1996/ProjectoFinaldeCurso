@@ -28,13 +28,13 @@ export class HardwareService {
   }
 
   /* to check!
-  createObu(obu_name: string, obu_password: string){//verificar ****** 
+  createHardware(obu_name: string, obu_password: string){//verificar ****** 
     return this.http.post<{obu: OBU}>(routes.createObu,{obu_name: obu_name, obu_password: obu_password, properties: "null", hardware_id:-1, current_config_id:-1,current_test_plan_id:-1 })
   }
   */
 
   /* to check!
-  updateObu(id: number, hardware_id : number ,obu_name: String, properties: String){
+  updateHardware(id: number, hardware_id : number ,obu_name: String, properties: String){
     const updateObuById = routes.updateObu.replace(":id", id.toString());
     return this.http.put<OBU>(updateObuById, {hardwareId: hardware_id, obuName: obu_name, properties: properties})
   }

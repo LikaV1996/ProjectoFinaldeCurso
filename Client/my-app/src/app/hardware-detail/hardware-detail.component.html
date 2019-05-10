@@ -1,3 +1,34 @@
-<p>
-  hardware-detail works!
-</p>
+
+<div class="ui raised very padded text container segment">
+
+    <div *ngIf="hardware">
+        <h2>Hardware Details</h2>
+        <div><b>Id: </b>{{hardware.id}}</div>
+
+        <div>
+            <b>Serial Number:
+            <mat-form-field appearance="standard">
+            <mat-label>{{hardware.serialNumber}}</mat-label>
+            <input [(ngModel)]="hardware.serialNumber" matInput placeholder="Serial Number">
+            </mat-form-field>
+            </b>
+        </div>
+    
+    
+        <div><b>creator: </b>{{hardware.creator}}</div>
+    
+        <div><b>creation_date: </b>{{hardware.creationDate}}</div>
+    
+        <div *ngIf="hardware.modified_date!=null || hardware.modifier!=null">
+          <div><b>modifier: </b>{{hardware.modifier}}</div>
+          <div><b>modified_date: </b>{{hardware.modifiedDate}}</div>
+        </div>
+    
+    </div>
+    
+    <div style="margin-top:30px;">
+        <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
+        <!--<div class="ui suspend button" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>-->
+    </div>
+    
+</div>

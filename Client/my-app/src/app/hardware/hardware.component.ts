@@ -36,21 +36,10 @@ export class HardwareComponent implements OnInit {
     return UserProfile.getValueFromString(this.user.userProfile) >= UserProfile.ADMIN
   }
 
-  /* falta isto !
   createHardware(){
-    console.log("creating hardware")
-    if(!this.obu_name || !this.obu_password){
-      alert("Not all fields are filled")
-    }
-    else{
-      this._obuService.createObu(this.obu_name, this.obu_password)
-        .subscribe(obuObj => {
-          this.obus.push(obuObj.obu)
-        })
-    }
+    this.router.navigate(['home/hardware/create']);
   }
-  */
-
+  
   edit(id: number){
     this.router.navigate(['home/hardware/'+id+'/edit']);
   }

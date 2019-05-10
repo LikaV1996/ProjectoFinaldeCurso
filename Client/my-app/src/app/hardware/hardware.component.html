@@ -33,29 +33,20 @@
 
       <div *ngIf="canCreateHardware()">
           <div class="ui hidden divider"></div>
-          <div class="ui grid">
-            <div class="five wide column">
-              <div class="ui fluid input">
-                <input type="text" [(ngModel)]="obu_name" placeholder="Obu Name...A mudar">
-              </div>
-            </div>
+          
     
             <div class="one wide column"></div>
     
-            <div class="five wide column">
-              <div class="ui fluid input">
-                <input type="text" [(ngModel)]="obu_password" type="password" placeholder="Obu Password...">
-              </div>
-            </div>
+            
     
             <div class="one wide column">
             </div>
 
             <div class="four wide right aligned column">
-              <div class="ui blue fluid button" (click)="createHardware()">Create</div>
+              <div class="ui blue fluid button" (click)="createHardware()">Create new hardware</div>
             </div>
           </div>
-        </div>
+       </div>
 
 
 </div>

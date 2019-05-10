@@ -1,4 +1,4 @@
-
+<p></p>
 <div class="ui raised very padded text container segment">
 
     <div *ngIf="hardware">
@@ -14,6 +14,70 @@
             </b>
         </div>
     
+        <div *ngIf="hardware.components!=null" class="ui container segment" >
+            <h4>Components ({{hardware.components.length}})</h4>
+            <div class="ui segment" *ngFor="let component of hardware.components">
+                <div>
+                    <b>Serial Number:
+                    <mat-form-field appearance="standard">
+                    <mat-label>{{component.serialNumber}}</mat-label>
+                    <input [(ngModel)]="component.serialNumber" matInput placeholder="Serial Number">
+                    </mat-form-field>
+                    </b>
+                </div>
+
+                <div>
+                    <b>Component Type:
+                    <mat-form-field appearance="standard">
+                    <mat-label>{{component.componentType}}</mat-label>
+                    <input [(ngModel)]="component.componentType" matInput placeholder="Component Type">
+                    </mat-form-field>
+                    </b>
+                </div>
+                
+                <div>
+                    <b>Manufacturer:
+                    <mat-form-field appearance="standard">
+                    <mat-label>{{component.manufacturer}}</mat-label>
+                    <input [(ngModel)]="component.manufacturer" matInput placeholder="Manufacturer">
+                    </mat-form-field>
+                    </b>
+                </div>
+
+                <div>
+                    <b>Model:
+                    <mat-form-field appearance="standard">
+                    <mat-label>{{component.model}}</mat-label>
+                    <input [(ngModel)]="component.model" matInput placeholder="Model">
+                    </mat-form-field>
+                    </b>
+                </div>
+                 
+                <div *ngIf="component.componentType=='MODEM' || component.componentType=='modem' ">
+                  
+                    <div>
+                        <b>Modem Type:
+                        <mat-form-field appearance="standard">
+                        <mat-label>{{component.modemType}}</mat-label>
+                        <input [(ngModel)]="component.modemType" matInput placeholder="Modem Type">
+                        </mat-form-field>
+                        </b>
+                    </div>
+
+                    <div>
+                        <b>Imei:
+                        <mat-form-field appearance="standard">
+                        <mat-label>{{component.imei}}</mat-label>
+                        <input [(ngModel)]="component.imei" matInput placeholder="Imei">
+                        </mat-form-field>
+                        </b>
+                    </div>
+                
+                </div>
+
+            </div>
+            
+        </div>
     
         <div><b>creator: </b>{{hardware.creator}}</div>
     
@@ -28,7 +92,7 @@
     
     <div style="margin-top:30px;">
         <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
-        <!--<div class="ui suspend button" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>-->
+        <div class="ui suspend button" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
     </div>
     
 </div>

@@ -15,7 +15,7 @@ import { ConfigurationComponent } from './configuration/configuration.component'
 import { TestPlansComponent } from './test-plans/test-plans.component'
 import { HardwareComponent } from './hardware/hardware.component'
 import { HardwareDetailComponent } from './hardware-detail/hardware-detail.component';
-
+import { HardwareCreateComponent } from './hardware-create/hardware-create.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -29,6 +29,7 @@ const routes: Routes = [
         { path: 'users', component: UserComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'hardwares', component: HardwareComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'hardware/:id/edit', component: HardwareDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'hardware/create', component: HardwareCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'obus', component: OBUComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'user/:id/edit', component: UserDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'obu/:id/edit', component: ObuDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},

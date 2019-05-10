@@ -30,6 +30,7 @@ import { ConfigurationDetailComponent } from './configuration-detail/configurati
 import { TestPlansComponent } from './test-plans/test-plans.component';
 import { HardwareComponent } from './hardware/hardware.component';
 import { HardwareDetailComponent } from './hardware-detail/hardware-detail.component';
+import { HardwareCreateComponent } from './hardware-create/hardware-create.component';
 
 
 
@@ -48,7 +49,8 @@ import { HardwareDetailComponent } from './hardware-detail/hardware-detail.compo
     ConfigurationDetailComponent,
     TestPlansComponent,
     HardwareComponent,
-    HardwareDetailComponent
+    HardwareDetailComponent,
+    HardwareCreateComponent
   ],
   imports: [
     BrowserModule,

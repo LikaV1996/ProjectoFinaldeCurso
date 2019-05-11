@@ -82,6 +82,12 @@ public class HardwareService implements IHardwareService {
         hardwareRepository.deleteById(hardwareId);
     }
 
+    @Override
+    public long updateHardware(Hardware hardware) {
+        LOGGER.log(Level.INFO, "Updating hardware");
+        return hardwareRepository.updateByID(Hardware.transformToHardwareDao(hardware));
+    }
+
     private void verifyHardwareOnUseCondition(long hardwareId) {
         LOGGER.log(Level.INFO, "Checking if hardware is associated to any obu");
         List<Obu> obuList = obuService.getObusWithHardware(hardwareId);

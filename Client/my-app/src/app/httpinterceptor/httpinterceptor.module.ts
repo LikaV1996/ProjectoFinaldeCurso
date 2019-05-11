@@ -1,5 +1,5 @@
 import { Injectable, NgModule } from '@angular/core';
-import { Observable, throwError} from 'rxjs';
+import { Observable, of, throwError} from 'rxjs';
 import { CommonModule } from '@angular/common';
 import {
  HttpEvent,
@@ -33,15 +33,21 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
 
     console.log("HTTP intercepted for route: " + req.url)
-    let request : HttpRequest<any> = req.clone({ headers: req.headers.set( 'Content-Type', 'application/json' )})
- 
+
+    if (!req.headers.has('Content-Type')) {
+      req = req.clone({ headers: req.headers.set( 'Content-Type', 'application/json' )})
+    }
+
     if(req.url != routes.login) { //if login route -> don't add token
       if(this._authService.isLoggedIn()){ //check if logged in
-        request = request.clone({ headers: req.headers.set( 'Authorization', this._localStorageService.getAuthToken() )});
+        req = req.clone({ headers: req.headers.set( 'Authorization', this._localStorageService.getAuthToken() )});
+      }
+      else{
+        this.router.navigate(['logout'])
       }
     }
 
-    return next.handle(request)
+    return next.handle(req)
         .pipe(
           //retry(1),
           catchError(this.errorHandler())
@@ -56,6 +62,7 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
 
   errorHandler() {
     return (e: HttpErrorResponse) => {
+      console.error("Error: " + JSON.stringify(e))
       let unknownError = false;
 
       console.error("ERROR_HANDLER, err = " + JSON.stringify(e))

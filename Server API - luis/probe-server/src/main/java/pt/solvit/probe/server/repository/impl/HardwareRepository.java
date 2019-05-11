@@ -40,7 +40,7 @@ public class HardwareRepository implements IHardwareRepository {
     private static final String SELECT_BY_ID = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate, modifier, modified_date AS modifiedDate FROM Hardware WHERE id = ?;";
     private static final String SELECT_BY_SERIAL_NUMBER = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate, modifier, modified_date AS modifiedDate FROM Hardware WHERE serial_number = ?;";
     private static final String SELECT_ALL = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate, modifier, modified_date AS modifiedDate FROM Hardware;";
-    private static final String UPDATE_POSTGRES = "UPDATE Hardware SET serial_number = ?, properties = ? WHERE id = ?;";
+    private static final String UPDATE_POSTGRES = "UPDATE Hardware SET serial_number = ?, properties = cast(? as jsonb) WHERE id = ? RETURNING id;";
     private static final String UPDATE_MYSQL = "UPDATE Hardware SET serial_number = ?, properties = cast(? as jsonb) WHERE id = ?;";
     private static final String DELETE_BY_ID = "DELETE FROM Hardware WHERE id = ?;";
     private static final String DELETE_ALL = "DELETE FROM Hardware;";
@@ -93,6 +93,16 @@ public class HardwareRepository implements IHardwareRepository {
             }
         }, holder);
         return holder.getKey().longValue();
+    }
+
+    @Override
+    public long updateByID(HardwareDao hardwareDao) {
+        if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
+            return jdbcTemplate.queryForObject(UPDATE_POSTGRES, Long.class, hardwareDao.getSerialNumber(), hardwareDao.getProperties(), hardwareDao.getId());
+        }
+
+        String rip = "not implemented exception";
+        return -1;
     }
 
     @Override

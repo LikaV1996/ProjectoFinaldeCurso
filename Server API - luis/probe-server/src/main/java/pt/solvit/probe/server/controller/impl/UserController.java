@@ -101,7 +101,6 @@ public class UserController implements IUserController {
 
         User suspendedUser = userService.getUser(userId);
 
-        suspendedUser.setSuspended( !suspendedUser.getSuspended() );
         userService.suspendUser(suspendedUser, user);
 
         suspendedUser = userService.getUser(userId);

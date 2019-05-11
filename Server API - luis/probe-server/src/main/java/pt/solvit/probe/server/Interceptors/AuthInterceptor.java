@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import pt.solvit.probe.server.controller.exception.ForbiddenException;
 import pt.solvit.probe.server.controller.exception.UnauthorizedException;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.service.api.IAuthenticationService;
@@ -56,14 +57,12 @@ public class AuthInterceptor implements HandlerInterceptor {
         if(decodedToken.length != 2)
             throw new UnauthorizedException("Invalid token.", "Token is null or not Basic.", "string", "about:blank");
 
-        //User user =
-        return authenticationService.getAuthenticatedUser(decodedToken[0], decodedToken[1]);
+        User user = authenticationService.getAuthenticatedUser(decodedToken[0], decodedToken[1]);
 
-        //TODO shouldn't be here
-        /*
+
         if (user.getSuspended())
             throw new ForbiddenException("Invalid token.", "Token is null or not Basic.", "string", "about:blank");
-        */
 
+        return user;
     }
 }

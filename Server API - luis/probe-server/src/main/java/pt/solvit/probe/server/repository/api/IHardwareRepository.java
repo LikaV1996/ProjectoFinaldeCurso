@@ -22,6 +22,8 @@ public interface IHardwareRepository {
 
     public long add(HardwareDao hardwareDao);
 
+    public long updateByID(HardwareDao hardwareDao);
+
     public int deleteById(long id);
 
     public int deleteAll(List<HardwareDao> hardwareDaoList);

@@ -43,7 +43,7 @@ public interface IHardwareController {
             value = AppConfiguration.URL_HARDWARE, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<Hardware>> getAllHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization);
+    public ResponseEntity<List<Hardware>> getAllHardware(HttpServletRequest request);
 
     @ApiOperation(value = "Creates a hardware", tags = {"Hardware",})
     @ApiResponses(
@@ -59,8 +59,7 @@ public interface IHardwareController {
             consumes = {MediaType.APPLICATION_JSON_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Hardware> createHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @RequestBody InputHardware body);
+    public ResponseEntity<Hardware> createHardware(HttpServletRequest request, @RequestBody InputHardware body);
 
     @ApiOperation(value = "Returns a hardware", tags = {"Hardware",})
     @ApiResponses(
@@ -76,8 +75,7 @@ public interface IHardwareController {
             value = AppConfiguration.URL_HARDWARE_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Hardware> getHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("hardware-id") long hardwareId);
+    public ResponseEntity<Hardware> getHardware(HttpServletRequest request, @PathVariable("hardware-id") long hardwareId);
 
     @ApiOperation(value = "Deletes a hardware", tags = {"Hardware",})
     @ApiResponses(
@@ -92,7 +90,22 @@ public interface IHardwareController {
             value = AppConfiguration.URL_HARDWARE_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> deleteHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("hardware-id") long hardwareId);
+    public ResponseEntity<Void> deleteHardware(HttpServletRequest request, @PathVariable("hardware-id") long hardwareId);
+
+
+    @ApiOperation(value = "Updates a hardware", tags = {"Hardware",})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 200, message = "The hardware was successfully updated."),
+                    @ApiResponse(code = 400, message = "Invalid input. A description of the error will be in the returned JSON."),
+                    @ApiResponse(code = 401, message = "There was an error with authentication.")
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.PUT,
+            value = AppConfiguration.URL_HARDWARE_ID,
+            produces = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Hardware> updateHardware(HttpServletRequest request, @RequestBody InputHardware body, @PathVariable("hardware-id") long hardwareId);
 
 }

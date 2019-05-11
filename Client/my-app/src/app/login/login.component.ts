@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.redirectUrl = this.route.snapshot.queryParams['redirectUrl'];
-    if( !this.redirectUrl || this.redirectUrl.includes('logout')){
+    if( !this.redirectUrl || this.redirectUrl.includes('login') || this.redirectUrl.includes('logout')){
       this.redirectUrl = '/home'
     }
     

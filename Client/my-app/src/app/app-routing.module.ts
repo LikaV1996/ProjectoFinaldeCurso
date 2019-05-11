@@ -7,7 +7,7 @@ import { ObuDetailComponent } from './obu-detail/obu-detail.component';
 import { ConfigurationDetailComponent } from './configuration-detail/configuration-detail.component';
 import { HomemapComponent } from './homemap/homemap.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { AuthGuard } from './auth/auth.guard';
+import { AuthGuard } from './authguard/auth.guard';
 import { UserProfile } from './Model/UserProfile';
 import { OBUComponent } from './obu/obu.component'
 import { LogoutComponent } from './logout/logout.component';

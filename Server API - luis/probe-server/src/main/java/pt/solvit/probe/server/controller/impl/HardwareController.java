@@ -45,7 +45,7 @@ public class HardwareController implements IHardwareController {
     private IServerLogService serverLogService;
 
     @Override
-    public ResponseEntity<List<Hardware>> getAllHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization) {
+    public ResponseEntity<List<Hardware>> getAllHardware(HttpServletRequest request) {
 
         User user = (User) request.getAttribute("user");
 
@@ -60,8 +60,7 @@ public class HardwareController implements IHardwareController {
     }
 
     @Override
-    public ResponseEntity<Hardware> createHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @RequestBody InputHardware body) {
+    public ResponseEntity<Hardware> createHardware(HttpServletRequest request, @RequestBody InputHardware body) {
 
         User user = (User) request.getAttribute("user");
 
@@ -81,8 +80,7 @@ public class HardwareController implements IHardwareController {
     }
 
     @Override
-    public ResponseEntity<Hardware> getHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("hardware-id") long hardwareId) {
+    public ResponseEntity<Hardware> getHardware(HttpServletRequest request, @PathVariable("hardware-id") long hardwareId) {
 
         User user = (User) request.getAttribute("user");
 
@@ -97,8 +95,7 @@ public class HardwareController implements IHardwareController {
     }
 
     @Override
-    public ResponseEntity<Void> deleteHardware(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("hardware-id") long hardwareId) {
+    public ResponseEntity<Void> deleteHardware(HttpServletRequest request, @PathVariable("hardware-id") long hardwareId) {
 
         User user = (User) request.getAttribute("user");
 
@@ -112,7 +109,50 @@ public class HardwareController implements IHardwareController {
         return ResponseEntity.ok().build();
     }
 
+    @Override
+    public ResponseEntity<Hardware> updateHardware(HttpServletRequest request, @RequestBody InputHardware body, @PathVariable("hardware-id")  long hardwareId) {
+
+        User user = (User) request.getAttribute("user");
+
+        userService.checkUserPermissions(user, UserProfile.ADMIN);
+
+
+        body.validate();
+        Hardware hardware = hardwareService.getHardware(hardwareId);
+
+        updateHardware(body, hardware, user.getUserName());
+
+        hardwareService.updateHardware(hardware);
+
+        hardware = hardwareService.getHardware(hardwareId);
+
+        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_HARDWARE);
+        //serverLogService.createServerLog(serverLog);
+
+        URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_HARDWARE_ID, hardwareId);
+
+        return ResponseEntity.created(createdURI).body(hardware);
+    }
+
     private Hardware transformToHardware(InputHardware inputHardware, String creator) {
+
+        List<Component> componentList = makeComponentList(inputHardware);
+
+        return new Hardware(null, inputHardware.getSerialNumber(), componentList, creator, LocalDateTime.now(), null, null);
+    }
+
+    private Hardware updateHardware(InputHardware inputHardware, Hardware hardware, String modifier) {
+
+        List<Component> componentList = makeComponentList(inputHardware);
+
+        hardware.setSerialNumber( inputHardware.getSerialNumber() );
+        hardware.setComponents( componentList );
+        hardware.setModifier( modifier );
+
+        return hardware;
+    }
+
+    private List<Component> makeComponentList(InputHardware inputHardware){
         List<Component> componentList = null;
         if (inputHardware.getComponents() != null) {
             componentList = new ArrayList();
@@ -120,9 +160,9 @@ public class HardwareController implements IHardwareController {
                 componentList.add(transformToComponent(curInputComponent));
             }
         }
-
-        return new Hardware(null, inputHardware.getSerialNumber(), componentList, creator, LocalDateTime.now(), null, null);
+        return componentList;
     }
+
 
     private Component transformToComponent(InputComponent inputComponent) {
         return new Component(inputComponent.getSerialNumber(), inputComponent.getComponentType(),

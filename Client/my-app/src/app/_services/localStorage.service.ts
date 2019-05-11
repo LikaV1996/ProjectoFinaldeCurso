@@ -68,7 +68,7 @@ export class LocalStorageService{
             return lsToken.token
         }
         else {  //token has expired, removed
-            this.removeAuthToken()
+            this.removeAllInfo()
             return null
         }
     }

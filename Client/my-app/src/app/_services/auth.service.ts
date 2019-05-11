@@ -109,7 +109,7 @@ export class AuthService {
         .subscribe( user => {
           //console.log(JSON.stringify(userObj.user))
           this._localStorageService.insertCurrentUserDetails(user)
-          observer.next(false)
+          observer.next(user.suspended)
           observer.complete()
         },
         err => {

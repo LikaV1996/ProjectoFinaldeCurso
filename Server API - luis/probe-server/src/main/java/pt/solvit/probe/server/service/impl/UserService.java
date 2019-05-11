@@ -5,16 +5,12 @@
  */
 package pt.solvit.probe.server.service.impl;
 
-import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
-import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
-import pt.solvit.probe.server.controller.exception.UnauthorizedException;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.repository.model.UserDao;
@@ -81,7 +77,11 @@ public class UserService implements IUserService {
         checkUserPermissionsForUpdate(suspendedUser, loggedInUser);
 
         LOGGER.log(Level.INFO, "Suspending user {0}", suspendedUser.getId());
-        userRepository.updateUser(User.transformToUserDao(suspendedUser), loggedInUser.getUserName());
+
+        suspendedUser.setModifier( loggedInUser.getUserName() );
+        suspendedUser.setSuspended( !suspendedUser.getSuspended() );
+
+        userRepository.updateByID(User.transformToUserDao(suspendedUser));
     }
 
 

@@ -73,4 +73,13 @@ public class Hardware extends CreatorModel {
                 hardware.getCreator(), Timestamp.valueOf(hardware.getCreationLocalDateTime()),
                 hardware.getModifier(), hardware.getModifiedDate() != null ? Timestamp.valueOf(hardware.getModifiedDate()) : null);
     }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public void setComponents(List<Component> components) {
+        this.components = components;
+    }
+
 }

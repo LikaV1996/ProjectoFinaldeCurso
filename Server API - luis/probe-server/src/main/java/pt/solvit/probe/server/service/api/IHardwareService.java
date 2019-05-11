@@ -24,4 +24,6 @@ public interface IHardwareService {
     public List<Hardware> getAllHardware();
 
     public void deleteHardware(long hardwareId, User user);
+
+    public long updateHardware(Hardware hardware);
 }

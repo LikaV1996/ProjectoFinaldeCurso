@@ -41,7 +41,7 @@ public class UserRepository implements IUserRepository {
     private static final String SELECT_ALL = "SELECT id, user_name AS userName, user_password AS userPassword, user_profile AS userProfile, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate, suspended FROM ProbeUser";
     private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
     private static final String SELECT_BY_USERNAME = SELECT_ALL + " WHERE user_name = ?;";
-    private static final String UPDATE_POSTGRES = "UPDATE ProbeUser SET user_name = ?, user_password = ?, user_profile = ?, properties = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP , suspended = ? WHERE id = ? RETURNING id;";
+    private static final String UPDATE_POSTGRES = "UPDATE ProbeUser SET user_name = ?, user_password = ?, user_profile = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP , suspended = ? WHERE id = ? RETURNING id;";
     private static final String UPDATE_MYSQL = "UPDATE ProbeUser SET user_name = ?, user_password = ?, user_profile = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP, suspended = ? WHERE id = ?;";
     private static final String DELETE_BY_ID = "DELETE FROM ProbeUser WHERE id = ?;";
 
@@ -129,10 +129,10 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public int updateUser(UserDao userDao, String modifier) {
+    public int updateByID(UserDao userDao) {
         if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
             return jdbcTemplate.queryForObject(UPDATE_POSTGRES, Integer.class, userDao.getUserName(), userDao.getUserPassword(),
-                    userDao.getUserProfile(), userDao.getProperties(), modifier, userDao.getSuspended(), userDao.getId());
+                    userDao.getUserProfile(), userDao.getProperties(), userDao.getModifier(), userDao.getSuspended(), userDao.getId());
         }
 
         String rip = "not implemented exception";

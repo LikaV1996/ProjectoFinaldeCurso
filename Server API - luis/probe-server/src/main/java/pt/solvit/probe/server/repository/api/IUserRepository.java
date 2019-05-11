@@ -26,5 +26,5 @@ public interface IUserRepository {
 
     public int deleteAll();
 
-    public int updateUser(UserDao userDao, String modifier);
+    public int updateByID(UserDao userDao);
 }

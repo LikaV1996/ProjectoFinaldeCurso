@@ -35,7 +35,7 @@ public interface IAuthenticationController {
             value = AppConfiguration.URL_LOGIN,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Login> getLoginToken(@RequestBody InputLogin body);
+    public ResponseEntity<Login> getLoginToken(HttpServletRequest request, @RequestBody InputLogin body);
 
 
 

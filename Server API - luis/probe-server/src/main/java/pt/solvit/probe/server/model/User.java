@@ -37,6 +37,11 @@ public class User extends CreatorModel {
     @JsonProperty("suspended")
     private Boolean suspended;
 
+    public User(String userName){
+        super(null,null,null,null);
+        this.userName = userName;
+    }
+
     public User(Long id, String userName, String userPassword, UserProfile userProfile, String creator, LocalDateTime creationDate, String modifier, LocalDateTime modifiedDate, Boolean suspended) {
         super(creator, creationDate, modifier, modifiedDate);
         this.id = id;

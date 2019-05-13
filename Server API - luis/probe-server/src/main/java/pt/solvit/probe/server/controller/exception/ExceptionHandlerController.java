@@ -5,7 +5,6 @@
  */
 package pt.solvit.probe.server.controller.exception;
 
-import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pt.solvit.probe.server.controller.model.output.error.ErrorModelOutput;
 import pt.solvit.probe.server.controller.impl.util.HttpExceptionMapper;
-import pt.solvit.probe.server.model.ServerLog;
 import pt.solvit.probe.server.model.User;
-import pt.solvit.probe.server.model.enums.AccessType;
 import pt.solvit.probe.server.repository.exception.RepositoryException;
 import pt.solvit.probe.server.service.exception.DomainException;
 import pt.solvit.probe.server.service.exception.InternalException;
@@ -35,7 +32,7 @@ public class ExceptionHandlerController {
     private static final Logger LOGGER = Logger.getLogger(ExceptionHandlerController.class.getName());
 
     @Autowired
-    static ServerLogService serverLogService;
+    /*static */ServerLogService serverLogService;
 
 
     /**
@@ -45,7 +42,8 @@ public class ExceptionHandlerController {
     @ExceptionHandler(value = {BadRequestException.class})
     protected ErrorModelOutput handleBadRequestException(HttpServletRequest request, BadRequestException ex) {
         LOGGER.log(Level.SEVERE, ex.getExceptionDetail());
-        makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.BAD_REQUEST.toString(), ex.getExceptionDetail());
+        forServerLog(request, ex.getExceptionDetail());
+        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.BAD_REQUEST.toString(), ex.getExceptionDetail());
         return ex.getError();
     }
 
@@ -56,7 +54,8 @@ public class ExceptionHandlerController {
     @ExceptionHandler(value = {UnauthorizedException.class})
     protected ErrorModelOutput handleUnauthorized(HttpServletRequest request, UnauthorizedException ex) {
         LOGGER.log(Level.SEVERE, ex.getExceptionDetail());
-        makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.UNAUTHORIZED.toString(), ex.getExceptionDetail());
+        forServerLog(request, ex.getExceptionDetail());
+        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.UNAUTHORIZED.toString(), ex.getExceptionDetail());
         return ex.getError();
     }
 
@@ -67,7 +66,8 @@ public class ExceptionHandlerController {
     @ExceptionHandler(value = {NotAcceptableException.class})
     protected ErrorModelOutput handleNotAcceptableException(HttpServletRequest request, NotAcceptableException ex) {
         LOGGER.log(Level.SEVERE, ex.getExceptionDetail());
-        makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.NOT_ACCEPTABLE.toString(), ex.getExceptionDetail());
+        forServerLog(request, ex.getExceptionDetail());
+        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.NOT_ACCEPTABLE.toString(), ex.getExceptionDetail());
         return ex.getError();
     }
 
@@ -81,7 +81,8 @@ public class ExceptionHandlerController {
     @ExceptionHandler(Throwable.class)
     public ErrorModelOutput handleThrowable(HttpServletRequest request, final Throwable ex) {
         LOGGER.log(Level.SEVERE, "", ex);
-        makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.INTERNAL_SERVER_ERROR.toString(), "Internal server error");
+        forServerLog(request, "Internal server error");
+        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.INTERNAL_SERVER_ERROR.toString(), "Internal server error");
         return new ErrorModelOutput("Internal server error.", "An unexpected internal server error occured.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
@@ -92,7 +93,8 @@ public class ExceptionHandlerController {
     @ExceptionHandler(value = {InternalException.class})
     protected ErrorModelOutput handleInternalException(HttpServletRequest request, DomainException ex) {
         LOGGER.log(Level.SEVERE, "", ex);
-        makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.BAD_REQUEST.toString(), ex.getDetail());
+        forServerLog(request, ex.getDetail());
+        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.BAD_REQUEST.toString(), ex.getDetail());
         return HttpExceptionMapper.map(ex, request, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -103,7 +105,8 @@ public class ExceptionHandlerController {
     @ExceptionHandler(value = {DomainException.class})
     protected ErrorModelOutput handleDomainException(HttpServletRequest request, DomainException ex) {
         LOGGER.log(Level.SEVERE, ex.getMessage());
-        makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.BAD_REQUEST.toString(), ex.getDetail());
+        forServerLog(request, ex.getDetail());
+        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.BAD_REQUEST.toString(), ex.getDetail());
         return HttpExceptionMapper.map(ex, request, HttpStatus.BAD_REQUEST);
     }
 
@@ -114,19 +117,14 @@ public class ExceptionHandlerController {
     @ExceptionHandler(value = {RepositoryException.class})
     protected ErrorModelOutput handleRepositoryException(HttpServletRequest request, RepositoryException ex) {
         LOGGER.log(Level.SEVERE, ex.getMessage());
-        makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.BAD_REQUEST.toString(), ex.getDetail());
+        forServerLog(request, ex.getDetail());
+        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.BAD_REQUEST.toString(), ex.getDetail());
         return HttpExceptionMapper.map(ex, request, HttpStatus.BAD_REQUEST);
     }
 
 
 
-
-
-    private void makeServerLog(String URI, User user, String status, String detail){
-        ServerLog serverLog = new ServerLog(null, LocalDateTime.now(), AccessType.USER, URI, user.getUserName(), LocalDateTime.now(),
-                status, detail);
-
-        serverLogService.createServerLog(serverLog);
-
+    private void forServerLog(HttpServletRequest request, String detail){
+        request.setAttribute("response_detail", detail);
     }
 }

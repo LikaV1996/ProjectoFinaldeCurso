@@ -30,23 +30,66 @@ public class LoggingInterceptor implements HandlerInterceptor {
         this.serverLogService = serverLogService;
     }
 
+
+    /*
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        String hi = "";
+        if(handler instanceof HandlerMethod){
+
+            //username
+            User user = (User) request.getAttribute("user");
+
+            //request_date
+            LocalDateTime request_date = (LocalDateTime) request.getAttribute("request_date");
+
+            //access_path
+            String access_path = request.getMethod().toUpperCase() + " : " + request.getRequestURI();
+
+            //status
+            HttpStatus httpStatus = HttpStatus.valueOf(response.getStatus());
+            String status = httpStatus.toString() + " " + httpStatus.getReasonPhrase();
+
+            //detail
+            String detail = (String) request.getAttribute("response_detail");   //TODO if detail is really needed (add detail to request as an attribute)
+
+
+
+            ServerLog serverLog = new ServerLog(null, request_date, AccessType.USER, access_path, user.getUserName(), LocalDateTime.now(),
+                    status, detail);
+            serverLogService.createServerLog(serverLog);
+
+        }
     }
+    */
+
+
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        if(handler instanceof HandlerMethod){
+        if(handler instanceof HandlerMethod) {
+
+
+            //username
             User user = (User) request.getAttribute("user");
 
-            String URI = request.getRequestURI();
-            String status = response.getStatus() +"";
+            //request_date
+            LocalDateTime request_date = (LocalDateTime) request.getAttribute("request_date");
 
-            ServerLog serverLog = new ServerLog(null, LocalDateTime.now(), AccessType.USER, URI, user.getUserName(), LocalDateTime.now(),
-                    status, null);
+            //access_path
+            String access_path = request.getMethod().toUpperCase() + " : " + request.getRequestURI();
 
+            //status
+            HttpStatus httpStatus = HttpStatus.valueOf(response.getStatus());
+            String status = httpStatus.toString() + " " + httpStatus.getReasonPhrase();
+
+            //detail
+            String detail = (String) request.getAttribute("response_detail");   //TODO if detail is really needed (add detail to request as an attribute)
+
+
+            ServerLog serverLog = new ServerLog(null, request_date, AccessType.USER, access_path, user.getUserName(), LocalDateTime.now(),
+                    status, detail);
             serverLogService.createServerLog(serverLog);
+
 
         }
     }

@@ -35,7 +35,7 @@ public class ServerLogRepository implements IServerLogRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    private static final String INSERT_POSTGRES = "INSERT INTO ServerLog (log_date, access_type, access_path, access_user, response_date, status, detail) VALUES (?, ?::AccessType, ?, ?, ?, ?, ?);";
+    private static final String INSERT_POSTGRES = "INSERT INTO ServerLog (log_date, access_type, access_path, access_user, response_date, status, detail) VALUES (?, ?::AccessType, ?, ?, ?, ?, ?) RETURNING id;";
     private static final String INSERT_MYSQL = "INSERT INTO ServerLog (log_date, access_type, access_path, access_user, response_date, status, detail) VALUES (?, ?, ?, ?, ?, ?, ?);";
     private static final String SELECT_BY_ID = "SELECT id, log_date AS logDate, access_type AS accessType, access_path AS accessPath, access_user AS accessUser, response_date AS responseDate, status, detail FROM ServerLog WHERE id = ?;";
     private static final String SELECT_ALL = "SELECT id, log_date AS logDate, access_type AS accessType, access_path AS accessPath, access_user AS accessUser, response_date AS responseDate, status, detail FROM ServerLog ORDER BY log_date ASC;";
@@ -69,15 +69,15 @@ public class ServerLogRepository implements IServerLogRepository {
     @Override
     public long add(ServerLogDao serverLogDao) {
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
+        if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
+            return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, serverLogDao.getLogDate(), serverLogDao.getAccessType(),  serverLogDao.getAccessPath(),
+                    serverLogDao.getAccessUser(), serverLogDao.getResponseDate(), serverLogDao.getStatus(), serverLogDao.getDetail());
+        }
+
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement statement = null;
-                if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
-                    statement = con.prepareStatement(INSERT_POSTGRES, new String[]{"id"});
-                } else { //mysql
-                    statement = con.prepareStatement(INSERT_MYSQL, new String[]{"id"});
-                }
+                PreparedStatement statement = con.prepareStatement(INSERT_MYSQL, new String[]{"id"});
                 statement.setTimestamp(1, serverLogDao.getLogDate());
                 statement.setString(2, serverLogDao.getAccessType());
                 statement.setString(3, serverLogDao.getAccessPath());

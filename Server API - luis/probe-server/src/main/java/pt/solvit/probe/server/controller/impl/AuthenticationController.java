@@ -39,9 +39,13 @@ public class AuthenticationController implements IAuthenticationController {
     private IServerLogService serverLogService;
 
     @Override
-    public ResponseEntity<Login> getLoginToken(@RequestBody InputLogin body) {
+    public ResponseEntity<Login> getLoginToken(HttpServletRequest request, @RequestBody InputLogin body) {
 
         body.validate();
+
+        User loggedInUser = new User(body.getUsername());
+        request.setAttribute("user", loggedInUser); //TODO for logging, is it worth logging the failed logins to this user?
+
         Login login = authenticationService.login(body.getUsername(), body.getPassword());
 
         //ServerLog serverLog = ControllerUtil.transformToServerLog(body.getUsername(), RequestMethod.POST, HttpStatus.OK, AppConfiguration.URL_LOGIN);

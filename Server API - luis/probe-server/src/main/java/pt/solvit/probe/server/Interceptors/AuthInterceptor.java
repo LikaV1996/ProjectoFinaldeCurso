@@ -13,6 +13,7 @@ import pt.solvit.probe.server.service.impl.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 import java.util.Base64;
 
 @Component
@@ -21,14 +22,10 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Autowired
     IAuthenticationService authenticationService;
 
-    public AuthInterceptor(){}/*IAuthenticationService authenticationService){
-        this.authenticationService = authenticationService;
-    }
-    */
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(handler instanceof HandlerMethod /*&& handler.method.declaringClass.isAnnotationPresent(ProtectedRoute::class.java)*/) {
+        if(handler instanceof HandlerMethod /*&& ((HandlerMethod) handler).getMethod().getDeclaringClass().isAnnotationPresent(NoAuthorizationRequired.class)*/ ) {
 
             String authHeader = request.getHeader("Authorization");
             if(authHeader != null) {

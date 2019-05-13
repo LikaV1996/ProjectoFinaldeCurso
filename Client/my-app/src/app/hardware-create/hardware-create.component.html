@@ -1,3 +1,32 @@
-<p>
-  hardware-create works!
-</p>
+<p></p>
+<div class="ui raised very padded text container segment">
+
+  <h2>Create Hardware</h2>
+        
+  <div>
+    <b>Serial Number:
+    <mat-form-field appearance="standard">
+    <input [(ngModel)]="serialNumber" matInput placeholder="Serial Number">
+    </mat-form-field>
+    </b>
+  </div>
+  
+  <div class="ui container segment" >
+    <h4>Components</h4>
+
+    <div>
+      <b>Component Type:
+      <mat-form-field appearance="standard">
+      <input [(ngModel)]="component.componentType" matInput placeholder="Component Type:">
+      </mat-form-field>
+      </b>
+    </div>
+
+  </div>  
+    
+  <div style="margin-top:30px;">
+      <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
+      <div class="ui suspend button" (click)="createHardware()" data-tooltip="Create Hardware">Create</div>
+  </div>
+    
+</div>

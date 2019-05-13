@@ -27,11 +27,12 @@ export class HardwareService {
     return this.http.get<Hardware>(getHardwareByIDUrl)
   }
 
-  /* to check!
-  createHardware(obu_name: string, obu_password: string){//verificar ****** 
-    return this.http.post<{obu: OBU}>(routes.createObu,{obu_name: obu_name, obu_password: obu_password, properties: "null", hardware_id:-1, current_config_id:-1,current_test_plan_id:-1 })
+  createHardware(serialNumber: string, properties: string){
+    return this.http.post<Hardware>(routes.createHardware,{serialNumber: serialNumber, properties://'\"components\":[]'
+      "\"components\" : [{\"serialNumber\" : \"MDBM1317392\",\"componentType\" : \"MOTHERBOARD\",\"manufacturer\" : \"Micro I/O\",\"model\" : \"MDB Monitor v1.3\"}]"
+    })
   }
-  */
+  
 
   /* to check!
   updateHardware(id: number, hardware_id : number ,obu_name: String, properties: String){

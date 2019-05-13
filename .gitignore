@@ -1,0 +1,59 @@
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+Server API - luis/probe-server/.idea/**/workspace.xml
+Server API - luis/probe-server/.idea/**/tasks.xml
+Server API - luis/probe-server/.idea/**/usage.statistics.xml
+Server API - luis/probe-server/.idea/**/dictionaries
+Server API - luis/probe-server/.idea/**/shelf
+
+# Generated files
+Server API - luis/probe-server/.idea/**/contentModel.xml
+
+# Sensitive or high-churn files
+Server API - luis/probe-server/.idea/**/dataSources/
+Server API - luis/probe-server/.idea/**/dataSources.ids
+Server API - luis/probe-server/.idea/**/dataSources.local.xml
+Server API - luis/probe-server/.idea/**/sqlDataSources.xml
+Server API - luis/probe-server/.idea/**/dynamic.xml
+Server API - luis/probe-server/.idea/**/uiDesigner.xml
+Server API - luis/probe-server/.idea/**/dbnavigator.xml
+
+# Gradle
+Server API - luis/probe-server/.idea/**/gradle.xml
+Server API - luis/probe-server/.idea/**/libraries
+
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+# .idea/modules.xml
+# .idea/*.iml
+# .idea/modules
+# *.iml
+# *.ipr
+
+# CMake
+Server API - luis/probe-server/cmake-build-*/
+
+# Mongo Explorer plugin
+Server API - luis/probe-server/.idea/**/mongoSettings.xml
+
+# File-based project format
+*.iws
+
+# IntelliJ
+Server API - luis\probe-server\out/
+
+# mpeltonen/sbt-idea plugin
+Server API - luis/probe-server/.idea_modules/
+
+# Editor-based Rest Client
+Server API - luis/probe-server/.idea/httpRequests
+
+# Android studio 3.1+ serialized cache file
+Server API - luis/probe-server/.idea/caches/build_file_checksums.ser
+
+# Spring
+Server API - luis/probe-server/target

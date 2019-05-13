@@ -3,6 +3,10 @@
 
 # User-specific stuff
 Server API - luis/probe-server/.idea/**/workspace.xml
+Server API - luis/probe-server/.idea/**/compiler.xml
+Server API - luis/probe-server/.idea/**/vcs.xml
+Server API - luis/probe-server/.idea/**/misc.xml
+Server API - luis/probe-server/.idea/**/encodings.xml
 Server API - luis/probe-server/.idea/**/tasks.xml
 Server API - luis/probe-server/.idea/**/usage.statistics.xml
 Server API - luis/probe-server/.idea/**/dictionaries
@@ -56,4 +60,5 @@ Server API - luis/probe-server/.idea/httpRequests
 Server API - luis/probe-server/.idea/caches/build_file_checksums.ser
 
 # Spring
-Server API - luis/probe-server/target
+Server API - luis/probe-server/target/**/classes
+Server API - luis/probe-server/target/**/generated-sources

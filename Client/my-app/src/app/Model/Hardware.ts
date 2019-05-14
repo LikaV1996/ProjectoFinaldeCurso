@@ -1,7 +1,7 @@
 export class Hardware{
     id: number
     serialNumber: string
-    properties: string
+    components
     creator: string
     creationDate: Date
     modifier: string

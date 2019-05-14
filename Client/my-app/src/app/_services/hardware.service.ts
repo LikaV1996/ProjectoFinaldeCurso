@@ -29,20 +29,13 @@ export class HardwareService {
   }
 
   createHardware(serialNumber: string, components){
-    //console.log("properties:    " + properties)
-    console.log("stringify : " + JSON.stringify({components : [{serialNumber : "MDBM1317392",componentType : "MOTHERBOARD",manufacturer : "Micro I/O",model : "MDB Monitor v1.3"}]}))
-    return this.http.post<Hardware>(routes.createHardware,{serialNumber: serialNumber, components: components//JSON.parse(properties)//'\"components\":[]'
-    //[{serialNumber : "MDBM1317392",componentType : "MOTHERBOARD",manufacturer : "Micro I/O",model : "MDB Monitor v1.3"}]
-    //"components : [{serialNumber : MDBM1317392,componentType : MOTHERBOARD,manufacturer : Micro I/O,model : MDB Monitor v1.3}]"
-    })
+    return this.http.post<Hardware>(routes.createHardware,{serialNumber: serialNumber, components: components})
+}
+  
+  updateHardware(id: number, serialNumber: string, components){
+    const updateHardwareById = routes.updateHardware.replace(":id", id.toString());
+    return this.http.put<Hardware>(updateHardwareById, {serialNumber: serialNumber, components: components})
   }
   
-
-  /* to check!
-  updateHardware(id: number, hardware_id : number ,obu_name: String, properties: String){
-    const updateObuById = routes.updateObu.replace(":id", id.toString());
-    return this.http.put<OBU>(updateObuById, {hardwareId: hardware_id, obuName: obu_name, properties: properties})
-  }
-  */
 
 }

@@ -27,13 +27,6 @@ class componentObj {
 export class HardwareCreateComponent implements OnInit {
 
   private serialNumber: string;
-  //private properties: object;
-
-  private properties = {
-    "components" : []
-  };
-
-  //private component = new componentObj();
 
   component = {
     componentType: "",
@@ -45,9 +38,7 @@ export class HardwareCreateComponent implements OnInit {
   }; 
   
 
-  private components = [
-    //this.component
-  ];
+  private components = [ ];
 
   constructor(
     private router: Router,
@@ -58,7 +49,7 @@ export class HardwareCreateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    //this.component = new componentObj
+
   }
 
   goBack(){
@@ -67,21 +58,19 @@ export class HardwareCreateComponent implements OnInit {
 
   createHardware(){
     console.log("creating hardware")
-    //console.log("COMPONENTE:  " + JSON.stringify(this.component))
-    //this.properties.components.push(this.component)
-    console.log("COMPONENTESSSSS:  " + JSON.stringify(this.properties))
-    this._hardwareService.createHardware(this.serialNumber, this.components)//"\"components\" : [{\"serialNumber\" : \"MDBM1317392\",\"componentType\" : \"MOTHERBOARD\",\"manufacturer\" : \"Micro I/O\",\"model\" : \"MDB Monitor v1.3\"}]")
+    this.components.forEach(element => {
+      element.componentType=element.componentType.toUpperCase();
+    });
+    this._hardwareService.createHardware(this.serialNumber, this.components)
     .subscribe(hardware => {
       console.log(JSON.stringify(hardware))
-      //this.obu = obu
-      //this.users.push(userObj.user)
       alert("Hardware created!")
+      this.goBack();
       console.log("Hardware created!")
     })
   }
 
   addComponent(){
-    
     this.components.push({
       componentType: "",
       serialNumber: "",
@@ -90,26 +79,11 @@ export class HardwareCreateComponent implements OnInit {
       modemType: "",
       imei: ""
     })
-
-    /*
-    this.component = {
-      componentType: "",
-      serialNumber: "",
-      manufacturer: "",
-      model: "",
-      modemType: "",
-      imei: ""
-    }; 
-    */
-    console.log("components:" + JSON.stringify(this.components))
-    
-    //this.component = { componentType : ""}
-    //this.component = new componentObj();
+    //console.log("components:" + JSON.stringify(this.components))
   }
 
   deleteComponent(comp){
     this.components = this.components.filter(obj => obj !== comp);
-    console.log("components:" + JSON.stringify(this.components))
   }
 
 }

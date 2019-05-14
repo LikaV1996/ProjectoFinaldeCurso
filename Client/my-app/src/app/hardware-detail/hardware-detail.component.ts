@@ -26,31 +26,45 @@ export class HardwareDetailComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
-    
+
     this._hardwareService.getHardwareByID(this.id).subscribe(hardware => {
-
-     this.hardware = hardware
-     console.log(JSON.stringify(hardware))
-
+      this.hardware = hardware
    })
   }
 
   goBack(){
     this._location.back();
   }
-
-  /* falta fazer quando a rota de update tiver boa!
+  
   saveChanges(){
     console.log("updating hardware")
-    this._hardwareService.updateHardware(this.obu.id, this.obu.hardwareId, this.obu.obuName, this.obu.properties)
-    .subscribe(obu => {
-      console.log(JSON.stringify(obu))
-      this.obu = obu
-      //this.users.push(userObj.user)
-      alert("Obu updated!")
-      console.log("obu updated")
+    this.hardware.components.forEach(element => {
+      element.componentType=element.componentType.toUpperCase();
+    });
+    this._hardwareService.updateHardware(this.hardware.id, this.hardware.serialNumber, this.hardware.components)
+    .subscribe(hardware => {
+      console.log('Hardware: ' + JSON.stringify(hardware))
+      this.hardware = hardware
+      alert("Hardware updated!")
+      this.goBack()
+      console.log("Hardware updated")
     })
   }
-  */
+
+  addComponent(){
+    this.hardware.components.push({
+      componentType: "",
+      serialNumber: "",
+      manufacturer: "",
+      model: "",
+      modemType: "",
+      imei: ""
+    })
+    //console.log("components:" + JSON.stringify(this.components))
+  }
+
+  deleteComponent(comp){
+    this.hardware.components = this.hardware.components.filter(obj => obj !== comp);
+  }
 
 }

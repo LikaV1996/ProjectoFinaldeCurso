@@ -14,7 +14,6 @@
   <div class="ui container segment" >
     <h4>Components</h4>
 
-    <!--<div *ngIf="components.length!=0"  >  -->
     <div class="ui segment" *ngFor="let comp of components">
     
     <div>
@@ -66,10 +65,8 @@
     </div>
     
     <button class="ui primary button" (click)="deleteComponent(comp)" data-tooltip="Delete Component"> Delete Component</button>
-    
 
     </div>
-    <!--</div>--> 
     
     <button class="ui primary button" (click)="addComponent()" data-tooltip="Add Component"> Add Component</button>
     

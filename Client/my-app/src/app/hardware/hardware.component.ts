@@ -29,6 +29,7 @@ export class HardwareComponent implements OnInit {
     this._hardwareService.getHardwares()
     .subscribe(hardwares => {
       this.hardwares = hardwares
+      this.orderById()
     });
   }
 
@@ -42,6 +43,10 @@ export class HardwareComponent implements OnInit {
   
   edit(id: number){
     this.router.navigate(['home/hardware/'+id+'/edit']);
+  }
+
+  orderById(){
+    this.hardwares.sort( (h1,h2)=> h1.id - h2.id)
   }
 
 

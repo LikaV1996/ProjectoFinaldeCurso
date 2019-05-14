@@ -60,7 +60,7 @@ public interface IObuController {
             consumes = {MediaType.APPLICATION_JSON_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> createObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
+    public ResponseEntity<Obu> createObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @RequestBody InputObu body);
 
     @ApiOperation(value = "Returns a obu", tags = {"Obu",})

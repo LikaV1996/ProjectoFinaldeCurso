@@ -62,7 +62,7 @@ public class ObuController implements IObuController {
     }
 
     @Override
-    public ResponseEntity<Void> createObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
+    public ResponseEntity<Obu> createObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @RequestBody InputObu body) {
 
         User user = (User) request.getAttribute("user");
@@ -77,7 +77,7 @@ public class ObuController implements IObuController {
 
         URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_OBU_ID, obuId);
 
-        return ResponseEntity.created(createdURI).build();
+        return ResponseEntity.created(createdURI).body(obu);
     }
 
     @Override

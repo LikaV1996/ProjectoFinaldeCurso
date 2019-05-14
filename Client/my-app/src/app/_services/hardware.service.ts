@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Routes } from "../httproutes"
+import { stringify } from '@angular/core/src/render3/util';
 
 
 const routes = new Routes
@@ -27,9 +28,12 @@ export class HardwareService {
     return this.http.get<Hardware>(getHardwareByIDUrl)
   }
 
-  createHardware(serialNumber: string, properties: string){
-    return this.http.post<Hardware>(routes.createHardware,{serialNumber: serialNumber, properties://'\"components\":[]'
-      "\"components\" : [{\"serialNumber\" : \"MDBM1317392\",\"componentType\" : \"MOTHERBOARD\",\"manufacturer\" : \"Micro I/O\",\"model\" : \"MDB Monitor v1.3\"}]"
+  createHardware(serialNumber: string, components){
+    //console.log("properties:    " + properties)
+    console.log("stringify : " + JSON.stringify({components : [{serialNumber : "MDBM1317392",componentType : "MOTHERBOARD",manufacturer : "Micro I/O",model : "MDB Monitor v1.3"}]}))
+    return this.http.post<Hardware>(routes.createHardware,{serialNumber: serialNumber, components: components//JSON.parse(properties)//'\"components\":[]'
+    //[{serialNumber : "MDBM1317392",componentType : "MOTHERBOARD",manufacturer : "Micro I/O",model : "MDB Monitor v1.3"}]
+    //"components : [{serialNumber : MDBM1317392,componentType : MOTHERBOARD,manufacturer : Micro I/O,model : MDB Monitor v1.3}]"
     })
   }
   

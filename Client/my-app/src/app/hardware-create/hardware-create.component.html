@@ -14,14 +14,65 @@
   <div class="ui container segment" >
     <h4>Components</h4>
 
+    <!--<div *ngIf="components.length!=0"  >  -->
+    <div class="ui segment" *ngFor="let comp of components">
+    
+    <div>
+      <b>Serial Number:
+        <mat-form-field appearance="standard">
+        <input [(ngModel)]="comp.serialNumber" matInput placeholder="Serial Number">
+        </mat-form-field>
+        </b>
+    </div>
+    
     <div>
       <b>Component Type:
       <mat-form-field appearance="standard">
-      <input [(ngModel)]="component.componentType" matInput placeholder="Component Type:">
+      <input [(ngModel)]="comp.componentType" matInput placeholder="Component Type:">
       </mat-form-field>
       </b>
+    </div> 
+
+    <div>
+        <b>Manufacturer:
+        <mat-form-field appearance="standard">
+        <input [(ngModel)]="comp.manufacturer" matInput placeholder="Manufacturer">
+        </mat-form-field>
+        </b>
+    </div> 
+
+    <div>
+        <b>Model:
+        <mat-form-field appearance="standard">
+        <input [(ngModel)]="comp.model" matInput placeholder="Model">
+        </mat-form-field>
+        </b>
     </div>
 
+    <div *ngIf="comp.componentType.toLowerCase()=='modem' ">
+      <b>Modem Type
+        <mat-form-field appearance="standard">
+        <input [(ngModel)]="comp.modemType" matInput placeholder="Modem Type">
+        </mat-form-field>
+        </b>
+    </div>
+
+    <div *ngIf="comp.componentType.toLowerCase()=='modem' ">
+      <b>Imei:
+        <mat-form-field appearance="standard">
+        <input [(ngModel)]="comp.imei" matInput placeholder="Imei">
+        </mat-form-field>
+        </b>
+    </div>
+    
+    <button class="ui primary button" (click)="deleteComponent(comp)" data-tooltip="Delete Component"> Delete Component</button>
+    
+
+    </div>
+    <!--</div>--> 
+    
+    <button class="ui primary button" (click)="addComponent()" data-tooltip="Add Component"> Add Component</button>
+    
   </div>  
     
   <div style="margin-top:30px;">

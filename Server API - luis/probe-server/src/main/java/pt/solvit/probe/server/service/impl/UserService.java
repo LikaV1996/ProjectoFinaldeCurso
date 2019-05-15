@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
+import pt.solvit.probe.server.controller.model.input.InputUser;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.repository.model.UserDao;
@@ -34,16 +35,36 @@ public class UserService implements IUserService {
     private IUserRepository userRepository;
 
     @Override
-    public long createUser(User user) {
-        checkIfUserAlreadyExists(user.getUserName());
+    public long createUser(InputUser input, User loggedInUser) {
+
+        checkIfUserAlreadyExists(input.getUserName());
+
+        User addUser = User.makeUser(input, loggedInUser.getUserName());
+
+        checkLoggedInUserPermissionsHigherThanUser(loggedInUser, addUser);
 
         LOGGER.log(Level.INFO, "Creating new user");
-        UserDao userDao = User.transformToUserDao(user);
+        UserDao userDao = User.transformToUserDao(addUser);
         return userRepository.add(userDao);
     }
 
     @Override
-    public User getUser(long userId) {
+    public void updateUser(User userToUpdate, InputUser input, User loggedInUser) {
+        checkLoggedInUserPermissionsHigherThanUser(loggedInUser, userToUpdate);
+
+        if (input.getUserName() != null && !input.getUserName().equals( userToUpdate.getUserName() ) )
+            checkIfUserAlreadyExists(userToUpdate.getUserName());
+
+        userToUpdate = User.updateUser(userToUpdate, input, loggedInUser);
+
+        LOGGER.log(Level.INFO, "Updating user {0}", userToUpdate.getUserName());
+        userRepository.updateByID( User.transformToUserDao(userToUpdate) );
+    }
+
+    @Override
+    public User getUser(long userId, User loggedInUser) {
+        checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER);
+
         LOGGER.log(Level.INFO, "Finding user {0}", userId);
         UserDao userDao = userRepository.findById(userId);
         return UserDao.transformToUser(userDao);
@@ -51,7 +72,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(User loggedInUser) {
+        checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER);
+
         LOGGER.log(Level.INFO, "Finding all users");
         List<UserDao> userList = userRepository.findAll();
         return ServiceUtil.map(userList, UserDao::transformToUser); //make sure doesn't blow up (previously -> this::transformToUser     function was in this class)
@@ -59,7 +82,7 @@ public class UserService implements IUserService {
 
     @Override
     public void deleteUser(long userId, User loggedInUser) {
-        checkUserPermissions(loggedInUser, UserProfile.ADMIN);
+        checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN);
 
         LOGGER.log(Level.INFO, "Checking if user {0} exists", userId);
         UserDao userDao = userRepository.findById(userId);
@@ -73,15 +96,15 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void suspendUser(User suspendedUser, User loggedInUser) {
-        checkUserPermissionsForUpdate(suspendedUser, loggedInUser);
+    public void suspendUser(User userToSuspend, User loggedInUser) {
+        checkLoggedInUserPermissionsHigherThanUser(loggedInUser, userToSuspend);
 
-        LOGGER.log(Level.INFO, "Suspending user {0}", suspendedUser.getId());
+        LOGGER.log(Level.INFO, "Suspending user {0}", userToSuspend.getId());
 
-        suspendedUser.setModifier( loggedInUser.getUserName() );
-        suspendedUser.setSuspended( !suspendedUser.getSuspended() );
+        userToSuspend = User.updateUser(userToSuspend, null, loggedInUser);
+        userToSuspend.setSuspended( !userToSuspend.getSuspended() );
 
-        userRepository.updateByID(User.transformToUserDao(suspendedUser));
+        userRepository.updateByID( User.transformToUserDao(userToSuspend) );
     }
 
 
@@ -115,18 +138,26 @@ public class UserService implements IUserService {
     }
     */
 
+    //@Override
+    //public void checkUserPermissionsForUpdate(User user, User loggedInUser) {
+    //    LOGGER.log(Level.INFO, "Checking user {0} permissions", user.getUserName());
+    //    if (user.getUserProfile().getLevel() >= loggedInUser.getUserProfile().getLevel()) {
+    //        throw new PermissionException();
+    //    }
+    //}
+
     @Override
-    public void checkUserPermissionsForUpdate(User user, User loggedInUser) {
-        LOGGER.log(Level.INFO, "Checking user {0} permissions", user.getUserName());
-        if (user.getUserProfile().getLevel() >= loggedInUser.getUserProfile().getLevel()) {
+    public void checkLoggedInUserPermissions(User loggedInUser, UserProfile requiredProfile) {
+        LOGGER.log(Level.INFO, "Checking user {0} permissions", loggedInUser.getUserName());
+        if ( loggedInUser.getUserProfile().getLevel() < requiredProfile.getLevel() ){
             throw new PermissionException();
         }
     }
 
     @Override
-    public void checkUserPermissions(User loggedInUser, UserProfile requiredProfile) {
+    public void checkLoggedInUserPermissionsHigherThanUser(User loggedInUser, User user) {
         LOGGER.log(Level.INFO, "Checking user {0} permissions", loggedInUser.getUserName());
-        if (loggedInUser.getUserProfile().getLevel() < requiredProfile.getLevel()) {
+        if ( loggedInUser.getUserProfile().getLevel() <= user.getUserProfile().getLevel() ){
             throw new PermissionException();
         }
     }

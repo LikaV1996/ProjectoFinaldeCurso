@@ -5,7 +5,6 @@
  */
 package pt.solvit.probe.server.service.impl;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,14 +17,12 @@ import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.enums.EntityType;
 import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.model.enums.UserProfile;
-import pt.solvit.probe.server.model.properties.HardwareProperties;
 import pt.solvit.probe.server.repository.model.HardwareDao;
 import pt.solvit.probe.server.service.impl.util.ServiceUtil;
 import pt.solvit.probe.server.service.api.IHardwareService;
 import pt.solvit.probe.server.repository.api.IHardwareRepository;
 import pt.solvit.probe.server.service.api.IObuService;
 import pt.solvit.probe.server.service.exception.impl.EntityOnUseException;
-import static pt.solvit.probe.server.util.ServerUtil.GSON;
 
 /**
  *
@@ -74,7 +71,7 @@ public class HardwareService implements IHardwareService {
         LOGGER.log(Level.INFO, "Checking if hardware {0} exists", hardwareId);
         HardwareDao hardwareDao = hardwareRepository.findById(hardwareId);
 
-        userService.checkUserPermissions(user, UserProfile.SUPER_USER);
+        userService.checkLoggedInUserPermissions(user, UserProfile.SUPER_USER);
 
         verifyHardwareOnUseCondition(hardwareId);
 

@@ -26,17 +26,20 @@ public class InputUser {
     private static final Logger LOGGER = Logger.getLogger(InputUser.class.getName());
 
     @JsonProperty("userName")
-    @NotNull(message = "An userName must be provided.")
+    //@NotNull(message = "An userName must be provided.")
     private String userName;
 
     @JsonProperty("userPassword")
-    @NotNull(message = "An userPassword must be provided.")
+    //@NotNull(message = "An userPassword must be provided.")
     private String userPassword;
 
-
     @JsonProperty("userProfile")
-    @NotNull(message = "An userProfile must be provided.")
+    //@NotNull(message = "An userProfile must be provided.")
     private String userProfile;
+
+    @JsonProperty("suspended")
+    //@NotNull(message = "An userProfile must be provided.")
+    private Boolean suspended;
 
 
     @ApiModelProperty(example = "username", required = true, value = "User name")
@@ -59,8 +62,13 @@ public class InputUser {
         }
     }
 
+    @ApiModelProperty(example = "true", required = true, value = "Suspended", allowableValues = "true, false")
+    public Boolean getSuspended() {
+        return suspended;
+    }
+
     @ApiModelProperty(hidden = true)
-    public void validate() {
+    public void validateForCreate() {
         if (userName == null) {
             throw new BadRequestException("Invalid user.", "UserName is null.", "string", "about:blank");
         }
@@ -71,6 +79,16 @@ public class InputUser {
             throw new BadRequestException("Invalid user.", "UserProfile is null.", "string", "about:blank");
         }
         if (getUserProfile() == null) {
+            throw new BadRequestException("Invalid user.", "Invalid userProfile.", "string", "about:blank");
+        }
+    }
+
+    @ApiModelProperty(hidden = true)
+    public void validateForUpdate() {
+        if (userName == null && userPassword == null && userProfile == null && suspended == null) {
+            throw new BadRequestException("Invalid user.", "All fields are null.", "JSON object", "about:blank");
+        }
+        if (userProfile != null && getUserProfile() == null) {
             throw new BadRequestException("Invalid user.", "Invalid userProfile.", "string", "about:blank");
         }
     }

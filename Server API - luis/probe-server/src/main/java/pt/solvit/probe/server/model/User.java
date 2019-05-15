@@ -95,6 +95,23 @@ public class User extends CreatorModel {
                 creator, LocalDateTime.now(), null, null, false);
     }
 
+    public static User updateUser(User updatedUser, InputUser updatedFields, User modifier){
+        if(updatedFields != null) {
+            if (updatedFields.getUserName() != null)
+                updatedUser.setUserName(updatedFields.getUserName());
+
+            if (updatedFields.getUserPassword() != null)
+                updatedUser.setUserPassword(updatedFields.getUserPassword());
+
+            if (updatedFields.getUserProfile() != null)
+                updatedUser.setUserProfile(updatedFields.getUserProfile());
+        }
+
+        updatedUser.setModifier( modifier.getUserName() );
+
+        return updatedUser;
+    }
+
 
     public static UserDao transformToUserDao(User user) {
         return new UserDao(user.getId(), user.getUserName(), user.getUserPassword(), user.getUserProfile().name(),

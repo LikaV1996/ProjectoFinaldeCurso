@@ -5,7 +5,6 @@
  */
 package pt.solvit.probe.server.service.impl;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,7 +13,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import pt.solvit.probe.server.controller.exception.BadRequestException;
 import pt.solvit.probe.server.model.Config;
-import pt.solvit.probe.server.model.properties.ConfigProperties;
 import pt.solvit.probe.server.model.ObuConfig;
 import pt.solvit.probe.server.model.properties.ObuConfigProperties;
 import pt.solvit.probe.server.model.User;
@@ -79,7 +77,7 @@ public class ConfigService implements IConfigService {
         ConfigDao configDao = configRepository.findById(configId);
 
         try {
-            userService.checkUserPermissions(user, UserProfile.SUPER_USER);
+            userService.checkLoggedInUserPermissions(user, UserProfile.SUPER_USER);
         } catch (PermissionException e) {
             userOwnsConfig(configDao, user);
         }

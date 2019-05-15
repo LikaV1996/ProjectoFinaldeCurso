@@ -7,14 +7,10 @@ package pt.solvit.probe.server.controller.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import pt.solvit.probe.server.config.AppConfiguration;
 import pt.solvit.probe.server.controller.api.IServerLogController;
-import pt.solvit.probe.server.controller.impl.util.ControllerUtil;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.ServerLog;
 import pt.solvit.probe.server.model.enums.AccessType;
@@ -34,8 +30,7 @@ public class ServerLogController implements IServerLogController {
     private static final String STATUS = "Status";
     private static final String DETAILS = "Details";
 
-    @Autowired
-    private IUserService userService;
+
     @Autowired
     private IServerLogService serverLogService;
 
@@ -86,9 +81,7 @@ public class ServerLogController implements IServerLogController {
 
         User user = (User) request.getAttribute("user");
 
-        userService.checkUserPermissions(user, UserProfile.SUPER_USER);
-
-        serverLogService.deleteAllServerLogs();
+        serverLogService.deleteAllServerLogs(user);
 
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.DELETE, HttpStatus.OK, AppConfiguration.URL_SERVER_LOG);
         //serverLogService.createServerLog(serverLog);

@@ -107,7 +107,7 @@ public class TestPlanService implements ITestPlanService {
         TestPlanDao testPlanDao = testPlanRepository.findById(testPlanId);
 
         try {
-            userService.checkUserPermissions(user, UserProfile.SUPER_USER);
+            userService.checkLoggedInUserPermissions(user, UserProfile.SUPER_USER);
         } catch (PermissionException e) {
             userOwnsTestPlan(testPlanDao, user);
         }

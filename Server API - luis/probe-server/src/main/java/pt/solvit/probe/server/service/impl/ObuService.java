@@ -5,36 +5,23 @@
  */
 package pt.solvit.probe.server.service.impl;
 
-import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
-import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import pt.solvit.probe.server.controller.exception.UnauthorizedException;
-import pt.solvit.probe.server.model.Config;
-import pt.solvit.probe.server.model.Hardware;
 import pt.solvit.probe.server.model.Obu;
-import pt.solvit.probe.server.model.properties.ObuProperties;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.enums.EntityType;
 import pt.solvit.probe.server.model.enums.ObuState;
 import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.repository.model.ObuDao;
 import pt.solvit.probe.server.repository.api.IObuRepository;
-import pt.solvit.probe.server.repository.exception.impl.EntityWithIdNotFoundException;
 import pt.solvit.probe.server.service.api.IObuService;
-import static pt.solvit.probe.server.util.ServerUtil.GSON;
 import pt.solvit.probe.server.service.impl.util.ServiceUtil;
-import pt.solvit.probe.server.service.api.IHardwareService;
 import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.service.exception.impl.EntityOwnershipException;
 import pt.solvit.probe.server.service.exception.impl.ObuActiveException;
-import pt.solvit.probe.server.service.exception.impl.ObuNotRegisteredException;
 import pt.solvit.probe.server.service.exception.impl.PermissionException;
 
 /**
@@ -89,7 +76,7 @@ public class ObuService implements IObuService {
         ObuDao obuDao = obuRepository.findById(obuId);
 
         try {
-            userService.checkUserPermissions(user, UserProfile.SUPER_USER);
+            userService.checkLoggedInUserPermissions(user, UserProfile.SUPER_USER);
         } catch (PermissionException e) {
             userOwnsObu(obuDao, user);
         }

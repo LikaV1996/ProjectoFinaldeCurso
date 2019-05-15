@@ -6,6 +6,8 @@
 package pt.solvit.probe.server.service.api;
 
 import java.util.List;
+
+import pt.solvit.probe.server.controller.model.input.InputUser;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.enums.UserProfile;
 
@@ -15,18 +17,21 @@ import pt.solvit.probe.server.model.enums.UserProfile;
  */
 public interface IUserService {
 
-    public long createUser(User user);
+    public long createUser(InputUser input, User loggedInUser);
 
-    public User getUser(long userId);
+    public void updateUser(User userToUpdate, InputUser input, User loggedInUser);
 
-    public List<User> getAllUsers();
+    public User getUser(long userId, User loggedInUser);
+
+    public List<User> getAllUsers(User loggedInUser);
 
     public void deleteUser(long userId, User loggedInUser);
 
-    public void suspendUser(User suspendedUser, User loggedInUser);
+    public void suspendUser(User userToSuspend, User loggedInUser);
 
     //public User checkUserCredentials(String authorization);
 
-    public void checkUserPermissionsForUpdate(User user, User loggedInUser);
-    public void checkUserPermissions(User loggedInUser, UserProfile requiredProfile);
+    public void checkLoggedInUserPermissions(User loggedInUser, UserProfile requiredProfile);
+
+    public void checkLoggedInUserPermissionsHigherThanUser(User loggedInUser, User user);
 }

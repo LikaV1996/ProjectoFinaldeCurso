@@ -6,22 +6,17 @@
 package pt.solvit.probe.server.controller.impl;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.config.AppConfiguration;
 import pt.solvit.probe.server.controller.api.IUserController;
-import pt.solvit.probe.server.controller.impl.util.ControllerUtil;
 import pt.solvit.probe.server.controller.impl.util.UriBuilder;
 import pt.solvit.probe.server.controller.model.input.InputUser;
 import pt.solvit.probe.server.model.User;
-import pt.solvit.probe.server.model.ServerLog;
 import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.service.api.IServerLogService;
 import pt.solvit.probe.server.service.api.IUserService;
@@ -41,7 +36,7 @@ public class UserController implements IUserController {
 
         User user = (User) request.getAttribute("user");
 
-        List<User> userList = userService.getAllUsers();
+        List<User> userList = userService.getAllUsers(user);
 
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_GET_USERS);
         //serverLogService.createServerLog(serverLog);
@@ -54,12 +49,10 @@ public class UserController implements IUserController {
 
         User user = (User) request.getAttribute("user");
 
-        userService.checkUserPermissions(user, UserProfile.ADMIN);
+        body.validateForCreate();
+        long userId = userService.createUser(body, user);
 
-        body.validate();
-        User addUser = User.makeUser(body, user.getUserName());
-        long userId = userService.createUser(addUser);
-
+        User addUser = userService.getUser(userId, user);
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_GET_USERS);
         //serverLogService.createServerLog(serverLog);
 
@@ -69,16 +62,33 @@ public class UserController implements IUserController {
     }
 
     @Override
+    public ResponseEntity<User> updateUser(HttpServletRequest request, @PathVariable("user-id") long userId, @RequestBody InputUser body) {
+
+        User user = (User) request.getAttribute("user");
+
+        body.validateForUpdate();
+        User updateUser = userService.getUser(userId, user);
+
+        userService.updateUser(updateUser, body, user);
+
+        updateUser = userService.getUser(userId, user);
+        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_GET_USERS);
+        //serverLogService.createServerLog(serverLog);
+
+        return ResponseEntity.ok().body(updateUser);
+    }
+
+    @Override
     public ResponseEntity<User> getUser(HttpServletRequest request, @PathVariable("user-id") long userId) {
 
         User user = (User) request.getAttribute("user");
 
-        User getUser = userService.getUser(userId);
+        User getUser = userService.getUser(userId, user);
 
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_GET_USER_BY_ID, userId);
         //serverLogService.createServerLog(serverLog);
 
-        return ResponseEntity.ok(getUser);
+        return ResponseEntity.ok().body(getUser);
     }
 
     @Override
@@ -99,11 +109,11 @@ public class UserController implements IUserController {
 
         User user = (User) request.getAttribute("user");
 
-        User suspendedUser = userService.getUser(userId);
+        User suspendedUser = userService.getUser(userId, user);
 
         userService.suspendUser(suspendedUser, user);
 
-        suspendedUser = userService.getUser(userId);
+        suspendedUser = userService.getUser(userId, user);
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.DELETE, HttpStatus.OK, AppConfiguration.URL_GET_USER_BY_ID, userId);
         //serverLogService.createServerLog(serverLog);
 

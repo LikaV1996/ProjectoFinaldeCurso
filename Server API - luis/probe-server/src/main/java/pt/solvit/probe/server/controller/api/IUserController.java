@@ -73,6 +73,23 @@ public interface IUserController {
     )
     public ResponseEntity<User> createUser(HttpServletRequest request, @RequestBody InputUser body);
 
+
+    @ApiOperation(value = "Updates a user", tags = {"User",})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 200, message = "The user was successfully suspended."),
+                    @ApiResponse(code = 401, message = "There was an error with authentication."),
+                    @ApiResponse(code = 404, message = "The user with the requested id was not found.")
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.PUT,
+            value = AppConfiguration.URL_UPDATE_USER_WITH_ID,
+            produces = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<User> updateUser(HttpServletRequest request, @PathVariable("user-id") long userId, @RequestBody InputUser body);
+
+
     @ApiOperation(value = "Deletes a user", tags = {"User",})
     @ApiResponses(
             value = {

@@ -7,6 +7,7 @@ package pt.solvit.probe.server.service.api;
 
 import java.util.List;
 import pt.solvit.probe.server.model.ServerLog;
+import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.enums.AccessType;
 
 /**
@@ -23,7 +24,7 @@ public interface IServerLogService {
 
     public List<ServerLog> getServerLogsByType(AccessType accessType);
 
-    public void deleteAllServerLogs();
+    public void deleteAllServerLogs(User user);
 
     public void updateServerLog(ServerLog serverLog);
 }

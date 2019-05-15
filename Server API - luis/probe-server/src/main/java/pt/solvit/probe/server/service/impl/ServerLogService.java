@@ -14,10 +14,13 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.solvit.probe.server.model.ServerLog;
+import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.enums.AccessType;
+import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.repository.api.IServerLogRepository;
 import pt.solvit.probe.server.repository.model.ServerLogDao;
 import pt.solvit.probe.server.service.api.IServerLogService;
+import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.service.impl.util.ServiceUtil;
 
 /**
@@ -28,6 +31,9 @@ import pt.solvit.probe.server.service.impl.util.ServiceUtil;
 public class ServerLogService implements IServerLogService {
 
     private static final Logger LOGGER = Logger.getLogger(ServerLogService.class.getName());
+
+    @Autowired
+    private IUserService userService;
 
     @Autowired
     private IServerLogRepository serverLogRepository;
@@ -61,7 +67,9 @@ public class ServerLogService implements IServerLogService {
     }
 
     @Override
-    public void deleteAllServerLogs() {
+    public void deleteAllServerLogs(User user) {
+        userService.checkLoggedInUserPermissions(user, UserProfile.ADMIN);
+
         LOGGER.log(Level.INFO, "Deleting all server logs");
         serverLogRepository.deleteAll();
     }

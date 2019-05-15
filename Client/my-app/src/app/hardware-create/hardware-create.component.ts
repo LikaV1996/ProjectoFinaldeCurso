@@ -58,6 +58,12 @@ export class HardwareCreateComponent implements OnInit {
 
   createHardware(){
     console.log("creating hardware")
+    
+    if(!this.serialNumber){ 
+      alert("Serial Number is required!")
+      return
+     }
+     
     this.components.forEach(element => {
       element.componentType=element.componentType.toUpperCase();
     });

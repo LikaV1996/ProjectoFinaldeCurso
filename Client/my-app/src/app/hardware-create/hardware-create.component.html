@@ -6,7 +6,7 @@
   <div>
     <b>Serial Number:
     <mat-form-field appearance="standard">
-    <input [(ngModel)]="serialNumber" matInput placeholder="Serial Number">
+    <input [(ngModel)]="serialNumber" matInput placeholder="Serial Number" required>
     </mat-form-field>
     </b>
   </div>
@@ -24,6 +24,7 @@
         </b>
     </div>
     
+    <!--
     <div>
       <b>Component Type:
       <mat-form-field appearance="standard">
@@ -31,6 +32,19 @@
       </mat-form-field>
       </b>
     </div> 
+    -->
+
+    <b>Component Type: </b>
+    <mat-form-field>
+    <select matNativeControl required [(ngModel)]="comp.componentType">
+      <option value="GPS">GPS</option>
+      <option value="LEDS">LEDS</option>
+      <option value="POWER_SUPPLY">POWER_SUPPLY</option>
+      <option value="MOTHERBOARD">MOTHERBOARD</option>
+      <option value="POWER_BOARD">POWER_BOARD</option>
+      <option value="MODEM">MODEM</option>
+    </select>
+    </mat-form-field>
 
     <div>
         <b>Manufacturer:
@@ -48,20 +62,24 @@
         </b>
     </div>
 
-    <div *ngIf="comp.componentType.toLowerCase()=='modem' ">
-      <b>Modem Type
-        <mat-form-field appearance="standard">
-        <input [(ngModel)]="comp.modemType" matInput placeholder="Modem Type">
+    <div *ngIf="comp.componentType=='MODEM' ">
+    
+        <b>Modem Type: </b>
+        <mat-form-field>
+        <select matNativeControl required [(ngModel)]="comp.modemType">
+            <option value="PLMN">PLMN</option>
+            <option value="GSMR">GSMR</option>
+        </select>
         </mat-form-field>
-        </b>
-    </div>
-
-    <div *ngIf="comp.componentType.toLowerCase()=='modem' ">
-      <b>Imei:
+    
+        <div>
+        <b>Imei:
         <mat-form-field appearance="standard">
         <input [(ngModel)]="comp.imei" matInput placeholder="Imei">
         </mat-form-field>
         </b>
+        </div>
+
     </div>
     
     <button class="ui primary button" (click)="deleteComponent(comp)" data-tooltip="Delete Component"> Delete Component</button>

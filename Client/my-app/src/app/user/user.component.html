@@ -5,9 +5,9 @@
   
   <div class="ui segment">
     <div class="ui grid">
-      <div class="four wide column">Name</div>
-      <div class="four wide column">Profile</div>
-      <div class="four wide column">Suspended</div>
+      <div class="four wide column"><h3>Username</h3></div>
+      <div class="four wide column"><h3>Profile</h3></div>
+      <div class="four wide column"><h3>Suspended</h3></div>
     </div>
 
     <div class="ui divider"></div>
@@ -28,14 +28,14 @@
       </div>
     </div>
 
+    
     <div *ngIf="canCreateUsers()">
       <div class="ui hidden divider"></div>
-
-
+      <!-- 
       <div class="ui grid">
         <div class="five wide column">
           <div class="ui fluid input">
-            <input type="text" [(ngModel)]="user_name" placeholder="Name...">
+            <input type="text" [(ngModel)]="user_name" placeholder="Username...">
           </div>
         </div>
 
@@ -55,6 +55,39 @@
           <div class="ui blue fluid button" (click)="createUser()">Create</div>
         </div>
       </div>
+      -->
+
+
+      <div class="ui grid">
+          <div class="four wide column">
+            <div class="ui fluid input">
+              <input type="text" [(ngModel)]="user_name" placeholder="Username...">
+            </div>
+          </div>
+  
+          <div class="four wide column">
+            <div class="ui fluid input">
+              <input type="text" [(ngModel)]="user_password" type="password" placeholder="Password...">
+            </div>
+          </div>
+        
+          
+          <div class="three wide right aligned column">
+              <select class="ui selection dropdown"  [(ngModel)]= "user_profile">
+                  <option value="NORMAL_USER">Normal user</option>
+                  <option value="SUPER_USER">Super user</option>
+                  <option value="ADMIN">Admin</option>
+                </select>
+          </div>
+
+          <div class="one wide column"> </div>
+
+          <div class="four wide right aligned column">
+            <div class="ui blue fluid button" (click)="createUser()">Create</div>
+          </div>
+        </div>
+
+
     </div>
     
   </div>

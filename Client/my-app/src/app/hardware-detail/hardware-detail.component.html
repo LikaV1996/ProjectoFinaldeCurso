@@ -26,6 +26,7 @@
                     </b>
                 </div>
 
+                <!-- 1 versao de component type, possivelmente para deixar fora...
                 <div>
                     <b>Component Type:
                     <mat-form-field appearance="standard">
@@ -34,7 +35,20 @@
                     </mat-form-field>
                     </b>
                 </div>
-                
+                -->
+
+                <b>Component Type: </b>
+                <mat-form-field>
+                <select matNativeControl required [(ngModel)]="component.componentType">
+                    <option value="GPS">GPS</option>
+                    <option value="LEDS">LEDS</option>
+                    <option value="POWER_SUPPLY">POWER_SUPPLY</option>
+                    <option value="MOTHERBOARD">MOTHERBOARD</option>
+                    <option value="POWER_BOARD">POWER_BOARD</option>
+                    <option value="MODEM">MODEM</option>
+                </select>
+                </mat-form-field>
+
                 <div>
                     <b>Manufacturer:
                     <mat-form-field appearance="standard">
@@ -53,8 +67,9 @@
                     </b>
                 </div>
                  
-                <div *ngIf="component.componentType.toLowerCase()=='modem' ">
+                <div *ngIf="component.componentType=='MODEM' ">
                   
+                    <!-- 1º versao do modem type... possivelmente para deitar fora
                     <div>
                         <b>Modem Type:
                         <mat-form-field appearance="standard">
@@ -63,6 +78,15 @@
                         </mat-form-field>
                         </b>
                     </div>
+                    -->
+
+                    <b>Modem Type: </b>
+                    <mat-form-field>
+                    <select matNativeControl required [(ngModel)]="component.modemType">
+                        <option value="PLMN">PLMN</option>
+                        <option value="GSMR">GSMR</option>
+                    </select>
+                    </mat-form-field>
 
                     <div>
                         <b>Imei:

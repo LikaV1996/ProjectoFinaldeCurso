@@ -66,7 +66,10 @@ export class LoginComponent implements OnInit {
    
 
     login() {
-      if(!this.username || !this.password){ return }
+      if(!this.username || !this.password){ 
+        alert("Missing fields!")
+        return
+       }
      
       this._authService.login(this.username, this.password).subscribe(isLoggedIn => {
         //console.log("isloggedin " + isLoggedIn)
@@ -77,6 +80,7 @@ export class LoginComponent implements OnInit {
         }
       },
       err => {
+        alert("Invalid credentials!")
         //console.log("err: " + JSON.stringify(err))
       }
     )

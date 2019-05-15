@@ -36,11 +36,11 @@ export class UserComponent implements OnInit {
 
   user_name: string;
   user_password: string;
-  //user_profile: string;
+  user_profile: string;
 
   ngOnInit() {
     this.user = this._localStorage.getCurrentUserDetails()
-
+    this.user_profile = 'NORMAL_USER'
     this.loggedInUserProfile = UserProfile.getValueFromString(this.user.userProfile)
 
     this._userService.getUsers()
@@ -69,9 +69,13 @@ export class UserComponent implements OnInit {
       alert("Not all fields are filled")
     }
     else{
-      this._userService.createUser(this.user_name, this.user_password)
+      this._userService.createUser(this.user_name, this.user_password, this.user_profile)
         .subscribe(user => {
           this.users.push(user)
+          alert("User created!")
+          this.user_name = ''
+          this.user_password = ''
+          this.user_profile = 'NORMAL_USER'
         })
     }
   }

@@ -5,7 +5,7 @@ export class OBU{
     currentConfigId: number
     currentTestPlanId: number
     obuName: string
-    //obu_password: string
+    obuPassword: string
     properties: string
     creator: string
     creation_date: Date

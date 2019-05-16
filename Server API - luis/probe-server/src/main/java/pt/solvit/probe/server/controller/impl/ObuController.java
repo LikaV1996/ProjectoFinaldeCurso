@@ -11,12 +11,10 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.config.AppConfiguration;
 import pt.solvit.probe.server.controller.api.IObuController;
@@ -27,7 +25,6 @@ import pt.solvit.probe.server.controller.model.input.InputObuFlags;
 import pt.solvit.probe.server.model.Hardware;
 import pt.solvit.probe.server.model.Obu;
 import pt.solvit.probe.server.model.User;
-import pt.solvit.probe.server.model.ServerLog;
 import pt.solvit.probe.server.model.enums.ObuState;
 import pt.solvit.probe.server.service.api.IObuService;
 import pt.solvit.probe.server.service.api.IServerLogService;
@@ -68,8 +65,8 @@ public class ObuController implements IObuController {
         User user = (User) request.getAttribute("user");
 
         body.validate();
-        Hardware hardware = hardwareService.getHardware(body.getHardwareId());
-        Obu obu = transformToObu(body, user.getUserName(), hardware);
+        Hardware hardware = hardwareService.getHardware( body.getHardwareId() );
+        Obu obu = Obu.makeObu( body, user.getUserName() );
         long obuId = obuService.createObu(obu);
 
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_OBU);
@@ -159,7 +156,8 @@ public class ObuController implements IObuController {
         return ResponseEntity.ok().build();
     }
 
-    private Obu transformToObu(InputObu inputObu, String creator, Hardware hardware) {
+    /*
+    private Obu makeObu(InputObu inputObu, String creator, Hardware hardware) {
         long hardwareId = inputObu.getHardwareId();
         String obuName = hardware.getSerialNumber();
         String obuPassword = generateObuPassword();
@@ -170,4 +168,5 @@ public class ObuController implements IObuController {
         String generatedPassword = ControllerUtil.getAlphaNumeric(6);
         return new String(Base64.getEncoder().encode(generatedPassword.getBytes()), StandardCharsets.UTF_8);
     }
+    */
 }

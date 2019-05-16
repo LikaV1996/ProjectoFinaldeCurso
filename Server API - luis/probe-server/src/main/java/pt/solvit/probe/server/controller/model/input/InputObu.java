@@ -34,6 +34,12 @@ public class InputObu {
     @Valid
     private String obuName;
 
+    /*
+    @JsonProperty("obuPassword")
+    @Valid
+    private String obuPassword;
+    */
+
     @ApiModelProperty(example = "1", required = true, value = "Hardware identifier")
     public Long getHardwareId() {
         return hardwareId;
@@ -44,10 +50,17 @@ public class InputObu {
         return sims;
     }
 
-    @ApiModelProperty(value = "SIM list")
+    @ApiModelProperty(value = "Obu name")
     public String getObuName() {
         return obuName;
     }
+
+    /*
+    @ApiModelProperty(value = "Obu password")
+    public String getObuPassword() {
+        return obuPassword;
+    }
+    */
 
     @ApiModelProperty(hidden = true)
     public void validate() {
@@ -62,6 +75,11 @@ public class InputObu {
         if(obuName == null){
             throw new BadRequestException("Invalid obu.", "obuName is null.", "string", "about:blank");
         }
+        /*
+        if(obuPassword == null){
+            throw new BadRequestException("Invalid obu.", "obuPassword is null.", "string", "about:blank");
+        }
+        */
 
     }
 }

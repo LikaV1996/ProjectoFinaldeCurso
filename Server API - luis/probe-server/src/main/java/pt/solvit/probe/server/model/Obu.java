@@ -10,11 +10,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModel;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
+
+import pt.solvit.probe.server.controller.impl.util.ControllerUtil;
 import pt.solvit.probe.server.controller.impl.util.Profile;
+import pt.solvit.probe.server.controller.model.input.InputObu;
 import pt.solvit.probe.server.controller.model.input.SimCard;
 import pt.solvit.probe.server.model.enums.ObuState;
 import pt.solvit.probe.server.model.properties.ObuProperties;
@@ -239,5 +244,19 @@ public class Obu extends CreatorModel {
                 obu.getCurrentConfigId(), obu.getCurrentTestPlanId(), obu.getObuName(), obu.getObuPassword(),
                 obu.getPropertiesString(), obu.getCreator(), Timestamp.valueOf(obu.getCreationLocalDateTime()),
                 obu.getModifier(), obu.getModifiedLocalDateTime()!= null ? Timestamp.valueOf(obu.getModifiedLocalDateTime()) : null);
+    }
+
+    public static Obu makeObu(InputObu inputObu, String creator/*, Hardware hardware*/) {
+        long hardwareId = inputObu.getHardwareId();
+        //String obuName = hardware.getSerialNumber();
+        String obuPassword = generateObuPassword();
+            //inputObu.getObuPassword();
+        return new Obu(null, hardwareId, ObuState.READY, inputObu.getObuName(), obuPassword, inputObu.getSims(),
+                creator, LocalDateTime.now(), null, null);
+    }
+
+    private static String generateObuPassword() {
+        String generatedPassword = ControllerUtil.getAlphaNumeric(6);
+        return new String(Base64.getEncoder().encode(generatedPassword.getBytes()), StandardCharsets.UTF_8);
     }
 }

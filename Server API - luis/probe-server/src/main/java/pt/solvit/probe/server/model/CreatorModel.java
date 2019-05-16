@@ -78,6 +78,12 @@ public class CreatorModel {
         return modifiedDate;
     }
 
+    /*
+    public Timestamp getTimestampValueOfModifiedLDT() {
+        return getModifiedLocalDateTime()!= null ? Timestamp.valueOf(getModifiedLocalDateTime()) : null;
+    }
+    */
+
     @ApiModelProperty(value = "Modified date")
     public String getModifiedDate() {
         return modifiedDate != null ? ISO8601_DATE_FORMATTER.format(modifiedDate) : null;

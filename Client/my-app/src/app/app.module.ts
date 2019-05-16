@@ -31,6 +31,7 @@ import { TestPlansComponent } from './test-plans/test-plans.component';
 import { HardwareComponent } from './hardware/hardware.component';
 import { HardwareDetailComponent } from './hardware-detail/hardware-detail.component';
 import { HardwareCreateComponent } from './hardware-create/hardware-create.component';
+import { ObuCreateComponent } from './obu-create/obu-create.component';
 
 
 
@@ -50,7 +51,8 @@ import { HardwareCreateComponent } from './hardware-create/hardware-create.compo
     TestPlansComponent,
     HardwareComponent,
     HardwareDetailComponent,
-    HardwareCreateComponent
+    HardwareCreateComponent,
+    ObuCreateComponent
   ],
   imports: [
     BrowserModule,

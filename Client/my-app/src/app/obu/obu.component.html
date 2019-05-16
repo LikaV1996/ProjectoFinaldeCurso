@@ -1,12 +1,13 @@
+<p></p>
 
 <script src="/script.js"></script>
 <div id="content" class="ui container">
   
     <div class="ui segment">
       <div class="ui grid">
-        <div class="four wide column">Obu Name</div>
-        <div class="four wide column">Obu State</div>
-        <div class="four wide column">Current Obu Configuration</div>
+        <div class="four wide column"><h3>Obu Name</h3></div>
+        <div class="four wide column"><h3>Obu State</h3></div>
+        <div class="four wide column"><h3>Current Obu Configuration</h3></div>
         <!-- <div class="four wide column">Current_test_plan_id</div> -->
         <div class="four wide column"></div>
       </div>
@@ -28,32 +29,15 @@
         </div>
       </div>
 
-
       <div *ngIf="canCreateObu()">
           <div class="ui hidden divider"></div>
-          <div class="ui grid">
-            <div class="five wide column">
-              <div class="ui fluid input">
-                <input type="text" [(ngModel)]="obu_name" placeholder="Obu Name...">
-              </div>
-            </div>
-    
-            <div class="one wide column"></div>
-    
-            <div class="five wide column">
-              <div class="ui fluid input">
-                <input type="text" [(ngModel)]="obu_password" type="password" placeholder="Obu Password...">
-              </div>
-            </div>
-    
-            <div class="one wide column">
-            </div>
-
-            <div class="four wide right aligned column">
-              <div class="ui blue fluid button" (click)="createObu()">Create</div>
-            </div>
+          <div class="one wide column"></div>
+          <div class="one wide column"></div>
+          <div class="four wide right aligned column">
+            <div class="ui blue fluid button" (click)="createObu()">Create New Obu</div>
           </div>
-        </div>
-
+      </div>
+      
+    </div>
 
 </div>

@@ -5,8 +5,9 @@ export class OBU{
     currentConfigId: number
     currentTestPlanId: number
     obuName: string
-    //obu_password: string
-    properties: string
+    obuPassword: string
+    //properties: string
+    sims
     creator: string
     creation_date: Date
     modified: string

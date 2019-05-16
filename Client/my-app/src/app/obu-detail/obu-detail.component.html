@@ -1,3 +1,5 @@
+<p></p>
+
 <div class="ui raised very padded text container segment">
 
 <div *ngIf="obu">
@@ -45,6 +47,90 @@
 
     <div *ngIf="obu.currentTestPlanId != null"><b>Current Test Plan: </b>{{obu.currentTestPlanId}}</div>
     <div *ngIf="obu.currentTestPlanId == null"><b>Current Test Plan: </b>No Test Plan</div>
+
+
+    <div *ngIf="obu.sims!=null" class="ui container segment" >
+            <h4>Sims ({{obu.sims.length}})</h4>
+            <div class="ui segment" *ngFor="let sim of obu.sims">
+                
+                <b>Modem Type: </b>
+                <mat-form-field>
+                <select matNativeControl required [(ngModel)]="sim.modemType">
+                    <option value="PLMN">PLMN</option>
+                    <option value="GSMR">GSMR</option>
+                </select>
+                </mat-form-field>
+
+                <div>
+                    <b>MSISDN:
+                    <mat-form-field appearance="standard">
+                    <mat-label>{{sim.msisdn}}</mat-label>
+                    <input [(ngModel)]="sim.msisdn" matInput placeholder="MSISDN">
+                    </mat-form-field>
+                    </b>
+                </div>
+
+                <div>
+                    <b>Pin:
+                    <mat-form-field appearance="standard">
+                    <mat-label>{{sim.simPin}}</mat-label>
+                    <input [(ngModel)]="sim.simPin" matInput placeholder="Sim Pin">
+                    </mat-form-field>
+                    </b>
+                </div>
+
+                <div>
+                    <b>Puk:
+                    <mat-form-field appearance="standard">
+                    <mat-label>{{sim.simPuk}}</mat-label>
+                    <input [(ngModel)]="sim.simPuk" matInput placeholder="Sim Puk">
+                    </mat-form-field>
+                    </b>
+                </div>
+
+                <div>
+                    <b>ICCID:
+                    <mat-form-field appearance="standard">
+                    <mat-label>{{sim.iccid}}</mat-label>
+                    <input [(ngModel)]="sim.iccid" matInput placeholder="ICCID">
+                    </mat-form-field>
+                    </b>
+                </div>
+
+                <div>
+                    <b>APN:
+                    <mat-form-field appearance="standard">
+                    <mat-label>{{sim.apn}}</mat-label>
+                    <input [(ngModel)]="sim.apn" matInput placeholder="APN">
+                    </mat-form-field>
+                    </b>
+                </div>
+
+                <div>
+                    <b>APN User:
+                    <mat-form-field appearance="standard">
+                    <mat-label>{{sim.apnUser}}</mat-label>
+                    <input [(ngModel)]="sim.apnUser" matInput placeholder="APN User">
+                    </mat-form-field>
+                    </b>
+                </div> 
+
+                <div>
+                    <b>APN Pass:
+                    <mat-form-field appearance="standard">
+                    <mat-label>{{sim.apnPass}}</mat-label>
+                    <input [(ngModel)]="sim.apnPass" matInput placeholder="APN Pass">
+                    </mat-form-field>
+                    </b>
+                </div> 
+                
+                <button class="ui primary button" (click)="deleteSim(sim)" data-tooltip="Delete Sim"> Delete Sim</button>
+
+            </div>
+            
+            <button *ngIf="obu.sims.length != 2"  class="ui primary button" (click)="addSim()" data-tooltip="Add Component"> Add Sim</button>
+            
+        </div>
 
 
     <div><b>Creator: </b>{{obu.creator}}</div>

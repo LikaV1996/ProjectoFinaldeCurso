@@ -38,9 +38,10 @@ export class HardwareDetailComponent implements OnInit {
   
   saveChanges(){
     console.log("updating hardware")
+    /*
     this.hardware.components.forEach(element => {
       element.componentType=element.componentType.toUpperCase();
-    });
+    });*/
     this._hardwareService.updateHardware(this.hardware.id, this.hardware.serialNumber, this.hardware.components)
     .subscribe(hardware => {
       console.log('Hardware: ' + JSON.stringify(hardware))

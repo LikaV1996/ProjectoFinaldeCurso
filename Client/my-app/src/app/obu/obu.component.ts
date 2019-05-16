@@ -32,6 +32,7 @@ export class OBUComponent implements OnInit {
     this._obuService.getOBUs()
     .subscribe(obus => {
       this.obus = obus
+      this.orderById()
     });
   }
 
@@ -40,20 +41,15 @@ export class OBUComponent implements OnInit {
   }
 
   createObu(){
-    console.log("creating obu")
-    if(!this.obu_name || !this.obu_password){
-      alert("Not all fields are filled")
-    }
-    else{
-      this._obuService.createObu(this.obu_name, this.obu_password)
-        .subscribe(obuObj => {
-          this.obus.push(obuObj.obu)
-        })
-    }
+    this.router.navigate(['home/obu/create']);
   }
 
   edit(id: number){
     this.router.navigate(['home/obu/'+id+'/edit']);
+  }
+
+  orderById(){
+    this.obus.sort( (h1,h2)=> h1.id - h2.id)
   }
 
 }

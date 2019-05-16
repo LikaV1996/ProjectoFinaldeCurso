@@ -33,8 +33,8 @@ export class ObuDetailComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     
     this._obuService.getOBUByID(this.id).subscribe(obu => {
-     //console.log(userObj)
-     this.obu = obu
+      this.obu = obu
+      console.log(JSON.stringify(obu))
    })
 
    this._hardwareService.getHardwares().subscribe(hardwares =>{
@@ -49,15 +49,38 @@ export class ObuDetailComponent implements OnInit {
   }
 
   saveChanges(){
-    console.log("updating obu")
-    this._obuService.updateObu(this.obu.id, this.obu.hardwareId, this.obu.obuName, this.obu.properties)
+    
+    console.log("obu hardware")
+    this._obuService.updateObu(this.obu.id, this.obu.hardwareId, this.obu.obuState, this.obu.currentConfigId, this.obu.currentTestPlanId, this.obu.obuName, this.obu.obuPassword, this.obu.sims)
     .subscribe(obu => {
-      console.log(JSON.stringify(obu))
+      console.log('OBU: ' + JSON.stringify(obu))
       this.obu = obu
-      //this.users.push(userObj.user)
       alert("Obu updated!")
+      this.goBack()
       console.log("obu updated")
     })
+    
+  }
+
+  addSim(){
+    if(this.obu.sims.length >= 2){ //Nao pode haver mais de 2 sims
+        alert('Obu can only have 2 Sims!')
+        return
+    }
+    this.obu.sims.push({
+      modemType: "",
+      msisdn: "",
+      simPin: "",
+      simPuk: "",
+      iccid: "",
+      apn: "",
+      apnUser: "",
+      apnPass: ""
+    })
+  }
+
+  deleteSim(sim){
+    this.obu.sims = this.obu.sims.filter(obj => obj !== sim);
   }
 
 }

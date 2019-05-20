@@ -61,3 +61,12 @@ Server API - luis/probe-server/.idea/caches/build_file_checksums.ser
 
 # Spring
 Server API - luis/probe-server/target
+
+
+
+
+
+
+########## Client ##########
+# All node modules
+Client\my-app\node_modules

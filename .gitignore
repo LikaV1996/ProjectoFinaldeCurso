@@ -60,5 +60,4 @@ Server API - luis/probe-server/.idea/httpRequests
 Server API - luis/probe-server/.idea/caches/build_file_checksums.ser
 
 # Spring
-Server API - luis/probe-server/target/**/classes
-Server API - luis/probe-server/target/**/generated-sources
+Server API - luis/probe-server/target

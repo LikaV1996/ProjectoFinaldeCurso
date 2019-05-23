@@ -4,9 +4,9 @@
   
   <div class="ui segment">
     <div class="ui grid">
-      <div class="four wide column">ID</div>
-      <div class="four wide column">Creator</div>
-      <div class="four wide column">Creation Date</div>
+      <div class="four wide column"><h3>Configuration Name</h3></div>
+      <div class="four wide column"><h3>Creator</h3></div>
+      <div class="four wide column"><h3>Activation Date</h3></div>
       <div class="four wide column"></div>
     </div>
     
@@ -15,9 +15,9 @@
     <div class="ui" style="height: 70%;">
         <div class="ui segment" *ngFor="let config of configs">
           <div class="ui middle aligned grid">
-            <div class="four wide column">{{config.id}}</div>
+            <div class="four wide column">{{config.configName}}</div>
             <div class="four wide column">{{config.creator}}</div>
-            <div class="four wide column">{{config.creationDate}}</div>
+            <div class="four wide column">{{config.activationDate}}</div>
             <div class="four wide right aligned column">
               <div class="ui suspend button" (click)="edit(config.id)" data-tooltip="Edit Configuration">Edit</div>
             </div>
@@ -25,9 +25,16 @@
         </div>
       </div>
 
+      <div *ngIf="canCreateConfig()">
+          <div class="ui hidden divider"></div>
+          <div class="one wide column"></div>
+          <div class="one wide column"></div>
+          <div class="four wide right aligned column">
+            <div class="ui blue fluid button" (click)="createConfig()">Create New Configuration</div>
+          </div>
+      </div>
 
-    
 
-    
+  </div>
 
 </div>

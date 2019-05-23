@@ -24,6 +24,7 @@ export class Routes{
 
     getConfigs = this.basePath + "/config";
     getConfigById = this.basePath + "/config/:id"
+    createConfig = this.basePath +  "/config";
 
     getTestPlans = this.basePath + "/test-plan";
     getTestPlanById = this.basePath + "/test-plan/:id";

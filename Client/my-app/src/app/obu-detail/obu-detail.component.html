@@ -14,6 +14,7 @@
         <option *ngFor="let hardware of hardwares" value="{{hardware.id}}">{{hardware.serialNumber}}</option>
     </select>
     </mat-form-field>
+    </div>
 
     <div>
         <b>Name:
@@ -24,6 +25,7 @@
         </b>
     </div>
 
+    <!-- //Password nao entra, pois é gerada automaticamente
     <div>
         <b>Password:
         <mat-form-field appearance="standard">
@@ -32,6 +34,7 @@
         </mat-form-field>
         </b>
     </div>
+    -->
 
     <b>State: </b>
     <mat-form-field>
@@ -48,9 +51,11 @@
     <div *ngIf="obu.currentTestPlanId != null"><b>Current Test Plan: </b>{{obu.currentTestPlanId}}</div>
     <div *ngIf="obu.currentTestPlanId == null"><b>Current Test Plan: </b>No Test Plan</div>
 
+    <div *ngIf="obu.factoryConfig != null"><b>Factory Config: </b>{{obu.factoryConfig}}</div>
+    <div *ngIf="obu.factoryConfig == null"><b>Factory Config: </b>No Factory Config</div>
 
     <div *ngIf="obu.sims!=null" class="ui container segment" >
-            <h4>Sims ({{obu.sims.length}})</h4>
+            <h4>SIMS ({{obu.sims.length}})</h4>
             <div class="ui segment" *ngFor="let sim of obu.sims">
                 
                 <b>Modem Type: </b>
@@ -71,19 +76,19 @@
                 </div>
 
                 <div>
-                    <b>Pin:
+                    <b>PIN:
                     <mat-form-field appearance="standard">
                     <mat-label>{{sim.simPin}}</mat-label>
-                    <input [(ngModel)]="sim.simPin" matInput placeholder="Sim Pin">
+                    <input [(ngModel)]="sim.simPin" matInput placeholder="SIM PIN">
                     </mat-form-field>
                     </b>
                 </div>
 
                 <div>
-                    <b>Puk:
+                    <b>PUK:
                     <mat-form-field appearance="standard">
                     <mat-label>{{sim.simPuk}}</mat-label>
-                    <input [(ngModel)]="sim.simPuk" matInput placeholder="Sim Puk">
+                    <input [(ngModel)]="sim.simPuk" matInput placeholder="Sim PUK">
                     </mat-form-field>
                     </b>
                 </div>
@@ -132,6 +137,13 @@
             
         </div>
 
+
+    <div><b><mat-checkbox>Upload Request</mat-checkbox></b></div>
+    <div><b><mat-checkbox>Clear Alarms Request</mat-checkbox></b></div>
+    <div><b><mat-checkbox>Reset Request</mat-checkbox></b></div>
+    <div><b><mat-checkbox>Shutdown Request</mat-checkbox></b></div>
+    
+    <p></p>
 
     <div><b>Creator: </b>{{obu.creator}}</div>
 

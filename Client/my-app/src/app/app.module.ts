@@ -32,6 +32,7 @@ import { HardwareComponent } from './hardware/hardware.component';
 import { HardwareDetailComponent } from './hardware-detail/hardware-detail.component';
 import { HardwareCreateComponent } from './hardware-create/hardware-create.component';
 import { ObuCreateComponent } from './obu-create/obu-create.component';
+import { ConfigurationCreateComponent } from './configuration-create/configuration-create.component';
 
 
 
@@ -52,7 +53,8 @@ import { ObuCreateComponent } from './obu-create/obu-create.component';
     HardwareComponent,
     HardwareDetailComponent,
     HardwareCreateComponent,
-    ObuCreateComponent
+    ObuCreateComponent,
+    ConfigurationCreateComponent
   ],
   imports: [
     BrowserModule,

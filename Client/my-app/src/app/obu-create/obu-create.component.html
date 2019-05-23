@@ -1,3 +1,148 @@
-<p>
-  obu-create works!
-</p>
+<p></p>
+<div class="ui raised very padded text container segment">
+
+  <h2>Create Obu</h2>
+
+
+
+  <div><b>Hardware: </b>
+    <mat-form-field>
+    <select matNativeControl required [(ngModel)]="hardwareId">
+        <option *ngFor="let hardware of hardwares" value="{{hardware.id}}">{{hardware.serialNumber}}</option>
+    </select>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <b>Name:
+    <mat-form-field appearance="standard">
+    <input [(ngModel)]="obuName" matInput placeholder="Obu Name" required>
+    </mat-form-field>
+    </b>
+  </div>
+
+  <b>State: </b>
+    <mat-form-field>
+    <select matNativeControl required [value]="obuState">
+        <option value="READY">READY</option>
+        <option value="ACTIVE">ACTIVE</option>
+        <option value="DEACTIVATED">DEACTIVATED</option>
+    </select>
+    </mat-form-field>
+
+  
+    <div><b>Current Configuration: </b>
+      <mat-form-field>
+      <select matNativeControl required [(ngModel)]="currentConfigId"> <!-- VERIFICAR AQUI!-->
+          <option value="null">No Configuration</option>
+          <option *ngFor="let config of configs" value="{{config.id}}">{{hardware.serialNumber}}</option>
+      </select>
+      </mat-form-field>
+    </div>
+
+    <div><b>Current Test Plan: </b>
+      <mat-form-field>
+      <select matNativeControl required [(ngModel)]="currentTestPlanId"> <!-- VERIFICAR AQUI!-->
+          <option value="null">No Configuration</option>
+          <option *ngFor="let testplan of testplans" value="{{testplan.id}}">{{hardware.serialNumber}}</option>
+      </select>
+      </mat-form-field>
+    </div>
+
+    <div><b>Factory Configuration: </b>
+      <mat-form-field>
+      <select matNativeControl required [(ngModel)]="factoryConfig"> <!-- VERIFICAR AQUI!-->
+          <option value="null">No Configuration</option>
+          <option *ngFor="let config of configs" value="{{config.id}}">{{hardware.serialNumber}}</option>
+      </select>
+      </mat-form-field>
+    </div>
+
+
+    <div class="ui container segment" >
+        <h4>SIMS</h4>
+    
+        <div class="ui segment" *ngFor="let sim of sims">
+        
+        <b>Modem Type: </b>
+        <mat-form-field>
+        <select matNativeControl required [(ngModel)]="sim.modemType">
+            <option value="PLMN">PLMN</option>
+            <option value="GSMR">GSMR</option>
+        </select>
+        </mat-form-field>
+    
+        <div>
+          <b>MSISDN:
+          <mat-form-field appearance="standard">
+          <input [(ngModel)]="sim.msisdn" matInput placeholder="MSISDN">
+          </mat-form-field>
+          </b>
+        </div>
+
+        <div>
+          <b>PIN:
+          <mat-form-field appearance="standard">
+          <input [(ngModel)]="sim.simPin" matInput placeholder="PIN">
+          </mat-form-field>
+          </b>
+        </div>
+
+        <div>
+          <b>PUK:
+          <mat-form-field appearance="standard">
+          <input [(ngModel)]="sim.simPuk" matInput placeholder="PUK">
+          </mat-form-field>
+          </b>
+        </div>
+
+        <div>
+          <b>ICCID:
+          <mat-form-field appearance="standard">
+          <input [(ngModel)]="sim.iccid" matInput placeholder="ICCID">
+          </mat-form-field>
+          </b>
+        </div>
+        
+        <div>
+          <b>APN:
+          <mat-form-field appearance="standard">
+          <input [(ngModel)]="sim.apn" matInput placeholder="APN">
+          </mat-form-field>
+          </b>
+        </div>
+
+        <div>
+          <b>APN User:
+          <mat-form-field appearance="standard">
+          <input [(ngModel)]="sim.User" matInput placeholder="APN User">
+          </mat-form-field>
+          </b>
+        </div>
+
+          <div>
+            <b>APN Pass:
+            <mat-form-field appearance="standard">
+            <input [(ngModel)]="sim.apnPass" matInput placeholder="APN Pass">
+            </mat-form-field>
+            </b>
+          </div>
+
+        <button class="ui primary button" (click)="deleteSim(sim)" data-tooltip="Delete SIM"> Delete SIM</button>
+    
+        </div>
+        
+        
+        <button *ngIf="sims.length != 2"  class="ui primary button" (click)="addSim()" data-tooltip="Add SIM"> Add SIM</button>
+    </div> 
+
+
+
+
+
+    <div style="margin-top:30px;">
+        <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
+        <div class="ui suspend button" (click)="createObu()" data-tooltip="Create Obu">Create</div>
+    </div>
+
+</div>

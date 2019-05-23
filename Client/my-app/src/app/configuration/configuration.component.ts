@@ -23,9 +23,6 @@ export class ConfigurationComponent implements OnInit {
   private config : Config;
   private user : User;
 
-  //obu_name: string;
-  //obu_password: string;
-
   ngOnInit() {
     this.user = this._localStorage.getCurrentUserDetails()
 
@@ -39,20 +36,11 @@ export class ConfigurationComponent implements OnInit {
     return UserProfile.getValueFromString(this.user.userProfile) >= UserProfile.ADMIN
   }
 
-  /*
+  
   createConfig(){
-    console.log("creating config")
-    if(!this.obu_name || !this.obu_password){
-      alert("Not all fields are filled")
-    }
-    else{
-      this._obuService.createObu(this.obu_name, this.obu_password)
-        .subscribe(obuObj => {
-          this.obus.push(obuObj.obu)
-        })
-    }
+    this.router.navigate(['home/config/create']);
   }
-  */
+  
 
   edit(id: number){
     this.router.navigate(['home/config/'+id+'/edit']);

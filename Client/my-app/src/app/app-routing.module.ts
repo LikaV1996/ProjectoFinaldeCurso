@@ -17,8 +17,9 @@ import { HardwareComponent } from './hardware/hardware.component'
 import { HardwareDetailComponent } from './hardware-detail/hardware-detail.component';
 import { HardwareCreateComponent } from './hardware-create/hardware-create.component';
 import { ObuCreateComponent } from './obu-create/obu-create.component';
+import { ConfigurationCreateComponent } from './configuration-create/configuration-create.component';
 
-ObuCreateComponent
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -39,6 +40,7 @@ const routes: Routes = [
         { path: 'obu/create', component: ObuCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'configs', component: ConfigurationComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'config/:id/edit', component: ConfigurationDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'config/create', component: ConfigurationCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'testPlans', component: TestPlansComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         
       ]

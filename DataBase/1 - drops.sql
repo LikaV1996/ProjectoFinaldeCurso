@@ -1,5 +1,6 @@
 BEGIN;
 
+DROP VIEW IF EXISTS view_probeuser_obu;
 DROP VIEW IF EXISTS view_probeuser;
 
 DROP TABLE IF EXISTS ServerLog;

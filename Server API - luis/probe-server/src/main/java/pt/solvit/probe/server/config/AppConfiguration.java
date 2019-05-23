@@ -48,7 +48,7 @@ public class AppConfiguration {
      *
      * URL API BEGINNING
      */
-    private static final String URL_BEGINNING = "/api/v1/backoffice";
+    private static final String URL_BEGINNING = "/api/v1/frontoffice";
 
     /**
      * **************

@@ -36,9 +36,6 @@ public class Config extends WebMvcConfigurationSupport{// implements WebMvcConfi
 
     //Interceptors
     @Autowired
-    BaseInterceptor baseInterceptor;
-
-    @Autowired
     AuthInterceptor authInterceptor;
 
     @Autowired
@@ -51,7 +48,7 @@ public class Config extends WebMvcConfigurationSupport{// implements WebMvcConfi
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(baseInterceptor)
+        registry.addInterceptor(loggingInterceptor)
                 .addPathPatterns("/**");
 
         registry.addInterceptor(authInterceptor)
@@ -61,13 +58,6 @@ public class Config extends WebMvcConfigurationSupport{// implements WebMvcConfi
                         //AppConfiguration.URL_GET_LOGGEDIN_USER
                 );
 
-        registry.addInterceptor(loggingInterceptor)
-                .addPathPatterns("/**");
-
-        /*
-        registry.addInterceptor(userRoleInterceptor)
-                .excludePathPatterns("/api/v1/login");
-        */
     }
 
 

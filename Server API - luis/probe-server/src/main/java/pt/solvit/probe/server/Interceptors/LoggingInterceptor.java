@@ -31,6 +31,16 @@ public class LoggingInterceptor implements HandlerInterceptor {
     }
 
 
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        if(request.getAttribute("request_date") == null)
+        request.setAttribute("request_date", LocalDateTime.now());
+
+        return true;
+    }
+
     /*
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {

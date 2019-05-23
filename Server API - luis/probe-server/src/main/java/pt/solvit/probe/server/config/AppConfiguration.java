@@ -45,6 +45,12 @@ public class AppConfiguration {
     public String multipartLocation;
 
     /**
+     *
+     * URL API BEGINNING
+     */
+    private static final String URL_BEGINNING = "/api/v1/backoffice";
+
+    /**
      * **************
      * CONTROL CONNECTION COMMANDS **************
      */
@@ -58,7 +64,7 @@ public class AppConfiguration {
     public static final String CMD_CANCEL_TESTPLAN = "cancelTestPlan/";
 
     /**
-     * **************
+     * **************   //TODO        these we don't use
      * API ROUTES **************
      */
     public static final String URL_API_CONTROL_CONNECTION = "/api/obu/{obu-id}/control-connection",
@@ -72,85 +78,85 @@ public class AppConfiguration {
      * **************
      * HARDWARE ROUTES **************
      */
-    public static final String URL_HARDWARE = "/backoffice/hardware",
-            URL_HARDWARE_ID = "/backoffice/hardware/{hardware-id}";
+    public static final String URL_HARDWARE = URL_BEGINNING + "/hardware",
+            URL_HARDWARE_ID = URL_BEGINNING + "/hardware/{hardware-id}";
 
     /**
      * **************
      * OBU ROUTES **************
      */
-    public static final String URL_OBU = "/backoffice/obu",
-            URL_OBU_ID = "/backoffice/obu/{obu-id}",
-            URL_OBU_FLAGS = "/backoffice/obu/{obu-id}/flags",
-            URL_OBU_POSITION = "/backoffice/obu/{obu-id}/position",
-            URL_OBU_NETWORK_INTERFACES = "/backoffice/obu/{obu-id}/network-interfaces",
-            URL_OBU_COMPONENT = "/backoffice/obu/{obu-id}/component",
-            URL_OBU_COMPONENT_ID = "/backoffice/obu/{obu-id}/component/{component-id}",
-            URL_OBU_TESTLOG = "/backoffice/obu/{obu-id}/test-log",
-            URL_OBU_TESTLOG_ID = "/backoffice/obu/{obu-id}/test-log/{test-log-id}",
-            URL_OBU_SYSLOG = "/backoffice/obu/{obu-id}/system-log",
-            URL_OBU_SYSLOG_ID = "/backoffice/obu/{obu-id}/system-log/{sys-log-id}";
+    public static final String URL_OBU = URL_BEGINNING + "/obu",
+            URL_OBU_ID = URL_BEGINNING + "/obu/{obu-id}",
+            URL_OBU_FLAGS = URL_BEGINNING + "/obu/{obu-id}/flags",
+            URL_OBU_POSITION = URL_BEGINNING + "/obu/{obu-id}/position",
+            URL_OBU_NETWORK_INTERFACES = URL_BEGINNING + "/obu/{obu-id}/network-interfaces",
+            URL_OBU_COMPONENT = URL_BEGINNING + "/obu/{obu-id}/component",
+            URL_OBU_COMPONENT_ID = URL_BEGINNING + "/obu/{obu-id}/component/{component-id}",
+            URL_OBU_TESTLOG = URL_BEGINNING + "/obu/{obu-id}/test-log",
+            URL_OBU_TESTLOG_ID = URL_BEGINNING + "/obu/{obu-id}/test-log/{test-log-id}",
+            URL_OBU_SYSLOG = URL_BEGINNING + "/obu/{obu-id}/system-log",
+            URL_OBU_SYSLOG_ID = URL_BEGINNING + "/obu/{obu-id}/system-log/{sys-log-id}";
 
     /**
      * **************
      * CONFIGURATION ROUTES **************
      */
-    public static final String URL_CONFIG = "/backoffice/config",
-            URL_CONFIG_ID = "/backoffice/config/{config-id}",
-            URL_OBU_CONFIG = "/backoffice/obu/{obu-id}/config",
-            URL_OBU_CONFIG_ID = "/backoffice/obu/{obu-id}/config/{config-id}",
-            URL_OBU_CONFIG_ID_CANCEL = "/backoffice/obu/{obu-id}/config/{config-id}/cancel";
+    public static final String URL_CONFIG = URL_BEGINNING + "/config",
+            URL_CONFIG_ID = URL_BEGINNING + "/config/{config-id}",
+            URL_OBU_CONFIG = URL_BEGINNING + "/obu/{obu-id}/config",
+            URL_OBU_CONFIG_ID = URL_BEGINNING + "/obu/{obu-id}/config/{config-id}",
+            URL_OBU_CONFIG_ID_CANCEL = URL_BEGINNING + "/obu/{obu-id}/config/{config-id}/cancel";
 
     /**
      * **************
      * TEST PLAN ROUTES **************
      */
-    public static final String URL_TESTPLAN = "/backoffice/test-plan",
-            URL_TESTPLAN_ID = "/backoffice/test-plan/{test-plan-id}",
-            URL_TESTPLAN_SETUP = "/backoffice/test-plan/{test-plan-id}/setup",
-            URL_TESTPLAN_SETUP_ID = "/backoffice/test-plan/{test-plan-id}/setup/{setup-id}",
-            URL_OBU_TESTPLAN = "/backoffice/obu/{obu-id}/test-plan",
-            URL_OBU_TESTPLAN_ID = "/backoffice/obu/{obu-id}/test-plan/{test-plan-id}",
-            URL_OBU_TESTPLAN_ID_CANCEL = "/backoffice/obu/{obu-id}/test-plan/{test-plan-id}/cancel";
+    public static final String URL_TESTPLAN = URL_BEGINNING + "/test-plan",
+            URL_TESTPLAN_ID = URL_BEGINNING + "/test-plan/{test-plan-id}",
+            URL_TESTPLAN_SETUP = URL_BEGINNING + "/test-plan/{test-plan-id}/setup",
+            URL_TESTPLAN_SETUP_ID = URL_BEGINNING + "/test-plan/{test-plan-id}/setup/{setup-id}",
+            URL_OBU_TESTPLAN = URL_BEGINNING + "/obu/{obu-id}/test-plan",
+            URL_OBU_TESTPLAN_ID = URL_BEGINNING + "/obu/{obu-id}/test-plan/{test-plan-id}",
+            URL_OBU_TESTPLAN_ID_CANCEL = URL_BEGINNING + "/obu/{obu-id}/test-plan/{test-plan-id}/cancel";
 
     /**
      * **************
      * SETUP ROUTES **************
      */
-    public static final String URL_SETUP = "/backoffice/setup",
-            URL_SETUP_ID = "/backoffice/setup/{setup-id}";
+    public static final String URL_SETUP = URL_BEGINNING + "/setup",
+            URL_SETUP_ID = URL_BEGINNING + "/setup/{setup-id}";
 
     /**
      * **************
      * SERVER LOG ROUTES **************
      */
-    public static final String URL_SERVER_LOG = "/backoffice/server-log",
-            URL_SERVER_LOG_OBU = "/backoffice/server-log/obu",
-            URL_SERVER_LOG_USER = "/backoffice/server-log/user";
+    public static final String URL_SERVER_LOG = URL_BEGINNING + "/server-log",
+            URL_SERVER_LOG_OBU = URL_BEGINNING + "/server-log/obu",
+            URL_SERVER_LOG_USER = URL_BEGINNING + "/server-log/user";
 
     /**
      * **************
      * AUTHENTICATION ROUTES **************
      */
-    public static final String URL_LOGIN = "/backoffice/login",
-            URL_GET_LOGGEDIN_USER = "/backoffice/login/user";
+    public static final String URL_LOGIN = URL_BEGINNING + "/login",
+            URL_GET_LOGGEDIN_USER = URL_BEGINNING + "/login/user";
 
     /**
      * **************
      * USER ROUTES **************
      */
-    public static final String URL_GET_USERS = "/backoffice/users",
-            URL_GET_USER_BY_ID = "/backoffice/user/{user-id}",
-            URL_CREATE_USER = "/backoffice/user",
-            URL_DELETE_USER = "/backoffice/user",
-            URL_SUSPEND_USER_WITH_ID = "/backoffice/user/{user-id}/suspend",
-            URL_UPDATE_USER_WITH_ID = "/backoffice/user/{user-id}";
+    public static final String URL_GET_USERS = URL_BEGINNING + "/users",
+            URL_GET_USER_BY_ID = URL_BEGINNING + "/user/{user-id}",
+            URL_CREATE_USER = URL_BEGINNING + "/user",
+            URL_DELETE_USER = URL_BEGINNING + "/user",
+            URL_SUSPEND_USER_WITH_ID = URL_BEGINNING + "/user/{user-id}/suspend",
+            URL_UPDATE_USER_WITH_ID = URL_BEGINNING + "/user/{user-id}";
 
     /**
      * **************
      * DATABASE ROUTES **************
      */
-    public static final String URL_RESET_DB = "/backoffice/reset-db",
-            URL_FACTORY_RESET_DB = "/backoffice/factory-reset-db";
+    public static final String URL_RESET_DB = URL_BEGINNING + "/reset-db",
+            URL_FACTORY_RESET_DB = URL_BEGINNING + "/factory-reset-db";
 
 }

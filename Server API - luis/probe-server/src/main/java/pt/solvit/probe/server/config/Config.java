@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.*;
 import pt.solvit.probe.server.Interceptors.AuthInterceptor;
-import pt.solvit.probe.server.Interceptors.BaseInterceptor;
 import pt.solvit.probe.server.Interceptors.LoggingInterceptor;
 import springfox.documentation.RequestHandler;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -36,9 +35,6 @@ public class Config extends WebMvcConfigurationSupport{// implements WebMvcConfi
 
     //Interceptors
     @Autowired
-    BaseInterceptor baseInterceptor;
-
-    @Autowired
     AuthInterceptor authInterceptor;
 
     @Autowired
@@ -51,7 +47,7 @@ public class Config extends WebMvcConfigurationSupport{// implements WebMvcConfi
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(baseInterceptor)
+        registry.addInterceptor(loggingInterceptor)
                 .addPathPatterns("/**");
 
         registry.addInterceptor(authInterceptor)
@@ -61,13 +57,6 @@ public class Config extends WebMvcConfigurationSupport{// implements WebMvcConfi
                         //AppConfiguration.URL_GET_LOGGEDIN_USER
                 );
 
-        registry.addInterceptor(loggingInterceptor)
-                .addPathPatterns("/**");
-
-        /*
-        registry.addInterceptor(userRoleInterceptor)
-                .excludePathPatterns("/api/v1/login");
-        */
     }
 
 

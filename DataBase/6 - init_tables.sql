@@ -29,7 +29,9 @@ BEGIN
 END $$;
 
 
-INSERT INTO config (properties, creator) VALUES ('{
+INSERT INTO config (config_name, properties, creator) VALUES (
+    'Config001',
+    '{
     "activationDate": "2018-12-11T15:30:00",
     "archive": {
         "expiration": 2592000,

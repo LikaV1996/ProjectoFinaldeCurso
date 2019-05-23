@@ -14,6 +14,7 @@ CREATE TABLE Hardware (
 
 CREATE TABLE Config (
   	id BIGSERIAL,
+	config_name VARCHAR(45) NOT NULL,
   	activation_date TIMESTAMP,
   	properties jsonb NOT NULL,
   	creator VARCHAR(45) NOT NULL,

@@ -14,9 +14,26 @@
 
       <div *ngIf="config.archive!=null" class="ui container segment" >
         <h4>Archive</h4>
-        <div><b>expiration: </b>{{config.archive.expiration}}</div>
-        <div><b>period: </b>{{config.archive.period}}</div>
-        <div><b>referenceDate: </b>{{config.archive.referenceDate}}</div>
+        <div><b>Expiration: </b>{{config.archive.expiration}}</div>
+
+        <div>
+            <b>Expiration: 
+            <mat-form-field appearance="standard">
+            <mat-label>{{config.archive.expiration}}</mat-label>
+            <input [(ngModel)]="config.archive.expiration" matInput placeholder="Expiration">
+            </mat-form-field>
+            </b>days
+        </div>
+
+        <div><b>Period: </b>{{config.archive.period}}</div>
+        
+        <div><b>Reference Date: </b>
+          <mat-form-field>
+            <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="config.archive.referenceDate">
+            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #myDatepicker></mat-datepicker>
+          </mat-form-field>
+        </div>
       </div>
 
       <div *ngIf="config.testPlan!=null" class="ui container segment" >

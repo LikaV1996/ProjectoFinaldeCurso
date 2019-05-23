@@ -1,5 +1,6 @@
 export class Config{
     id: number
+    configName: string
     activationDate: Date
     properties: string
     creator: string

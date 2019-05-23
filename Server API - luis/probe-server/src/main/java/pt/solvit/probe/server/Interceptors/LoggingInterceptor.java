@@ -35,8 +35,8 @@ public class LoggingInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        if(request.getAttribute("request_date") == null)
-        request.setAttribute("request_date", LocalDateTime.now());
+        if(request.getAttribute("Request_Date") == null)
+        request.setAttribute("Request_Date", LocalDateTime.now());
 
         return true;
     }
@@ -83,7 +83,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
             User user = (User) request.getAttribute("user");
 
             //request_date
-            LocalDateTime request_date = (LocalDateTime) request.getAttribute("request_date");
+            LocalDateTime request_date = (LocalDateTime) request.getAttribute("Request_Date");
 
             //access_path
             String access_path = request.getMethod().toUpperCase() + " : " + request.getRequestURI();

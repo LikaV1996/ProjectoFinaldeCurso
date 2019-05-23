@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.*;
 import pt.solvit.probe.server.Interceptors.AuthInterceptor;
-import pt.solvit.probe.server.Interceptors.BaseInterceptor;
 import pt.solvit.probe.server.Interceptors.LoggingInterceptor;
 import springfox.documentation.RequestHandler;
 import springfox.documentation.builders.ApiInfoBuilder;

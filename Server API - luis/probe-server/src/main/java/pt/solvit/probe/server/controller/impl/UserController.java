@@ -120,4 +120,9 @@ public class UserController implements IUserController {
         return ResponseEntity.ok().body(suspendedUser);
     }
 
+
+    private ResponseEntity<?> resourceResponse(){
+        return null;
+    }
+
 }

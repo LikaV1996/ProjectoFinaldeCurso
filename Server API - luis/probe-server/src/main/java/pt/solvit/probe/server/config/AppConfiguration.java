@@ -148,7 +148,7 @@ public class AppConfiguration {
     public static final String URL_GET_USERS = URL_BEGINNING + "/users",
             URL_GET_USER_BY_ID = URL_BEGINNING + "/user/{user-id}",
             URL_CREATE_USER = URL_BEGINNING + "/user",
-            URL_DELETE_USER = URL_BEGINNING + "/user",
+            URL_DELETE_USER = URL_BEGINNING + "/user/{user-id}",
             URL_SUSPEND_USER_WITH_ID = URL_BEGINNING + "/user/{user-id}/suspend",
             URL_UPDATE_USER_WITH_ID = URL_BEGINNING + "/user/{user-id}";
 

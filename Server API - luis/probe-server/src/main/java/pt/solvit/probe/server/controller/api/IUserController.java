@@ -100,7 +100,7 @@ public interface IUserController {
     )
     @RequestMapping(
             method = RequestMethod.DELETE,
-            value = AppConfiguration.URL_GET_USER_BY_ID,
+            value = AppConfiguration.URL_DELETE_USER,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<Void> deleteUser(HttpServletRequest request, @PathVariable("user-id") long userId);

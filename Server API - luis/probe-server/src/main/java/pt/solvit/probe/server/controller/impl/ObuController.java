@@ -72,6 +72,8 @@ public class ObuController implements IObuController {
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_OBU);
         //serverLogService.createServerLog(serverLog);
 
+        obu = obuService.getObu(obuId);
+
         URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_OBU_ID, obuId);
 
         return ResponseEntity.created(createdURI).body(obu);

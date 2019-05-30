@@ -16,6 +16,8 @@ public class SetupDao extends CreatorDao{
     private Long id;
     private String properties;
 
+    public SetupDao(){}
+
     public SetupDao(Long id, String properties, String creator, Timestamp creationDate, String modifier, Timestamp modifiedDate) {
         super(creator, creationDate, modifier, modifiedDate);
         this.id = id;

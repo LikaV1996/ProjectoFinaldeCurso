@@ -41,7 +41,9 @@ public class UserService implements IUserService {
 
         User addUser = User.makeUser(input, loggedInUser.getUserName());
 
-        checkLoggedInUserPermissionsHigherThanUser(loggedInUser, addUser);
+        if( !checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN) &&
+                !checkLoggedInUserPermissionsLowerThanUser(loggedInUser, addUser) )
+            throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Creating new user");
         UserDao userDao = User.transformToUserDao(addUser);
@@ -50,9 +52,10 @@ public class UserService implements IUserService {
 
     @Override
     public void updateUser(User userToUpdate, InputUser input, User loggedInUser) {
-        checkLoggedInUserPermissionsHigherThanUser(loggedInUser, userToUpdate);
+        if( !checkLoggedInUserPermissionsLowerThanUser(loggedInUser, userToUpdate) )
+            throw new PermissionException();
 
-        if (input.getUserName() != null && !input.getUserName().equals( userToUpdate.getUserName() ) )
+        if ( input.getUserName() != null && !input.getUserName().equals( userToUpdate.getUserName() ) )
             checkIfUserAlreadyExists(userToUpdate.getUserName());
 
         userToUpdate = User.updateUser(userToUpdate, input, loggedInUser);
@@ -63,7 +66,8 @@ public class UserService implements IUserService {
 
     @Override
     public User getUser(long userId, User loggedInUser) {
-        checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER);
+        if( !checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER) )
+            throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Finding user {0}", userId);
         UserDao userDao = userRepository.findById(userId);
@@ -73,7 +77,8 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> getAllUsers(User loggedInUser) {
-        checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER);
+        if( !checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER) )
+            throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Finding all users");
         List<UserDao> userList = userRepository.findAll();
@@ -82,7 +87,8 @@ public class UserService implements IUserService {
 
     @Override
     public void deleteUser(long userId, User loggedInUser) {
-        checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN);
+        if( !checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN) )
+            throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Checking if user {0} exists", userId);
         UserDao userDao = userRepository.findById(userId);
@@ -97,7 +103,8 @@ public class UserService implements IUserService {
 
     @Override
     public void suspendUser(User userToSuspend, User loggedInUser) {
-        checkLoggedInUserPermissionsHigherThanUser(loggedInUser, userToSuspend);
+        if( !checkLoggedInUserPermissionsLowerThanUser(loggedInUser, userToSuspend) )
+            throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Suspending user {0}", userToSuspend.getId());
 
@@ -147,19 +154,15 @@ public class UserService implements IUserService {
     //}
 
     @Override
-    public void checkLoggedInUserPermissions(User loggedInUser, UserProfile requiredProfile) {
+    public boolean checkLoggedInUserPermissions(User loggedInUser, UserProfile requiredProfile) {
         LOGGER.log(Level.INFO, "Checking user {0} permissions", loggedInUser.getUserName());
-        if ( loggedInUser.getUserProfile().getLevel() < requiredProfile.getLevel() ){
-            throw new PermissionException();
-        }
+        return loggedInUser.getUserProfile().getLevel() >= requiredProfile.getLevel();
     }
 
     @Override
-    public void checkLoggedInUserPermissionsHigherThanUser(User loggedInUser, User user) {
+    public boolean checkLoggedInUserPermissionsLowerThanUser(User loggedInUser, User user) {
         LOGGER.log(Level.INFO, "Checking user {0} permissions", loggedInUser.getUserName());
-        if ( loggedInUser.getUserProfile().getLevel() <= user.getUserProfile().getLevel() ){
-            throw new PermissionException();
-        }
+        return loggedInUser.getUserProfile().getLevel() > user.getUserProfile().getLevel();
     }
 
     private void checkIfUserAlreadyExists(String userName) {

@@ -61,7 +61,7 @@ public interface ITestPlanController {
             consumes = {MediaType.APPLICATION_JSON_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> createTestPlan(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
+    public ResponseEntity<TestPlan> createTestPlan(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @RequestBody InputTestPlan body);
 
     @ApiOperation(value = "Returns a test plan", tags = {"Test Plan",})

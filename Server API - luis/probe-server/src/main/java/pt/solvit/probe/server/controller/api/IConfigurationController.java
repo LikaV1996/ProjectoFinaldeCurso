@@ -60,7 +60,7 @@ public interface IConfigurationController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> createConfig(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
+    public ResponseEntity<Config> createConfig(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @RequestBody InputConfig body);
 
     @ApiOperation(value = "Returns a configuration", tags = {"Configuration",})

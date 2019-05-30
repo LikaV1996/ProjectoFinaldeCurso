@@ -62,7 +62,7 @@ public class TestPlanController implements ITestPlanController {
     }
 
     @Override
-    public ResponseEntity<Void> createTestPlan(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
+    public ResponseEntity<TestPlan> createTestPlan(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @RequestBody InputTestPlan body) {
 
         User user = (User) request.getAttribute("user");
@@ -71,12 +71,13 @@ public class TestPlanController implements ITestPlanController {
         TestPlan testPlan = transformToTestPlan(body, user.getUserName());
         long testPlanId = testPlanService.createTestPlan(testPlan);
 
+        testPlan = testPlanService.getTestPlan(testPlanId);
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_TESTPLAN);
         //serverLogService.createServerLog(serverLog);
 
         URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_TESTPLAN_ID, testPlanId);
 
-        return ResponseEntity.created(createdURI).build();
+        return ResponseEntity.created(createdURI).body(testPlan);
     }
 
     @Override

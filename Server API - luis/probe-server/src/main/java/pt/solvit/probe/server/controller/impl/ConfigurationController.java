@@ -54,7 +54,7 @@ public class ConfigurationController implements IConfigurationController {
     }
 
     @Override
-    public ResponseEntity<Void> createConfig(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
+    public ResponseEntity<Config> createConfig(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
                                              @RequestBody InputConfig body) {
 
         User user = (User) request.getAttribute("user");
@@ -63,12 +63,11 @@ public class ConfigurationController implements IConfigurationController {
         Config config = ControllerUtil.transformToConfig(body, user.getUserName());
         long configId = configService.createConfig(config);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_CONFIG);
-        //serverLogService.createServerLog(serverLog);
+        config = configService.getConfig(configId);
 
         URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_CONFIG_ID, configId);
 
-        return ResponseEntity.created(createdURI).build();
+        return ResponseEntity.created(createdURI).body(config);
     }
 
     @Override

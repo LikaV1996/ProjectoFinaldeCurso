@@ -197,7 +197,7 @@ public class SetupService implements ISetupService {
     private SetupDao transformToSetupDao(Setup setup) {
         return new SetupDao(setup.getId(), setup.getPropertiesString(),
                 setup.getCreator(), Timestamp.valueOf(setup.getCreationLocalDateTime()),
-                setup.getModifier(), Timestamp.valueOf(setup.getModifiedLocalDateTime()));
+                setup.getModifier(), setup.getModifiedLocalDateTime() != null ? Timestamp.valueOf(setup.getModifiedLocalDateTime()) : null);
     }
 
     private Setup transformToSetup(SetupDao setupDao) {
@@ -217,7 +217,7 @@ public class SetupService implements ISetupService {
 
         return new Setup(setupDao.getId(), properties.getModemType(), properties.getScanning(), testList,
                 setupDao.getCreator(), setupDao.getCreationDate().toLocalDateTime(),
-                setupDao.getModifier(), setupDao.getModifiedDate().toLocalDateTime());
+                setupDao.getModifier(), setupDao.getModifiedDate() != null ? setupDao.getModifiedDate().toLocalDateTime() : null);
     }
 
     private TestDao transformToTestDao(Test test, long setupId) {

@@ -31,7 +31,7 @@ public interface IUserService {
 
     //public User checkUserCredentials(String authorization);
 
-    public void checkLoggedInUserPermissions(User loggedInUser, UserProfile requiredProfile);
+    public boolean checkLoggedInUserPermissions(User loggedInUser, UserProfile requiredProfile);
 
-    public void checkLoggedInUserPermissionsHigherThanUser(User loggedInUser, User user);
+    public boolean checkLoggedInUserPermissionsLowerThanUser(User loggedInUser, User user);
 }

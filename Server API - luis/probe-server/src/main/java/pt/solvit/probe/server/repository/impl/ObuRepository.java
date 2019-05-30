@@ -35,7 +35,7 @@ public class ObuRepository implements IObuRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    private static final String INSERT_POSTGRES = "INSERT INTO Obu (hardware_id, obu_state, current_config_id, current_test_plan_id, obu_name, obu_password, properties, creator, creation_date) VALUES (?, ?::ObuState, ?, ?, ?, ?, cast(? as jsonb), ?, ?)";
+    private static final String INSERT_POSTGRES = "INSERT INTO Obu (hardware_id, obu_state, current_config_id, current_test_plan_id, obu_name, obu_password, properties, creator, creation_date) VALUES (?, ?::ObuState, ?, ?, ?, ?, cast(? as jsonb), ?, ?) RETURNING id";
     private static final String INSERT_MYSQL = "INSERT INTO Obu (hardware_id, obu_state, current_config_id, current_test_plan_id, obu_name, obu_password, properties, creator, creation_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
     private static final String SELECT_BY_ID = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM Obu WHERE id = ?;";
     private static final String SELECT_READY_POSTGRES = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate FROM Obu WHERE hardware_id = ? AND obu_state <> 'DEACTIVATED'::ObuState;";
@@ -86,16 +86,18 @@ public class ObuRepository implements IObuRepository {
     @Transactional()
     @Override
     public long add(ObuDao obuDao) {
+        if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
+            return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, obuDao.getHardwareId(), obuDao.getObuState(),
+                    obuDao.getCurrentConfigId(), obuDao.getCurrentTestPlanId(), obuDao.getObuName(), obuDao.getObuPassword(),
+                    obuDao.getProperties(), obuDao.getCreator(), obuDao.getCreationDate());
+        }
+
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement statement = null;
-                if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
-                    statement = con.prepareStatement(INSERT_POSTGRES, new String[]{"id"});
-                } else { //mysql
-                    statement = con.prepareStatement(INSERT_MYSQL, new String[]{"id"});
-                }
+                PreparedStatement statement = con.prepareStatement(INSERT_MYSQL, new String[]{"id"});
+
                 statement.setLong(1, obuDao.getHardwareId());
                 statement.setString(2, obuDao.getObuState());
                 if (obuDao.getCurrentConfigId() == null) {

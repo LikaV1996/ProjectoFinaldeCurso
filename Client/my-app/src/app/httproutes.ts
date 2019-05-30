@@ -25,7 +25,15 @@ export class Routes{
     getConfigs = this.basePath + "/config";
     getConfigById = this.basePath + "/config/:id"
     createConfig = this.basePath +  "/config";
+    updateConfig = this.basePath + "/config/:id";
 
     getTestPlans = this.basePath + "/test-plan";
     getTestPlanById = this.basePath + "/test-plan/:id";
+    createTestPlan = this.basePath + "/test-plan";
+    updateTestPlan = this.basePath + "/test-plan/:id";
+
+    getSetups = this.basePath + "/setup";
+    getSetupById = this.basePath + "/setup/:id";
+    createSetup = this.basePath + "/setup";
+    updateSetup = this.basePath + "/setup/:id";
 }

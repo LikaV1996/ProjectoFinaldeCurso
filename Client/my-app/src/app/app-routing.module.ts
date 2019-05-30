@@ -18,8 +18,9 @@ import { HardwareDetailComponent } from './hardware-detail/hardware-detail.compo
 import { HardwareCreateComponent } from './hardware-create/hardware-create.component';
 import { ObuCreateComponent } from './obu-create/obu-create.component';
 import { ConfigurationCreateComponent } from './configuration-create/configuration-create.component';
-
-
+import { TestPlansDetailComponent } from './test-plans-detail/test-plans-detail.component';
+import { TestPlansCreateComponent } from './test-plans-create/test-plans-create.component';
+import { SetupComponent } from './setup/setup.component'
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -42,6 +43,9 @@ const routes: Routes = [
         { path: 'config/:id/edit', component: ConfigurationDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'config/create', component: ConfigurationCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'testPlans', component: TestPlansComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'testPlan/:id/edit', component: TestPlansDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'testPlan/create', component: TestPlansCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'setups', component: SetupComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }}
         
       ]
   }

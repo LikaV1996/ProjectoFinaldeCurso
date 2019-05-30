@@ -39,7 +39,6 @@ export class ObuCreateComponent implements OnInit {
 
   ngOnInit() {
 
-
     this._hardwareService.getHardwares().subscribe(hardwares =>{
       this.hardwares = hardwares
       this.hardwares.sort( (h1,h2)=> h1.id - h2.id)
@@ -49,6 +48,10 @@ export class ObuCreateComponent implements OnInit {
 
   goBack(){
     this._location.back();
+  }
+
+  createObu(){
+    alert('Doing nothing yet!')
   }
 
   addSim(){

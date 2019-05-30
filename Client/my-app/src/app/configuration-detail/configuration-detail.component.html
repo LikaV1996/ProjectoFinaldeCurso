@@ -4,9 +4,9 @@
       <h2>Configuration Details</h2>
       <div><b>id: </b>{{config.id}}</div>
 
-      <div><b>creator: </b>{{config.creator}}</div>
+      <div><b>Creator: </b>{{config.creator}}</div>
   
-      <div><b>creation_date: </b>{{config.creationDate}}</div>
+      <div><b>Creation Date: </b>{{config.creationDate}}</div>
 
       <div *ngIf="config.activationDate!=null"  ><b>activation_date: </b>{{config.activationDate}}</div>
       
@@ -14,7 +14,6 @@
 
       <div *ngIf="config.archive!=null" class="ui container segment" >
         <h4>Archive</h4>
-        <div><b>Expiration: </b>{{config.archive.expiration}}</div>
 
         <div>
             <b>Expiration: 
@@ -34,6 +33,124 @@
             <mat-datepicker #myDatepicker></mat-datepicker>
           </mat-form-field>
         </div>
+        
+      </div>
+
+      <div *ngIf="config.controlConnection!=null" class="ui container segment" >
+        <h4>Control Connection</h4>
+        
+        <div><b>Reference Date: </b>
+          <mat-form-field>
+            <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="config.controlConnection.referenceDate">
+            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #myDatepicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div><b>Period: </b>{{config.controlConnection.period}}</div>
+
+        <div><b>Retry Delay: </b>{{config.controlConnection.retryDelay}}</div>
+
+        <div><b>Maximum Retries: </b>{{config.controlConnection.maxRetries}}</div>
+
+      </div>
+
+      <div *ngIf="config.core!=null" class="ui container segment" >
+        <h4>Core</h4>
+
+        <div><b>Maximum System Log Size: </b>{{config.core.maxSystemLogSize}}</div>
+
+        <div><b>Storage Monitor Period: </b>{{config.core.storageMonitorPeriod}}</div>
+
+        <div><b>Storage Warning Threshold: </b>{{config.core.storageWarningThreshold}}</div>
+
+        <div><b>Storage Critical Threshold: </b>{{config.core.storageCriticalThreshold}}</div>
+        
+      </div>
+
+      <div *ngIf="config.data!=null" class="ui container segment" >
+        <h4>Data</h4>
+
+        <div>
+          <b>Default Message: 
+          <mat-form-field appearance="standard">
+          <mat-label>{{config.data.defaultMessage}}</mat-label>
+          <input [(ngModel)]="config.data.defaultMessage" matInput placeholder="Default Message">
+          </mat-form-field>
+          </b>
+        </div>
+
+      </div>
+
+      <div *ngIf="config.download!=null" class="ui container segment" >
+        <h4>Download</h4>
+
+        <div><b>Retry Delay: </b>{{config.download.retryDelay}}</div>
+
+        <div><b>Maximum Retries: </b>{{config.download.maxRetries}}</div>
+
+      </div>
+
+      <div *ngIf="config.scanning!=null" class="ui container segment" >
+        <h4>Scanning</h4>
+        
+        <div><b><mat-checkbox [(ngModel)]="config.scanning.enableMonitor" [checked]="config.scanning.enableMonitor" >Enable Monitor</mat-checkbox></b></div>
+        
+        <div><b>Sample Time: </b>{{config.scanning.sampleTime}}</div>
+
+        <div><b><mat-checkbox [(ngModel)]="config.scanning.enableCsq" [checked]="config.scanning.enableCsq" >Enable Csq</mat-checkbox></b></div>
+
+        <div><b><mat-checkbox [(ngModel)]="config.scanning.enableMoni" [checked]="config.scanning.enableMoni" >Enable Moni</mat-checkbox></b></div>
+
+        <div><b><mat-checkbox [(ngModel)]="config.scanning.enableMonp" [checked]="config.scanning.enableMonp" >Enable Monp</mat-checkbox></b></div>
+
+        <div><b><mat-checkbox [(ngModel)]="config.scanning.enableSmond" [checked]="config.scanning.enableSmond" >Enable Smond</mat-checkbox></b></div>
+
+        <div><b><mat-checkbox [(ngModel)]="config.scanning.enableSmonc" [checked]="config.scanning.enableSmonc" >Enable Smonc</mat-checkbox></b></div>
+
+      </div>
+
+      <div *ngIf="config.server!=null" class="ui container segment" >
+        <h4>Server</h4>
+
+        <div>
+          <b>Server Interface: 
+          <mat-form-field appearance="standard">
+          <mat-label>{{config.server.serverInterface}}</mat-label>
+          <input [(ngModel)]="config.server.serverInterface" matInput placeholder="Server Interface">
+          </mat-form-field>
+          </b>
+        </div>
+
+        <div><b>Registration Retry Delay: </b>{{config.server.registrationRetryDelay}}</div>
+
+        <div>
+          <b>Server Address: 
+          <mat-form-field appearance="standard">
+          <mat-label>{{config.server.serverAddress}}</mat-label>
+          <input [(ngModel)]="config.server.serverAddress" matInput placeholder="Server Address">
+          </mat-form-field>
+          </b>
+        </div>
+
+        <div>
+          <b>Server User: 
+          <mat-form-field appearance="standard">
+          <mat-label>{{config.server.serverUser}}</mat-label>
+          <input [(ngModel)]="config.server.serverUser" matInput placeholder="Server User">
+          </mat-form-field>
+          </b>
+        </div>
+
+        <div>
+          <b>Server Password: 
+          <mat-form-field appearance="standard">
+          <mat-label>{{config.server.serverPassword}}</mat-label>
+          <input [(ngModel)]="config.server.serverPassword" matInput placeholder="Server Password">
+          </mat-form-field>
+          </b>
+        </div>
+
       </div>
 
       <div *ngIf="config.testPlan!=null" class="ui container segment" >
@@ -43,7 +160,37 @@
           <div><b>maxLogSize: </b>{{config.testPlan.maxLogSize}}</div>
       </div>
 
+      <div *ngIf="config.upload!=null" class="ui container segment" >
+        <h4>Upload</h4>
+
+        <div><b><mat-checkbox [(ngModel)]="config.upload.autoUpload" [checked]="config.upload.autoUpload" >Auto Upload</mat-checkbox></b></div>
+        
+        <div><b>Reference Date: </b>
+          <mat-form-field>
+            <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="config.upload.referenceDate">
+            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #myDatepicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div><b>Period: </b>{{config.upload.period}}</div>
+
+        <div><b>Retry Delay: </b>{{config.upload.retryDelay}}</div>
+
+        <div><b>Maximum Retries: </b>{{config.upload.maxRetries}}</div>
+
+        <div><b>Maximum UploadSize: </b>{{config.upload.maxUploadSize}}</div>
+
+    </div>
       
+    <div *ngIf="config.voice!=null" class="ui container segment" >
+      <h4>Voice</h4>
+
+      <div><b>defaultCallDuration: </b>{{config.voice.defaultCallDuration}}</div>
+
+      <div><b>incomingCallTimeout: </b>{{config.voice.incomingCallTimeout}}</div>
+      
+    </div>
   
       <div *ngIf="config.modified_date!=null || config.modifier!=null">
       <div><b>modifier: </b>{{config.modifier}}</div>

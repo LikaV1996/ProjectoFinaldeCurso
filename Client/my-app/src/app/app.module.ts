@@ -33,6 +33,9 @@ import { HardwareDetailComponent } from './hardware-detail/hardware-detail.compo
 import { HardwareCreateComponent } from './hardware-create/hardware-create.component';
 import { ObuCreateComponent } from './obu-create/obu-create.component';
 import { ConfigurationCreateComponent } from './configuration-create/configuration-create.component';
+import { TestPlansCreateComponent } from './test-plans-create/test-plans-create.component';
+import { TestPlansDetailComponent } from './test-plans-detail/test-plans-detail.component';
+import { SetupComponent } from './setup/setup.component';
 
 
 
@@ -54,7 +57,10 @@ import { ConfigurationCreateComponent } from './configuration-create/configurati
     HardwareDetailComponent,
     HardwareCreateComponent,
     ObuCreateComponent,
-    ConfigurationCreateComponent
+    ConfigurationCreateComponent,
+    TestPlansCreateComponent,
+    TestPlansDetailComponent,
+    SetupComponent
   ],
   imports: [
     BrowserModule,

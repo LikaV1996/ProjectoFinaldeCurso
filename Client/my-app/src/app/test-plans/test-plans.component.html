@@ -1,6 +1,4 @@
-<p>
-  test-plans works! ainda muito incompleto...
-</p>
+<p></p>
 
 
 <script src="/script.js"></script>
@@ -8,20 +6,20 @@
   
   <div class="ui segment">
     <div class="ui grid">
-      <div class="four wide column">ID</div>
-      <div class="four wide column">Creator</div>
-      <div class="four wide column">Creation Date</div>
+      <div class="four wide column"><h3>Test Plan Name</h3></div>
+      <div class="four wide column"><h3>Creator</h3></div>
+      <div class="four wide column"><h3>Start Date</h3></div>
       <div class="four wide column"></div>
     </div>
     
     <div class="ui divider"></div>
 
     <div class="ui" style="height: 70%;">
-        <div class="ui segment" *ngFor="let config of configs">
+        <div class="ui segment" *ngFor="let testplan of testplans">
           <div class="ui middle aligned grid">
-            <div class="four wide column">{{testplan.id}}</div>
+            <div class="four wide column">{{testplan.testPlanName}}</div>
             <div class="four wide column">{{testplan.creator}}</div>
-            <div class="four wide column">{{testplan.creationDate}}</div>
+            <div class="four wide column">{{testplan.startDate}}</div>
             <div class="four wide right aligned column">
               <div class="ui suspend button" (click)="edit(testplan.id)" data-tooltip="Edit Test Plan">Edit</div>
             </div>
@@ -30,8 +28,14 @@
       </div>
 
 
-    
+      <div *ngIf="canCreateTestPlan()">
+        <div class="ui hidden divider"></div>
+        <div class="one wide column"></div>
+        <div class="one wide column"></div>
+        <div class="four wide right aligned column">
+          <div class="ui blue fluid button" (click)="createTestPlan()">Create New Test Plan</div>
+        </div>
+    </div>
 
-    
-
+  </div>
 </div>

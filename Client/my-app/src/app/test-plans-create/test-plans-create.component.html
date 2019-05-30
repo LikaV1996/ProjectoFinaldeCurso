@@ -1,0 +1,39 @@
+<p></p>
+<div class="ui raised very padded text container segment">
+
+  <h2>Create Test Plan: </h2>
+
+  <div>
+    <b>Name:
+    <mat-form-field appearance="standard">
+    <input [(ngModel)]="configName" matInput placeholder="Configuration Name" required>
+    </mat-form-field>
+    </b>
+  </div>
+
+  <div><b>Start Date: </b>
+    <mat-form-field>
+      <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="startDate" placeholder="Start Date">
+      <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+      <mat-datepicker #myDatepicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div><b>Stop Date: </b>
+    <mat-form-field>
+      <input matInput [matDatepicker]="myDatepicker2" [(ngModel)]="stopDate" placeholder="Stop Date">
+      <mat-datepicker-toggle matSuffix [for]="myDatepicker2"></mat-datepicker-toggle>
+      <mat-datepicker #myDatepicker2></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <!-- PROPERTIES -->
+
+
+
+  <div style="margin-top:30px;">
+    <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
+    <div class="ui suspend button" (click)="createTestPlan()" data-tooltip="Create Test Plan">Create</div>
+  </div>
+
+</div>

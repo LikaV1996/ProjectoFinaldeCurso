@@ -36,4 +36,6 @@ export class Routes{
     getSetupById = this.basePath + "/setup/:id";
     createSetup = this.basePath + "/setup";
     updateSetup = this.basePath + "/setup/:id";
+
+    getObuConfigs = this.basePath + "/obu/:id/config"
 }

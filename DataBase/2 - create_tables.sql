@@ -27,6 +27,7 @@ CREATE TABLE Config (
 
 CREATE TABLE TestPlan (
   	id BIGSERIAL,
+	testPlan_name VARCHAR(45) NOT NULL,
   	start_date TIMESTAMP NOT NULL,
   	stop_date TIMESTAMP NOT NULL,
   	properties jsonb NOT NULL,
@@ -40,6 +41,7 @@ CREATE TABLE TestPlan (
 
 CREATE TABLE Setup (
   	id BIGSERIAL,
+	setup_name VARCHAR(45) NOT NULL,
   	properties jsonb NOT NULL,
   	creator VARCHAR(45) NOT NULL,
   	creation_date TIMESTAMP NOT NULL DEFAULT LOCALTIMESTAMP(0),

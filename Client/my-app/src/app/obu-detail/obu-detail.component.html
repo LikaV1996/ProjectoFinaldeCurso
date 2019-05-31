@@ -54,6 +54,23 @@
     <div *ngIf="obu.factoryConfig != null"><b>Factory Config: </b>{{obu.factoryConfig}}</div>
     <div *ngIf="obu.factoryConfig == null"><b>Factory Config: </b>No Factory Config</div>
 
+
+    <div class="ui container segment" >
+        <h4>Obu Has Config</h4>
+        <div class="ui segment" *ngFor="let obuConfigs of obu_has_configs">
+            <div class="ui middle aligned grid">
+                <div class="four wide column">{{obuConfigs.obuId}}</div>
+                <div class="four wide column">{{obuConfigs.cancelState}}</div>
+                <div class="four wide column">{{obuConfigs.config.id}}</div>
+                <div class="four wide right aligned column">
+                    <div class="ui suspend button" (click)="editConfig(obu.id)" data-tooltip="Edit Config">Edit</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <div *ngIf="obu.sims!=null" class="ui container segment" >
             <h4>SIMS ({{obu.sims.length}})</h4>
             <div class="ui segment" *ngFor="let sim of obu.sims">

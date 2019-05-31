@@ -93,7 +93,8 @@ INSERT INTO config (config_name, properties, creator) VALUES (
 }','tester');
 
 
-INSERT INTO testplan (start_date, stop_date, properties, creator) VALUES (
+INSERT INTO testplan (testPlan_name, start_date, stop_date, properties, creator) VALUES (
+    'TestPlan001',
     '2018-12-14T18:55:00',
     '2018-12-16T20:00:00',
     '{
@@ -169,6 +170,25 @@ INSERT INTO testplan (start_date, stop_date, properties, creator) VALUES (
     }',
     'tester');
 
+
+INSERT INTO setup (setup_name, properties, creator) VALUES (
+    'Setup001',
+    '{
+	"modemType": "GSMR",
+	"scanning" : {
+    	"enableScanning" : true,
+    	"sampleTime" : 2,
+    	"enableCsq" : true,
+    	"enableMoni" : true,
+    	"enableMonp" : true,
+    	"enableSmonc" : true,
+    	"enableSmond" : true
+	}
+    }',
+    'tester');
+
+
+INSERT INTO obu_has_config (obu_id, config_id, properties) VALUES (1,1,'{}');
 
 
 INSERT INTO ProbeUser (user_name, user_password, user_profile, creator) VALUES ('tester1','tester','SUPER_USER','rita');

@@ -5,8 +5,10 @@ import {ActivatedRoute} from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { OBUService } from '../_services/obu.service';
 import { HardwareService } from '../_services/hardware.service';
+import { OBUHasConfigService } from '../_services/obuHasConfig.service';
 import {Router, NavigationExtras} from '@angular/router';
 import {Location} from '@angular/common';
+import { OBUHasConfig } from '../Model/OBUHasConfig';
 
 @Component({
   selector: 'app-obu-detail',
@@ -19,11 +21,13 @@ export class ObuDetailComponent implements OnInit {
 
   private id: number;
   private hardwares : Hardware[];
+  private obu_has_configs: OBUHasConfig[];
 
   constructor(
     private router: Router,
     private _obuService: OBUService,
     private _hardwareService: HardwareService,
+    private _obuHasConfigService: OBUHasConfigService,
     private route: ActivatedRoute,
     private http: HttpClient,
     private _location: Location
@@ -34,14 +38,22 @@ export class ObuDetailComponent implements OnInit {
     
     this._obuService.getOBUByID(this.id).subscribe(obu => {
       this.obu = obu
-      console.log(JSON.stringify(obu))
+      //console.log(JSON.stringify(obu))
    })
 
-   this._hardwareService.getHardwares().subscribe(hardwares =>{
-    this.hardwares = hardwares
-    this.hardwares.sort( (h1,h2)=> h1.id - h2.id)
-    //console.log(JSON.stringify(hardwares))
+    this._hardwareService.getHardwares().subscribe(hardwares =>{
+      this.hardwares = hardwares
+      this.hardwares.sort( (h1,h2)=> h1.id - h2.id)
   })
+
+    this._obuHasConfigService.getObuConfigs(this.id).subscribe(configs =>{
+      this.obu_has_configs = configs
+      console.log(configs)
+      console.log(this.obu_has_configs)
+      console.log(this.obu_has_configs.length)
+    })
+    //console.log('aaaa' + JSON.stringify(this.obu_has_configs))
+  
   }
 
   goBack(){

@@ -246,7 +246,7 @@ public class Obu extends CreatorModel {
                 obu.getModifier(), obu.getModifiedLocalDateTime()!= null ? Timestamp.valueOf(obu.getModifiedLocalDateTime()) : null);
     }
 
-    public static Obu makeObu(InputObu inputObu, String creator/*, Hardware hardware*/) {
+    public static Obu makeObuFromInput(InputObu inputObu, String creator/*, Hardware hardware*/) {
         long hardwareId = inputObu.getHardwareId();
         //String obuName = hardware.getSerialNumber();
         String obuPassword = generateObuPassword();

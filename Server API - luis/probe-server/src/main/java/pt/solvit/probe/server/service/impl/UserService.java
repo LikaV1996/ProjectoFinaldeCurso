@@ -39,7 +39,7 @@ public class UserService implements IUserService {
 
         checkIfUserAlreadyExists(input.getUserName());
 
-        User addUser = User.makeUser(input, loggedInUser.getUserName());
+        User addUser = User.makeUserFromInput(input, loggedInUser.getUserName());
 
         if( !checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN) &&
                 !checkLoggedInUserPermissionsLowerThanUser(loggedInUser, addUser) )

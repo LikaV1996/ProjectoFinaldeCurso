@@ -29,16 +29,18 @@ public class ObuConfigRepository implements IObuConfigRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    private static final String INSERT_POSTGRES = "INSERT INTO Obu_has_Config (obu_id, config_id, properties) VALUES (?, ?, cast(? as jsonb))";
-    private static final String INSERT_MYSQL = "INSERT INTO Obu_has_Config (obu_id, config_id, properties) VALUES (?, ?, ?);";
-    private static final String SELECT_BY_ID = "SELECT obu_id AS obuId, config_id AS configId, properties FROM Obu_has_Config WHERE obu_id = ? AND config_id = ?;";
-    private static final String SELECT_BY_OBU_ID = "SELECT obu_id AS obuId, config_id AS configId, properties FROM Obu_has_Config WHERE obu_id = ?;";
-    private static final String SELECT_BY_CONFIG_ID = "SELECT obu_id AS obuId, config_id AS configId, properties FROM Obu_has_Config WHERE config_id = ?;";
-    private static final String SELECT_ALL = "SELECT obu_id AS obuId, config_id AS configId, properties FROM Obu_has_Config;";
+    private static final String INSERT_BASE = "INSERT INTO Obu_has_Config (obu_id, config_id, properties)";
+    private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?, cast(? as jsonb))";
+    private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?);";
+    private static final String SELECT_ALL = "SELECT obu_id AS obuId, config_id AS configId, properties FROM Obu_has_Config";
+    private static final String SELECT_BY_IDS = SELECT_ALL + " WHERE obu_id = ? AND config_id = ?;";
+    private static final String SELECT_BY_OBU_ID = SELECT_ALL + " WHERE obu_id = ?;";
+    private static final String SELECT_BY_CONFIG_ID = SELECT_ALL + " WHERE config_id = ?;";
     private static final String UPDATE_POSTGRES = "UPDATE Obu_has_Config SET properties = cast(? as jsonb) WHERE obu_id = ? AND config_id = ?;";
     private static final String UPDATE_MYSQL = "UPDATE Obu_has_Config SET properties = ? WHERE obu_id = ? AND config_id = ?;";
-    private static final String DELETE_BY_ID = "DELETE FROM Obu_has_Config WHERE obu_id = ? AND config_id = ?;";
-    private static final String DELETE_BY_OBU_ID = "DELETE FROM Obu_has_Config WHERE obu_id = ?;";
+    private static final String DELETE_BASE = "DELETE FROM Obu_has_Config";
+    private static final String DELETE_BY_IDS = DELETE_BASE + " WHERE obu_id = ? AND config_id = ?;";
+    private static final String DELETE_BY_OBU_ID = DELETE_BASE + " WHERE obu_id = ?;";
 
     public ObuConfigRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -51,7 +53,7 @@ public class ObuConfigRepository implements IObuConfigRepository {
     @Override
     public ObuConfigDao findById(long obuId, long configId) {
         try {
-            return jdbcTemplate.queryForObject(SELECT_BY_ID, new BeanPropertyRowMapper<>(ObuConfigDao.class), obuId, configId);
+            return jdbcTemplate.queryForObject(SELECT_BY_IDS, new BeanPropertyRowMapper<>(ObuConfigDao.class), obuId, configId);
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new EntityWithIdNotFoundException(EntityType.CONFIG);
         }
@@ -83,7 +85,7 @@ public class ObuConfigRepository implements IObuConfigRepository {
 
     @Override
     public int removeConfigFromObu(long obuId, long configId) {
-        return jdbcTemplate.update(DELETE_BY_ID, obuId, configId);
+        return jdbcTemplate.update(DELETE_BY_IDS, obuId, configId);
     }
 
     @Override

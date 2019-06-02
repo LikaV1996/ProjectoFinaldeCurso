@@ -90,7 +90,7 @@ public class User extends CreatorModel {
 
 
 
-    public static User makeUser(InputUser inputUser, String creator){
+    public static User makeUserFromInput(InputUser inputUser, String creator){
         return new User(null, inputUser.getUserName(), inputUser.getUserPassword(), inputUser.getUserProfile(),
                 creator, LocalDateTime.now(), null, null, false);
     }

@@ -49,7 +49,7 @@ public class SetupController implements ISetupController {
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_SETUP);
         //serverLogService.createServerLog(serverLog);
 
-        return ResponseEntity.ok(setupList);
+        return ResponseEntity.ok().body(setupList);
     }
 
     @Override

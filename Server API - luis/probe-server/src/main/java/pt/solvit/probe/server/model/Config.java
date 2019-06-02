@@ -15,16 +15,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import pt.solvit.probe.server.controller.impl.util.Profile;
-import pt.solvit.probe.server.controller.model.input.config.ArchiveConfig;
-import pt.solvit.probe.server.controller.model.input.config.ControlConnectionConfig;
-import pt.solvit.probe.server.controller.model.input.config.CoreConfig;
-import pt.solvit.probe.server.controller.model.input.config.DataConfig;
-import pt.solvit.probe.server.controller.model.input.config.DownloadConfig;
-import pt.solvit.probe.server.controller.model.input.config.ServerConfig;
-import pt.solvit.probe.server.controller.model.input.config.ScanningConfig;
-import pt.solvit.probe.server.controller.model.input.config.TestPlanConfig;
-import pt.solvit.probe.server.controller.model.input.config.UploadConfig;
-import pt.solvit.probe.server.controller.model.input.config.VoiceConfig;
+import pt.solvit.probe.server.controller.model.input.config.*;
 import pt.solvit.probe.server.model.properties.ConfigProperties;
 import pt.solvit.probe.server.repository.model.ConfigDao;
 
@@ -41,6 +32,10 @@ public class Config extends CreatorModel {
     @JsonView(Profile.ShortView.class)
     @JsonProperty("id")
     private Long id;
+
+    @JsonView(Profile.ShortView.class)
+    @JsonProperty("configName")
+    private String configName;
 
     @JsonView(Profile.ShortView.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -87,11 +82,13 @@ public class Config extends CreatorModel {
     @JsonProperty("voice")
     private VoiceConfig voice;
 
-    public Config(Long id, LocalDateTime activationDate, ArchiveConfig archive, ControlConnectionConfig controlConnection, CoreConfig core,
-            DataConfig data, DownloadConfig download, ScanningConfig scanning, ServerConfig server, TestPlanConfig testPlan, 
-            UploadConfig upload, VoiceConfig voice, String creator, LocalDateTime creationDate, String modifier, LocalDateTime modifiedDate) {
+    public Config(Long id, String configName, LocalDateTime activationDate, ArchiveConfig archive, ControlConnectionConfig controlConnection, CoreConfig core,
+                  DataConfig data, DownloadConfig download, ScanningConfig scanning, ServerConfig server, TestPlanConfig testPlan, UploadConfig upload, VoiceConfig voice,
+                  String creator, LocalDateTime creationDate, String modifier, LocalDateTime modifiedDate
+    ) {
         super(creator, creationDate, modifier, modifiedDate);
         this.id = id;
+        this.configName = configName;
         this.activationDate = activationDate;
         this.archive = archive;
         this.controlConnection = controlConnection;
@@ -108,6 +105,11 @@ public class Config extends CreatorModel {
     @ApiModelProperty(value = "Configuration identifier")
     public Long getId() {
         return id;
+    }
+
+    @ApiModelProperty(value = "Configuration name")
+    public String getConfigName() {
+        return configName;
     }
 
     @JsonIgnore
@@ -178,8 +180,14 @@ public class Config extends CreatorModel {
     }
 
 
+    public static Config makeConfigFromInput(InputConfig inputConfig, String creator){
+        return new Config(null, inputConfig.getConfigName(), inputConfig.getActivationLocalDateTime(), inputConfig.getArchive(), inputConfig.getControlConnection(),
+                inputConfig.getCore(), inputConfig.getData(), inputConfig.getDownload(), inputConfig.getScanning(), inputConfig.getServer(), inputConfig.getTestPlan(),
+                inputConfig.getUpload(), inputConfig.getVoice(), creator, LocalDateTime.now(), null, null);
+    }
+
     public static ConfigDao transformToConfigDao(Config config) {
-        return new ConfigDao(null, Timestamp.valueOf(config.getActivationLocalDateTime()), config.getPropertiesString(),
+        return new ConfigDao(null, config.getConfigName(), Timestamp.valueOf(config.getActivationLocalDateTime()), config.getPropertiesString(),
                 config.getCreator(), Timestamp.valueOf(config.getCreationLocalDateTime()),
                 config.getModifier(), config.getModifiedLocalDateTime() != null ? Timestamp.valueOf(config.getModifiedLocalDateTime()) : null);
     }

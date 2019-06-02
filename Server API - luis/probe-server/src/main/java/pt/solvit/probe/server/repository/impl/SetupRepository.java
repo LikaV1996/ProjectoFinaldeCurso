@@ -35,14 +35,15 @@ public class SetupRepository implements ISetupRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    private static final String INSERT_POSTGRES = "INSERT INTO Setup (properties, creator, creation_date) VALUES (cast(? as jsonb), ?, ?) RETURNING id;";
-    private static final String INSERT_MYSQL = "INSERT INTO Setup (properties, creator, creation_date) VALUES (?, ?, ?);";
-    private static final String SELECT_BY_ID = "SELECT id, properties, creator, creation_date AS creationDate FROM  Setup WHERE id = ?;";
-    private static final String SELECT_ALL = "SELECT id, properties, creator, creation_date AS creationDate FROM Setup;";
+    private static final String INSERT_BASE = "INSERT INTO Setup (setup_name, properties, creator, creation_date)";
+    private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, cast(? as jsonb), ?, ?) RETURNING id;";
+    private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?);";
+    private static final String SELECT_ALL = "SELECT id, setup_name, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM Setup";
+    private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
     private static final String UPDATE_POSTGRES = "UPDATE Setup SET properties = ? WHERE id = ?;";
     private static final String UPDATE_MYSQL = "UPDATE Setup SET properties = cast(? as jsonb) WHERE id = ?;";
-    private static final String DELETE_BY_ID = "DELETE FROM Setup WHERE id = ?;";
-    private static final String DELETE_ALL = "DELETE FROM Setup;";
+    private static final String DELETE_ALL = "DELETE FROM Setup";
+    private static final String DELETE_BY_ID = DELETE_ALL + " WHERE id = ?;";
 
     public SetupRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -70,7 +71,7 @@ public class SetupRepository implements ISetupRepository {
     @Override
     public long add(SetupDao setupDao) {
         if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
-            return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, setupDao.getProperties(), setupDao.getCreator(), setupDao.getCreationDate());
+            return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, setupDao.getSetupName(), setupDao.getProperties(), setupDao.getCreator(), setupDao.getCreationDate());
         }
 
         //mysql
@@ -79,9 +80,10 @@ public class SetupRepository implements ISetupRepository {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(INSERT_MYSQL, new String[]{"id"});
-                statement.setString(1, setupDao.getProperties());
-                statement.setString(2, setupDao.getCreator());
-                statement.setTimestamp(3, setupDao.getCreationDate());
+                statement.setString(1, setupDao.getSetupName());
+                statement.setString(2, setupDao.getProperties());
+                statement.setString(3, setupDao.getCreator());
+                statement.setTimestamp(4, setupDao.getCreationDate());
                 return statement;
             }
         }, holder);

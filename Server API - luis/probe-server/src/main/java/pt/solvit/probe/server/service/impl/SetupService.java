@@ -195,7 +195,7 @@ public class SetupService implements ISetupService {
     }
 
     private SetupDao transformToSetupDao(Setup setup) {
-        return new SetupDao(setup.getId(), setup.getPropertiesString(),
+        return new SetupDao(setup.getId(), setup.getSetupName(), setup.getPropertiesString(),
                 setup.getCreator(), Timestamp.valueOf(setup.getCreationLocalDateTime()),
                 setup.getModifier(), setup.getModifiedLocalDateTime() != null ? Timestamp.valueOf(setup.getModifiedLocalDateTime()) : null);
     }
@@ -215,7 +215,7 @@ public class SetupService implements ISetupService {
         }
         SetupProperties properties = GSON.fromJson(setupDao.getProperties(), SetupProperties.class);
 
-        return new Setup(setupDao.getId(), properties.getModemType(), properties.getScanning(), testList,
+        return new Setup(setupDao.getId(), setupDao.getSetupName(), properties.getModemType(), properties.getScanning(), testList,
                 setupDao.getCreator(), setupDao.getCreationDate().toLocalDateTime(),
                 setupDao.getModifier(), setupDao.getModifiedDate() != null ? setupDao.getModifiedDate().toLocalDateTime() : null);
     }

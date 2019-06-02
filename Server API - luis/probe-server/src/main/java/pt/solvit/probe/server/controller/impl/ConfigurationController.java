@@ -8,22 +8,18 @@ package pt.solvit.probe.server.controller.impl;
 import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.config.AppConfiguration;
 import pt.solvit.probe.server.controller.api.IConfigurationController;
-import pt.solvit.probe.server.controller.impl.util.ControllerUtil;
 import pt.solvit.probe.server.controller.impl.util.UriBuilder;
 import pt.solvit.probe.server.controller.model.input.config.InputConfig;
 import pt.solvit.probe.server.model.Config;
 import pt.solvit.probe.server.model.ObuConfig;
 import pt.solvit.probe.server.model.User;
-import pt.solvit.probe.server.model.ServerLog;
 import pt.solvit.probe.server.service.api.IConfigService;
 import pt.solvit.probe.server.service.api.IServerLogService;
 import pt.solvit.probe.server.service.api.IUserService;
@@ -60,7 +56,7 @@ public class ConfigurationController implements IConfigurationController {
         User user = (User) request.getAttribute("user");
 
         body.validate();
-        Config config = ControllerUtil.transformToConfig(body, user.getUserName());
+        Config config = Config.makeConfigFromInput(body, user.getUserName());
         long configId = configService.createConfig(config);
 
         config = configService.getConfig(configId);

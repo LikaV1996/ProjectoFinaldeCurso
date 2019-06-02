@@ -6,9 +6,6 @@
 package pt.solvit.probe.server.controller.impl;
 
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +15,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.config.AppConfiguration;
 import pt.solvit.probe.server.controller.api.IObuController;
-import pt.solvit.probe.server.controller.impl.util.ControllerUtil;
 import pt.solvit.probe.server.controller.impl.util.UriBuilder;
 import pt.solvit.probe.server.controller.model.input.InputObu;
 import pt.solvit.probe.server.controller.model.input.InputObuFlags;
 import pt.solvit.probe.server.model.Hardware;
 import pt.solvit.probe.server.model.Obu;
 import pt.solvit.probe.server.model.User;
-import pt.solvit.probe.server.model.enums.ObuState;
 import pt.solvit.probe.server.service.api.IObuService;
 import pt.solvit.probe.server.service.api.IServerLogService;
 import pt.solvit.probe.server.service.api.IUserService;
@@ -66,7 +61,7 @@ public class ObuController implements IObuController {
 
         body.validate();
         Hardware hardware = hardwareService.getHardware( body.getHardwareId() );
-        Obu obu = Obu.makeObu( body, user.getUserName() );
+        Obu obu = Obu.makeObuFromInput( body, user.getUserName() );
         long obuId = obuService.createObu(obu);
 
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_OBU);
@@ -159,13 +154,6 @@ public class ObuController implements IObuController {
     }
 
     /*
-    private Obu makeObu(InputObu inputObu, String creator, Hardware hardware) {
-        long hardwareId = inputObu.getHardwareId();
-        String obuName = hardware.getSerialNumber();
-        String obuPassword = generateObuPassword();
-        return new Obu(null, hardwareId, ObuState.READY, obuName, obuPassword, inputObu.getSims(), creator, LocalDateTime.now(), null, null);
-    }
-
     private static String generateObuPassword() {
         String generatedPassword = ControllerUtil.getAlphaNumeric(6);
         return new String(Base64.getEncoder().encode(generatedPassword.getBytes()), StandardCharsets.UTF_8);

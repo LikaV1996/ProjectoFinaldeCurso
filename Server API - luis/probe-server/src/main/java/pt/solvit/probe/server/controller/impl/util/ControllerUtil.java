@@ -37,13 +37,6 @@ import pt.solvit.probe.server.util.DateUtil;
  */
 public class ControllerUtil {
 
-    //Config
-    public static Config transformToConfig(InputConfig inputConfig, String creator) {
-        return new Config((long) 0, inputConfig.getActivationLocalDateTime(), inputConfig.getArchive(), inputConfig.getControlConnection(),
-                inputConfig.getCore(), inputConfig.getData(), inputConfig.getDownload(), inputConfig.getScanning(), inputConfig.getServer(),
-                inputConfig.getTestPlan(), inputConfig.getUpload(), inputConfig.getVoice(), creator, LocalDateTime.now(), null, null);
-    }
-
     //Setup
     public static Setup transformToSetup(InputSetup inputSetup, String creator) {
         List<Test> testList = null;
@@ -54,7 +47,7 @@ public class ControllerUtil {
             }
         }
 
-        return new Setup(null, inputSetup.getModemType(), inputSetup.getScanning(), testList, creator, LocalDateTime.now(), null, null);
+        return new Setup(null, inputSetup.getSetupName(), inputSetup.getModemType(), inputSetup.getScanning(), testList, creator, LocalDateTime.now(), null, null);
     }
 
     private static Test transformToTest(InputTest inputTest) {

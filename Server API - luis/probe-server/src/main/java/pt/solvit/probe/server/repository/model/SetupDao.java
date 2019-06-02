@@ -14,18 +14,26 @@ import java.sql.Timestamp;
 public class SetupDao extends CreatorDao{
 
     private Long id;
+    private String setupName;
     private String properties;
 
-    public SetupDao(){}
+    public SetupDao(){
+        super();
+    }
 
-    public SetupDao(Long id, String properties, String creator, Timestamp creationDate, String modifier, Timestamp modifiedDate) {
+    public SetupDao(Long id, String setupName, String properties, String creator, Timestamp creationDate, String modifier, Timestamp modifiedDate) {
         super(creator, creationDate, modifier, modifiedDate);
         this.id = id;
+        this.setupName = setupName;
         this.properties = properties;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getSetupName() {
+        return setupName;
     }
 
     public String getProperties() {
@@ -34,6 +42,10 @@ public class SetupDao extends CreatorDao{
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setSetupName(String setupName) {
+        this.setupName = setupName;
     }
 
     public void setProperties(String properties) {

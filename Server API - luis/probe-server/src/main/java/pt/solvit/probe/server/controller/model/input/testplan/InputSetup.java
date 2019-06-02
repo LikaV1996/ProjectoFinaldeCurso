@@ -27,6 +27,10 @@ public class InputSetup {
 
     private static final Logger LOGGER = Logger.getLogger(InputSetup.class.getName());
 
+    @JsonProperty("setupName")
+    @NotNull(message = "A setupName must be provided.")
+    private String setupName;
+
     @JsonProperty("modemType")
     @NotNull(message = "A modemType must be provided.")
     private String modemType;
@@ -38,6 +42,11 @@ public class InputSetup {
     @JsonProperty("tests")
     @Valid
     private List<InputTest> tests;
+
+    @ApiModelProperty(required = true, value = "Setup name")
+    public String getSetupName() {
+        return setupName;
+    }
 
     @ApiModelProperty(example = "GSMR", required = true, value = "Modem type", allowableValues = "PLMN, GSMR")
     public ModemType getModemType() {
@@ -61,6 +70,9 @@ public class InputSetup {
 
     @ApiModelProperty(hidden = true)
     public void validate() {
+        if(setupName == null){
+            throw new BadRequestException("Invalid setup.", "SetupName is null.", "string", "about:blank");
+        }
         if (modemType == null) {
             throw new BadRequestException("Invalid setup.", "ModemType is null.", "string", "about:blank");
         }

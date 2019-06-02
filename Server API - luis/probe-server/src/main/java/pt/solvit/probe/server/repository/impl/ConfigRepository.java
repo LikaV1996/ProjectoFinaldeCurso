@@ -35,14 +35,15 @@ public class ConfigRepository implements IConfigRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    private static final String INSERT_POSTGRES = "INSERT INTO Config (activation_date, properties, creator, creation_date) VALUES (?, cast(? as jsonb), ?, ?) RETURNING id;";
-    private static final String INSERT_MYSQL = "INSERT INTO Config (activation_date, properties, creator, creation_date) VALUES (?, ?, ?, ?);";
-    private static final String SELECT_BY_ID = "SELECT id, activation_date AS activationDate, properties, creator, creation_date AS creationDate FROM Config WHERE id = ?;";
-    private static final String SELECT_ALL = "SELECT id, activation_date AS activationDate, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM Config;";
-    private static final String UPDATE_POSTGRES = "UPDATE Config SET activation_date = ?, properties = cast(? as jsonb) WHERE id = ?;";
-    private static final String UPDATE_MYSQL = "UPDATE Config SET activation_date = ?, properties = ? WHERE id = ?;";
-    private static final String DELETE_BY_ID = "DELETE FROM Config WHERE id = ?;";
-    private static final String DELETE_ALL = "DELETE FROM Config;";
+    private static final String INSERT_BASE = "INSERT INTO Config (config_name, activation_date, properties, creator, creation_date)";
+    private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?, cast(? as jsonb), ?, ?) RETURNING id;";
+    private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?);";
+    private static final String SELECT_ALL = "SELECT id, config_name, activation_date AS activationDate, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM Config";
+    private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
+    private static final String UPDATE_POSTGRES = "UPDATE Config SET config_name = ?, activation_date = ?, properties = cast(? as jsonb) WHERE id = ?;";
+    private static final String UPDATE_MYSQL = "UPDATE Config SET config_name = ?, activation_date = ?, properties = ? WHERE id = ?;";
+    private static final String DELETE_ALL = "DELETE FROM Config";
+    private static final String DELETE_BY_ID = DELETE_ALL + " WHERE id = ?;";
 
     public ConfigRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -71,7 +72,7 @@ public class ConfigRepository implements IConfigRepository {
     @Override
     public long add(ConfigDao configDao) {
         if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
-            return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, configDao.getActivationDate(), configDao.getProperties(), configDao.getCreator(), configDao.getCreationDate());
+            return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, configDao.getConfigName(), configDao.getActivationDate(), configDao.getProperties(), configDao.getCreator(), configDao.getCreationDate());
         }
 
         //mysql
@@ -80,10 +81,11 @@ public class ConfigRepository implements IConfigRepository {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(INSERT_MYSQL, new String[]{"id"});
-                statement.setTimestamp(1, configDao.getActivationDate());
-                statement.setString(2, configDao.getProperties());
-                statement.setString(3, configDao.getCreator());
-                statement.setTimestamp(4, configDao.getCreationDate());
+                statement.setString(1, configDao.getConfigName());
+                statement.setTimestamp(2, configDao.getActivationDate());
+                statement.setString(3, configDao.getProperties());
+                statement.setString(4, configDao.getCreator());
+                statement.setTimestamp(5, configDao.getCreationDate());
                 return statement;
             }
         }, holder);

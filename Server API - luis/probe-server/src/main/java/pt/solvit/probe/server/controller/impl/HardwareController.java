@@ -131,14 +131,14 @@ public class HardwareController implements IHardwareController {
 
     private Hardware transformToHardware(InputHardware inputHardware, String creator) {
 
-        List<Component> componentList = makeComponentList(inputHardware);
+        List<Component> componentList = makeComponentListFromInput(inputHardware);
 
         return new Hardware(null, inputHardware.getSerialNumber(), componentList, creator, LocalDateTime.now(), null, null);
     }
 
     private Hardware updateHardware(InputHardware inputHardware, Hardware hardware, String modifier) {
 
-        List<Component> componentList = makeComponentList(inputHardware);
+        List<Component> componentList = makeComponentListFromInput(inputHardware);
 
         hardware.setSerialNumber( inputHardware.getSerialNumber() );
         hardware.setComponents( componentList );
@@ -147,7 +147,7 @@ public class HardwareController implements IHardwareController {
         return hardware;
     }
 
-    private List<Component> makeComponentList(InputHardware inputHardware){
+    private List<Component> makeComponentListFromInput(InputHardware inputHardware){
         List<Component> componentList = null;
         if (inputHardware.getComponents() != null) {
             componentList = new ArrayList();

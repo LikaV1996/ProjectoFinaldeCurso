@@ -32,6 +32,10 @@ public class Setup extends CreatorModel {
     private Long id;
 
     @JsonView(Profile.ShortView.class)
+    @JsonProperty("setupName")
+    private String setupName;
+
+    @JsonView(Profile.ShortView.class)
     @JsonProperty("modemType")
     private ModemType modemType;
 
@@ -43,9 +47,10 @@ public class Setup extends CreatorModel {
     @JsonProperty("tests")
     private List<Test> tests;
 
-    public Setup(Long id, ModemType modemType, Scanning scanning, List<Test> tests, String creator, LocalDateTime creationDate, String modifier, LocalDateTime modifiedDate) {
+    public Setup(Long id, String setupName, ModemType modemType, Scanning scanning, List<Test> tests, String creator, LocalDateTime creationDate, String modifier, LocalDateTime modifiedDate) {
         super(creator, creationDate, modifier, modifiedDate);
         this.id = id;
+        this.setupName = setupName;
         this.modemType = modemType;
         this.scanning = scanning;
         this.tests = tests;
@@ -54,6 +59,10 @@ public class Setup extends CreatorModel {
     @ApiModelProperty(required = true, value = "Setup identifier")
     public Long getId() {
         return id;
+    }
+
+    public String getSetupName() {
+        return setupName;
     }
 
     @ApiModelProperty(required = true, value = "Modem type", allowableValues = "PLMN, GSMR")

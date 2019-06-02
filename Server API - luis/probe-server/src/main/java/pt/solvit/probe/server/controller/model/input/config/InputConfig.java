@@ -22,6 +22,10 @@ import pt.solvit.probe.server.util.DateUtil;
 @ApiModel(value = "Config", description = "Configuration data tranfer object")
 public class InputConfig {
 
+    @JsonProperty("configName")
+    @NotNull(message = "A configName must be provided.")
+    private String configName;
+
     @JsonProperty("activationDate")
     @NotNull(message = "An activationDate must be provided.")
     private String activationDate;
@@ -65,6 +69,14 @@ public class InputConfig {
     @JsonProperty("voice")
     @Valid
     private VoiceConfig voice;
+
+
+
+    @JsonIgnore
+    @ApiModelProperty(required = true, value = "Config name")
+    public String getConfigName() {
+        return configName;
+    }
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
@@ -129,6 +141,9 @@ public class InputConfig {
 
     @ApiModelProperty(hidden = true)
     public void validate() {
+        if (configName == null) {
+            throw new BadRequestException("Invalid configuration.", "configName is null.", "string", "about:blank");
+        }
         if (activationDate == null) {
             throw new BadRequestException("Invalid configuration.", "ActivationDate is null.", "string", "about:blank");
         }

@@ -1,9 +1,9 @@
 export class TestPlan{
     id: number
-    testPlanName: string
+    testplanName: string
     startDate: Date
     stopDate: Date
-    properties: string
+    period: string
     creator: string
     creationDate: Date
     modifier: string

@@ -33,27 +33,27 @@
   
     <div><b>Current Configuration: </b>
       <mat-form-field>
-      <select matNativeControl required [(ngModel)]="currentConfigId"> <!-- VERIFICAR AQUI!-->
+      <select matNativeControl required [(ngModel)]="currentConfigId">
           <option value="null">No Configuration</option>
-          <option *ngFor="let config of configs" value="{{config.id}}">{{hardware.serialNumber}}</option>
+          <option *ngFor="let config of configs" value="{{config.id}}">{{config.configName}}</option>
       </select>
       </mat-form-field>
     </div>
 
     <div><b>Current Test Plan: </b>
       <mat-form-field>
-      <select matNativeControl required [(ngModel)]="currentTestPlanId"> <!-- VERIFICAR AQUI!-->
-          <option value="null">No Configuration</option>
-          <option *ngFor="let testplan of testplans" value="{{testplan.id}}">{{hardware.serialNumber}}</option>
+      <select matNativeControl required [(ngModel)]="currentTestPlanId">
+          <option value="null">No Test Plan</option>
+          <option *ngFor="let testplan of testPlans" value="{{testplan.id}}">{{testplan.testplanName}}</option>
       </select>
       </mat-form-field>
     </div>
 
     <div><b>Factory Configuration: </b>
       <mat-form-field>
-      <select matNativeControl required [(ngModel)]="factoryConfig"> <!-- VERIFICAR AQUI!-->
+      <select matNativeControl required [(ngModel)]="factoryConfig">
           <option value="null">No Configuration</option>
-          <option *ngFor="let config of configs" value="{{config.id}}">{{hardware.serialNumber}}</option>
+          <option *ngFor="let config of configs" value="{{config.id}}">{{config.configName}}</option>
       </select>
       </mat-form-field>
     </div>

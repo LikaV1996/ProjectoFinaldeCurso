@@ -30,6 +30,7 @@ export class TestPlansComponent implements OnInit {
       this.testPlans = testPlans
       this.orderById()
     });
+    
   }
 
   orderById(){
@@ -41,11 +42,11 @@ export class TestPlansComponent implements OnInit {
   }
 
   createTestPlan(){
-    this.router.navigate(['home/testPlans/create']);
+    this.router.navigate(['home/testPlan/create']);
   }
 
   edit(id: number){
-    this.router.navigate(['home/testPlans/'+id+'/edit']);
+    this.router.navigate(['home/testPlan/'+id+'/edit']);
   }
 
 }

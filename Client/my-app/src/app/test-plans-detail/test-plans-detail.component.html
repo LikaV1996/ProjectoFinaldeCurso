@@ -1,3 +1,43 @@
-<p>
-  test-plans-detail works!
-</p>
+<p></p>
+
+<div class="ui raised very padded text container segment">
+
+    <div *ngIf="testPlan">
+        <h2>Test Plan Details</h2>
+        <div><b>id: </b>{{testPlan.id}}</div>
+  
+        <div><b>Creator: </b>{{testPlan.creator}}</div>
+    
+        <div><b>Creation Date: </b>{{testPlan.creationDate}}</div>
+  
+        <div><b>Start Date: </b>
+          <mat-form-field>
+            <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="testPlan.startDate">
+            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #myDatepicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div><b>Stop Date: </b>
+          <mat-form-field>
+            <input matInput [matDatepicker]="myDatepicker2" [(ngModel)]="testPlan.stopDate">
+            <mat-datepicker-toggle matSuffix [for]="myDatepicker2"></mat-datepicker-toggle>
+            <mat-datepicker #myDatepicker2></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div><b>Start Date: </b>{{testPlan.startDate}}</div>
+        
+        <div><b>Stop Date: </b>{{testPlan.stopDate}}</div>
+        
+        <div><b>Period </b>{{testPlan.period}}</div>
+        
+    
+    </div>
+    
+    <div style="margin-top:30px;">
+            <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
+            <div class="ui suspend button" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
+    </div>
+    
+    </div>

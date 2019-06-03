@@ -9,6 +9,10 @@ import { OBUHasConfigService } from '../_services/obuHasConfig.service';
 import {Router, NavigationExtras} from '@angular/router';
 import {Location} from '@angular/common';
 import { OBUHasConfig } from '../Model/OBUHasConfig';
+import { Config } from '../Model/Config';
+import { ConfigService } from '../_services/config.service';
+import { TestPlan } from '../Model/TestPlan';
+import { TestPlanService } from '../_services/test-plans.service';
 
 @Component({
   selector: 'app-obu-detail',
@@ -21,12 +25,16 @@ export class ObuDetailComponent implements OnInit {
 
   private id: number;
   private hardwares : Hardware[];
+  private configs : Config[];
+  private testPlans: TestPlan[];
   private obu_has_configs: OBUHasConfig[];
 
   constructor(
     private router: Router,
     private _obuService: OBUService,
     private _hardwareService: HardwareService,
+    private _configService: ConfigService,
+    private _testPlanService: TestPlanService,
     private _obuHasConfigService: OBUHasConfigService,
     private route: ActivatedRoute,
     private http: HttpClient,
@@ -39,20 +47,27 @@ export class ObuDetailComponent implements OnInit {
     this._obuService.getOBUByID(this.id).subscribe(obu => {
       this.obu = obu
       //console.log(JSON.stringify(obu))
-   })
+    })
 
     this._hardwareService.getHardwares().subscribe(hardwares =>{
       this.hardwares = hardwares
       this.hardwares.sort( (h1,h2)=> h1.id - h2.id)
-  })
+    })
 
     this._obuHasConfigService.getObuConfigs(this.id).subscribe(configs =>{
       this.obu_has_configs = configs
-      console.log(configs)
-      console.log(this.obu_has_configs)
-      console.log(this.obu_has_configs.length)
     })
-    //console.log('aaaa' + JSON.stringify(this.obu_has_configs))
+
+    this._configService.getConfigs().subscribe(configs =>{
+      this.configs = configs
+      this.configs.sort( (h1,h2)=> h1.id - h2.id)
+    })
+
+    this._testPlanService.getTestPlans().subscribe(testplans =>{
+      this.testPlans = testplans
+      this.testPlans.sort( (h1,h2)=> h1.id - h2.id)
+    })
+    
   
   }
 

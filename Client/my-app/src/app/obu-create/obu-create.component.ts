@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Hardware } from '../Model/Hardware';
 import { HardwareService } from '../_services/hardware.service';
+import { Config } from '../Model/Config';
+import { ConfigService } from '../_services/config.service';
+import { TestPlan } from '../Model/TestPlan';
+import { TestPlanService } from '../_services/test-plans.service';
 
 @Component({
   selector: 'app-obu-create',
@@ -11,13 +15,16 @@ import { HardwareService } from '../_services/hardware.service';
 export class ObuCreateComponent implements OnInit {
 
   private hardwares : Hardware[];
-
+  private configs : Config[];
+  private testPlans: TestPlan[];
+  
   private hardwareId: number;
   private obuName: string;
   private obuState: string = "READY";
   private currentConfigId: number = null;
   private currentTestPlanId: number = null;
   private factoryConfig: number = null;
+
 
   sim = {
     modemType: "",
@@ -34,7 +41,9 @@ export class ObuCreateComponent implements OnInit {
 
   constructor(
     private _hardwareService: HardwareService,
-    private _location: Location
+    private _location: Location,
+    private _configService: ConfigService,
+    private _testPlanService: TestPlanService
   ) { }
 
   ngOnInit() {
@@ -42,8 +51,18 @@ export class ObuCreateComponent implements OnInit {
     this._hardwareService.getHardwares().subscribe(hardwares =>{
       this.hardwares = hardwares
       this.hardwares.sort( (h1,h2)=> h1.id - h2.id)
-      //console.log(JSON.stringify(hardwares))
     })
+
+    this._configService.getConfigs().subscribe(configs =>{
+      this.configs = configs
+      this.configs.sort( (h1,h2)=> h1.id - h2.id)
+    })
+
+    this._testPlanService.getTestPlans().subscribe(testplans =>{
+      this.testPlans = testplans
+      this.testPlans.sort( (h1,h2)=> h1.id - h2.id)
+    })
+
   }
 
   goBack(){

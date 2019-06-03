@@ -17,7 +17,8 @@
           <div class="ui middle aligned grid">
             <div class="four wide column">{{config.configName}}</div>
             <div class="four wide column">{{config.creator}}</div>
-            <div class="four wide column">{{config.activationDate}}</div>
+            <div *ngIf="config.activationDate!=null" class="four wide column">{{config.activationDate}}</div>
+            <div *ngIf="config.activationDate==null" class="four wide column">No Activation Date</div>
             <div class="four wide right aligned column">
               <div class="ui suspend button" (click)="edit(config.id)" data-tooltip="Edit Configuration">Edit</div>
             </div>

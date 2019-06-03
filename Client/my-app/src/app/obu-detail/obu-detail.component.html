@@ -45,23 +45,40 @@
     </select>
     </mat-form-field>
     
-    <div *ngIf="obu.currentConfigId != null"><b>Current Configuration: </b>{{obu.currentConfigId}}</div>
-    <div *ngIf="obu.currentConfigId == null"><b>Current Configuration: </b>No Configuration</div>
+    <div><b>Current Configuration: </b>
+        <mat-form-field>
+        <select matNativeControl required [(ngModel)]="obu.currentConfigId">
+            <option value="null">No Configuration</option>
+            <option *ngFor="let config of configs" value="{{config.id}}">{{config.configName}}</option>
+        </select>
+        </mat-form-field>
+    </div>
 
-    <div *ngIf="obu.currentTestPlanId != null"><b>Current Test Plan: </b>{{obu.currentTestPlanId}}</div>
-    <div *ngIf="obu.currentTestPlanId == null"><b>Current Test Plan: </b>No Test Plan</div>
+    <div><b>Current Test Plan: </b>
+        <mat-form-field>
+        <select matNativeControl required [(ngModel)]="obu.currentTestPlanId">
+            <option value="null">No Test Plan</option>
+            <option *ngFor="let testplan of testPlans" value="{{testplan.id}}">{{testplan.testplanName}}</option>
+        </select>
+        </mat-form-field>
+    </div>
 
-    <div *ngIf="obu.factoryConfig != null"><b>Factory Config: </b>{{obu.factoryConfig}}</div>
-    <div *ngIf="obu.factoryConfig == null"><b>Factory Config: </b>No Factory Config</div>
-
+    <div><b>Factory Configuration: </b>
+        <mat-form-field>
+        <select matNativeControl required [(ngModel)]="obu.factoryConfig">
+            <option value="null">No Configuration</option>
+            <option *ngFor="let config of configs" value="{{config.id}}">{{config.configName}}</option>
+        </select>
+        </mat-form-field>
+    </div>
 
     <div class="ui container segment" >
         <h4>Obu Has Config</h4>
         <div class="ui segment" *ngFor="let obuConfigs of obu_has_configs">
             <div class="ui middle aligned grid">
-                <div class="four wide column">{{obuConfigs.obuId}}</div>
-                <div class="four wide column">{{obuConfigs.cancelState}}</div>
-                <div class="four wide column">{{obuConfigs.config.id}}</div>
+                <div class="four wide column">{{obuConfigs.config.configName}}</div>
+                <div class="four wide column"></div>
+                <div class="four wide column"></div>
                 <div class="four wide right aligned column">
                     <div class="ui suspend button" (click)="editConfig(obu.id)" data-tooltip="Edit Config">Edit</div>
                 </div>
@@ -152,14 +169,14 @@
             
             <button *ngIf="obu.sims.length != 2"  class="ui primary button" (click)="addSim()" data-tooltip="Add Component"> Add Sim</button>
             
-        </div>
+    </div>
 
+    <div><b><mat-checkbox [(ngModel)]="obu.uploadRequest" [checked]="obu.uploadRequest" >Upload Request</mat-checkbox></b></div>
+    <div><b><mat-checkbox [(ngModel)]="obu.clearAlarmsRequest" [checked]="obu.clearAlarmsRequest" >Clear Alarms Request</mat-checkbox></b></div>
+    <div><b><mat-checkbox [(ngModel)]="obu.resetRequest" [checked]="obu.resetRequest" >Reset Request</mat-checkbox></b></div>
+    <div><b><mat-checkbox [(ngModel)]="obu.shutdownRequest" [checked]="obu.shutdownRequest" >Shutdown Request</mat-checkbox></b></div>
 
-    <div><b><mat-checkbox>Upload Request</mat-checkbox></b></div>
-    <div><b><mat-checkbox>Clear Alarms Request</mat-checkbox></b></div>
-    <div><b><mat-checkbox>Reset Request</mat-checkbox></b></div>
-    <div><b><mat-checkbox>Shutdown Request</mat-checkbox></b></div>
-    
+     
     <p></p>
 
     <div><b>Creator: </b>{{obu.creator}}</div>

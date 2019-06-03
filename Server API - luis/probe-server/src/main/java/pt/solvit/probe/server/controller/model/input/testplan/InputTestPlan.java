@@ -32,6 +32,10 @@ public class InputTestPlan {
 
     private static final Logger LOGGER = Logger.getLogger(InputTestPlan.class.getName());
 
+    @JsonProperty("testplanName")
+    @NotNull(message = "A tesplanName must be provided.")
+    private String testplanName;
+
     @JsonProperty("startDate")
     @NotNull(message = "A startDate must be provided.")
     private String startDate;
@@ -58,6 +62,11 @@ public class InputTestPlan {
 
     @JsonProperty("redialTriggers")
     private List<String> redialTriggers;
+
+    @ApiModelProperty(required = true, value = "Testplan name")
+    public String getTestplanName() {
+        return testplanName;
+    }
 
     @ApiModelProperty(example = "2019-01-01T00:00:00", required = true, value = "Start date (ISO 8601)")
     public String getStartDate() {
@@ -121,7 +130,10 @@ public class InputTestPlan {
 
     @ApiModelProperty(hidden = true)
     public void validate() {
-        if (startDate == null) {
+        if (testplanName == null) {
+            throw new BadRequestException("Invalid test plan.", "testplanName is null.", "string", "about:blank");
+        }
+            if (startDate == null) {
             throw new BadRequestException("Invalid test plan.", "StartDate is null.", "string", "about:blank");
         }
         if (stopDate == null) {

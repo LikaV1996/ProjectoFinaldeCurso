@@ -18,14 +18,14 @@ import pt.solvit.probe.server.model.enums.RedialTrigger;
 public class TestPlanProperties {
 
     private List<InputCoordinates> triggerCoordinates;
-    private Duration period;
+    private String period;
     private Long maxRetries;
     private Long retryDelay;
     private List<RedialTrigger> redialTriggers;
 
     public TestPlanProperties(TestPlan testPlan) {
         this.triggerCoordinates = testPlan.getTriggerCoordinates();
-        this.period = testPlan.getPeriodDuration();
+        this.period = testPlan.getPeriodDuration().toString();
         this.maxRetries = testPlan.getMaxRetries();
         this.retryDelay = testPlan.getRetryDelay();
         this.redialTriggers = testPlan.getRedialTriggers();
@@ -35,7 +35,11 @@ public class TestPlanProperties {
         return triggerCoordinates;
     }
 
-    public Duration getPeriod() {
+    public Duration getPeriodDuration() {
+        return Duration.parse(period);
+    }
+
+    public String getPeriod() {
         return period;
     }
 

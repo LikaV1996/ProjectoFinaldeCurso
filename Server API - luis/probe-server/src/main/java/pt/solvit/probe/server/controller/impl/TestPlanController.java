@@ -281,7 +281,7 @@ public class TestPlanController implements ITestPlanController {
         LocalDateTime startDate = DateUtil.getDateFromIsoString(inputTestPlan.getStartDate());
         LocalDateTime stopDate = DateUtil.getDateFromIsoString(inputTestPlan.getStopDate());
 
-        return new TestPlan(null, startDate, stopDate,
+        return new TestPlan(null, inputTestPlan.getTestplanName(), startDate, stopDate,
                 inputTestPlan.getTriggerCoordinates(), inputTestPlan.getPeriod(), setupList,
                 inputTestPlan.getMaxRetries(), inputTestPlan.getRetryDelay(), inputTestPlan.getRedialTriggers(),
                 creator, LocalDateTime.now(), null, null);

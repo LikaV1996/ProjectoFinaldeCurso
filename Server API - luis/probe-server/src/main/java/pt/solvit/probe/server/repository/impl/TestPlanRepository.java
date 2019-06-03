@@ -35,12 +35,13 @@ public class TestPlanRepository implements ITestPlanRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    private static final String INSERT_POSTGRES = "INSERT INTO TestPlan (start_date, stop_date, properties, creator, creation_date) VALUES (?, ?, cast(? as jsonb), ?, ?) RETURNING id;";
-    private static final String INSERT_MYSQL = "INSERT INTO TestPlan (start_date, stop_date, properties, creator, creation_date) VALUES (?, ?, ?, ?, ?);";
-    private static final String SELECT_BY_ID = "SELECT id, start_date AS startDate, stop_date AS stopDate, properties, creator, creation_date AS creationDate FROM TestPlan WHERE id = ?;";
-    private static final String SELECT_ALL = "SELECT id, start_date AS startDate, stop_date AS stopDate, properties, creator, creation_date AS creationDate FROM TestPlan;";
-    private static final String UPDATE_POSTGRES = "UPDATE TestPlan SET start_date = ?, stop_date = ?, properties = ? WHERE id = ?;";
-    private static final String UPDATE_MYSQL = "UPDATE TestPlan SET start_date = ?, stop_date = ?, properties = cast(? as jsonb) WHERE id = ?;";
+    private static final String INSERT_BASE = "INSERT INTO TestPlan (testplan_name, start_date, stop_date, properties, creator, creation_date)";
+    private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?, ?, cast(? as jsonb), ?, ?) RETURNING id;";
+    private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?);";
+    private static final String SELECT_ALL = "SELECT id, testplan_name, start_date AS startDate, stop_date AS stopDate, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM TestPlan";
+    private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
+    private static final String UPDATE_POSTGRES = "UPDATE TestPlan SET testplan_name = ?, start_date = ?, stop_date = ?, properties = ? WHERE id = ?;";
+    private static final String UPDATE_MYSQL = "UPDATE TestPlan SET testplan_name = ?, start_date = ?, stop_date = ?, properties = cast(? as jsonb) WHERE id = ?;";
     private static final String DELETE_BY_ID = "DELETE FROM TestPlan WHERE id = ?;";
     private static final String DELETE_ALL = "DELETE FROM TestPlan;";
 
@@ -70,7 +71,7 @@ public class TestPlanRepository implements ITestPlanRepository {
     @Override
     public long add(TestPlanDao testPlanDao) {
         if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
-            return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, testPlanDao.getStartDate(), testPlanDao.getStopDate(),
+            return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, testPlanDao.getTestplanName(), testPlanDao.getStartDate(), testPlanDao.getStopDate(),
                     testPlanDao.getProperties(), testPlanDao.getCreator(), testPlanDao.getCreationDate());
         }
 

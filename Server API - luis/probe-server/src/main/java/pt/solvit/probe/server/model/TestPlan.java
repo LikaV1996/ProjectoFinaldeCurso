@@ -34,6 +34,10 @@ public class TestPlan extends CreatorModel {
     private Long id;
 
     @JsonView(Profile.ShortView.class)
+    @JsonProperty("testplanName")
+    private String testplanName;
+
+    @JsonView(Profile.ShortView.class)
     @JsonProperty("startDate")
     private LocalDateTime startDate;
 
@@ -65,11 +69,12 @@ public class TestPlan extends CreatorModel {
     @JsonProperty("redialTriggers")
     private List<RedialTrigger> redialTriggers;
 
-    public TestPlan(Long id, LocalDateTime startDate, LocalDateTime stopDate, List<InputCoordinates> triggerCoordinates,
+    public TestPlan(Long id, String testplanName, LocalDateTime startDate, LocalDateTime stopDate, List<InputCoordinates> triggerCoordinates,
             Duration period, List<Setup> setups, Long maxRetries, Long retryDelay, List<RedialTrigger> redialTriggers,
             String creator, LocalDateTime creationDate, String modifier, LocalDateTime modifiedDate) {
         super(creator, creationDate, modifier, modifiedDate);
         this.id = id;
+        this.testplanName = testplanName;
         this.startDate = startDate;
         this.stopDate = stopDate;
         this.triggerCoordinates = triggerCoordinates;
@@ -83,6 +88,11 @@ public class TestPlan extends CreatorModel {
     @ApiModelProperty(required = true, value = "Test plan identifier")
     public Long getId() {
         return id;
+    }
+
+    @ApiModelProperty(required = true, value = "Test plan name")
+    public String getTestplanName() {
+        return testplanName;
     }
 
     @JsonIgnore

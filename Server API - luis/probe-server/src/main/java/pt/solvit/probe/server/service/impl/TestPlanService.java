@@ -209,7 +209,7 @@ public class TestPlanService implements ITestPlanService {
     }
 
     private TestPlanDao transformToTestPlanDao(TestPlan testPlan) {
-        return new TestPlanDao(testPlan.getId(), Timestamp.valueOf(testPlan.getStartLocalDateTime()),
+        return new TestPlanDao(testPlan.getId(), testPlan.getTestplanName(), Timestamp.valueOf(testPlan.getStartLocalDateTime()),
                 Timestamp.valueOf(testPlan.getStopLocalDateTime()), testPlan.getPropertiesString(),
                 testPlan.getCreator(), Timestamp.valueOf(testPlan.getCreationLocalDateTime()),
                 testPlan.getModifier(), testPlan.getModifiedLocalDateTime() != null ? Timestamp.valueOf(testPlan.getModifiedLocalDateTime()): null);
@@ -223,8 +223,8 @@ public class TestPlanService implements ITestPlanService {
 
         TestPlanProperties properties = GSON.fromJson(testPlanDao.getProperties(), TestPlanProperties.class);
 
-        return new TestPlan(testPlanDao.getId(), testPlanDao.getStartDate().toLocalDateTime(), testPlanDao.getStopDate().toLocalDateTime(),
-                properties.getTriggerCoordinates(), properties.getPeriod(),
+        return new TestPlan(testPlanDao.getId(), testPlanDao.getTestplanName(), testPlanDao.getStartDate().toLocalDateTime(), testPlanDao.getStopDate().toLocalDateTime(),
+                properties.getTriggerCoordinates(), properties.getPeriodDuration(),
                 setupList,
                 properties.getMaxRetries(),
                 properties.getRetryDelay(), properties.getRedialTriggers(),

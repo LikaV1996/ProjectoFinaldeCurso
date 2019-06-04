@@ -19,10 +19,17 @@ export class OBUHasConfigService {
     
   
   getObuConfigs(id: number): Observable<OBUHasConfig[]> {
-      console.log(id)
+      
     const getOBUConfigsByIDUrl = routes.getObuConfigs.replace(":id", id.toString());
     console.log(getOBUConfigsByIDUrl)
     return this.http.get<OBUHasConfig[]>(getOBUConfigsByIDUrl)
+  }
+
+
+  addConfigToObu(idObu: number, idConfig: number){
+    const addConfigToObuUrl = routes.addConfigToObu.replace(":idObu", idObu.toString()).replace(":idConfig", idConfig.toString());
+    
+    return this.http.post(addConfigToObuUrl,{})
   }
 
   /*
@@ -30,10 +37,6 @@ export class OBUHasConfigService {
     const getOBUByIDUrl = routes.getOBUByID.replace(":id", id.toString());
 
     return this.http.get<OBU>(getOBUByIDUrl)
-  }
-
-  createObu(obu_name: string, obu_password: string){//verificar ****** 
-    return this.http.post<{obu: OBU}>(routes.createObu,{obu_name: obu_name, obu_password: obu_password, properties: "null", hardware_id:-1, current_config_id:-1,current_test_plan_id:-1 })
   }
 
   updateObu(id: number, hardware_id: number, obuState: String, currentConfigId: number, currentTestPlanId: number, obu_name: String, obu_password: String, sims){

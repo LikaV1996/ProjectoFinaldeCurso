@@ -26,6 +26,13 @@
           </mat-form-field>
         </div>
 
+        <div class="input-wrapper">
+            <label>Date Time(binding via ngModel):</label>
+            <input [(ngModel)]="testPlan.stopDate"
+                   [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1">
+            <owl-date-time #dtPicker1></owl-date-time>
+        </div>
+
         <div><b>Start Date: </b>{{testPlan.startDate}}</div>
         
         <div><b>Stop Date: </b>{{testPlan.stopDate}}</div>

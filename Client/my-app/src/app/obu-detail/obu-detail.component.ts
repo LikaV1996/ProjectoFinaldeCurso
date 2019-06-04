@@ -29,6 +29,8 @@ export class ObuDetailComponent implements OnInit {
   private testPlans: TestPlan[];
   private obu_has_configs: OBUHasConfig[];
 
+  private configToAddId:number;
+
   constructor(
     private router: Router,
     private _obuService: OBUService,
@@ -46,28 +48,28 @@ export class ObuDetailComponent implements OnInit {
     
     this._obuService.getOBUByID(this.id).subscribe(obu => {
       this.obu = obu
-      //console.log(JSON.stringify(obu))
+
+      this._hardwareService.getHardwares().subscribe(hardwares =>{
+        this.hardwares = hardwares
+        this.hardwares.sort( (h1,h2)=> h1.id - h2.id)
+      })
+
+      this._obuHasConfigService.getObuConfigs(this.id).subscribe(configs =>{
+        this.obu_has_configs = configs
+      })
+  
+      this._configService.getConfigs().subscribe(configs =>{
+        this.configs = configs
+        this.configs.sort( (h1,h2)=> h1.id - h2.id)
+      })
+  
+      this._testPlanService.getTestPlans().subscribe(testplans =>{
+        this.testPlans = testplans
+        this.testPlans.sort( (h1,h2)=> h1.id - h2.id)
+      })
+
     })
 
-    this._hardwareService.getHardwares().subscribe(hardwares =>{
-      this.hardwares = hardwares
-      this.hardwares.sort( (h1,h2)=> h1.id - h2.id)
-    })
-
-    this._obuHasConfigService.getObuConfigs(this.id).subscribe(configs =>{
-      this.obu_has_configs = configs
-    })
-
-    this._configService.getConfigs().subscribe(configs =>{
-      this.configs = configs
-      this.configs.sort( (h1,h2)=> h1.id - h2.id)
-    })
-
-    this._testPlanService.getTestPlans().subscribe(testplans =>{
-      this.testPlans = testplans
-      this.testPlans.sort( (h1,h2)=> h1.id - h2.id)
-    })
-    
   
   }
 
@@ -108,6 +110,21 @@ export class ObuDetailComponent implements OnInit {
 
   deleteSim(sim){
     this.obu.sims = this.obu.sims.filter(obj => obj !== sim);
+  }
+
+  addConfigToObu(id:number){
+    if(id==null)
+      alert('You must choose a configuration!')
+
+    this._obuHasConfigService.addConfigToObu(this.obu.id,this.configToAddId).subscribe(
+      _ => {
+        alert('Configuration associated sucessfully')
+        this._obuHasConfigService.getObuConfigs(this.id).subscribe(configs =>{
+          this.obu_has_configs = configs
+        })
+      })
+      
+    
   }
 
 }

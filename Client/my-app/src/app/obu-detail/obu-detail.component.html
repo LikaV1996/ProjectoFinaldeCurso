@@ -25,17 +25,19 @@
         </b>
     </div>
 
-    <!-- //Password nao entra, pois é gerada automaticamente
-    <div>
-        <b>Password:
-        <mat-form-field appearance="standard">
-        <mat-label>{{obu.obuPassword}}</mat-label>
-        <input [(ngModel)]="obu.obuPassword" matInput placeholder="Obu Name">
-        </mat-form-field>
-        </b>
-    </div>
-    -->
+    <div><b>State: </b>{{obu.obuState}}</div>
 
+    <div *ngIf="obu.currentConfigId == null"><b>Current Configuration: </b>No Configuration</div> 
+    <div *ngFor="let config of configs">
+        <div *ngIf="config.id == obu.currentConfigId"><b>Current Configuration: </b>{{config.configName}}</div> 
+    </div>
+    
+    <div *ngIf="obu.currentTestPlanId == null"><b>Current Test Plan: </b>No Test Plan</div> 
+    <div *ngFor="let testplan of testPlans">
+        <div *ngIf="testplan.id == obu.currentConfigId"><b>Current Test Plan: </b>{{testplan.testplanName}}</div> 
+    </div>
+
+    <!--
     <b>State: </b>
     <mat-form-field>
     <select matNativeControl required [value]="obu.obuState">
@@ -62,6 +64,7 @@
         </select>
         </mat-form-field>
     </div>
+    -->
 
     <div><b>Factory Configuration: </b>
         <mat-form-field>
@@ -73,17 +76,32 @@
     </div>
 
     <div class="ui container segment" >
-        <h4>Obu Has Config</h4>
+        <h4>OBU Configurations</h4>
+        <mat-spinner *ngIf="obu_has_configs == null"></mat-spinner>
         <div class="ui segment" *ngFor="let obuConfigs of obu_has_configs">
             <div class="ui middle aligned grid">
                 <div class="four wide column">{{obuConfigs.config.configName}}</div>
-                <div class="four wide column"></div>
-                <div class="four wide column"></div>
+                <div *ngIf="obuConfigs.config.activationDate == null" class="eight wide column">No Activation Date</div>
+                <div *ngIf="obuConfigs.config.activationDate != null" class="eight wide column">{{obuConfigs.config.activationDate}}</div>      
+                <!--<div class="four wide column"></div>-->
                 <div class="four wide right aligned column">
                     <div class="ui suspend button" (click)="editConfig(obu.id)" data-tooltip="Edit Config">Edit</div>
                 </div>
             </div>
         </div>
+
+        <p></p>
+
+        <div><b>Configurations: </b>
+            <mat-form-field>
+            <select matNativeControl required [(ngModel)]="configToAddId">
+                <option value="null">Choose Configuration</option>
+                <option *ngFor="let config of configs" value="{{config.id}}">{{config.configName}}</option>
+            </select>
+            </mat-form-field>
+        </div>
+        <button class="ui primary button" (click)="addConfigToObu(configToAddId)" data-tooltip="Add Configuration To Obu"> Add Config</button>
+        
     </div>
 
 

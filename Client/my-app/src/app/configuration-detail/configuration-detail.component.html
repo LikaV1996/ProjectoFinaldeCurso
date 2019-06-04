@@ -8,22 +8,35 @@
 
       <div><b>Creator: </b>{{config.creator}}</div>
   
-      <div><b>Creation Date: </b>{{config.creationDate}}</div>
+      <div><b>Creation Date: </b>{{config.creationDate.slice(0,10)}} {{config.creationDate.slice(11,19)}}</div>
 
-      <div><b>activation_date: </b>{{config.activationDate}}</div>
+      <!--<div><b>Activation Date: </b>{{config.activationDate}}</div>-->
       
-
+      <div class="input-wrapper">
+          <b>Activation Date:&nbsp;&nbsp;</b>
+          <input [(ngModel)]="config.activationDate"
+                 [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1">
+          <owl-date-time #dtPicker1></owl-date-time>
+      </div>
 
       <div *ngIf="config.archive!=null" class="ui container segment" >
         <h4>Archive</h4>
-
         <div>
-            <b>Expiration: 
+            <b>Expiration:&nbsp;&nbsp;
+                <div class="ui right labeled input" style="width:60px;">
+                    <input [(ngModel)]="config.archive.expiration" type="text" placeholder="days">
+                    <div class="ui basic label">
+                      days
+                    </div>
+                </div>
+            </b>
+            <!--  
             <mat-form-field appearance="standard">
             <mat-label>{{config.archive.expiration}}</mat-label>
             <input [(ngModel)]="config.archive.expiration" matInput placeholder="Expiration">
             </mat-form-field>
             </b>days
+            -->
         </div>
 
         <div><b>Period: </b>{{config.archive.period}}</div>

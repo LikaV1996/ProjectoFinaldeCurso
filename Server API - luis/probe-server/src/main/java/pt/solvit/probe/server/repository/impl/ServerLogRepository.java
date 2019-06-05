@@ -35,10 +35,14 @@ public class ServerLogRepository implements IServerLogRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    private static final String INSERT_POSTGRES = "INSERT INTO ServerLog (log_date, access_type, access_path, access_user, response_date, status, detail) VALUES (?, ?::AccessType, ?, ?, ?, ?, ?) RETURNING id;";
-    private static final String INSERT_MYSQL = "INSERT INTO ServerLog (log_date, access_type, access_path, access_user, response_date, status, detail) VALUES (?, ?, ?, ?, ?, ?, ?);";
-    private static final String SELECT_BY_ID = "SELECT id, log_date AS logDate, access_type AS accessType, access_path AS accessPath, access_user AS accessUser, response_date AS responseDate, status, detail FROM ServerLog WHERE id = ?;";
-    private static final String SELECT_ALL = "SELECT id, log_date AS logDate, access_type AS accessType, access_path AS accessPath, access_user AS accessUser, response_date AS responseDate, status, detail FROM ServerLog ORDER BY log_date ASC;";
+    private static final String INSERT_BASE = "INSERT INTO ServerLog (log_date, access_type, access_path, access_user, response_date, status, detail)";
+    private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?::AccessType, ?, ?, ?, ?, ?) RETURNING id;";
+    private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?, ?);";
+    private static final String SELECT_BASE = "SELECT id, log_date AS logDate, access_type AS accessType, access_path AS accessPath, access_user AS accessUser, response_date AS responseDate, status, detail FROM ServerLog";
+    private static final String ORDER_BY_LOG_DATE = " ORDER BY log_date ";
+    private static final String SELECT_ALL = SELECT_BASE + ORDER_BY_LOG_DATE;
+    //private static final String SELECT_ALL_W_LIMIT_OFFSET = SELECT_ALL + " LIMIT ? OFFSET ?";
+    private static final String SELECT_BY_ID = SELECT_BASE + " WHERE id = ? ";
     private static final String UPDATE = "UPDATE ServerLog SET access_user = ?, response_date = ?, status = ?, detail = ? WHERE id = ?;";
     private static final String DELETE_BY_ID = "DELETE FROM ServerLog WHERE id = ?;";
     private static final String DELETE_ALL = "DELETE FROM ServerLog;";
@@ -61,8 +65,8 @@ public class ServerLogRepository implements IServerLogRepository {
     }
 
     @Override
-    public List<ServerLogDao> findAll() {
-        return jdbcTemplate.query(SELECT_ALL, new BeanPropertyRowMapper<>(ServerLogDao.class));
+    public List<ServerLogDao> findAll(boolean ascending) {
+        return jdbcTemplate.query(SELECT_ALL + (ascending ? "ASC" : "DESC"), new BeanPropertyRowMapper<>(ServerLogDao.class));
     }
 
     @Transactional()

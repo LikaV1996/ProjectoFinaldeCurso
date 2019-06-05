@@ -42,8 +42,9 @@ public class TestPlanRepository implements ITestPlanRepository {
     private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
     private static final String UPDATE_POSTGRES = "UPDATE TestPlan SET testplan_name = ?, start_date = ?, stop_date = ?, properties = ? WHERE id = ?;";
     private static final String UPDATE_MYSQL = "UPDATE TestPlan SET testplan_name = ?, start_date = ?, stop_date = ?, properties = cast(? as jsonb) WHERE id = ?;";
-    private static final String DELETE_BY_ID = "DELETE FROM TestPlan WHERE id = ?;";
-    private static final String DELETE_ALL = "DELETE FROM TestPlan;";
+    private static final String DELETE_ALL = "DELETE FROM TestPlan";
+    private static final String DELETE_BY_ID =  DELETE_ALL + " WHERE id = ?;";
+
 
     public TestPlanRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -71,7 +72,8 @@ public class TestPlanRepository implements ITestPlanRepository {
     @Override
     public long add(TestPlanDao testPlanDao) {
         if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
-            return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, testPlanDao.getTestplanName(), testPlanDao.getStartDate(), testPlanDao.getStopDate(),
+            return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class,
+                    testPlanDao.getTestplanName(), testPlanDao.getStartDate(), testPlanDao.getStopDate(),
                     testPlanDao.getProperties(), testPlanDao.getCreator(), testPlanDao.getCreationDate());
         }
 

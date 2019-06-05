@@ -54,14 +54,31 @@ public class ServerLogService implements IServerLogService {
     @Override
     public List<ServerLog> getAllServerLogs() {
         LOGGER.log(Level.INFO, "Finding all server logs");
-        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll();
+        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(true);
         return ServiceUtil.map(serverLogDaoList, this::transformToServerLog);
     }
 
     @Override
+    public List<ServerLog> getAllServerLogs(boolean ascending, AccessType accessType, String user, int pageNumber, int pageLimit) {
+        LOGGER.log(Level.INFO, "Finding all server logs with a page limit");
+        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(ascending);
+
+        List<ServerLogDao> serverLogDaoListFiltered = serverLogDaoList;
+
+        if (accessType != null)
+            serverLogDaoListFiltered = filterByAccessType(serverLogDaoListFiltered, accessType);
+        if (user != null)
+            serverLogDaoListFiltered = filterByUser(serverLogDaoListFiltered, user);
+
+            serverLogDaoListFiltered = filterByLimitAndOffset(serverLogDaoListFiltered, pageNumber, pageLimit);
+
+        return ServiceUtil.map(serverLogDaoListFiltered, this::transformToServerLog);
+    }
+
+    @Override
     public List<ServerLog> getServerLogsByType(AccessType accessType) {
-        LOGGER.log(Level.INFO, "Finding all server logs");
-        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll();
+        LOGGER.log(Level.INFO, "Finding all server logs by access type");
+        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(true);
         List<ServerLogDao> obuServerLogDaoList = filterByAccessType(serverLogDaoList, accessType);
         return ServiceUtil.map(obuServerLogDaoList, this::transformToServerLog);
     }
@@ -80,6 +97,36 @@ public class ServerLogService implements IServerLogService {
         serverLogRepository.save(transformToServerLogDao(serverLog));
     }
 
+    public List<ServerLogDao> filterByUser(List<ServerLogDao> serverLogList, String user){
+        List<ServerLogDao> userServerLogList = new ArrayList();
+
+        for (ServerLogDao curServerLog : serverLogList) {
+            if (curServerLog.getAccessUser().equals(user)) {
+                userServerLogList.add(curServerLog);
+            }
+        }
+
+        return userServerLogList;
+    }
+
+
+    public List<ServerLogDao> filterByLimitAndOffset(List<ServerLogDao> serverLogList, int pageNumber, int pageLimit){
+        int offset = (pageNumber-1) * pageLimit;
+        List<ServerLogDao> offsetServerLogList = new ArrayList();
+
+        try {
+            for (int i = 0; i < pageLimit && (offset+i) < serverLogList.size() - 1 ; i++) {
+                ServerLogDao cur = serverLogList.get(offset + i);
+                offsetServerLogList.add( cur );
+            }
+        } catch (IndexOutOfBoundsException ex){
+            throw ex;
+        }
+
+        return offsetServerLogList;
+    }
+
+
     private List<ServerLogDao> filterByAccessType(List<ServerLogDao> serverLogList, AccessType accessType) {
         List<ServerLogDao> accessServerLogList = new ArrayList();
         for (ServerLogDao curServerLog : serverLogList) {
@@ -91,9 +138,9 @@ public class ServerLogService implements IServerLogService {
     }
 
     private ServerLogDao transformToServerLogDao(ServerLog serverLog) {
-        Timestamp responseDate = serverLog.getResponseDate() == null ? null : Timestamp.valueOf(serverLog.getResponseDate());
+        Timestamp responseDate = serverLog.getResponseDateLocalDateTime() == null ? null : Timestamp.valueOf(serverLog.getResponseDateLocalDateTime());
 
-        return new ServerLogDao(serverLog.getId(), Timestamp.valueOf(serverLog.getDate()), serverLog.getAccessType().name(), serverLog.getAccessPath(),
+        return new ServerLogDao(serverLog.getId(), Timestamp.valueOf(serverLog.getDateLocalDateTime()), serverLog.getAccessType().name(), serverLog.getAccessPath(),
                 serverLog.getAccessUser(), responseDate, serverLog.getStatus(), serverLog.getDetail());
     }
 

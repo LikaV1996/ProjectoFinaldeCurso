@@ -13,9 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import pt.solvit.probe.server.config.AppConfiguration;
+import pt.solvit.probe.server.model.ServerLog;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  *
@@ -26,7 +29,7 @@ public interface IServerLogController {
     @ApiOperation(value = "Returns server log", tags = {"Server Log",})
     @ApiResponses(
             value = {
-                @ApiResponse(code = 200, message = "A formatted list of server log."),
+                @ApiResponse(code = 200, message = "A list of server log."),
                 @ApiResponse(code = 401, message = "There was an error with authentication.")
             }
     )
@@ -35,7 +38,14 @@ public interface IServerLogController {
             value = AppConfiguration.URL_SERVER_LOG
             //produces = {MediaType.TEXT_PLAIN_VALUE}
     )
-    public ResponseEntity<String> getServerLog(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization);
+    public ResponseEntity<List<ServerLog>> getServerLog(
+            HttpServletRequest request,
+            @RequestParam(value = "order", required = false) Boolean ascending,
+            @RequestParam(value = "accessType", required = false) String accessType,
+            @RequestParam(value = "user", required = false) String user,
+            @RequestParam(value = "page", required = false) Integer pageNumber,
+            @RequestParam(value = "limit", required = false) Integer pageLimit
+    );
 
     @ApiOperation(value = "Returns obu server log", tags = {"Server Log",})
     @ApiResponses(
@@ -49,7 +59,7 @@ public interface IServerLogController {
             value = AppConfiguration.URL_SERVER_LOG_OBU
             //produces = {MediaType.TEXT_PLAIN_VALUE}
     )
-    public ResponseEntity<String> getObuServerLog(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization);
+    public ResponseEntity<String> getObuServerLog(HttpServletRequest request);
 
     @ApiOperation(value = "Returns users server log", tags = {"Server Log",})
     @ApiResponses(
@@ -63,7 +73,7 @@ public interface IServerLogController {
             value = AppConfiguration.URL_SERVER_LOG_USER
             //produces = {MediaType.TEXT_PLAIN_VALUE}
     )
-    public ResponseEntity<String> getUserServerLog(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization);
+    public ResponseEntity<String> getUserServerLog(HttpServletRequest request);
 
     @ApiOperation(value = "Clear server log", tags = {"Server Log",})
     @ApiResponses(
@@ -77,5 +87,5 @@ public interface IServerLogController {
             value = AppConfiguration.URL_SERVER_LOG, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> clearServerLog(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization);
+    public ResponseEntity<Void> clearServerLog(HttpServletRequest request);
 }

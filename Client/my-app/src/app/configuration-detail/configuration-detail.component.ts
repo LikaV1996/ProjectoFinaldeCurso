@@ -29,9 +29,9 @@ export class ConfigurationDetailComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     
     this._configService.getConfigById(this.id).subscribe(config => {
-     //console.log(config)
-     this.config = config
-   })
+      this.config = config
+    })
+
   }
 
   goBack(){

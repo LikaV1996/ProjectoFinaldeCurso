@@ -15,6 +15,7 @@
       <div class="ui divider"></div>
 
       <div class="ui" style="height: 70%;">
+        <mat-spinner *ngIf="hardwares == null"></mat-spinner>
         <div class="ui segment" *ngFor="let hardware of hardwares">
           <div class="ui middle aligned grid">
             <div class="six wide column">{{hardware.serialNumber}}</div>

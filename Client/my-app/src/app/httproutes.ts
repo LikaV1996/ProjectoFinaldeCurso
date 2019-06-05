@@ -38,4 +38,8 @@ export class Routes{
     updateSetup = this.basePath + "/setup/:id";
 
     getObuConfigs = this.basePath + "/obu/:id/config"
+    addConfigToObu = this.basePath + "/obu/:idObu/config/:idConfig"
+
+    getObuTestPlans = this.basePath + "/obu/:id/test-plan"
+    addTestPlanToObu = this.basePath + "/obu/:idObu/test-plan/:idTestPlan"
 }

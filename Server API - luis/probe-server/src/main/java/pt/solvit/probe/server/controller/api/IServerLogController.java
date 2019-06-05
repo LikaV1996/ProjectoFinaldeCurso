@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import pt.solvit.probe.server.config.AppConfiguration;
+import pt.solvit.probe.server.controller.model.output.OutputServerLog;
 import pt.solvit.probe.server.model.ServerLog;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +39,7 @@ public interface IServerLogController {
             value = AppConfiguration.URL_SERVER_LOG
             //produces = {MediaType.TEXT_PLAIN_VALUE}
     )
-    public ResponseEntity<List<ServerLog>> getServerLog(
+    public ResponseEntity<OutputServerLog> getServerLog(
             HttpServletRequest request,
             @RequestParam(value = "order", required = false) Boolean ascending,
             @RequestParam(value = "accessType", required = false) String accessType,

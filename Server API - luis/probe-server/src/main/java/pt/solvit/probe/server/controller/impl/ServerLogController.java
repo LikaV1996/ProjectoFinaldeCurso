@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.controller.api.IServerLogController;
+import pt.solvit.probe.server.controller.model.output.OutputServerLog;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.ServerLog;
 import pt.solvit.probe.server.model.enums.AccessType;
@@ -37,7 +38,7 @@ public class ServerLogController implements IServerLogController {
     private IServerLogService serverLogService;
 
     @Override
-    public ResponseEntity<List<ServerLog>> getServerLog(
+    public ResponseEntity<OutputServerLog> getServerLog(
             HttpServletRequest request,
             @RequestParam(value = "order", required = false) Boolean ascending,
             @RequestParam(value = "accessType", required = false) String accessType,
@@ -46,19 +47,21 @@ public class ServerLogController implements IServerLogController {
             @RequestParam(value = "limit", required = false) Integer pageLimit
     ) {
 
-        List<ServerLog> serverLogList;
+
+        ascending = ascending == null ? true : ascending;
+
+        List<ServerLog> allServerLogList = serverLogService.getAllServerLogs(ascending);
+        List<ServerLog> serverLogList = allServerLogList;
+
         if (pageLimit != null && pageNumber != null) {
-            ascending = ascending == null ? true : ascending;
             AccessType at = accessType != null ? AccessType.valueOf(accessType.toUpperCase()) : null;
             //TODO if (at == AccessType.OBU)   user?????
             serverLogList = serverLogService.getAllServerLogs(ascending, at, user, pageNumber, pageLimit);
-        } else {
-             serverLogList = serverLogService.getAllServerLogs();
         }
 
         //String serverLogStr = serverLogListToString(serverLogList);
 
-        return ResponseEntity.ok().body(serverLogList);
+        return ResponseEntity.ok().body( new OutputServerLog(allServerLogList.size(), serverLogList.size(), serverLogList) );
     }
 
     @Override

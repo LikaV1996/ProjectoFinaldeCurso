@@ -36,6 +36,7 @@ import { ConfigurationCreateComponent } from './configuration-create/configurati
 import { TestPlansCreateComponent } from './test-plans-create/test-plans-create.component';
 import { TestPlansDetailComponent } from './test-plans-detail/test-plans-detail.component';
 import { SetupComponent } from './setup/setup.component';
+import { ServerlogComponent } from './serverlog/serverlog.component';
 
 
 
@@ -60,7 +61,8 @@ import { SetupComponent } from './setup/setup.component';
     ConfigurationCreateComponent,
     TestPlansCreateComponent,
     TestPlansDetailComponent,
-    SetupComponent
+    SetupComponent,
+    ServerlogComponent
   ],
   imports: [
     BrowserModule,

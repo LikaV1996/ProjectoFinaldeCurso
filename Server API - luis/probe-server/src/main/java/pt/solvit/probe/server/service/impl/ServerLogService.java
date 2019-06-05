@@ -53,8 +53,13 @@ public class ServerLogService implements IServerLogService {
 
     @Override
     public List<ServerLog> getAllServerLogs() {
+        return getAllServerLogs(true);
+    }
+
+    @Override
+    public List<ServerLog> getAllServerLogs(boolean ascending) {
         LOGGER.log(Level.INFO, "Finding all server logs");
-        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(true);
+        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(ascending);
         return ServiceUtil.map(serverLogDaoList, this::transformToServerLog);
     }
 
@@ -97,7 +102,7 @@ public class ServerLogService implements IServerLogService {
         serverLogRepository.save(transformToServerLogDao(serverLog));
     }
 
-    public List<ServerLogDao> filterByUser(List<ServerLogDao> serverLogList, String user){
+    private List<ServerLogDao> filterByUser(List<ServerLogDao> serverLogList, String user){
         List<ServerLogDao> userServerLogList = new ArrayList();
 
         for (ServerLogDao curServerLog : serverLogList) {
@@ -110,12 +115,12 @@ public class ServerLogService implements IServerLogService {
     }
 
 
-    public List<ServerLogDao> filterByLimitAndOffset(List<ServerLogDao> serverLogList, int pageNumber, int pageLimit){
+    private List<ServerLogDao> filterByLimitAndOffset(List<ServerLogDao> serverLogList, int pageNumber, int pageLimit){
         int offset = (pageNumber-1) * pageLimit;
         List<ServerLogDao> offsetServerLogList = new ArrayList();
 
         try {
-            for (int i = 0; i < pageLimit && (offset+i) < serverLogList.size() - 1 ; i++) {
+            for (int i = 0; i < pageLimit && (offset+i) < serverLogList.size() ; i++) {
                 ServerLogDao cur = serverLogList.get(offset + i);
                 offsetServerLogList.add( cur );
             }

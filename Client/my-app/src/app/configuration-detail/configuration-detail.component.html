@@ -10,6 +10,15 @@
   
       <div><b>Creation Date: </b>{{config.creationDate.slice(0,10)}} {{config.creationDate.slice(11,19)}}</div>
 
+      <div>
+          <b>Configuration Name: 
+          <mat-form-field appearance="standard">
+          <mat-label>{{config.configName}}</mat-label>
+          <input [(ngModel)]="config.configName" matInput placeholder="Configuration Name">
+          </mat-form-field>
+          </b>
+      </div>
+
       <!--<div><b>Activation Date: </b>{{config.activationDate}}</div>-->
       
       <div class="input-wrapper">

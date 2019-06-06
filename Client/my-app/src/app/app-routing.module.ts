@@ -21,6 +21,9 @@ import { ConfigurationCreateComponent } from './configuration-create/configurati
 import { TestPlansDetailComponent } from './test-plans-detail/test-plans-detail.component';
 import { TestPlansCreateComponent } from './test-plans-create/test-plans-create.component';
 import { SetupComponent } from './setup/setup.component'
+import { SetupDetailComponent } from './setup-detail/setup-detail.component';
+import { SetupCreateComponent } from './setup-create/setup-create.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -45,8 +48,10 @@ const routes: Routes = [
         { path: 'testPlans', component: TestPlansComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'testPlan/:id/edit', component: TestPlansDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'testPlan/create', component: TestPlansCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
-        { path: 'setups', component: SetupComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }}
-        
+        { path: 'setups', component: SetupComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'setup/:id/edit', component: SetupDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'setup/create', component: SetupCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }}
+       
       ]
   }
 

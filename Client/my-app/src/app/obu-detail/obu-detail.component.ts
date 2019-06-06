@@ -13,6 +13,8 @@ import { Config } from '../Model/Config';
 import { ConfigService } from '../_services/config.service';
 import { TestPlan } from '../Model/TestPlan';
 import { TestPlanService } from '../_services/test-plans.service';
+import { OBUHasTestPlanService } from '../_services/obuHasTestPlan.service';
+import { OBUHasTestPlan } from '../Model/OBUHasTestPlan';
 
 @Component({
   selector: 'app-obu-detail',
@@ -28,8 +30,10 @@ export class ObuDetailComponent implements OnInit {
   private configs : Config[];
   private testPlans: TestPlan[];
   private obu_has_configs: OBUHasConfig[];
+  private obu_has_testplans: OBUHasTestPlan[];
 
-  private configToAddId:number;
+  private configToAddId: number;
+  private testPlanToAddId: number;
 
   constructor(
     private router: Router,
@@ -38,6 +42,7 @@ export class ObuDetailComponent implements OnInit {
     private _configService: ConfigService,
     private _testPlanService: TestPlanService,
     private _obuHasConfigService: OBUHasConfigService,
+    private _obuHasTestPlanService: OBUHasTestPlanService,
     private route: ActivatedRoute,
     private http: HttpClient,
     private _location: Location
@@ -57,7 +62,11 @@ export class ObuDetailComponent implements OnInit {
       this._obuHasConfigService.getObuConfigs(this.id).subscribe(configs =>{
         this.obu_has_configs = configs
       })
-  
+      
+      this._obuHasTestPlanService.getObuTestPlans(this.id).subscribe(testplans =>{
+        this.obu_has_testplans = testplans
+      })
+
       this._configService.getConfigs().subscribe(configs =>{
         this.configs = configs
         this.configs.sort( (h1,h2)=> h1.id - h2.id)
@@ -123,8 +132,19 @@ export class ObuDetailComponent implements OnInit {
           this.obu_has_configs = configs
         })
       })
-      
-    
+  }
+
+  addTestPlanToObu(id:number){
+    if(id==null)
+      alert('You must choose a test plan!')
+
+    this._obuHasTestPlanService.addTestPlanToObu(this.obu.id,this.testPlanToAddId).subscribe(
+      _ => {
+        alert('Test Plan associated sucessfully')
+        this._obuHasTestPlanService.getObuTestPlans(this.id).subscribe(testplans =>{
+          this.obu_has_testplans = testplans
+        })
+      })
   }
 
 }

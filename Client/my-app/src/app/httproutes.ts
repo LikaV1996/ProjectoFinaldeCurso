@@ -42,4 +42,5 @@ export class Routes{
 
     getObuTestPlans = this.basePath + "/obu/:id/test-plan"
     addTestPlanToObu = this.basePath + "/obu/:idObu/test-plan/:idTestPlan"
+
 }

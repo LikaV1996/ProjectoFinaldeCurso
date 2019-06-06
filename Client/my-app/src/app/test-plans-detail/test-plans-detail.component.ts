@@ -23,6 +23,7 @@ export class TestPlansDetailComponent implements OnInit {
     private http: HttpClient,
     private _location: Location
   ) { }
+  
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     
@@ -31,6 +32,7 @@ export class TestPlansDetailComponent implements OnInit {
     })
 
   }
+
   goBack(){
     this._location.back();
   }

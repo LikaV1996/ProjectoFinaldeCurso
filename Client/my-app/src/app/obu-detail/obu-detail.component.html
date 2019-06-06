@@ -105,6 +105,35 @@
     </div>
 
 
+    <div class="ui container segment" >
+            <h4>OBU Test Plans</h4>
+            <mat-spinner *ngIf="obu_has_testplans == null"></mat-spinner>
+            <div class="ui segment" *ngFor="let obuTestPlan of obu_has_testplans">
+                <div class="ui middle aligned grid">
+                    <div class="four wide column">{{obuTestPlan.testPlan.testplanName}}</div>
+                    <div *ngIf="obuTestPlan.testPlan.startDate == null" class="eight wide column">No Start Date</div>
+                    <div *ngIf="obuTestPlan.testPlan.startDate != null" class="eight wide column">{{obuTestPlan.testPlan.startDate}}</div>      
+                    <!--<div class="four wide column"></div>-->
+                    <div class="four wide right aligned column">
+                        <div class="ui suspend button" (click)="editTestPlan(obu.id)" data-tooltip="Edit Test Plan">Edit</div>
+                    </div>
+                </div>
+            </div>
+    
+            <p></p>
+    
+            <div><b>Test Plans: </b>
+                <mat-form-field>
+                <select matNativeControl required [(ngModel)]="testPlanToAddId">
+                    <option value="null">Choose Test Plan</option>
+                    <option *ngFor="let testPlan of testPlans" value="{{testPlan.id}}">{{testPlan.testplanName}}</option>
+                </select>
+                </mat-form-field>
+            </div>
+            <button class="ui primary button" (click)="addTestPlanToObu(testPlanToAddId)" data-tooltip="Add Test Plan To Obu"> Add Test Plan</button>
+            
+        </div>
+
 
     <div *ngIf="obu.sims!=null" class="ui container segment" >
             <h4>SIMS ({{obu.sims.length}})</h4>

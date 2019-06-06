@@ -36,6 +36,8 @@ import { ConfigurationCreateComponent } from './configuration-create/configurati
 import { TestPlansCreateComponent } from './test-plans-create/test-plans-create.component';
 import { TestPlansDetailComponent } from './test-plans-detail/test-plans-detail.component';
 import { SetupComponent } from './setup/setup.component';
+import { SetupCreateComponent } from './setup-create/setup-create.component';
+import { SetupDetailComponent } from './setup-detail/setup-detail.component';
 
 
 
@@ -60,7 +62,9 @@ import { SetupComponent } from './setup/setup.component';
     ConfigurationCreateComponent,
     TestPlansCreateComponent,
     TestPlansDetailComponent,
-    SetupComponent
+    SetupComponent,
+    SetupCreateComponent,
+    SetupDetailComponent
   ],
   imports: [
     BrowserModule,

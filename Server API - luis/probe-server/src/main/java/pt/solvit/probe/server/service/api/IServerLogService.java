@@ -21,6 +21,9 @@ public interface IServerLogService {
     public ServerLog getServerLog(long logId);
 
     public List<ServerLog> getAllServerLogs();
+    public List<ServerLog> getAllServerLogs(boolean ascending);
+
+    public List<ServerLog> getAllServerLogs(boolean ascending, AccessType accessType, String user, int pageNumber, int pageLimit);
 
     public List<ServerLog> getServerLogsByType(AccessType accessType);
 

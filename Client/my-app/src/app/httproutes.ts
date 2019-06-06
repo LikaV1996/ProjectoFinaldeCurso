@@ -12,6 +12,8 @@ export class Routes{
     suspendUser = this.basePath + "/user/:id/suspend";
     updateUser = this.basePath + "user/:id/edit"
 
+    getServerLogs = this.basePath + "/server-log";
+
     getHardwares = this.basePath + "/hardware";
     getHardwareById = this.basePath + "/hardware/:id";
     updateHardware = this.basePath + "/hardware/:id";

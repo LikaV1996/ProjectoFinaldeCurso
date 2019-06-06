@@ -1,0 +1,50 @@
+<div id="content" class="ui container">
+  
+  <div class="ui segment">
+    <div class="ui middle aligned grid">
+      <div class="four wide column"><h3>Request Date</h3></div>
+      <div class="five wide column"><h3>Access Path</h3></div>
+      <div class="one wide column"><h3>Access Type</h3></div>
+      <div class="one wide column"><h3>Access User</h3></div>
+      <div class="four wide column"><h3>Response Date</h3></div>
+      <div class="one wide column"><h3>Status</h3></div>
+    </div>
+    
+    <div class="ui divider"></div>
+
+    <div class="ui" style="height: 70%;">
+      <ng-container *ngFor="let serverLog of serverLogs">
+
+        <div class="ui middle aligned grid">
+          <div class="four wide column">{{serverLog.date}}</div>
+          <div class="five wide column">{{serverLog.accessPath}}</div>
+          <div class="one wide column">{{serverLog.accessType}}</div>
+          <div class="one wide column">{{serverLog.accessUser}}</div>
+          <div class="four wide column">{{serverLog.responseDate}}</div>
+          <div class="one wide column">{{serverLog.status}}</div>
+        </div>
+
+        <div class="ui divider"></div>
+
+      </ng-container>
+
+      <div class="ui middle alligned grid">
+        
+        <div class="six wide column"></div>
+        <div class="one wide column">
+          <ng-container *ngIf="! isFirstPage()">
+            <button class="ui primary button" (click)="getPage( curPage - 1 )" data-tooltip="Previous Page"> Prev</button>
+          </ng-container>
+        </div>
+        <div class="two wide column"><h3>{{curPage}}</h3></div>
+        <div class="one wide column">
+          <ng-container *ngIf="! isLastPage()">
+            <button class="ui primary button" (click)="getPage( curPage + 1 )" data-tooltip="Next Page"> Next</button>
+          </ng-container>
+        </div>
+        <div class="six wide column"></div>
+        
+      </div>
+
+  </div>
+</div>

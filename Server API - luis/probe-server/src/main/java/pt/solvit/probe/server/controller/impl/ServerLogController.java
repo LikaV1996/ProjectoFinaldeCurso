@@ -9,14 +9,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.controller.api.IServerLogController;
+import pt.solvit.probe.server.controller.model.output.OutputServerLog;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.ServerLog;
 import pt.solvit.probe.server.model.enums.AccessType;
 import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.service.api.IServerLogService;
 import pt.solvit.probe.server.service.api.IUserService;
+import pt.solvit.probe.server.service.impl.ServerLogService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,59 +38,61 @@ public class ServerLogController implements IServerLogController {
     private IServerLogService serverLogService;
 
     @Override
-    public ResponseEntity<String> getServerLog(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization) {
+    public ResponseEntity<OutputServerLog> getServerLog(
+            HttpServletRequest request,
+            @RequestParam(value = "order", required = false) Boolean ascending,
+            @RequestParam(value = "accessType", required = false) String accessType,
+            @RequestParam(value = "user", required = false) String user,
+            @RequestParam(value = "page", required = false) Integer pageNumber,
+            @RequestParam(value = "limit", required = false) Integer pageLimit
+    ) {
 
-        //User user = userService.checkUserCredentials(authorization);
 
-        List<ServerLog> serverLogList = serverLogService.getAllServerLogs();
-        String serverLogStr = serverLogListToString(serverLogList);
+        ascending = ascending == null ? true : ascending;
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_SERVER_LOG);
-        //serverLogService.createServerLog(serverLog);
+        List<ServerLog> allServerLogList = serverLogService.getAllServerLogs(ascending);
+        List<ServerLog> serverLogList = allServerLogList;
 
-        return ResponseEntity.ok(serverLogStr);
+        if (pageLimit != null && pageNumber != null) {
+            AccessType at = accessType != null ? AccessType.valueOf(accessType.toUpperCase()) : null;
+            //TODO if (at == AccessType.OBU)   user?????
+            serverLogList = serverLogService.getAllServerLogs(ascending, at, user, pageNumber, pageLimit);
+        }
+
+        //String serverLogStr = serverLogListToString(serverLogList);
+
+        return ResponseEntity.ok().body( new OutputServerLog(allServerLogList.size(), serverLogList.size(), serverLogList) );
     }
 
     @Override
-    public ResponseEntity<String> getObuServerLog(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization) {
-
-        //User user = userService.checkUserCredentials(authorization);
+    public ResponseEntity<String> getObuServerLog(HttpServletRequest request) {
 
         List<ServerLog> obuServerLogList = serverLogService.getServerLogsByType(AccessType.OBU);
         String serverLogStr = serverLogListToString(obuServerLogList);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_SERVER_LOG_OBU);
-        //serverLogService.createServerLog(serverLog);
-
         return ResponseEntity.ok(serverLogStr);
     }
 
     @Override
-    public ResponseEntity<String> getUserServerLog(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization) {
-
-        //User user = userService.checkUserCredentials(authorization);
+    public ResponseEntity<String> getUserServerLog(HttpServletRequest request) {
 
         List<ServerLog> userServerLogList = serverLogService.getServerLogsByType(AccessType.USER);
         String serverLogStr = serverLogListToString(userServerLogList);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_SERVER_LOG_USER);
-        //serverLogService.createServerLog(serverLog);
-
         return ResponseEntity.ok(serverLogStr);
     }
 
     @Override
-    public ResponseEntity<Void> clearServerLog(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization) {
+    public ResponseEntity<Void> clearServerLog(HttpServletRequest request) {
 
         User user = (User) request.getAttribute("user");
 
         serverLogService.deleteAllServerLogs(user);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.DELETE, HttpStatus.OK, AppConfiguration.URL_SERVER_LOG);
-        //serverLogService.createServerLog(serverLog);
-
         return ResponseEntity.ok().build();
     }
+
+
 
     private String serverLogListToString(List<ServerLog> serverLogList) {
         if (serverLogList.isEmpty()) {

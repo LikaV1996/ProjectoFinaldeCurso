@@ -16,7 +16,7 @@ public interface IServerLogRepository {
 
     public ServerLogDao findById(long id);
 
-    public List<ServerLogDao> findAll();
+    public List<ServerLogDao> findAll(boolean ascending);
 
     public long add(ServerLogDao serverLogDao);
 

@@ -23,6 +23,7 @@ import { TestPlansCreateComponent } from './test-plans-create/test-plans-create.
 import { SetupComponent } from './setup/setup.component'
 import { SetupDetailComponent } from './setup-detail/setup-detail.component';
 import { SetupCreateComponent } from './setup-create/setup-create.component';
+import { ServerLogComponent } from './serverlog/serverlog.component';
 
 
 const routes: Routes = [
@@ -50,8 +51,9 @@ const routes: Routes = [
         { path: 'testPlan/create', component: TestPlansCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'setups', component: SetupComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'setup/:id/edit', component: SetupDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
-        { path: 'setup/create', component: SetupCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }}
-       
+        { path: 'setup/create', component: SetupCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'serverLogs', component: ServerLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.ADMIN }}
+        
       ]
   }
 

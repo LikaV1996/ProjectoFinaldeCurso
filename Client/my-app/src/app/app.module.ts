@@ -38,6 +38,7 @@ import { TestPlansDetailComponent } from './test-plans-detail/test-plans-detail.
 import { SetupComponent } from './setup/setup.component';
 import { SetupCreateComponent } from './setup-create/setup-create.component';
 import { SetupDetailComponent } from './setup-detail/setup-detail.component';
+import { ServerLogComponent } from './serverlog/serverlog.component';
 
 
 
@@ -64,7 +65,8 @@ import { SetupDetailComponent } from './setup-detail/setup-detail.component';
     TestPlansDetailComponent,
     SetupComponent,
     SetupCreateComponent,
-    SetupDetailComponent
+    SetupDetailComponent,
+    ServerLogComponent
   ],
   imports: [
     BrowserModule,

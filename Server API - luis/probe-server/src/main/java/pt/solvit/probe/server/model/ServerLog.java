@@ -6,8 +6,14 @@
 package pt.solvit.probe.server.model;
 
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.http.HttpStatus;
 import pt.solvit.probe.server.model.enums.AccessType;
+
+import static pt.solvit.probe.server.util.DateUtil.ISO8601_DATE_FORMATTER;
 import static pt.solvit.probe.server.util.DateUtil.PRETTY_DATE_FORMATTER;
 
 /**
@@ -18,13 +24,29 @@ public class ServerLog {
 
     private static final String ERROR_DATE = "Unknown";
 
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("date")
     private LocalDateTime date;
+
+    @JsonProperty("accessPath")
     private String accessPath;
+
+    @JsonProperty("accessType")
     private AccessType accessType;
+
+    @JsonProperty("accessUser")
     private String accessUser;
+
+    @JsonProperty("responseDate")
     private LocalDateTime responseDate;
+
+    @JsonProperty("status")
     private String status;
+
+    @JsonProperty("detail")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String detail;
 
     public ServerLog(Long id, LocalDateTime date, AccessType accessType, String accessPath, String accessUser,
@@ -54,9 +76,12 @@ public class ServerLog {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
+    @JsonIgnore
+    public LocalDateTime getDateLocalDateTime() {
         return date;
     }
+
+    public String getDate() { return ISO8601_DATE_FORMATTER.format(date); }
 
     public AccessType getAccessType() {
         return accessType;
@@ -75,9 +100,12 @@ public class ServerLog {
         return this;
     }
 
-    public LocalDateTime getResponseDate() {
+    @JsonIgnore
+    public LocalDateTime getResponseDateLocalDateTime() {
         return responseDate;
     }
+
+    public String getResponseDate() { return ISO8601_DATE_FORMATTER.format(responseDate); }
 
     public String getStatus() {
         return status;

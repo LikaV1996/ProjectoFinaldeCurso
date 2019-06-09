@@ -9,7 +9,31 @@
         <div><b>Creator: </b>{{testPlan.creator}}</div>
     
         <div><b>Creation Date: </b>{{testPlan.creationDate}}</div>
-  
+
+        <div>
+            <b>Test Plan Name: 
+            <mat-form-field appearance="standard">
+            <mat-label>{{testPlan.testplanName}}</mat-label>
+            <input [(ngModel)]="testPlan.testplanName" matInput placeholder="Test Plan Name">
+            </mat-form-field>
+            </b>
+        </div>
+
+        <div class="input-wrapper">
+            <b>Start Date:&nbsp;&nbsp;</b>
+            <input [(ngModel)]="testPlan.startDate"
+                   [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1">
+            <owl-date-time #dtPicker1></owl-date-time>
+        </div>
+
+        <div class="input-wrapper">
+            <b>Stop Date:&nbsp;&nbsp;</b>
+            <input [(ngModel)]="testPlan.stopDate"
+                   [owlDateTimeTrigger]="dtPicker2" [owlDateTime]="dtPicker2">
+            <owl-date-time #dtPicker2></owl-date-time>
+        </div>
+
+        <!--
         <div><b>Start Date: </b>
           <mat-form-field>
             <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="testPlan.startDate">
@@ -25,19 +49,17 @@
             <mat-datepicker #myDatepicker2></mat-datepicker>
           </mat-form-field>
         </div>
-
-        <div class="input-wrapper">
-            <label>Date Time(binding via ngModel):</label>
-            <input [(ngModel)]="testPlan.stopDate"
-                   [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1">
-            <owl-date-time #dtPicker1></owl-date-time>
-        </div>
-
-        <div><b>Start Date: </b>{{testPlan.startDate}}</div>
+      -->
         
-        <div><b>Stop Date: </b>{{testPlan.stopDate}}</div>
-        
-        <div><b>Period </b>{{testPlan.period}}</div>
+      <div>
+          <b>Period:
+          <mat-form-field appearance="standard">
+          <input [(ngModel)]="testPlan.period" matInput placeholder="Period" required>
+          </mat-form-field>
+          </b>
+      </div>
+
+      FALTA SETUPS AQUI!
         
     
     </div>
@@ -47,4 +69,4 @@
             <div class="ui suspend button" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
     </div>
     
-    </div>
+</div>

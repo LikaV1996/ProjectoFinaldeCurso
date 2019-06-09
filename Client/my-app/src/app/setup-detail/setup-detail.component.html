@@ -1,0 +1,60 @@
+<p></p>
+
+
+<div class="ui raised very padded text container segment">
+
+    <div *ngIf="setup">
+        <h2>Setup Details</h2>
+        <div><b>id: </b>{{setup.id}}</div>
+  
+        <div><b>Creator: </b>{{setup.creator}}</div>
+    
+        <div><b>Creation Date: </b>{{setup.creationDate.slice(0,10)}} {{setup.creationDate.slice(11,19)}}</div>
+
+        <div>
+            <b>Setup Name: 
+            <mat-form-field appearance="standard">
+            <mat-label>{{setup.setupName}}</mat-label>
+            <input [(ngModel)]="setup.setupName" matInput placeholder="Setup Name">
+            </mat-form-field>
+            </b>
+        </div>
+
+        <b>Modem Type: </b>
+        <mat-form-field>
+            <select matNativeControl required [(ngModel)]="setup.modemType">
+                <option value="PLMN">PLMN</option>
+                <option value="GSMR">GSMR</option>
+            </select>
+        </mat-form-field>
+
+        <div class="ui container segment" >
+            <h4>Scanning</h4>
+            
+            <div><b><mat-checkbox [(ngModel)]="setup.scanning.enableScanning" [checked]="setup.scanning.enableScanning" >Enable Scanning</mat-checkbox></b></div>
+            
+            <div><b>Sample Time: </b>{{setup.scanning.sampleTime}}</div>
+    
+            <div><b><mat-checkbox [(ngModel)]="setup.scanning.enableCsq" [checked]="setup.scanning.enableCsq" >Enable Csq</mat-checkbox></b></div>
+    
+            <div><b><mat-checkbox [(ngModel)]="setup.scanning.enableMoni" [checked]="setup.scanning.enableMoni" >Enable Moni</mat-checkbox></b></div>
+    
+            <div><b><mat-checkbox [(ngModel)]="setup.scanning.enableMonp" [checked]="setup.scanning.enableMonp" >Enable Monp</mat-checkbox></b></div>
+    
+            <div><b><mat-checkbox [(ngModel)]="setup.scanning.enableSmond" [checked]="setup.scanning.enableSmond" >Enable Smond</mat-checkbox></b></div>
+    
+            <div><b><mat-checkbox [(ngModel)]="setup.scanning.enableSmonc" [checked]="setup.scanning.enableSmonc" >Enable Smonc</mat-checkbox></b></div>
+    
+        </div>
+
+        
+    
+    </div>
+    
+    <div style="margin-top:30px;">
+            <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
+            <div class="ui suspend button" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
+    </div>
+    
+</div>
+

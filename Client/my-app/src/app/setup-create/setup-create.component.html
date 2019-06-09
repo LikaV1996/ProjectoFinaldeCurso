@@ -1,0 +1,56 @@
+<p></p>
+
+<div class="ui raised very padded text container segment">
+
+    <h2>Create Setup </h2>
+  
+    <div>
+      <b>Name:
+      <mat-form-field appearance="standard">
+      <input [(ngModel)]="setupName" matInput placeholder="Setup Name" required>
+      </mat-form-field>
+      </b>
+    </div>
+  
+    <b>Modem Type: </b>
+    <mat-form-field>
+      <select matNativeControl required [(ngModel)]="modemType">
+          <option value="PLMN">PLMN</option>
+          <option value="GSMR">GSMR</option>
+      </select>
+    </mat-form-field>
+  
+    <div class="ui container segment" >
+        <h4>Scanning</h4>
+        
+        <div><b><mat-checkbox [(ngModel)]="scanning.enableScanning" [checked]="scanning.enableScanning" >Enable Scanning</mat-checkbox></b></div>
+        
+        <div>
+            <b>Sample Time:
+            <mat-form-field appearance="standard">
+            <input [(ngModel)]="scanning.sampleTime" matInput placeholder="Sample time" required>
+            </mat-form-field>
+            </b>
+        </div>
+
+        <div><b><mat-checkbox [(ngModel)]="scanning.enableCsq" [checked]="scanning.enableCsq" >Enable Csq</mat-checkbox></b></div>
+
+        <div><b><mat-checkbox [(ngModel)]="scanning.enableMoni" [checked]="scanning.enableMoni" >Enable Moni</mat-checkbox></b></div>
+
+        <div><b><mat-checkbox [(ngModel)]="scanning.enableMonp" [checked]="scanning.enableMonp" >Enable Monp</mat-checkbox></b></div>
+
+        <div><b><mat-checkbox [(ngModel)]="scanning.enableSmond" [checked]="scanning.enableSmond" >Enable Smond</mat-checkbox></b></div>
+
+        <div><b><mat-checkbox [(ngModel)]="scanning.enableSmonc" [checked]="scanning.enableSmonc" >Enable Smonc</mat-checkbox></b></div>
+
+      </div>
+  
+    
+  
+    <div style="margin-top:30px;">
+      <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
+      <div class="ui suspend button" (click)="createTestPlan()" data-tooltip="Create Test Plan">Create</div>
+    </div>
+  
+  </div>
+

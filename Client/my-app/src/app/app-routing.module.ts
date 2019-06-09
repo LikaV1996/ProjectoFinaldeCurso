@@ -20,8 +20,11 @@ import { ObuCreateComponent } from './obu-create/obu-create.component';
 import { ConfigurationCreateComponent } from './configuration-create/configuration-create.component';
 import { TestPlansDetailComponent } from './test-plans-detail/test-plans-detail.component';
 import { TestPlansCreateComponent } from './test-plans-create/test-plans-create.component';
-import { SetupComponent } from './setup/setup.component';
+import { SetupComponent } from './setup/setup.component'
+import { SetupDetailComponent } from './setup-detail/setup-detail.component';
+import { SetupCreateComponent } from './setup-create/setup-create.component';
 import { ServerLogComponent } from './serverlog/serverlog.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -47,6 +50,8 @@ const routes: Routes = [
         { path: 'testPlan/:id/edit', component: TestPlansDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'testPlan/create', component: TestPlansCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'setups', component: SetupComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'setup/:id/edit', component: SetupDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'setup/create', component: SetupCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'serverLogs', component: ServerLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.ADMIN }}
         
       ]

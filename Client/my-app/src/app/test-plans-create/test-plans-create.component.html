@@ -11,6 +11,21 @@
     </b>
   </div>
 
+  <div class="input-wrapper">
+      <b>Start Date:&nbsp;&nbsp;</b>
+      <input [(ngModel)]="startDate"
+             [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1">
+      <owl-date-time #dtPicker1></owl-date-time>
+  </div>
+  <p></p>
+  <div class="input-wrapper">
+      <b>Stop Date:&nbsp;&nbsp;</b>
+      <input [(ngModel)]="stopDate"
+             [owlDateTimeTrigger]="dtPicker2" [owlDateTime]="dtPicker2">
+      <owl-date-time #dtPicker2></owl-date-time>
+  </div>
+
+  <!--
   <div><b>Start Date: </b>
     <mat-form-field>
       <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="startDate" placeholder="Start Date">
@@ -26,9 +41,9 @@
       <mat-datepicker #myDatepicker2></mat-datepicker>
     </mat-form-field>
   </div>
+  -->
 
   <!-- PROPERTIES -->
-
   <div>
     <b>Period:
     <mat-form-field appearance="standard">

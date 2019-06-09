@@ -42,7 +42,7 @@ export class ServerLogComponent implements OnInit {
     )
   }
 
-  applyFilter() {
+  applyFilter(){
     this.getServerLogs(this.curPage)
   }
   

@@ -5,9 +5,9 @@
   
     <div class="ui segment">
       <div class="ui grid">
-        <div class="four wide column"><h3>Obu Name</h3></div>
-        <div class="four wide column"><h3>Obu State</h3></div>
-        <div class="four wide column"><h3>Current Obu Configuration</h3></div>
+        <div class="four wide column"><h3>OBU Name</h3></div>
+        <div class="four wide column"><h3>OBU State</h3></div>
+        <div class="four wide column"><h3>Current OBU Configuration</h3></div>
         <!-- <div class="four wide column">Current_test_plan_id</div> -->
         <div class="four wide column"></div>
       </div>
@@ -23,8 +23,8 @@
             <div class="four wide column" *ngIf="obu.CurrentConfigId==null">No Configuration</div>
             <!-- <div class="four wide column">{{obu.Current_test_plan_id}}</div> -->
             <div class="four wide right aligned column">
-              <div class="ui suspend button" (click)="edit(obu.id)" data-tooltip="Edit Obu">Edit</div>
-              <!--<div class="ui suspend button" (click)="edit(obu.id)" data-tooltip="Edit Obu">Edit2</div>-->
+              <div class="ui suspend button" (click)="edit(obu.id)" data-tooltip="Edit OBU">Edit</div>
+              <!--<div class="ui suspend button" (click)="edit(obu.id)" data-tooltip="Edit OBU">Edit2</div>-->
             </div>
             
                 
@@ -38,7 +38,7 @@
           <div class="one wide column"></div>
           <div class="one wide column"></div>
           <div class="four wide right aligned column">
-            <div class="ui blue fluid button" (click)="createObu()">Create New Obu</div>
+            <div class="ui blue fluid button" (click)="createObu()">Create New OBU</div>
           </div>
       </div>
       

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ServerLog } from '../Model/ServerLog';
 import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Routes } from "../httproutes"
 
@@ -26,17 +26,14 @@ export class ServerLogService {
   //http://localhost:8080/api/v1/frontoffice/server-log?order=true&page=4&limit=20&user=tester&accessType=user
 
   getServerLogs(order : boolean, pageNumber : number, pageLimit : number, username : string, accessType : string) : Observable<ServerLogResp> {
-    const queryParams = ( !(order || pageNumber || pageLimit || username || accessType) ? "" :
-        "?" + 
-        (order ? "order="+order+"&" : "") +
-        (pageNumber ? "page="+pageNumber+"&" : "") + 
-        (pageLimit ? "limit="+pageLimit+"&" : "") + 
-        (username ? "user="+username+"&" : "") + 
-        (accessType ? "accessType="+accessType+"&" : "")
-    )
-
-    console.log("queryParams: " + queryParams)
-    return this.http.get<ServerLogResp>(routes.getServerLogs + queryParams)
+    let params = new HttpParams()
+    params = params.append("order", (order ? "true" : "false"))
+    params = params.append("page", pageNumber.toString())
+    params = params.append("limit", pageLimit.toString())
+    if(username && username != "") params = params.append("user", username.toString())
+    if(accessType && accessType != "") params = params.append("accessType", accessType.toString())
+    
+    return this.http.get<ServerLogResp>(routes.getServerLogs, { params: params })
   }
 
 }

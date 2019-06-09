@@ -63,6 +63,7 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
 
   errorHandler() {
     return (e: HttpErrorResponse) => {
+      debugger
       console.error("Error: " + JSON.stringify(e))
       let unknownError = false;
 

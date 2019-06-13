@@ -48,15 +48,15 @@ public class ServerLogController implements IServerLogController {
     ) {
 
 
-        ascending = ascending == null ? true : ascending;
+        boolean asc = ascending == null ? true : ascending;
+        AccessType at = accessType != null ? AccessType.valueOf(accessType.toUpperCase()) : null;
+        String username = user != null && user.equals("") ? null : user;
 
-        List<ServerLog> allServerLogList = serverLogService.getAllServerLogs(ascending);
+        List<ServerLog> allServerLogList = serverLogService.getAllServerLogs(asc, at, username, null, null);
         List<ServerLog> serverLogList = allServerLogList;
 
         if (pageLimit != null && pageNumber != null) {
-            AccessType at = accessType != null ? AccessType.valueOf(accessType.toUpperCase()) : null;
-            //TODO if (at == AccessType.OBU)   user?????
-            serverLogList = serverLogService.getAllServerLogs(ascending, at, user, pageNumber, pageLimit);
+            serverLogList = serverLogService.getAllServerLogs(asc, at, username, pageNumber, pageLimit);
         }
 
         //String serverLogStr = serverLogListToString(serverLogList);

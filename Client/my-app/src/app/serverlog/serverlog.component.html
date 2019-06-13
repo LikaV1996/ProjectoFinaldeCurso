@@ -1,6 +1,46 @@
 <div id="content" class="ui container">
-  
   <div class="ui segment">
+
+    <div class="ui segment">
+    <!-- filters -->
+      <div class="ui middle aligned grid">
+        <div class="two wide column"><h2>Filters:</h2></div> 
+        <div class="four wide column">
+          <b>Date order: </b>
+          <mat-form-field>
+          <select matNativeControl required [(ngModel)]="dateOrder">
+            <option value="true">Ascending</option>
+            <option value="false">Descending</option>
+          </select>
+          </mat-form-field>
+        </div>
+        <div class="four wide column">
+          <b>Access type: </b>
+          <mat-form-field>
+          <select matNativeControl [(ngModel)]="accessType">
+            <option value="">All</option>
+            <option value="user">User</option>
+            <option value="obu">OBU</option>
+          </select>
+          </mat-form-field>
+        </div>
+        <div class="four wide column">
+          <b>Serial Number:
+            <mat-form-field appearance="standard">
+            <input [(ngModel)]="username" matInput placeholder="Search by User...">
+            </mat-form-field>
+          </b>
+        </div>
+        <div class="one wide column">
+          <button class="ui primary button" (click)="applyFilter()" data-tooltip="Apply filter">Apply</button>
+        </div>
+      </div>
+    </div>
+
+    
+    
+
+    <!-- serverlogs header -->
     <div class="ui middle aligned grid">
       <div class="four wide column"><h3>Request Date</h3></div>
       <div class="five wide column"><h3>Access Path</h3></div>
@@ -9,12 +49,11 @@
       <div class="four wide column"><h3>Response Date</h3></div>
       <div class="one wide column"><h3>Status</h3></div>
     </div>
-    
+  
     <div class="ui divider"></div>
-
+    <!-- serverlogs entries -->
     <div class="ui" style="height: 70%;">
       <ng-container *ngFor="let serverLog of serverLogs">
-
         <div class="ui middle aligned grid">
           <div class="four wide column">{{serverLog.date}}</div>
           <div class="five wide column">{{serverLog.accessPath}}</div>
@@ -23,13 +62,9 @@
           <div class="four wide column">{{serverLog.responseDate}}</div>
           <div class="one wide column">{{serverLog.status}}</div>
         </div>
-
         <div class="ui divider"></div>
-
       </ng-container>
-
       <div class="ui middle alligned grid">
-        
         <div class="six wide column"></div>
         <div class="one wide column">
           <ng-container *ngIf="! isFirstPage()">
@@ -43,8 +78,7 @@
           </ng-container>
         </div>
         <div class="six wide column"></div>
-        
-      </div>
+    </div>
 
   </div>
 </div>

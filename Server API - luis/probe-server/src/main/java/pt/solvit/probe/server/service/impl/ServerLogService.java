@@ -64,7 +64,7 @@ public class ServerLogService implements IServerLogService {
     }
 
     @Override
-    public List<ServerLog> getAllServerLogs(boolean ascending, AccessType accessType, String user, int pageNumber, int pageLimit) {
+    public List<ServerLog> getAllServerLogs(boolean ascending, AccessType accessType, String username, Integer pageNumber, Integer pageLimit) {
         LOGGER.log(Level.INFO, "Finding all server logs with a page limit");
         List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(ascending);
 
@@ -72,9 +72,9 @@ public class ServerLogService implements IServerLogService {
 
         if (accessType != null)
             serverLogDaoListFiltered = filterByAccessType(serverLogDaoListFiltered, accessType);
-        if (user != null)
-            serverLogDaoListFiltered = filterByUser(serverLogDaoListFiltered, user);
-
+        if (username != null)
+            serverLogDaoListFiltered = filterByContainsUsername(serverLogDaoListFiltered, username);
+        if (pageNumber != null && pageLimit != null)
             serverLogDaoListFiltered = filterByLimitAndOffset(serverLogDaoListFiltered, pageNumber, pageLimit);
 
         return ServiceUtil.map(serverLogDaoListFiltered, this::transformToServerLog);
@@ -102,11 +102,11 @@ public class ServerLogService implements IServerLogService {
         serverLogRepository.save(transformToServerLogDao(serverLog));
     }
 
-    private List<ServerLogDao> filterByUser(List<ServerLogDao> serverLogList, String user){
+    private List<ServerLogDao> filterByContainsUsername(List<ServerLogDao> serverLogList, String username){
         List<ServerLogDao> userServerLogList = new ArrayList();
 
         for (ServerLogDao curServerLog : serverLogList) {
-            if (curServerLog.getAccessUser().equals(user)) {
+            if (curServerLog.getAccessUser().contains(username)) {
                 userServerLogList.add(curServerLog);
             }
         }

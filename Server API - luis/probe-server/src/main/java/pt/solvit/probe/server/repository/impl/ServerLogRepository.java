@@ -38,11 +38,10 @@ public class ServerLogRepository implements IServerLogRepository {
     private static final String INSERT_BASE = "INSERT INTO ServerLog (log_date, access_type, access_path, access_user, response_date, status, detail)";
     private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?::AccessType, ?, ?, ?, ?, ?) RETURNING id;";
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?, ?);";
-    private static final String SELECT_BASE = "SELECT id, log_date AS logDate, access_type AS accessType, access_path AS accessPath, access_user AS accessUser, response_date AS responseDate, status, detail FROM ServerLog";
+    private static final String SELECT_ALL = "SELECT id, log_date AS logDate, access_type AS accessType, access_path AS accessPath, access_user AS accessUser, response_date AS responseDate, status, detail FROM ServerLog";
     private static final String ORDER_BY_LOG_DATE = " ORDER BY log_date ";
-    private static final String SELECT_ALL = SELECT_BASE + ORDER_BY_LOG_DATE;
     //private static final String SELECT_ALL_W_LIMIT_OFFSET = SELECT_ALL + " LIMIT ? OFFSET ?";
-    private static final String SELECT_BY_ID = SELECT_BASE + " WHERE id = ? ";
+    private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ? ";
     private static final String UPDATE = "UPDATE ServerLog SET access_user = ?, response_date = ?, status = ?, detail = ? WHERE id = ?;";
     private static final String DELETE_BY_ID = "DELETE FROM ServerLog WHERE id = ?;";
     private static final String DELETE_ALL = "DELETE FROM ServerLog;";
@@ -66,7 +65,16 @@ public class ServerLogRepository implements IServerLogRepository {
 
     @Override
     public List<ServerLogDao> findAll(boolean ascending) {
-        return jdbcTemplate.query(SELECT_ALL + (ascending ? "ASC" : "DESC"), new BeanPropertyRowMapper<>(ServerLogDao.class));
+        /*
+        StringBuilder orderByLogDate = new StringBuilder(ORDER_BY_LOG_DATE);
+        int replaceIdx = orderByLogDate.indexOf("?");
+        orderByLogDate.replace(replaceIdx, replaceIdx, (ascending ? "ASC" : "DESC"));
+
+        String queryStr = SELECT_ALL + orderByLogDate.toString();
+        */
+
+        String queryStr = SELECT_ALL + ORDER_BY_LOG_DATE + (ascending ? "ASC" : "DESC");
+        return jdbcTemplate.query(queryStr , new BeanPropertyRowMapper<>(ServerLogDao.class));
     }
 
     @Transactional()

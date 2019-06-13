@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ServerLogService } from '../_services/serverlog.service';
 import { ServerLog } from '../Model/ServerLog';
 
@@ -13,25 +13,27 @@ export class ServerLogComponent implements OnInit {
     private _serverLogService : ServerLogService
   ) { }
 
-  private order : boolean
-  private accessType : string
-  private user : string
+  @Input() private dateOrder : string = "true"
+  @Input() private accessType : string = ""
+  @Input() private username : string = ""
 
-  private curPage : number
-  private totalNumberOfPages : number
+  private curPage : number = 1
+  private totalNumberOfPages : number = this.curPage
   private pageLimit : number = 20
 
   private serverLogs : ServerLog[]
 
   ngOnInit() {
-    this.getServerLogs(1)
+    this.getServerLogs(this.curPage) //current page = 1
   }
 
   getServerLogs(pageNumber : number){
     this.curPage = pageNumber
+    let order : boolean = this.dateOrder && this.dateOrder == "true" ? true : false
 
+    //debugger
     this.serverLogs = null;
-    this._serverLogService.getServerLogs(null, this.curPage, this.pageLimit, null, null).subscribe(
+    this._serverLogService.getServerLogs(order, this.curPage, this.pageLimit, this.username, this.accessType).subscribe(
       ServerLogObj => {
         this.serverLogs = ServerLogObj.serverLogList
         this.updateNumberOfPages(ServerLogObj.fullCount)
@@ -40,10 +42,16 @@ export class ServerLogComponent implements OnInit {
     )
   }
 
+  applyFilter(){
+    this.getServerLogs(this.curPage)
+  }
   
   updateNumberOfPages(fullCount : number){
+    /*
     const incompletePage = (fullCount % this.pageLimit > 0) ? 1 : 0
-    this.totalNumberOfPages = fullCount / this.pageLimit + incompletePage
+    this.totalNumberOfPages = fullCount / this.pageLimit + incompletePage +1
+    */
+    this.totalNumberOfPages = Math.ceil(fullCount / this.pageLimit)
   }
 
 
@@ -55,11 +63,11 @@ export class ServerLogComponent implements OnInit {
   }
 
   isFirstPage() : boolean {
-    return this.curPage == 1
+    return this.curPage <= 1
   }
 
   isLastPage() : boolean {
-    return this.curPage == this.totalNumberOfPages
+    return this.curPage >= this.totalNumberOfPages
   }
 
 }

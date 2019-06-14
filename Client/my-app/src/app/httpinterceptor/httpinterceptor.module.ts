@@ -70,14 +70,16 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
       console.error("ERROR_HANDLER, err = " + JSON.stringify(e))
 
       if(e.status == 0) {
-        console.error("API not responding. Maybe not running")
+        console.error("API not responding.")
       }
       else if(e.error.status >= 400 && e.error.status < 500) {
         unknownError = this.errorHandler4XX(e)
       }
 
       if(unknownError){
+        debugger
         console.error("Uknown error --- type: " + e.error.type + " status: " + (e.error ? e.error.status : e.status) + " \n\nfull error: " + JSON.stringify(e))
+        debugger
       }
     
       return throwError(e)

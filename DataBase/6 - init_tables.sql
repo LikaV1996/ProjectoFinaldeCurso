@@ -101,6 +101,7 @@ INSERT INTO testplan (testPlan_name, start_date, stop_date, properties, creator)
         "period": "P1D",
         "setups": [
             {
+				"setupName": "setupDB2"
                 "modemType": "GSMR",
                 "scanning": {
                     "enableScanning": false,

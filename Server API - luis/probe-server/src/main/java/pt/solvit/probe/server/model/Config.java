@@ -112,6 +112,10 @@ public class Config extends CreatorModel {
         return configName;
     }
 
+    public void setConfigName(String configName) {
+        this.configName = configName;
+    }
+
     @JsonIgnore
     @ApiModelProperty(hidden = true)
     public LocalDateTime getActivationLocalDateTime() {
@@ -123,9 +127,17 @@ public class Config extends CreatorModel {
         return activationDate != null ?ISO8601_DATE_FORMATTER.format(activationDate) : null;
     }
 
+    public void setActivationDate(LocalDateTime activationDate) {
+        this.activationDate = activationDate;
+    }
+
     @ApiModelProperty(value = "Archive configuration")
     public ArchiveConfig getArchive() {
         return archive;
+    }
+
+    public void setArchive(ArchiveConfig archive) {
+        this.archive = archive;
     }
 
     @ApiModelProperty(value = "Control connection configuration")
@@ -133,9 +145,17 @@ public class Config extends CreatorModel {
         return controlConnection;
     }
 
+    public void setControlConnection(ControlConnectionConfig controlConnection) {
+        this.controlConnection = controlConnection;
+    }
+
     @ApiModelProperty(value = "Core configuration")
     public CoreConfig getCore() {
         return core;
+    }
+
+    public void setCore(CoreConfig core) {
+        this.core = core;
     }
 
     @ApiModelProperty(value = "Data service configuration")
@@ -143,9 +163,17 @@ public class Config extends CreatorModel {
         return data;
     }
 
+    public void setData(DataConfig data) {
+        this.data = data;
+    }
+
     @ApiModelProperty(value = "Download configuration")
     public DownloadConfig getDownload() {
         return download;
+    }
+
+    public void setDownload(DownloadConfig download) {
+        this.download = download;
     }
 
     @ApiModelProperty(value = "Scanning service configuration")
@@ -153,9 +181,17 @@ public class Config extends CreatorModel {
         return scanning;
     }
 
+    public void setScanning(ScanningConfig scanning) {
+        this.scanning = scanning;
+    }
+
     @ApiModelProperty(value = "Server configuration")
     public ServerConfig getServer() {
         return server;
+    }
+
+    public void setServer(ServerConfig server) {
+        this.server = server;
     }
 
     @ApiModelProperty(value = "Test plan configuration")
@@ -163,14 +199,26 @@ public class Config extends CreatorModel {
         return testPlan;
     }
 
+    public void setTestPlan(TestPlanConfig testPlan) {
+        this.testPlan = testPlan;
+    }
+
     @ApiModelProperty(value = "Upload configuration")
     public UploadConfig getUpload() {
         return upload;
     }
 
+    public void setUpload(UploadConfig upload) {
+        this.upload = upload;
+    }
+
     @ApiModelProperty(value = "Voice service configuration")
     public VoiceConfig getVoice() {
         return voice;
+    }
+
+    public void setVoice(VoiceConfig voice) {
+        this.voice = voice;
     }
 
     @JsonIgnore

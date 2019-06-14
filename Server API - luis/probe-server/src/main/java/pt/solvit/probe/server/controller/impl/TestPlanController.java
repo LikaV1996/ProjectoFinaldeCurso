@@ -6,6 +6,7 @@
 package pt.solvit.probe.server.controller.impl;
 
 import java.net.URI;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +93,34 @@ public class TestPlanController implements ITestPlanController {
         //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok(testPlan);
+    }
+
+    @Override
+    public ResponseEntity<TestPlan> updateTestPlan(HttpServletRequest request, long testPlanId, @RequestBody InputTestPlan body) {
+
+        body.validate();
+        TestPlan testPlan = testPlanService.getTestPlan(testPlanId);
+
+        testPlan.setTestplanName(body.getTestplanName());
+        testPlan.setStartDate( body.getStartDateLocalDateTime() );
+        testPlan.setStopDate( body.getStopDateLocalDateTime() );
+        testPlan.setPeriod(body.getPeriod());
+        testPlan.setRedialTriggers(body.getRedialTriggers());
+        //TODO
+        // testPlan.setSetups(body.getSetups());
+        testPlan.setMaxRetries(body.getMaxRetries());
+        testPlan.setRetryDelay(body.getRetryDelay());
+        testPlan.setTriggerCoordinates(body.getTriggerCoordinates());
+
+        //TODO
+        // testPlanService.updateTestPlan(testPlan);
+
+        testPlan = testPlanService.getTestPlan(testPlanId);
+
+
+        URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_TESTPLAN_ID, testPlanId);
+
+        return ResponseEntity.ok().body(testPlan);
     }
 
     @Override

@@ -5,10 +5,12 @@
  */
 package pt.solvit.probe.server.controller.model.input.testplan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,9 +70,21 @@ public class InputTestPlan {
         return testplanName;
     }
 
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    public LocalDateTime getStartDateLocalDateTime() {
+        return DateUtil.getDateFromIsoString(startDate);
+    }
+
     @ApiModelProperty(example = "2019-01-01T00:00:00", required = true, value = "Start date (ISO 8601)")
     public String getStartDate() {
         return startDate;
+    }
+
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    public LocalDateTime getStopDateLocalDateTime() {
+        return DateUtil.getDateFromIsoString(stopDate);
     }
 
     @ApiModelProperty(example = "2019-02-01T00:00:00", required = true, value = "Stop date (ISO 8601)")

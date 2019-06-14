@@ -95,9 +95,13 @@ public class TestPlan extends CreatorModel {
         return testplanName;
     }
 
+    public void setTestplanName(String testplanName) {
+        this.testplanName = testplanName;
+    }
+
     @JsonIgnore
     @ApiModelProperty(hidden = true)
-    public LocalDateTime getStartLocalDateTime() {
+    public LocalDateTime getStartDateLocalDateTime() {
         return startDate;
     }
 
@@ -106,9 +110,13 @@ public class TestPlan extends CreatorModel {
         return ISO8601_DATE_FORMATTER.format(startDate);
     }
 
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
     @JsonIgnore
     @ApiModelProperty(hidden = true)
-    public LocalDateTime getStopLocalDateTime() {
+    public LocalDateTime getStopDateLocalDateTime() {
         return stopDate;
     }
 
@@ -117,9 +125,17 @@ public class TestPlan extends CreatorModel {
         return ISO8601_DATE_FORMATTER.format(stopDate);
     }
 
+    public void setStopDate(LocalDateTime stopDate) {
+        this.stopDate = stopDate;
+    }
+
     @ApiModelProperty(value = "Trigger coordinates")
     public List<InputCoordinates> getTriggerCoordinates() {
         return triggerCoordinates;
+    }
+
+    public void setTriggerCoordinates(List<InputCoordinates> triggerCoordinates) {
+        this.triggerCoordinates = triggerCoordinates;
     }
 
     @JsonIgnore
@@ -136,9 +152,17 @@ public class TestPlan extends CreatorModel {
         return period.toString();
     }
 
+    public void setPeriod(Duration period) {
+        this.period = period;
+    }
+
     @ApiModelProperty(value = "Setup list")
     public List<Setup> getSetups() {
         return setups;
+    }
+
+    public void setSetups(List<Setup> setups) {
+        this.setups = setups;
     }
 
     @ApiModelProperty(value = "Maximum number of retries")
@@ -146,14 +170,26 @@ public class TestPlan extends CreatorModel {
         return maxRetries;
     }
 
+    public void setMaxRetries(Long maxRetries) {
+        this.maxRetries = maxRetries;
+    }
+
     @ApiModelProperty(value = "Retry delay")
     public Long getRetryDelay() {
         return retryDelay;
     }
 
+    public void setRetryDelay(Long retryDelay) {
+        this.retryDelay = retryDelay;
+    }
+
     @ApiModelProperty(value = "Redial triggers", allowableValues = "BLOCKED, DROPPED, BUSY, NO_CARRIER")
     public List<RedialTrigger> getRedialTriggers() {
         return redialTriggers;
+    }
+
+    public void setRedialTriggers(List<RedialTrigger> redialTriggers) {
+        this.redialTriggers = redialTriggers;
     }
 
     @JsonIgnore

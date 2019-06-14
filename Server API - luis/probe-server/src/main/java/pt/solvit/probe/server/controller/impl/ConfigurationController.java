@@ -51,7 +51,7 @@ public class ConfigurationController implements IConfigurationController {
 
     @Override
     public ResponseEntity<Config> createConfig(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-                                             @RequestBody InputConfig body) {
+            @RequestBody InputConfig body) {
 
         User user = (User) request.getAttribute("user");
 
@@ -78,6 +78,33 @@ public class ConfigurationController implements IConfigurationController {
         //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok(config);
+    }
+
+    @Override
+    public ResponseEntity<Config> updateConfig(HttpServletRequest request, long configId, InputConfig body) {
+
+        body.validate();
+        Config config = configService.getConfig(configId);
+
+        config.setActivationDate( body.getActivationLocalDateTime() );
+        config.setConfigName( body.getConfigName() );
+        config.setTestPlan( body.getTestPlan() );
+        config.setArchive( body.getArchive() );
+        config.setControlConnection( body.getControlConnection() );
+        config.setCore( body.getCore() );
+        config.setData( body.getData() );
+        config.setDownload( body.getDownload() );
+        config.setScanning( body.getScanning() );
+        config.setServer( body.getServer() );
+        config.setUpload( body.getUpload() );
+        config.setVoice( body.getVoice() );
+
+        //TODO
+        // configService.updateConfig(config);
+
+        config = configService.getConfig(configId);
+
+        return ResponseEntity.ok().body(config);
     }
 
     @Override

@@ -65,9 +65,17 @@ public class Setup extends CreatorModel {
         return setupName;
     }
 
+    public void setSetupName(String setupName) {
+        this.setupName = setupName;
+    }
+
     @ApiModelProperty(required = true, value = "Modem type", allowableValues = "PLMN, GSMR")
     public ModemType getModemType() {
         return modemType;
+    }
+
+    public void setModemType(ModemType modemType) {
+        this.modemType = modemType;
     }
 
     @ApiModelProperty(value = "Scanning properties")
@@ -75,9 +83,17 @@ public class Setup extends CreatorModel {
         return scanning;
     }
 
+    public void setScanning(Scanning scanning) {
+        this.scanning = scanning;
+    }
+
     @ApiModelProperty(value = "Test list")
     public List<Test> getTests() {
         return tests;
+    }
+
+    public void setTests(List<Test> tests) {
+        this.tests = tests;
     }
 
     @JsonIgnore

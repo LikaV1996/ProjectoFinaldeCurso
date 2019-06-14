@@ -81,6 +81,21 @@ public interface ITestPlanController {
     public ResponseEntity<TestPlan> getTestPlan(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @PathVariable("test-plan-id") long testPlanId);
 
+    @ApiOperation(value = "Updates a test plan", tags = {"Test Plan",})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 200, message = "The test plan was successfully updated."),
+                    @ApiResponse(code = 401, message = "There was an error with authentication."),
+                    @ApiResponse(code = 404, message = "The test plan with the requested id was not found.")
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.PUT,
+            value = AppConfiguration.URL_TESTPLAN_ID,
+            produces = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<TestPlan> updateTestPlan(HttpServletRequest request, @PathVariable("test-plan-id") long testPlanId, @RequestBody InputTestPlan body);
+
     @ApiOperation(value = "Deletes a test plan", tags = {"Test Plan",})
     @ApiResponses(
             value = {

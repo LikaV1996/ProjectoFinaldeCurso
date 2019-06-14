@@ -79,6 +79,21 @@ public interface ISetupController {
     public ResponseEntity<Setup> getSetup(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @PathVariable("setup-id") long setupId);
 
+    @ApiOperation(value = "Updates a setup", tags = {"Setup",})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 201, message = "Setup was updated successfully."),
+                    @ApiResponse(code = 401, message = "There was an error with authentication.")
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.PUT,
+            value = AppConfiguration.URL_SETUP,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Setup> updateSetup(HttpServletRequest request, @PathVariable("setup-id") long setupId, @RequestBody InputSetup body);
+
     @ApiOperation(value = "Deletes a setup", tags = {"Setup",})
     @ApiResponses(
             value = {

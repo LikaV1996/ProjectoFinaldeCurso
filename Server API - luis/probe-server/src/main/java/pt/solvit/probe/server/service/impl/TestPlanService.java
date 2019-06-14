@@ -209,8 +209,8 @@ public class TestPlanService implements ITestPlanService {
     }
 
     private TestPlanDao transformToTestPlanDao(TestPlan testPlan) {
-        return new TestPlanDao(testPlan.getId(), testPlan.getTestplanName(), Timestamp.valueOf(testPlan.getStartLocalDateTime()),
-                Timestamp.valueOf(testPlan.getStopLocalDateTime()), testPlan.getPropertiesString(),
+        return new TestPlanDao(testPlan.getId(), testPlan.getTestplanName(), Timestamp.valueOf(testPlan.getStartDateLocalDateTime()),
+                Timestamp.valueOf(testPlan.getStopDateLocalDateTime()), testPlan.getPropertiesString(),
                 testPlan.getCreator(), Timestamp.valueOf(testPlan.getCreationLocalDateTime()),
                 testPlan.getModifier(), testPlan.getModifiedLocalDateTime() != null ? Timestamp.valueOf(testPlan.getModifiedLocalDateTime()): null);
     }

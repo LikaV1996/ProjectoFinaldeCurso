@@ -80,6 +80,21 @@ public interface IConfigurationController {
     public ResponseEntity<Config> getConfig(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @PathVariable("config-id") long configId);
 
+    @ApiOperation(value = "Updates a configuration", tags = {"Configuration",})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 201, message = "Configuration was updated successfully."),
+                    @ApiResponse(code = 401, message = "There was an error with authentication.")
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.PUT,
+            value = AppConfiguration.URL_CONFIG,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Config> updateConfig(HttpServletRequest request, @PathVariable("config-id") long configId, @RequestBody InputConfig body);
+
     @ApiOperation(value = "Deletes a configuration", tags = {"Configuration",})
     @ApiResponses(
             value = {

@@ -85,6 +85,25 @@ public class SetupController implements ISetupController {
     }
 
     @Override
+    public ResponseEntity<Setup> updateSetup(HttpServletRequest request, long setupId, InputSetup body) {
+        body.validate();
+        Setup setup = setupService.getSetup(setupId);
+
+        setup.setSetupName( body.getSetupName() );
+        setup.setModemType( body.getModemType() );
+        setup.setScanning( body.getScanning() );
+        //TODO
+        // setup.setTests( body.getTests() );
+
+        //TODO
+        // setupService.updateSetup(setup);
+
+        setup = setupService.getSetup(setupId);
+
+        return ResponseEntity.ok().body(setup);
+    }
+
+    @Override
     public ResponseEntity<Void> deleteSetup(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
             @PathVariable("setup-id") long setupId) {
 

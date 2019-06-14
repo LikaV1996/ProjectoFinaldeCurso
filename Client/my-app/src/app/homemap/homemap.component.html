@@ -1,5 +1,68 @@
-<div class="map"
-     leaflet
-     (leafletMapReady)="onMapReady($event)"
-     [leafletOptions]="options">
-</div>
+<p></p>
+
+    <div class="ui segment" style="margin: 1%">
+        <!-- filters -->
+        <div class="ui middle aligned grid">
+            <div class="four wide column"><h2>Show on Map:</h2></div> 
+            <div class="three wide column">
+                <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="frequency" checked="checked" (change)="showLastPlace()">
+                        <label>Last Place</label>
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="frequency" (change)="showLast24h()">
+                        <label>Last 24h</label>
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <div class="field">
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="frequency" (change)="showLast48h()">
+                      <label>Last 48h</label>
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                          <input type="radio" name="frequency" (change)="showLast72h()">
+                          <label>Last 72h</label>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+    <div class="ui" style="width: 29%; float:left; padding-left: 1%;">
+        <mat-spinner *ngIf="obus == null"></mat-spinner>
+        <div class="ui segment" *ngFor="let obu of obus">
+            <div class="ui middle aligned grid">
+                <div class="six wide column">{{obu.obuName}}</div>
+                <div class="six wide right aligned column"></div>
+                <div class="four wide right aligned column">
+                    <button mat-button [matMenuTriggerFor]="menu">Options</button>
+                    <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="edit(obu.id)" data-tooltip="Edit OBU">Edit OBU / OBU Details</button>
+                    <button mat-menu-item>Delete OBU</button>
+                    </mat-menu>
+            
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="map"
+        leaflet
+        (leafletMapReady)="onMapReady($event)"
+        [leafletOptions]="options">
+    </div>
+
+
+

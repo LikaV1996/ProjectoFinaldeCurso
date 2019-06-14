@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Routes } from "../httproutes"
-
+import { OBUStatus } from '../Model/OBUStatus';
 
 const routes = new Routes
 
@@ -43,6 +43,11 @@ export class OBUService {
       obuPassword: obu_password,
       sims: sims
     })
+  }
+
+  getPositionFromOBU(id: number): Observable<OBUStatus>{
+    const getPositionFromOBUByIDUrl = routes.getPositionFromOBU.replace(":id", id.toString());
+    return this.http.get<OBUStatus>(getPositionFromOBUByIDUrl)
   }
 
 }

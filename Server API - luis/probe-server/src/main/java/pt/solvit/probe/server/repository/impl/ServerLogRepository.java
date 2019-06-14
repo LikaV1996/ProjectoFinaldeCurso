@@ -39,12 +39,12 @@ public class ServerLogRepository implements IServerLogRepository {
     private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?::AccessType, ?, ?, ?, ?, ?) RETURNING id;";
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?, ?);";
     private static final String SELECT_ALL = "SELECT id, log_date AS logDate, access_type AS accessType, access_path AS accessPath, access_user AS accessUser, response_date AS responseDate, status, detail FROM ServerLog";
-    private static final String ORDER_BY_LOG_DATE = " ORDER BY log_date ";
-    //private static final String SELECT_ALL_W_LIMIT_OFFSET = SELECT_ALL + " LIMIT ? OFFSET ?";
+    private static final String SELECT_ALL_W_LIMIT_OFFSET = SELECT_ALL + " LIMIT ? OFFSET ?";
     private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ? ";
     private static final String UPDATE = "UPDATE ServerLog SET access_user = ?, response_date = ?, status = ?, detail = ? WHERE id = ?;";
     private static final String DELETE_BY_ID = "DELETE FROM ServerLog WHERE id = ?;";
     private static final String DELETE_ALL = "DELETE FROM ServerLog;";
+
 
     public ServerLogRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -64,17 +64,9 @@ public class ServerLogRepository implements IServerLogRepository {
     }
 
     @Override
-    public List<ServerLogDao> findAll(boolean ascending) {
-        /*
-        StringBuilder orderByLogDate = new StringBuilder(ORDER_BY_LOG_DATE);
-        int replaceIdx = orderByLogDate.indexOf("?");
-        orderByLogDate.replace(replaceIdx, replaceIdx, (ascending ? "ASC" : "DESC"));
+    public List<ServerLogDao> findAll(Boolean ascending, String access_user, String access_type, Integer pageNumber, Integer pageLimit) {
 
-        String queryStr = SELECT_ALL + orderByLogDate.toString();
-        */
-
-        String queryStr = SELECT_ALL + ORDER_BY_LOG_DATE + (ascending ? "ASC" : "DESC");
-        return jdbcTemplate.query(queryStr , new BeanPropertyRowMapper<>(ServerLogDao.class));
+        return jdbcTemplate.query(makeFilteredServerLogQuery(ascending, access_user, access_type, pageNumber, pageLimit) , new BeanPropertyRowMapper<>(ServerLogDao.class));
     }
 
     @Transactional()
@@ -150,4 +142,37 @@ public class ServerLogRepository implements IServerLogRepository {
             }
         });
     }
+
+
+
+    private String makeFilteredServerLogQuery(Boolean ascending, String access_type, String access_user, Integer pageNumber, Integer pageLimit){
+
+        //ASCENDING or DESCENDING
+        String orderBy = " ORDER BY " + "log_date" + " ",
+                order = "ASC";
+        if (ascending != null){
+            order = ascending ? "ASC" : "DESC";
+        }
+        orderBy += order;
+
+        //filter/where statements
+        boolean whereStmtBool = access_user != null || access_type != null,
+                doubleWhereStmtBool = access_user != null && access_type != null;
+
+        String access_userWhereStmt = access_user != null ? ("access_user LIKE '%' || '"+ access_user +"' || '%'") : "";
+        String access_typeWhereStmt = access_type != null ? ("access_type = '"+ access_type +"'") : "";
+
+        String whereStmt = whereStmtBool ? (" WHERE " + access_userWhereStmt + (doubleWhereStmtBool ? " AND " : "") + access_typeWhereStmt) : "";
+
+        //pagination
+        String limit = "";
+        if (pageNumber != null && pageLimit != null){
+            int offset = ((pageNumber -1) * pageLimit);
+            limit = " LIMIT " + pageLimit + (offset <= 0 ? " OFFSET " + ((pageNumber -1) * pageLimit) : "" );
+        }
+
+
+        return SELECT_ALL + whereStmt + orderBy + limit;
+    }
+
 }

@@ -59,32 +59,23 @@ public class ServerLogService implements IServerLogService {
     @Override
     public List<ServerLog> getAllServerLogs(boolean ascending) {
         LOGGER.log(Level.INFO, "Finding all server logs");
-        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(ascending);
+        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(ascending, null, null, null, null);
         return ServiceUtil.map(serverLogDaoList, this::transformToServerLog);
     }
 
     @Override
-    public List<ServerLog> getAllServerLogs(boolean ascending, AccessType accessType, String username, Integer pageNumber, Integer pageLimit) {
+    public List<ServerLog> getAllServerLogs(boolean ascending, String accessType, String username, Integer pageNumber, Integer pageLimit) {
         LOGGER.log(Level.INFO, "Finding all server logs with a page limit");
-        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(ascending);
 
-        List<ServerLogDao> serverLogDaoListFiltered = serverLogDaoList;
+        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(ascending, accessType, username, pageNumber, pageLimit);
 
-        if (accessType != null)
-            serverLogDaoListFiltered = filterByAccessType(serverLogDaoListFiltered, accessType);
-        if (username != null)
-            serverLogDaoListFiltered = filterByContainsUsername(serverLogDaoListFiltered, username);
-        if (pageNumber != null && pageLimit != null)
-            serverLogDaoListFiltered = filterByLimitAndOffset(serverLogDaoListFiltered, pageNumber, pageLimit);
-
-        return ServiceUtil.map(serverLogDaoListFiltered, this::transformToServerLog);
+        return ServiceUtil.map(serverLogDaoList, this::transformToServerLog);
     }
 
     @Override
-    public List<ServerLog> getServerLogsByType(AccessType accessType) {
+    public List<ServerLog> getServerLogsByType(String accessType) {
         LOGGER.log(Level.INFO, "Finding all server logs by access type");
-        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(true);
-        List<ServerLogDao> obuServerLogDaoList = filterByAccessType(serverLogDaoList, accessType);
+        List<ServerLogDao> obuServerLogDaoList = serverLogRepository.findAll(true, accessType, null, null, null);
         return ServiceUtil.map(obuServerLogDaoList, this::transformToServerLog);
     }
 
@@ -102,6 +93,9 @@ public class ServerLogService implements IServerLogService {
         serverLogRepository.save(transformToServerLogDao(serverLog));
     }
 
+
+
+    /*
     private List<ServerLogDao> filterByContainsUsername(List<ServerLogDao> serverLogList, String username){
         List<ServerLogDao> userServerLogList = new ArrayList();
 
@@ -141,6 +135,7 @@ public class ServerLogService implements IServerLogService {
         }
         return accessServerLogList;
     }
+    */
 
     private ServerLogDao transformToServerLogDao(ServerLog serverLog) {
         Timestamp responseDate = serverLog.getResponseDateLocalDateTime() == null ? null : Timestamp.valueOf(serverLog.getResponseDateLocalDateTime());

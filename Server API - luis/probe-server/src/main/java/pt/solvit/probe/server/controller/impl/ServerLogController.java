@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.controller.api.IServerLogController;
+import pt.solvit.probe.server.controller.exception.BadRequestException;
 import pt.solvit.probe.server.controller.model.output.OutputServerLog;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.ServerLog;
@@ -47,27 +48,23 @@ public class ServerLogController implements IServerLogController {
             @RequestParam(value = "limit", required = false) Integer pageLimit
     ) {
 
-
         boolean asc = ascending == null ? true : ascending;
-        AccessType at = accessType != null ? AccessType.valueOf(accessType.toUpperCase()) : null;
+        if (accessType != null)
+            accessType = validateAccessType(accessType);
         String username = user != null && user.equals("") ? null : user;
 
-        List<ServerLog> allServerLogList = serverLogService.getAllServerLogs(asc, at, username, null, null);
-        List<ServerLog> serverLogList = allServerLogList;
 
-        if (pageLimit != null && pageNumber != null) {
-            serverLogList = serverLogService.getAllServerLogs(asc, at, username, pageNumber, pageLimit);
-        }
+        List<ServerLog> serverLogList = serverLogService.getAllServerLogs(asc, accessType, username, pageNumber, pageLimit);
 
-        //String serverLogStr = serverLogListToString(serverLogList);
 
-        return ResponseEntity.ok().body( new OutputServerLog(allServerLogList.size(), serverLogList.size(), serverLogList) );
+        return ResponseEntity.ok().body( new OutputServerLog(serverLogList.size(), serverLogList) );
     }
 
     @Override
     public ResponseEntity<String> getObuServerLog(HttpServletRequest request) {
 
-        List<ServerLog> obuServerLogList = serverLogService.getServerLogsByType(AccessType.OBU);
+        String accessType = validateAccessType("OBU");
+        List<ServerLog> obuServerLogList = serverLogService.getServerLogsByType(accessType);
         String serverLogStr = serverLogListToString(obuServerLogList);
 
         return ResponseEntity.ok(serverLogStr);
@@ -76,7 +73,8 @@ public class ServerLogController implements IServerLogController {
     @Override
     public ResponseEntity<String> getUserServerLog(HttpServletRequest request) {
 
-        List<ServerLog> userServerLogList = serverLogService.getServerLogsByType(AccessType.USER);
+        String accessType = validateAccessType("USER");
+        List<ServerLog> userServerLogList = serverLogService.getServerLogsByType(accessType);
         String serverLogStr = serverLogListToString(userServerLogList);
 
         return ResponseEntity.ok(serverLogStr);
@@ -163,6 +161,21 @@ public class ServerLogController implements IServerLogController {
         }
 
         return sb.toString();
+    }
+
+
+
+    private String validateAccessType(String accessType){
+        accessType = accessType.toUpperCase();
+
+        //this try validates if accessType String is a valid AccessType
+        try {
+            AccessType.valueOf(accessType);
+        } catch (IllegalArgumentException e){
+            throw new BadRequestException("Invalid access type.", "Access type can only be 'USER' or 'OBU'.", null, "about:blank");
+        }
+
+        return accessType;
     }
 
 }

@@ -6,6 +6,8 @@ import { Config } from '../Model/Config';
 import { ConfigService } from '../_services/config.service';
 import { TestPlan } from '../Model/TestPlan';
 import { TestPlanService } from '../_services/test-plans.service';
+import { OBU } from '../Model/OBU';
+import { OBUService } from '../_services/obu.service';
 
 @Component({
   selector: 'app-obu-create',
@@ -15,18 +17,22 @@ import { TestPlanService } from '../_services/test-plans.service';
 export class ObuCreateComponent implements OnInit {
 
   private hardwares : Hardware[];
-  private configs : Config[];
-  private testPlans: TestPlan[];
+  //private configs : Config[];
+  //private testPlans: TestPlan[];
   
-  private hardwareId: number;
-  private obuName: string;
+  //private hardwareId: number;
+  //private obuName: string;
+  private newObu = new OBU;
+
+  /*
   private obuState: string = "READY";
   private currentConfigId: number = null;
   private currentTestPlanId: number = null;
   private factoryConfig: number = null;
+  */
 
-
-  sim = {
+  private sims = [];
+  private sim = {
     modemType: "",
     msisdn: "",
     simPin: "",
@@ -37,13 +43,14 @@ export class ObuCreateComponent implements OnInit {
     apnPass: ""
   }; 
 
-  private sims = [ ];
+  
 
   constructor(
     private _hardwareService: HardwareService,
     private _location: Location,
-    private _configService: ConfigService,
-    private _testPlanService: TestPlanService
+    private _obuService: OBUService
+    //private _configService: ConfigService,
+    //private _testPlanService: TestPlanService
   ) { }
 
   ngOnInit() {
@@ -53,6 +60,7 @@ export class ObuCreateComponent implements OnInit {
       this.hardwares.sort( (h1,h2)=> h1.id - h2.id)
     })
 
+    /*
     this._configService.getConfigs().subscribe(configs =>{
       this.configs = configs
       this.configs.sort( (h1,h2)=> h1.id - h2.id)
@@ -62,7 +70,7 @@ export class ObuCreateComponent implements OnInit {
       this.testPlans = testplans
       this.testPlans.sort( (h1,h2)=> h1.id - h2.id)
     })
-
+    */
   }
 
   goBack(){
@@ -70,7 +78,29 @@ export class ObuCreateComponent implements OnInit {
   }
 
   createObu(){
-    alert('Doing nothing yet!')
+    //console.log("creating obu")
+    
+    if(!this.newObu.hardwareId){ 
+      alert("You must choose an Hardware!")
+      return
+    }
+    if(!this.newObu.obuName){ 
+      alert("You must insert OBU name!")
+      return
+    }
+     
+    //Atualizar properties no objecto OBU
+    if(this.sims.length != 0)
+      this.newObu.sims = this.sims
+
+    //console.log("SIMS:")
+    //console.log(JSON.stringify(this.newObu.sims))
+    this._obuService.createObu(this.newObu)
+      .subscribe(mynewobu => {
+        alert("OBU created!")
+        this.goBack();
+      })
+
   }
 
   addSim(){

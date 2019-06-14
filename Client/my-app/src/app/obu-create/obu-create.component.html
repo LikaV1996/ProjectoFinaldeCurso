@@ -1,13 +1,12 @@
 <p></p>
 <div class="ui raised very padded text container segment">
 
-  <h2>Create Obu</h2>
-
-
+  <h2>Create OBU</h2>
 
   <div><b>Hardware: </b>
     <mat-form-field>
-    <select matNativeControl required [(ngModel)]="hardwareId">
+    <select matNativeControl required [(ngModel)]="newObu.hardwareId">
+        <option value="null">Choose Hardware</option>
         <option *ngFor="let hardware of hardwares" value="{{hardware.id}}">{{hardware.serialNumber}}</option>
     </select>
     </mat-form-field>
@@ -16,11 +15,12 @@
   <div>
     <b>Name:
     <mat-form-field appearance="standard">
-    <input [(ngModel)]="obuName" matInput placeholder="OBU Name" required>
+    <input [(ngModel)]="newObu.obuName" matInput placeholder="OBU Name" required>
     </mat-form-field>
     </b>
   </div>
 
+  <!--
   <b>State: </b>
     <mat-form-field>
     <select matNativeControl required [value]="obuState">
@@ -30,7 +30,6 @@
     </select>
     </mat-form-field>
 
-  
     <div><b>Current Configuration: --para sair--</b>
       <mat-form-field>
       <select matNativeControl required [(ngModel)]="currentConfigId">
@@ -57,7 +56,7 @@
       </select>
       </mat-form-field>
     </div>
-
+    -->
 
     <div class="ui container segment" >
         <h4>SIMS</h4>

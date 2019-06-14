@@ -5,9 +5,9 @@
   
     <div class="ui segment">
       <div class="ui grid">
-        <div class="four wide column"><h3>Setup Name</h3></div>
-        <div class="four wide column"><h3>Creator</h3></div>
-        <div class="four wide column"></div>
+        <div class="six wide column"><h3>Setup Name</h3></div>
+        <div class="six wide column"><h3>Creator</h3></div>
+        <!--<div class="four wide column"></div>-->
         <div class="four wide column"></div>
       </div>
       <div class="ui divider"></div>
@@ -16,9 +16,9 @@
       <div class="ui" style="height: 70%;">
         <div class="ui segment" *ngFor="let setup of setups">
           <div class="ui middle aligned grid">
-            <div class="four wide column">{{setup.setupName}}</div>
-            <div class="four wide column">{{setup.creator}}</div>
-            <div class="four wide column"></div>
+            <div class="six wide column">{{setup.setupName}}</div>
+            <div class="six wide column">{{setup.creator}}</div>
+            <!--<div class="four wide column"></div>-->
             <div class="four wide right aligned column">
               <div class="ui suspend button" (click)="edit(setup.id)" data-tooltip="Edit Setup">Edit</div>
             </div>

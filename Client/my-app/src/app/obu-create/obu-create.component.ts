@@ -78,7 +78,7 @@ export class ObuCreateComponent implements OnInit {
   }
 
   createObu(){
-    console.log("creating obu")
+    //console.log("creating obu")
     
     if(!this.newObu.hardwareId){ 
       alert("You must choose an Hardware!")
@@ -93,13 +93,14 @@ export class ObuCreateComponent implements OnInit {
     if(this.sims.length != 0)
       this.newObu.sims = this.sims
 
-    console.log("SIMS:")
-    console.log(JSON.stringify(this.newObu.sims))
+    //console.log("SIMS:")
+    //console.log(JSON.stringify(this.newObu.sims))
     this._obuService.createObu(this.newObu)
-    .subscribe(mynewobu => {
-      alert("OBU created!")
-      this.goBack();
-    })
+      .subscribe(mynewobu => {
+        alert("OBU created!")
+        this.goBack();
+      })
+
   }
 
   addSim(){

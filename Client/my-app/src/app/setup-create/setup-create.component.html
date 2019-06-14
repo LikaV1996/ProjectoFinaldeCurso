@@ -7,14 +7,15 @@
     <div>
       <b>Name:
       <mat-form-field appearance="standard">
-      <input [(ngModel)]="setupName" matInput placeholder="Setup Name" required>
+      <input [(ngModel)]="newSetup.setupName" matInput placeholder="Setup Name" required>
       </mat-form-field>
       </b>
     </div>
   
     <b>Modem Type: </b>
     <mat-form-field>
-      <select matNativeControl required [(ngModel)]="modemType">
+      <select matNativeControl required [(ngModel)]="newSetup.modemType">
+          <option value="null">Choose Modem Type</option>
           <option value="PLMN">PLMN</option>
           <option value="GSMR">GSMR</option>
       </select>
@@ -49,7 +50,7 @@
   
     <div style="margin-top:30px;">
       <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
-      <div class="ui suspend button" (click)="createTestPlan()" data-tooltip="Create Test Plan">Create</div>
+      <div class="ui suspend button" (click)="createSetup()" data-tooltip="Create Setup">Create</div>
     </div>
   
   </div>

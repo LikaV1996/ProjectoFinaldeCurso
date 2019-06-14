@@ -28,11 +28,11 @@ export class SetupService {
     return this.http.get<Setup>(getSetupByIDUrl)
   }
 
-  /*
-  createHardware(serialNumber: string, components){
-    return this.http.post<Setup>(routes.createHardware,{serialNumber: serialNumber, components: components})
+  createSetup(newSetup : Setup){
+    return this.http.post<{setup: Setup}>(routes.createSetup,{setupName: newSetup.setupName, modemType: newSetup.modemType, scanning: newSetup.scanning })
   }
-  
+
+  /*
   updateHardware(id: number, serialNumber: string, components){
     const updateHardwareById = routes.updateHardware.replace(":id", id.toString());
     return this.http.put<Setup>(updateHardwareById, {serialNumber: serialNumber, components: components})

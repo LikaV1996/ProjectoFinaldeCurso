@@ -23,6 +23,7 @@ export class Routes{
     getOBUByID = this.basePath + "/obu/:id";
     createObu = this.basePath + "/obu";
     updateObu = this.basePath + "/obu/:id";
+    getPositionFromOBU = this.basePath + "/obu/:id/position";
 
     getConfigs = this.basePath + "/config";
     getConfigById = this.basePath + "/config/:id"

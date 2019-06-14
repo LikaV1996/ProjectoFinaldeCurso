@@ -52,7 +52,7 @@ public class StatusController implements IStatusController {
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_OBU_POSITION, obuId);
         //serverLogService.createServerLog(serverLog);
 
-        return ResponseEntity.ok(ls);
+        return ResponseEntity.ok().body(ls);
     }
 
     private List<Position> transformToPosition(List<Location> locationList) {

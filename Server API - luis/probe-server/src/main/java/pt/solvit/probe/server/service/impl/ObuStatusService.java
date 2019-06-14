@@ -49,7 +49,7 @@ public class ObuStatusService implements IObuStatusService {
         List<ObuStatusDao> obuStatusDaoList = obuStatusRepository.findByObuId(obuId);
         List<ObuStatusDao> obuStatusDaoList_valid = new ArrayList();
         for (ObuStatusDao curObuStatusDao: obuStatusDaoList){
-            if (curObuStatusDao.getLat()==0.0 || curObuStatusDao.getLat()==null){
+            if ( !(curObuStatusDao.getLat()==0.0 || curObuStatusDao.getLat()==null) ){
                 obuStatusDaoList_valid.add(curObuStatusDao);
             }
         }
@@ -85,9 +85,18 @@ public class ObuStatusService implements IObuStatusService {
 
     private Location transformToLocation(ObuStatusDao obuStatusDao) {
         LocationProperties locationProperties = GSON.fromJson(obuStatusDao.getLocationProperties(), LocationProperties.class);
-                
-        return new Location(locationProperties.getDate(), obuStatusDao.getLat(), obuStatusDao.getLon(),
-                locationProperties.getHeightAboveEllipsoid(), locationProperties.getHeightAboveMSL(), obuStatusDao.getSpeed(),
-                locationProperties.getHeading(), locationProperties.getGpsFix());
+
+        return locationProperties == null ?
+                new Location(
+                        obuStatusDao.getStatusDate().toString(), obuStatusDao.getLat(), obuStatusDao.getLon(),
+                        null, null, obuStatusDao.getSpeed(),
+                        null, null
+                )
+                :
+                new Location(
+                        locationProperties.getDate(), obuStatusDao.getLat(), obuStatusDao.getLon(),
+                        locationProperties.getHeightAboveEllipsoid(), locationProperties.getHeightAboveMSL(), obuStatusDao.getSpeed(),
+                        locationProperties.getHeading(), locationProperties.getGpsFix()
+                );
     }
 }

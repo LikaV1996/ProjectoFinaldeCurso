@@ -89,6 +89,12 @@ public class ConfigService implements IConfigService {
     }
 
     @Override
+    public void updateConfig(Config config) {
+        LOGGER.log(Level.INFO, "Updating configuration {0}", config.getId());
+        configRepository.update(Config.transformToConfigDao(config));
+    }
+
+    @Override
     public ObuConfig getObuConfig(long obuId, long configId) {
         LOGGER.log(Level.INFO, "Finding configuration {0} from obu {1}", new String[]{String.valueOf(configId), String.valueOf(obuId)});
         ObuConfigDao obuConfigDao = obuConfigRepository.findById(obuId, configId);
@@ -158,7 +164,7 @@ public class ConfigService implements IConfigService {
 
     private void updateObuConfig(ObuConfig obuConfig) {
         LOGGER.log(Level.FINE, "Updating ObuConfig");
-        obuConfigRepository.save(transformToObuConfigDao(obuConfig));
+        obuConfigRepository.update(transformToObuConfigDao(obuConfig));
     }
 
     private void verifyConfigOnUseCondition(long configId) {

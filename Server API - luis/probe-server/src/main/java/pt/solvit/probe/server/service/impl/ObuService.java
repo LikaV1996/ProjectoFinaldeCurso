@@ -67,7 +67,7 @@ public class ObuService implements IObuService {
 
     @Override
     public void updateObu(Obu obu) {
-        obuRepository.save(Obu.transformToObuDao(obu));
+        obuRepository.update(Obu.transformToObuDao(obu));
     }
 
     @Override

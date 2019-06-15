@@ -115,4 +115,24 @@ public class TestPlanRepository implements ITestPlanRepository {
     public int deleteAll() {
         return jdbcTemplate.update(DELETE_ALL);
     }
+
+    @Override
+    public void update(TestPlanDao testPlanDao) {
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement statement = null;
+                if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
+                    statement = con.prepareStatement(UPDATE_POSTGRES);
+                } else { //mysql
+                    statement = con.prepareStatement(UPDATE_MYSQL);
+                }
+                statement.setString(1, testPlanDao.getTestplanName());
+                statement.setTimestamp(2, testPlanDao.getStartDate());
+                statement.setTimestamp(3, testPlanDao.getStopDate());
+                statement.setString(4, testPlanDao.getProperties());
+                return statement;
+            }
+        });
+    }
 }

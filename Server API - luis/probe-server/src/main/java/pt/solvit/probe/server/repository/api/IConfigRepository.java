@@ -6,6 +6,8 @@
 package pt.solvit.probe.server.repository.api;
 
 import java.util.List;
+
+import pt.solvit.probe.server.model.Config;
 import pt.solvit.probe.server.repository.model.ConfigDao;
 
 /**
@@ -25,4 +27,6 @@ public interface IConfigRepository {
     public int deleteAll(List<ConfigDao> configDaoList);
 
     public int deleteAll();
+
+    public void update(ConfigDao configDao);
 }

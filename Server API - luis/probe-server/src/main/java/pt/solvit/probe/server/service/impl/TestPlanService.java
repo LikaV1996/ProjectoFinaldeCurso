@@ -119,6 +119,12 @@ public class TestPlanService implements ITestPlanService {
     }
 
     @Override
+    public void updateTestPlan(TestPlan testPlan) {
+        LOGGER.log(Level.INFO, "Updating test plan {0}", testPlan.getId());
+        testPlanRepository.update(transformToTestPlanDao(testPlan));
+    }
+
+    @Override
     public void verifyTestPlanOnUseCondition(long testPlanId) {
         LOGGER.log(Level.INFO, "Checking if test plan is associated to any obu");
         List<ObuTestPlanDao> obuTestPlanList = obuTestPlanRepository.findByTestPlanId(testPlanId);
@@ -198,7 +204,7 @@ public class TestPlanService implements ITestPlanService {
 
     private void updateObuTestPlan(ObuTestPlan obuTestPlan) {
         LOGGER.log(Level.FINE, "Updating obuTestPlan");
-        obuTestPlanRepository.save(transformToObuTestPlanDao(obuTestPlan));
+        obuTestPlanRepository.update(transformToObuTestPlanDao(obuTestPlan));
     }
 
     private void userOwnsTestPlan(TestPlanDao testPlanDao, User user) {

@@ -94,7 +94,7 @@ public class ObuConfigRepository implements IObuConfigRepository {
     }
 
     @Override
-    public void save(ObuConfigDao obuConfigDao) {
+    public void update(ObuConfigDao obuConfigDao) {
         if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
             jdbcTemplate.update(UPDATE_POSTGRES, obuConfigDao.getProperties(), obuConfigDao.getObuId(), obuConfigDao.getConfigId());
         } else{

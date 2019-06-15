@@ -24,6 +24,8 @@ public interface IConfigService {
 
     public void deleteConfig(long configId, User user);
 
+    public void updateConfig(Config config);
+
     //Obu Configuration
     public ObuConfig getObuConfig(long obuId, long configId);
 

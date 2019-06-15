@@ -24,6 +24,8 @@ public interface ITestPlanService {
 
     public void deleteTestPlan(long testPlanId, User user);
 
+    public void updateTestPlan(TestPlan testPlan);
+
     public void verifyTestPlanOnUseCondition(long testPlanId);
 
     //Obu Test Plan

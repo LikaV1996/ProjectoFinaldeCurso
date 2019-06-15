@@ -112,4 +112,23 @@ public class ConfigRepository implements IConfigRepository {
     public int deleteAll() {
         return jdbcTemplate.update(DELETE_ALL);
     }
+
+    @Override
+    public void update(ConfigDao configDao) {
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement statement = null;
+                if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
+                    statement = con.prepareStatement(UPDATE_POSTGRES);
+                } else { //mysql
+                    statement = con.prepareStatement(UPDATE_MYSQL);
+                }
+                statement.setString(1, configDao.getConfigName());
+                statement.setTimestamp(2, configDao.getActivationDate());
+                statement.setString(3, configDao.getProperties());
+                return statement;
+            }
+        });
+    }
 }

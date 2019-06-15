@@ -28,5 +28,5 @@ public interface IObuTestPlanRepository {
 
     public int deleteAllByObuId(long obuId);
 
-    public void save(ObuTestPlanDao obuTestPlanDao);
+    public void update(ObuTestPlanDao obuTestPlanDao);
 }

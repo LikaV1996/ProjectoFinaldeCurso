@@ -25,4 +25,6 @@ public interface ISetupRepository {
     public int deleteAll(List<SetupDao> setupDaoList);
 
     public int deleteAll();
+
+    public void update(SetupDao setupDao);
 }

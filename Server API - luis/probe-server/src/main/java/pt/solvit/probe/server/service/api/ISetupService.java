@@ -21,6 +21,8 @@ public interface ISetupService {
 
     public List<Setup> getAllSetups();
 
+    public void updateSetup(Setup setup);
+
     public void deleteSetup(long setupId, User user);
 
     //Test Plan Setup    

@@ -11,22 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pt.solvit.probe.server.controller.model.input.InputComponent;
+import pt.solvit.probe.server.controller.model.input.InputHardware;
 import pt.solvit.probe.server.controller.model.input.controlconnection.InputConfigState;
 import pt.solvit.probe.server.controller.model.input.controlconnection.InputConfigStatus;
 import pt.solvit.probe.server.controller.model.input.controlconnection.InputTestPlanState;
 import pt.solvit.probe.server.controller.model.input.controlconnection.InputTestPlanStatus;
-import pt.solvit.probe.server.controller.model.input.config.InputConfig;
 import pt.solvit.probe.server.controller.model.input.testplan.InputSetup;
 import pt.solvit.probe.server.controller.model.input.testplan.InputTest;
-import pt.solvit.probe.server.model.ConfigState;
-import pt.solvit.probe.server.model.Config;
-import pt.solvit.probe.server.model.ObuConfig;
-import pt.solvit.probe.server.model.ObuTestPlan;
-import pt.solvit.probe.server.model.ServerLog;
-import pt.solvit.probe.server.model.Setup;
-import pt.solvit.probe.server.model.Test;
-import pt.solvit.probe.server.model.TestPlanState;
-import pt.solvit.probe.server.model.User;
+import pt.solvit.probe.server.controller.model.input.testplan.InputTestPlan;
+import pt.solvit.probe.server.model.*;
 import pt.solvit.probe.server.model.enums.AccessType;
 import pt.solvit.probe.server.model.enums.CancelState;
 import pt.solvit.probe.server.util.DateUtil;
@@ -37,42 +31,85 @@ import pt.solvit.probe.server.util.DateUtil;
  */
 public class ControllerUtil {
 
-    //Setup
-    public static Setup transformToSetup(InputSetup inputSetup, String creator) {
-        List<Test> testList = null;
-        if (inputSetup.getTests() != null) {
-            testList = new ArrayList();
-            for (InputTest curInputTest : inputSetup.getTests()) {
-                testList.add(transformToTest(curInputTest));
+    //TestPlan
+    public static TestPlan transformToTestPlan(InputTestPlan inputTestPlan, String creator) {
+        List<Setup> setupList = transformToSetupList(inputTestPlan.getSetups(), creator);
+
+        LocalDateTime startDate = DateUtil.getDateFromIsoString(inputTestPlan.getStartDate());
+        LocalDateTime stopDate = DateUtil.getDateFromIsoString(inputTestPlan.getStopDate());
+
+        return new TestPlan(null, inputTestPlan.getTestplanName(), startDate, stopDate,
+                inputTestPlan.getTriggerCoordinates(), inputTestPlan.getPeriod(), setupList,
+                inputTestPlan.getMaxRetries(), inputTestPlan.getRetryDelay(), inputTestPlan.getRedialTriggers(),
+                creator, LocalDateTime.now(), null, null);
+    }
+
+    //SetupList
+    public static List<Setup> transformToSetupList(List<InputSetup> inputSetupList, String creator){
+        List<Setup> setupList = null;
+        if (inputSetupList != null) {
+            setupList = new ArrayList();
+            for (InputSetup curInputSetup : inputSetupList) {
+                setupList.add(ControllerUtil.transformToSetup(curInputSetup, creator));
             }
         }
+        return setupList;
+    }
+
+    //Setup
+    public static Setup transformToSetup(InputSetup inputSetup, String creator) {
+        List<Test> testList = transformToTestList(inputSetup.getTests());
 
         return new Setup(null, inputSetup.getSetupName(), inputSetup.getModemType(), inputSetup.getScanning(), testList, creator, LocalDateTime.now(), null, null);
     }
 
+    //TestList
+    public static List<Test> transformToTestList(List<InputTest> inputTestList){
+        List<Test> testList = null;
+        if (inputTestList != null) {
+            testList = new ArrayList();
+            for (InputTest curInputTest : inputTestList) {
+                testList.add(transformToTest(curInputTest));
+            }
+        }
+        return testList;
+    }
+
+    //Test
     private static Test transformToTest(InputTest inputTest) {
         return new Test(null, inputTest.getIndex(), inputTest.getType(), inputTest.getDelay(), inputTest.getDestination(),
                 inputTest.getDuration(), inputTest.getMessage(), inputTest.getPriority());
     }
 
+
+
     //ObuConfig
     public static ObuConfig transformToObuConfig(long obuId, InputConfigStatus inputConfigStatus) {
-        List<ConfigState> stateList = null;
-        if (inputConfigStatus.getStateList() != null) {
-            stateList = new ArrayList();
-            for (InputConfigState curInputConfigState : inputConfigStatus.getStateList()) {
-                stateList.add(transformToConfigState(curInputConfigState));
-            }
-        }
+        List<ConfigState> stateList = transformToConfigStateList(inputConfigStatus.getStateList());
 
         return new ObuConfig(obuId, inputConfigStatus.getId(), CancelState.NONE, stateList, null);
     }
 
+    //ConfigStateList
+    private static List<ConfigState> transformToConfigStateList(List<InputConfigState> inputConfigStateList){
+        List<ConfigState> stateList = null;
+        if (inputConfigStateList != null) {
+            stateList = new ArrayList();
+            for (InputConfigState curInputConfigState : inputConfigStateList) {
+                stateList.add(transformToConfigState(curInputConfigState));
+            }
+        }
+        return stateList;
+    }
+
+    //ConfigState
     private static ConfigState transformToConfigState(InputConfigState inputConfigState) {
         LocalDateTime date = DateUtil.getDateFromIsoString(inputConfigState.getDate());
 
         return new ConfigState(inputConfigState.getState(), date);
     }
+
+
 
     //ObuTestPlan
     public static ObuTestPlan transformToObuTestPlan(long obuId, InputTestPlanStatus inputTestPlanStatus) {
@@ -87,13 +124,16 @@ public class ControllerUtil {
         return new ObuTestPlan(obuId, inputTestPlanStatus.getId(), CancelState.NONE, stateList, null);
     }
 
+    //TestPlanState
     private static TestPlanState transformToTestPlanState(InputTestPlanState inputTestPlanState) {
         LocalDateTime date = DateUtil.getDateFromIsoString(inputTestPlanState.getDate());
 
         return new TestPlanState(inputTestPlanState.getState(), date);
     }
 
-    //ServerLog    
+
+
+    //ServerLog         not used
     public static ServerLog transformToServerLog(String username, RequestMethod requestMethod, HttpStatus httpStatus, String url, Object... values) {
         String accessURI = requestMethod + ": " + UriBuilder.buildUri(url, values).toString();
         String httpStatusStr = httpStatus.value() + " " + httpStatus.getReasonPhrase();
@@ -101,6 +141,42 @@ public class ControllerUtil {
         return new ServerLog(null, LocalDateTime.now(), AccessType.USER, accessURI, username, LocalDateTime.now(),
                 httpStatusStr, null);
     }
+
+
+
+    //Hardware
+    public static Hardware transformToHardware(InputHardware inputHardware, String creator) {
+
+        List<Component> componentList = transformToComponentList(inputHardware.getComponents());
+
+        return new Hardware(null, inputHardware.getSerialNumber(), componentList, creator, LocalDateTime.now(), null, null);
+    }
+
+    //ComponentList
+    public static List<Component> transformToComponentList(List<InputComponent> inputComponentList){
+        List<Component> componentList = null;
+        if (inputComponentList != null) {
+            componentList = new ArrayList();
+            for (InputComponent curInputComponent : inputComponentList) {
+                componentList.add(transformToComponent(curInputComponent));
+            }
+        }
+        return componentList;
+    }
+
+    //Component
+    private static Component transformToComponent(InputComponent inputComponent) {
+        return new Component(inputComponent.getSerialNumber(), inputComponent.getComponentType(),
+                inputComponent.getManufacturer(), inputComponent.getModel(), inputComponent.getModemType(), inputComponent.getImei());
+    }
+
+
+
+
+
+
+
+
 
     public static String getAlphaNumeric(int len) {
         char[] ch = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();

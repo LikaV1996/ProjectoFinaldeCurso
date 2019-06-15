@@ -83,24 +83,14 @@ public class ConfigurationController implements IConfigurationController {
     @Override
     public ResponseEntity<Config> updateConfig(HttpServletRequest request, long configId, InputConfig body) {
 
+        User user = (User) request.getAttribute("user");
+
         body.validate();
         Config config = configService.getConfig(configId);
 
-        config.setActivationDate( body.getActivationLocalDateTime() );
-        config.setConfigName( body.getConfigName() );
-        config.setTestPlan( body.getTestPlan() );
-        config.setArchive( body.getArchive() );
-        config.setControlConnection( body.getControlConnection() );
-        config.setCore( body.getCore() );
-        config.setData( body.getData() );
-        config.setDownload( body.getDownload() );
-        config.setScanning( body.getScanning() );
-        config.setServer( body.getServer() );
-        config.setUpload( body.getUpload() );
-        config.setVoice( body.getVoice() );
+        updateConfig(body, config, user.getUserName());
 
-        //TODO
-        // configService.updateConfig(config);
+        configService.updateConfig(config);
 
         config = configService.getConfig(configId);
 
@@ -210,5 +200,23 @@ public class ConfigurationController implements IConfigurationController {
         //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok().build();
+    }
+
+
+    private void updateConfig(InputConfig inputConfig, Config config, String modifier){
+        config.setActivationDate( inputConfig.getActivationLocalDateTime() );
+        config.setConfigName( inputConfig.getConfigName() );
+        config.setTestPlan( inputConfig.getTestPlan() );
+        config.setArchive( inputConfig.getArchive() );
+        config.setControlConnection( inputConfig.getControlConnection() );
+        config.setCore( inputConfig.getCore() );
+        config.setData( inputConfig.getData() );
+        config.setDownload( inputConfig.getDownload() );
+        config.setScanning( inputConfig.getScanning() );
+        config.setServer( inputConfig.getServer() );
+        config.setUpload( inputConfig.getUpload() );
+        config.setVoice( inputConfig.getVoice() );
+
+        config.setModifier(modifier);
     }
 }

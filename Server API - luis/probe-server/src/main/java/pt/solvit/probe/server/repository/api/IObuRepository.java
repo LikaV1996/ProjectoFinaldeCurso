@@ -28,5 +28,5 @@ public interface IObuRepository {
 
     public int deleteAll();
 
-    public void save(ObuDao obuDao);
+    public void update(ObuDao obuDao);
 }

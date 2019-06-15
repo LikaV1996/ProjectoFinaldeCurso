@@ -35,17 +35,19 @@ public class ObuRepository implements IObuRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    private static final String INSERT_POSTGRES = "INSERT INTO Obu (hardware_id, obu_state, current_config_id, current_test_plan_id, obu_name, obu_password, properties, creator, creation_date) VALUES (?, ?::ObuState, ?, ?, ?, ?, cast(? as jsonb), ?, ?) RETURNING id";
-    private static final String INSERT_MYSQL = "INSERT INTO Obu (hardware_id, obu_state, current_config_id, current_test_plan_id, obu_name, obu_password, properties, creator, creation_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private static final String SELECT_BY_ID = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM Obu WHERE id = ?;";
-    private static final String SELECT_READY_POSTGRES = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate FROM Obu WHERE hardware_id = ? AND obu_state <> 'DEACTIVATED'::ObuState;";
-    private static final String SELECT_READY_MYSQL = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate FROM Obu WHERE hardware_id = ? AND obu_state <> 'DEACTIVATED';";
-    private static final String SELECT_BY_HARDWARE_ID = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate FROM Obu WHERE hardware_id = ?;";
-    private static final String SELECT_ALL = "SELECT * FROM Obu;";
+    private static final String INSERT_BASE = "INSERT INTO Obu (hardware_id, obu_state, current_config_id, current_test_plan_id, obu_name, obu_password, properties, creator, creation_date)";
+    private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?::ObuState, ?, ?, ?, ?, cast(? as jsonb), ?, ?) RETURNING id";
+    private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    private static final String SELECT_ALL = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM Obu";
+    private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
+    private static final String SELECT_READY_POSTGRES = SELECT_ALL + " WHERE hardware_id = ? AND obu_state <> 'DEACTIVATED'::ObuState;";
+    private static final String SELECT_READY_MYSQL = SELECT_ALL + " WHERE hardware_id = ? AND obu_state <> 'DEACTIVATED';";
+    private static final String SELECT_BY_HARDWARE_ID = SELECT_ALL + " WHERE hardware_id = ?;";
     private static final String UPDATE_POSTGRES = "UPDATE Obu SET obu_name = ?, obu_state = ?::ObuState, current_config_id = ?, current_test_plan_id = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
     private static final String UPDATE_MYSQL = "UPDATE Obu SET obu_name = ?, obu_state = ?, current_config_id = ?, current_test_plan_id = ?, properties = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
-    private static final String DELETE_BY_ID = "DELETE FROM Obu WHERE id = ?;";
-    private static final String DELETE_ALL = "DELETE FROM Obu;";
+    private static final String DELETE_ALL = "DELETE FROM Obu";
+    private static final String DELETE_BY_ID = DELETE_ALL + " WHERE id = ?;";
+
 
     public ObuRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -123,7 +125,7 @@ public class ObuRepository implements IObuRepository {
     }
 
     @Override
-    public void save(ObuDao obuDao) {
+    public void update(ObuDao obuDao) {
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {

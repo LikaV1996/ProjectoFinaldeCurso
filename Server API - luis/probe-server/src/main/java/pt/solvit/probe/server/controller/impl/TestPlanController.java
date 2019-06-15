@@ -69,7 +69,7 @@ public class TestPlanController implements ITestPlanController {
         User user = (User) request.getAttribute("user");
 
         body.validate();
-        TestPlan testPlan = transformToTestPlan(body, user.getUserName());
+        TestPlan testPlan = ControllerUtil.transformToTestPlan(body, user.getUserName());
         long testPlanId = testPlanService.createTestPlan(testPlan);
 
         testPlan = testPlanService.getTestPlan(testPlanId);
@@ -98,22 +98,14 @@ public class TestPlanController implements ITestPlanController {
     @Override
     public ResponseEntity<TestPlan> updateTestPlan(HttpServletRequest request, long testPlanId, @RequestBody InputTestPlan body) {
 
+        User user = (User) request.getAttribute("user");
+
         body.validate();
         TestPlan testPlan = testPlanService.getTestPlan(testPlanId);
 
-        testPlan.setTestplanName(body.getTestplanName());
-        testPlan.setStartDate( body.getStartDateLocalDateTime() );
-        testPlan.setStopDate( body.getStopDateLocalDateTime() );
-        testPlan.setPeriod(body.getPeriod());
-        testPlan.setRedialTriggers(body.getRedialTriggers());
-        //TODO
-        // testPlan.setSetups(body.getSetups());
-        testPlan.setMaxRetries(body.getMaxRetries());
-        testPlan.setRetryDelay(body.getRetryDelay());
-        testPlan.setTriggerCoordinates(body.getTriggerCoordinates());
+        updateTestPlan(body, testPlan, user.getUserName());
 
-        //TODO
-        // testPlanService.updateTestPlan(testPlan);
+        testPlanService.updateTestPlan(testPlan);
 
         testPlan = testPlanService.getTestPlan(testPlanId);
 
@@ -298,21 +290,18 @@ public class TestPlanController implements ITestPlanController {
         return ResponseEntity.ok().build();
     }
 
-    private TestPlan transformToTestPlan(InputTestPlan inputTestPlan, String creator) {
-        List<Setup> setupList = null;
-        if (inputTestPlan.getSetups() != null) {
-            setupList = new ArrayList();
-            for (InputSetup curInputSetup : inputTestPlan.getSetups()) {
-                setupList.add(ControllerUtil.transformToSetup(curInputSetup, creator));
-            }
-        }
 
-        LocalDateTime startDate = DateUtil.getDateFromIsoString(inputTestPlan.getStartDate());
-        LocalDateTime stopDate = DateUtil.getDateFromIsoString(inputTestPlan.getStopDate());
+    private void updateTestPlan(InputTestPlan inputTestPlan, TestPlan testPlan, String modifier){
+        testPlan.setTestplanName(inputTestPlan.getTestplanName());
+        testPlan.setStartDate( inputTestPlan.getStartDateLocalDateTime() );
+        testPlan.setStopDate( inputTestPlan.getStopDateLocalDateTime() );
+        testPlan.setPeriod(inputTestPlan.getPeriod());
+        testPlan.setRedialTriggers(inputTestPlan.getRedialTriggers());
+        testPlan.setSetups( ControllerUtil.transformToSetupList(inputTestPlan.getSetups(), testPlan.getCreator()) );
+        testPlan.setMaxRetries(inputTestPlan.getMaxRetries());
+        testPlan.setRetryDelay(inputTestPlan.getRetryDelay());
+        testPlan.setTriggerCoordinates(inputTestPlan.getTriggerCoordinates());
 
-        return new TestPlan(null, inputTestPlan.getTestplanName(), startDate, stopDate,
-                inputTestPlan.getTriggerCoordinates(), inputTestPlan.getPeriod(), setupList,
-                inputTestPlan.getMaxRetries(), inputTestPlan.getRetryDelay(), inputTestPlan.getRedialTriggers(),
-                creator, LocalDateTime.now(), null, null);
+        testPlan.setModifier(modifier);
     }
 }

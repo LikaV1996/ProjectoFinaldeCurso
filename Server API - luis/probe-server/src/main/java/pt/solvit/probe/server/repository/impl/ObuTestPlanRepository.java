@@ -92,7 +92,7 @@ public class ObuTestPlanRepository implements IObuTestPlanRepository {
     }
 
     @Override
-    public void save(ObuTestPlanDao obuTestPlanDao) {
+    public void update(ObuTestPlanDao obuTestPlanDao) {
         if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
             jdbcTemplate.update(UPDATE_POSTGRES, obuTestPlanDao.getProperties(), obuTestPlanDao.getObuId(), obuTestPlanDao.getTestPlanId());
         } else{

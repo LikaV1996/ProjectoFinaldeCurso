@@ -28,5 +28,5 @@ public interface IObuConfigRepository {
 
     public int removeAllConfigsFromObu(long obuId);
 
-    public void save(ObuConfigDao obuConfigDao);
+    public void update(ObuConfigDao obuConfigDao);
 }

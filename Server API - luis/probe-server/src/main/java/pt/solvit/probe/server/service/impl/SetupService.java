@@ -97,6 +97,12 @@ public class SetupService implements ISetupService {
         return setupList;
     }
 
+    @Override
+    public void updateSetup(Setup setup) {
+        LOGGER.log(Level.INFO, "Updating setup {0}", setup.getId());
+        setupRepository.update(transformToSetupDao(setup));
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteSetup(long setupId, User user) {

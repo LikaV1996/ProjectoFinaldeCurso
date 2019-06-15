@@ -25,4 +25,6 @@ public interface ITestPlanRepository {
     public int deleteAll(List<TestPlanDao> testPlanDaoList);
 
     public int deleteAll();
+
+    public void update(TestPlanDao testPlanDao);
 }

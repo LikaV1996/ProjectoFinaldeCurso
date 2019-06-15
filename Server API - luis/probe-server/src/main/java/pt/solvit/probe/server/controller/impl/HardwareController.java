@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.config.AppConfiguration;
+import pt.solvit.probe.server.controller.impl.util.ControllerUtil;
 import pt.solvit.probe.server.controller.impl.util.UriBuilder;
 import pt.solvit.probe.server.controller.model.input.InputHardware;
 import pt.solvit.probe.server.model.Hardware;
@@ -62,7 +63,7 @@ public class HardwareController implements IHardwareController {
         userService.checkLoggedInUserPermissions(user, UserProfile.ADMIN);
 
         body.validate();
-        Hardware hardware = transformToHardware(body, user.getUserName());
+        Hardware hardware = ControllerUtil.transformToHardware(body, user.getUserName());
         long hardwareId = hardwareService.createHardware(hardware);
         hardware = hardwareService.getHardware(hardwareId);
 
@@ -129,38 +130,14 @@ public class HardwareController implements IHardwareController {
         return ResponseEntity.created(createdURI).body(hardware);
     }
 
-    private Hardware transformToHardware(InputHardware inputHardware, String creator) {
 
-        List<Component> componentList = makeComponentListFromInput(inputHardware);
-
-        return new Hardware(null, inputHardware.getSerialNumber(), componentList, creator, LocalDateTime.now(), null, null);
-    }
-
-    private Hardware updateHardware(InputHardware inputHardware, Hardware hardware, String modifier) {
-
-        List<Component> componentList = makeComponentListFromInput(inputHardware);
+    private void updateHardware(InputHardware inputHardware, Hardware hardware, String modifier) {
 
         hardware.setSerialNumber( inputHardware.getSerialNumber() );
-        hardware.setComponents( componentList );
+        hardware.setComponents( ControllerUtil.transformToComponentList(inputHardware.getComponents()) );
         hardware.setModifier( modifier );
 
-        return hardware;
-    }
-
-    private List<Component> makeComponentListFromInput(InputHardware inputHardware){
-        List<Component> componentList = null;
-        if (inputHardware.getComponents() != null) {
-            componentList = new ArrayList();
-            for (InputComponent curInputComponent : inputHardware.getComponents()) {
-                componentList.add(transformToComponent(curInputComponent));
-            }
-        }
-        return componentList;
     }
 
 
-    private Component transformToComponent(InputComponent inputComponent) {
-        return new Component(inputComponent.getSerialNumber(), inputComponent.getComponentType(),
-                inputComponent.getManufacturer(), inputComponent.getModel(), inputComponent.getModemType(), inputComponent.getImei());
-    }
 }

@@ -7,6 +7,7 @@ import { LocalStorageService } from '../_services/localStorage.service';
 import { Router } from '@angular/router';
 import { OBUStatus } from '../Model/OBUStatus';
 import * as L from 'leaflet';
+import { ADDRCONFIG } from 'dns';
 
 @Component({
   selector: 'app-homemap',
@@ -27,6 +28,9 @@ export class HomemapComponent implements OnInit {
   private radioValue: number;
   private map : L.Map //Mapa a ser usado
   private markerArray = new Array; //Array de Markers
+  private group //grp de markers
+  private polylines: L.Polyline[] = new Array();
+
 
   ngOnInit() {
     this.user = this._localStorage.getCurrentUserDetails()
@@ -38,11 +42,7 @@ export class HomemapComponent implements OnInit {
         this.obus.forEach(obu => { //Em cada OBU, fazer o pedido das localizaçoes
           this._obuService.getPositionFromOBU(obu.id).subscribe( obuStatus =>{
             obuStatus.obuId = obu.id
-            //console.log("obuStatus0:" + JSON.stringify(obuStatus))
-            //console.log("position:0" + JSON.stringify(this.positions))
             this.positions.push(obuStatus)
-            //console.log("obuStatus:" + JSON.stringify(obuStatus))
-            //console.log("position:" +  JSON.stringify(this.positions))
           })
         });
         
@@ -84,26 +84,30 @@ export class HomemapComponent implements OnInit {
   }
 
   showLastPlace(){
-    alert("showLastPlace");
-    //this.map.setView([38.7573838, -9.1153841], 15);
+    //alert("showLastPlace");
+
+    this.cleanMap()
+    
+    //Criar Markers correspondentes ao sitio de cada obu
     var latitude,longitude, coordenadas, newMarker
     this.obus.forEach(obu=>{
-      coordenadas = this.positions.filter(pos => obu.id == pos.obuId )[0].coordinates
-      if(coordenadas.length != 0){//Caso noa haja info das coords de certa obu, nada é feito
-        latitude = coordenadas[coordenadas.length-1].latitude
-        longitude = coordenadas[coordenadas.length-1].longitude
+      coordenadas = this.positions.filter(pos => obu.id == pos.obuId )[0][0].location
+      if(coordenadas != null){//Caso nao haja info das coords de certa obu, nada é feito
+        latitude = coordenadas.lat
+        longitude = coordenadas.lon
         newMarker = this.addNewMarkerToMap(latitude, longitude, obu.obuName)//cria o novo marker
         this.markerArray.push(newMarker)//Adiciona o marker ao array de markers
       }
       
     })
-    
-    var group = L.featureGroup(this.markerArray).addTo(this.map);
-    this.map.fitBounds(group.getBounds());
+
+    this.group = L.featureGroup(this.markerArray).addTo(this.map); //grp de markers
+    this.map.fitBounds(this.group.getBounds());
   }
 
   showLast24h(){
     alert("showLast24h");
+    this.addLinePolyineToMap(null)
   }
 
   showLast48h(){
@@ -125,6 +129,47 @@ export class HomemapComponent implements OnInit {
         })
       }).
     bindPopup("<b>" + msg.toString() + "</b>").openPopup().addTo(this.map)
+  }
+
+  addLinePolyineToMap(points: L.LatLng[]){
+
+    this.cleanMap()
+
+    var pointA = new L.LatLng(28.635308, 77.22496);
+    var pointB = new L.LatLng(28.984461, 77.70641);
+    var pointList = [pointA, pointB];
+
+    var firstpolyline = new L.Polyline(pointList,{
+    color: 'red',
+    weight: 3,
+    opacity: 0.5,
+    smoothFactor: 1
+    });
+    
+    this.polylines.push(firstpolyline);
+    this.polylines.forEach(line =>{
+      this.map.addLayer(line);
+    })
+
+    
+    this.markerArray.push(this.addNewMarkerToMap(pointA.lat,pointA.lng,"OBU0 Start"))
+    this.markerArray.push(this.addNewMarkerToMap(pointB.lat,pointB.lng,"OBU0 End"))
+    //this.map.setView([28.635308, 77.22496], 15);
+
+    this.group = L.featureGroup(this.markerArray).addTo(this.map); //grp de markers
+    this.map.fitBounds(this.group.getBounds());
+  }
+
+  cleanMap(){
+    //Limpar Mapa de Polylines e Markers
+    if(this.group != null)
+      this.group.clearLayers();
+
+    this.polylines.forEach(line =>{ 
+      this.map.removeLayer(line);
+    })
+    
+    this.markerArray = new Array();
   }
   
 }

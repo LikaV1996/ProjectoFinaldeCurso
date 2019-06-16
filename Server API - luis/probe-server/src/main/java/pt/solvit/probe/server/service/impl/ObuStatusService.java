@@ -7,6 +7,7 @@ package pt.solvit.probe.server.service.impl;
 
 import com.google.common.reflect.TypeToken;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -77,10 +78,11 @@ public class ObuStatusService implements IObuStatusService {
 
         Alarms alarms = new Alarms(obuStatusDao.getCriticalAlarms(), obuStatusDao.getMajorAlarms(), obuStatusDao.getWarningAlarms());
 
-        List<NetworkInterface> networkInterfaces = GSON.fromJson(obuStatusDao.getNetworkInterfaces(), new TypeToken<List<NetworkInterface>>() {
-        }.getType());
+        List<NetworkInterface> networkInterfaces = GSON.fromJson(obuStatusDao.getNetworkInterfaces(), new TypeToken<List<NetworkInterface>>() {}.getType());
 
-        return new ObuStatus(obuStatusDao.getStatusDate().toLocalDateTime(), location, storage, alarms, networkInterfaces);
+        Float temperature = (float)obuStatusDao.getTemperature();
+
+        return new ObuStatus(obuStatusDao.getStatusDate().toLocalDateTime(), temperature, location, storage, alarms, networkInterfaces);
     }
 
     private Location transformToLocation(ObuStatusDao obuStatusDao) {

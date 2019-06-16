@@ -39,22 +39,27 @@ public class Location {
     private Double lon;
 
     @JsonView(Profile.ExtendedView.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("heightAboveEllipsoid")
     private Double heightAboveEllipsoid;
 
     @JsonView(Profile.ExtendedView.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("heightAboveMSL")
     private Double heightAboveMSL;
 
     @JsonView(Profile.ExtendedView.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("groundSpeed")
     private Double groundSpeed;
 
     @JsonView(Profile.ExtendedView.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("heading")
     private Double heading;
     
     @JsonView(Profile.ExtendedView.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("gpsFix")
     private GpsFix gpsFix;
 

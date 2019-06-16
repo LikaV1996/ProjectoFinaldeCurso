@@ -6,6 +6,7 @@
 package pt.solvit.probe.server.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModel;
@@ -41,15 +42,18 @@ public class ObuStatus {
     private Alarms alarms;
 
     @JsonView(Profile.ExtendedView.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("temperature")
     private Float temperature;
 
     @JsonView(Profile.ExtendedView.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("networkInterfaces")
     private List<NetworkInterface> networkInterfaces;
 
-    public ObuStatus(LocalDateTime date, Location location, Storage storage, Alarms alarms, List<NetworkInterface> networkInterfaces) {
+    public ObuStatus(LocalDateTime date, Float temperature, Location location, Storage storage, Alarms alarms, List<NetworkInterface> networkInterfaces) {
         this.date = date;
+        this.temperature = temperature;
         this.location = location;
         this.storage = storage;
         this.alarms = alarms;

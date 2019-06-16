@@ -10,6 +10,7 @@ import com.mapbox.services.commons.models.Position;
 import java.util.ArrayList;
 ;
 import pt.solvit.probe.server.model.Location;
+import pt.solvit.probe.server.model.ObuStatus;
 import pt.solvit.probe.server.model.ServerLog;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,18 +42,22 @@ public class StatusController implements IStatusController {
     private IServerLogService serverLogService;
 
     @Override
-    public ResponseEntity<LineString> getObuPosition(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-                                                     @PathVariable("obu-id") long obuId) {
+    public ResponseEntity<List<ObuStatus>> getObuPosition(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
+                                                          @PathVariable("obu-id") long obuId) {
 
         //User user = userService.checkUserCredentials(authorization);
 
+        List<ObuStatus> obuStatusList = obuStatusService.getAllObuStatus(obuId);
+
+        return ResponseEntity.ok().body(obuStatusList);
+
+
+        /*
         List<Location> locationList = obuStatusService.getAllObuLocations(obuId);
         LineString ls = LineString.fromCoordinates(transformToPosition(locationList));
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_OBU_POSITION, obuId);
-        //serverLogService.createServerLog(serverLog);
-
         return ResponseEntity.ok().body(ls);
+        */
     }
 
     private List<Position> transformToPosition(List<Location> locationList) {

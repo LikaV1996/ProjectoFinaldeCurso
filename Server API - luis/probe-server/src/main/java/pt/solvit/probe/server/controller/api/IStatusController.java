@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.solvit.probe.server.config.AppConfiguration;
+import pt.solvit.probe.server.model.ObuStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  *
@@ -38,6 +40,6 @@ public interface IStatusController {
             value = AppConfiguration.URL_OBU_POSITION, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<LineString> getObuPosition(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-                                                     @PathVariable("obu-id") long obuId);
+    public ResponseEntity<List<ObuStatus>> getObuPosition(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
+                                                          @PathVariable("obu-id") long obuId);
 }

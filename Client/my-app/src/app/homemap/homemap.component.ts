@@ -7,7 +7,6 @@ import { LocalStorageService } from '../_services/localStorage.service';
 import { Router } from '@angular/router';
 import { OBUStatus } from '../Model/OBUStatus';
 import * as L from 'leaflet';
-import { ADDRCONFIG } from 'dns';
 
 @Component({
   selector: 'app-homemap',

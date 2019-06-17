@@ -13,6 +13,9 @@ export class OBUStatus{
     temperature: number
     networkInterfaces
 
+    //O que vem da API
     date: String
     location
+    storage
+    alarms
 }

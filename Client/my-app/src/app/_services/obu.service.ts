@@ -45,9 +45,9 @@ export class OBUService {
     })
   }
 
-  getPositionFromOBU(id: number): Observable<OBUStatus>{
+  getPositionFromOBU(id: number): Observable<OBUStatus[]>{
     const getPositionFromOBUByIDUrl = routes.getPositionFromOBU.replace(":id", id.toString());
-    return this.http.get<OBUStatus>(getPositionFromOBUByIDUrl)
+    return this.http.get<OBUStatus[]>(getPositionFromOBUByIDUrl)
   }
 
 }

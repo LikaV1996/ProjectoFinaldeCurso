@@ -45,7 +45,12 @@
         <div class="ui segment" *ngFor="let obu of obus">
             <div class="ui middle aligned grid">
                 <div class="six wide column">{{obu.obuName}}</div>
-                <div class="six wide right aligned column"></div>
+                <div class="six wide right aligned column">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="public" checked="" (change)="updateMap($event,obu.id)">
+                        <label></label>
+                      </div>
+                </div>
                 <div class="four wide right aligned column">
                     <button mat-button [matMenuTriggerFor]="menu">Options</button>
                     <mat-menu #menu="matMenu">

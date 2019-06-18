@@ -7,8 +7,6 @@
       <div class="ui grid">
         <div class="six wide column"><h3>Serial Number</h3></div>
         <div class="six wide column"><h3>Creator</h3></div>
-        <!--<div class="four wide column">Current Obu Configuration</div>-->
-        <!-- <div class="four wide column">Current_test_plan_id</div> -->
         <div class="four wide column"></div>
       </div>
       
@@ -20,13 +18,16 @@
           <div class="ui middle aligned grid">
             <div class="six wide column">{{hardware.serialNumber}}</div>
             <div class="six wide column">{{hardware.creator}}</div>
-            <!-- <div class="four wide column" *ngIf="obu.CurrentConfigId!=null">{{obu.CurrentConfigId}}</div> -->
-            <!-- <div class="four wide column" *ngIf="obu.CurrentConfigId==null">No Configuration</div> -->
-            <!-- <div class="four wide column">{{obu.Current_test_plan_id}}</div> -->
-            <div class="four wide right aligned column"> 
-              <!-- para o butao ficar max á direita basta eight wide right... -->
-              <div class="ui suspend button" (click)="edit(hardware.id)" data-tooltip="Edit Hardware">Edit</div>
+            <div class="four wide right aligned column">
+              
+                <button mat-button [matMenuTriggerFor]="menu">Options</button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="edit(hardware.id)" data-tooltip="Edit Hardware">Edit Hardware / Details</button>
+                  <button mat-menu-item>Delete Hardware</button>
+                </mat-menu>
+              
             </div>
+
           </div>
         </div>
       </div>

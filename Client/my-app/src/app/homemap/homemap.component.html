@@ -7,7 +7,7 @@
             <div class="three wide column">
                 <div class="field">
                     <div class="ui radio checkbox">
-                        <input type="radio" name="frequency" checked="checked" (change)="showLastPlace()">
+                        <input type="radio" name="frequency" (change)="showLastPlace()">
                         <label>Last Place</label>
                     </div>
                 </div>
@@ -54,8 +54,8 @@
                 <div class="four wide right aligned column">
                     <button mat-button [matMenuTriggerFor]="menu">Options</button>
                     <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="edit(obu.id)" data-tooltip="Edit OBU">Edit OBU / OBU Details</button>
-                    <button mat-menu-item>Delete OBU</button>
+                        <button mat-menu-item (click)="edit(obu.id)" data-tooltip="Edit OBU">Edit OBU / OBU Details</button>
+                        <button mat-menu-item>Delete OBU</button>
                     </mat-menu>
             
                 </div>

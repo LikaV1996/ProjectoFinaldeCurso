@@ -23,12 +23,10 @@ export class HomemapComponent implements OnInit {
 
 
   private obus: OBU[];
-  private positions= new Array()//: OBUStatus[][] = new Array<OBUStatus[]>();
+  private positions= new Array()
   private user: User;
-  private radioValue: number;
+  //private radioValue: number;
   private map : L.Map //Mapa a ser usado
-  private markerArray = new Array; //Array de Markers
-  private group //grp de markers
   private polylines: L.Polyline[] = new Array();
   private obusToShow= new Array(); //id das obus a mostrar
   private layerGroup
@@ -55,10 +53,10 @@ export class HomemapComponent implements OnInit {
         });
         
       });
-
+      
   }
-  
-  myMarker = marker([38.7573838, -9.1153841], {
+
+  welcomeMarker = marker([38.7573838, -9.1153841], {
     icon: icon({
       iconSize: [ 25, 41 ],
       iconAnchor: [ 13, 41 ],
@@ -67,13 +65,11 @@ export class HomemapComponent implements OnInit {
     })
   });
 
-
   private options = {
     layers: [
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
-      }),
-    this.myMarker
+      })
     ],
     zoom: 7,
     center: latLng([38.7573838, -9.1153841])
@@ -84,7 +80,9 @@ export class HomemapComponent implements OnInit {
     this.map = map;
     this.map.setView([38.7573838, -9.1153841], 74)
     this.layerGroup = L.featureGroup().addTo(this.map);
-    this.myMarker.bindPopup("<b>Hello world!</b><br>I am a popup, and this is ISEL!").openPopup();
+    this.welcomeMarker.bindPopup("<b>ISEL / SOLVIT</b><br>Choose your options!").openPopup();
+    this.welcomeMarker.addTo(this.layerGroup);
+    
   }
 
   orderById(){
@@ -92,7 +90,6 @@ export class HomemapComponent implements OnInit {
   }
 
   showLastPlace(){
-    //alert("showLastPlace");
     this.cleanMap()
 
     //Criar Markers correspondentes ao sitio de cada obu
@@ -103,18 +100,15 @@ export class HomemapComponent implements OnInit {
       longitude = coordenadas.location.lon
       newMarker = this.addNewMarkerToMap(latitude, longitude, pos.obuName)
       
-      newMarker.addTo(this.layerGroup);
-      //this.markerArray.push(newMarker)//Adiciona o marker ao array de markers
+      newMarker.addTo(this.layerGroup); //Adiciona o marker ao layerGroup
     })
 
-    //this.group = L.featureGroup(this.markerArray).addTo(this.map); //grp de markers
-    //this.map.fitBounds(this.group.getBounds());
     this.map.fitBounds(this.layerGroup.getBounds());
   }
 
   showLast24h(){
     alert("showLast24h");
-    this.addLinePolyineToMap(null)
+    this.addPolylineToMap(null)
   }
 
   showLast48h(){
@@ -142,7 +136,7 @@ export class HomemapComponent implements OnInit {
     bindPopup("<b>" + msg.toString() + "</b>").openPopup().addTo(this.map)
   }
 
-  addLinePolyineToMap(points: L.LatLng[]){
+  addPolylineToMap(points: L.LatLng[]){
 
     this.cleanMap()
 
@@ -167,29 +161,16 @@ export class HomemapComponent implements OnInit {
     var newMarker1 = this.addNewMarkerToMap(pointB.lat,pointB.lng,"OBU0 End")
     newMarker1.addTo(this.layerGroup);
     
-    //this.markerArray.push(this.addNewMarkerToMap(pointA.lat,pointA.lng,"OBU0 Start"))
-    //this.markerArray.push(this.addNewMarkerToMap(pointB.lat,pointB.lng,"OBU0 End"))
-    //this.map.setView([28.635308, 77.22496], 15);
-
-    //this.group = L.featureGroup(this.markerArray).addTo(this.map); //grp de markers
-    //this.map.fitBounds(this.group.getBounds());
     this.map.fitBounds(this.layerGroup.getBounds());
   }
 
   cleanMap(){
     //Limpar Mapa de Polylines e Markers
-    /*
-    if(this.group != null)
-      this.group.clearLayers(); 
-    */  
     this.layerGroup.clearLayers();
 
     this.polylines.forEach(line =>{ 
       this.map.removeLayer(line);
     })
-    
-    this.markerArray = new Array();
-    //this.group = L.featureGroup(this.markerArray).addTo(this.map);
     
   }
 

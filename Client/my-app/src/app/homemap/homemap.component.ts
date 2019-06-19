@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { latLng, tileLayer, Map, marker, icon} from 'leaflet';
 import { OBUService } from '../_services/obu.service';
 import { OBU } from '../Model/OBU';
@@ -7,6 +7,8 @@ import { LocalStorageService } from '../_services/localStorage.service';
 import { Router } from '@angular/router';
 import { OBUStatus } from '../Model/OBUStatus';
 import * as L from 'leaflet';
+//import { Chart } from 'chart.js';
+
 
 @Component({
   selector: 'app-homemap',
@@ -21,7 +23,17 @@ export class HomemapComponent implements OnInit {
     private _localStorage: LocalStorageService
   ) { }
 
-
+  /*
+  @ViewChild('lineChart') private chartRef; 
+  chart :any;
+  chartPoints = [{  
+      x: new Date(),  
+      y: 10
+    },{  
+      x: new Date(),  
+      y: 20
+  }];
+  */
   private obus: OBU[];
   private positions= new Array()
   private user: User;
@@ -53,7 +65,43 @@ export class HomemapComponent implements OnInit {
         });
         
       });
-      
+
+
+      /*
+      this.chart = new Chart(this.chartRef.nativeElement, {
+        type: 'line',
+        data: {
+          //labels: ["2015-03-15", "2015-03-25T13:02:00Z", (new Date().getDate())+"-"+(new Date().getMonth()+1)+""], // your labels array
+          datasets: [
+            {
+              data: this.chartPoints, // your data array
+              borderColor: '#00AEFF',
+              fill: false
+            }
+          ]
+        },
+        options: {
+          legend: {
+            display: true
+          },
+          scales: {
+            xAxes: [{
+              display: true,
+              type: 'time',
+                time: { //nao faz nada
+                  displayFormats: {
+                    quarter: 'MMM D'
+                  }
+                }
+            }],
+            yAxes: [{
+              display: true
+            }],
+          }
+        }
+      });
+      */
+   
   }
 
   welcomeMarker = marker([38.7573838, -9.1153841], {
@@ -211,7 +259,6 @@ export class HomemapComponent implements OnInit {
           latitude = coordenadas.location.lat
           longitude = coordenadas.location.lon
           newMarker = this.NewMarkerToMap(latitude, longitude, pos.obuName)
-          //this.markerArray.push(newMarker)//Adiciona o marker ao array de markers
           newMarker.addTo(this.layerGroup);//Adiciona o marker ao layerGroup
         }
       })

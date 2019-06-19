@@ -80,8 +80,8 @@ export class HomemapComponent implements OnInit {
     this.map = map;
     this.map.setView([38.7573838, -9.1153841], 74)
     this.layerGroup = L.featureGroup().addTo(this.map);
-    this.welcomeMarker.bindPopup("<b>ISEL / SOLVIT</b><br>Choose your options!").openPopup();
     this.welcomeMarker.addTo(this.layerGroup);
+    this.welcomeMarker.bindPopup("<b>ISEL / SOLVIT</b><br>Choose your options!").openPopup();
     
   }
 
@@ -98,17 +98,30 @@ export class HomemapComponent implements OnInit {
       coordenadas = this.getLastDate(pos.obuStatus)
       latitude = coordenadas.location.lat
       longitude = coordenadas.location.lon
-      newMarker = this.addNewMarkerToMap(latitude, longitude, pos.obuName)
+      newMarker = this.NewMarkerToMap(latitude, longitude, pos.obuName)
       
       newMarker.addTo(this.layerGroup); //Adiciona o marker ao layerGroup
     })
 
-    this.map.fitBounds(this.layerGroup.getBounds());
+    this.map.fitBounds(this.layerGroup.getBounds().pad(0.5));
   }
 
   showLast24h(){
-    alert("showLast24h");
-    this.addPolylineToMap(null)
+    this.cleanMap()
+
+    var pointList, newPolyline
+    this.positions.forEach(pos=>{
+      if(pos.obuStatus.length >= 2){ //Tem de haver pelo menos 2 pontos
+        pointList = this.getLast24h(pos.obuStatus)
+        newPolyline = this.NewPolylineToMap(pointList,pos.obuName)
+        this.polylines.push(newPolyline);
+      }
+    })
+
+    this.polylines.forEach(line =>{ //Activa as polylines
+      this.map.addLayer(line);
+    })
+    this.map.fitBounds(this.layerGroup.getBounds().pad(0.5));
   }
 
   showLast48h(){
@@ -123,7 +136,7 @@ export class HomemapComponent implements OnInit {
     */  
   }
 
-  addNewMarkerToMap(latitude: number, longitude: number, msg: String){
+  NewMarkerToMap(latitude: number, longitude: number, msg: String){
     return new L.Marker([latitude, longitude], 
       {
         icon: icon({
@@ -136,13 +149,7 @@ export class HomemapComponent implements OnInit {
     bindPopup("<b>" + msg.toString() + "</b>").openPopup().addTo(this.map)
   }
 
-  addPolylineToMap(points: L.LatLng[]){
-
-    this.cleanMap()
-
-    var pointA = new L.LatLng(28.635308, 77.22496);
-    var pointB = new L.LatLng(28.984461, 77.70641);
-    var pointList = [pointA, pointB];
+  NewPolylineToMap(pointList: L.LatLng[], obuName: string){
 
     var firstpolyline = new L.Polyline(pointList,{
     color: 'red',
@@ -150,18 +157,13 @@ export class HomemapComponent implements OnInit {
     opacity: 0.5,
     smoothFactor: 1
     });
-    
-    this.polylines.push(firstpolyline);
-    this.polylines.forEach(line =>{
-      this.map.addLayer(line);
-    })
 
-    var newMarker = this.addNewMarkerToMap(pointA.lat,pointA.lng,"OBU0 Start")
+    var newMarker = this.NewMarkerToMap(pointList[0].lat,pointList[0].lng,obuName+" Start")
     newMarker.addTo(this.layerGroup);
-    var newMarker1 = this.addNewMarkerToMap(pointB.lat,pointB.lng,"OBU0 End")
+    var newMarker1 = this.NewMarkerToMap(pointList[pointList.length-1].lat,pointList[pointList.length-1].lng,obuName+" End")
     newMarker1.addTo(this.layerGroup);
-    
-    this.map.fitBounds(this.layerGroup.getBounds());
+
+    return firstpolyline
   }
 
   cleanMap(){
@@ -186,6 +188,16 @@ export class HomemapComponent implements OnInit {
 
   }
 
+  getLast24h(obustatus:OBUStatus[]){
+
+    var pointList = new Array(), newPoint
+    obustatus.forEach( _obustatus=>{
+      newPoint = new L.LatLng(_obustatus.location.lat, _obustatus.location.lon);
+      pointList.push(newPoint)
+    })
+    return pointList
+  }
+
   updateMap(event, obuId:number){
     
     //alert(event.currentTarget.checked)
@@ -198,7 +210,7 @@ export class HomemapComponent implements OnInit {
           coordenadas = this.getLastDate(pos.obuStatus)
           latitude = coordenadas.location.lat
           longitude = coordenadas.location.lon
-          newMarker = this.addNewMarkerToMap(latitude, longitude, pos.obuName)
+          newMarker = this.NewMarkerToMap(latitude, longitude, pos.obuName)
           //this.markerArray.push(newMarker)//Adiciona o marker ao array de markers
           newMarker.addTo(this.layerGroup);//Adiciona o marker ao layerGroup
         }

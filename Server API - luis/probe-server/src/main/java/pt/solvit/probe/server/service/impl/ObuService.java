@@ -17,15 +17,16 @@ import pt.solvit.probe.server.model.enums.EntityType;
 import pt.solvit.probe.server.model.enums.ObuState;
 import pt.solvit.probe.server.model.enums.UserObuRole;
 import pt.solvit.probe.server.model.enums.UserProfile;
+import pt.solvit.probe.server.repository.api.IObuConfigRepository;
+import pt.solvit.probe.server.repository.api.IObuTestPlanRepository;
 import pt.solvit.probe.server.repository.model.ObuDao;
 import pt.solvit.probe.server.repository.api.IObuRepository;
 import pt.solvit.probe.server.repository.model.ObuUserDao;
+import pt.solvit.probe.server.service.api.IConfigService;
 import pt.solvit.probe.server.service.api.IObuService;
+import pt.solvit.probe.server.service.exception.impl.*;
 import pt.solvit.probe.server.service.impl.util.ServiceUtil;
 import pt.solvit.probe.server.service.api.IUserService;
-import pt.solvit.probe.server.service.exception.impl.EntityOwnershipException;
-import pt.solvit.probe.server.service.exception.impl.ObuActiveException;
-import pt.solvit.probe.server.service.exception.impl.PermissionException;
 
 /**
  *
@@ -40,6 +41,11 @@ public class ObuService implements IObuService {
     private IUserService userService;
     @Autowired
     private IObuRepository obuRepository;
+    @Autowired
+    private IObuConfigRepository obuConfigRepository;
+    @Autowired
+    private IObuTestPlanRepository obuTestPlanRepository;
+
 
     @Override
     public long createObu(Obu obu, User loggedInUser) {
@@ -130,6 +136,14 @@ public class ObuService implements IObuService {
             //...owns obu
             userOwnsObu(obuDao, loggedInUser);
         }
+
+        //check if obu has config
+        if ( ! obuConfigRepository.findByObuId(obuId).isEmpty())
+            throw new ObuHasConfigException();
+
+        //check if obu has testplans
+        if ( ! obuTestPlanRepository.findByObuId(obuId).isEmpty())
+            throw new ObuHasTestPlanException();
 
         //obu not active    TODO check ObuState for delete
         if ( ! obuDao.getObuState().equals(ObuState.READY.name()))

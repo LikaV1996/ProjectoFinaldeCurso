@@ -49,4 +49,15 @@ export class SetupComponent implements OnInit {
     this.router.navigate(['home/setup/'+id+'/edit']);
   }
 
+  delete(id: number){
+    this._setupService.deleteSetupByID(id).subscribe(
+      data =>{
+        //sucesso
+        console.log('Setup deleted!', data) 
+        this.setups = this.setups.filter(setup=> setup.id != id)
+      },
+      error => alert(error.error.detail) //erro
+    )
+  }
+
 }

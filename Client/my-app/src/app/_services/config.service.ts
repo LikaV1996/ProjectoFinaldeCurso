@@ -18,17 +18,12 @@ export class ConfigService {
     private http: HttpClient
   ) { }
     
-  
-
   getConfigs(): Observable<Config[]> {
     return this.http.get<Config[]>(routes.getConfigs)
   }
 
-
-  
   getConfigById(id: number): Observable<Config> {
     const getConfigByIdUrl = routes.getConfigById.replace(":id", id.toString());
-
     return this.http.get<Config>(getConfigByIdUrl)
   }
 
@@ -37,5 +32,10 @@ export class ConfigService {
     return this.http.post<{obu: OBU}>(routes.createObu,{obu_name: obu_name, obu_password: obu_password, properties: "null", hardware_id:-1, current_config_id:-1,current_test_plan_id:-1 })
   }
   */
+
+  deleteConfigByID(id: number) {
+    const deleteConfigByIDUrl = routes.deleteConfig.replace(":id", id.toString());
+    return this.http.delete<Config>(deleteConfigByIDUrl)
+  }
 
 }

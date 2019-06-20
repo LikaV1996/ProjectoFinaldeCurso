@@ -22,7 +22,7 @@
                 <button mat-button [matMenuTriggerFor]="menu">Options</button>
                 <mat-menu #menu="matMenu">
                   <button mat-menu-item (click)="edit(setup.id)" data-tooltip="Edit Setup">Edit Setup / Details</button>
-                  <button mat-menu-item>Delete Setup</button>
+                  <button mat-menu-item (click)="delete(setup.id)">Delete Setup</button>
                 </mat-menu>
               
             </div>

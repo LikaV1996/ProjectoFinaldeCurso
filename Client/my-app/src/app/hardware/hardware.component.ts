@@ -49,5 +49,15 @@ export class HardwareComponent implements OnInit {
     this.hardwares.sort( (h1,h2)=> h1.id - h2.id)
   }
 
+  delete(id: number){
+    this._hardwareService.deleteHardwareByID(id).subscribe(
+      data =>{
+        //sucesso
+        console.log('Hardware deleted!', data) 
+        this.hardwares = this.hardwares.filter(hardware=> hardware.id != id)
+      },
+      error => alert(error.error.detail) //erro
+    )
+  }
 
 }

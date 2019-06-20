@@ -39,4 +39,9 @@ export class SetupService {
   }
   */
 
+  deleteSetupByID(id: number){
+    const deleteSetupByIDUrl = routes.deleteSetup.replace(":id", id.toString());
+    return this.http.delete<Setup>(deleteSetupByIDUrl)
+  }
+
 }

@@ -23,7 +23,7 @@
                 <button mat-button [matMenuTriggerFor]="menu">Options</button>
                 <mat-menu #menu="matMenu">
                   <button mat-menu-item (click)="edit(hardware.id)" data-tooltip="Edit Hardware">Edit Hardware / Details</button>
-                  <button mat-menu-item>Delete Hardware</button>
+                  <button mat-menu-item (click)="delete(hardware.id)">Delete Hardware</button>
                 </mat-menu>
               
             </div>

@@ -46,4 +46,9 @@ export class TestPlanService {
   }
   */
 
+  deleteTestPlanByID(id: number){
+    const deleteTestPlanByIDUrl = routes.deleteTestPlan.replace(":id", id.toString());
+    return this.http.delete<TestPlan>(deleteTestPlanByIDUrl)
+  }
+
 }

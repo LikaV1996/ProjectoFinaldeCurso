@@ -8,9 +8,9 @@ package pt.solvit.probe.server.service.exception.impl;
 import pt.solvit.probe.server.service.exception.DomainException;
 
 
-public class ObuHastestPlanException extends DomainException {
+public class ObuHasTestPlanException extends DomainException {
 
-    public ObuHastestPlanException() {
+    public ObuHasTestPlanException() {
         super("Invalid operation.", "The operation can not be done because the obu has test plans associated.");
     }
 }

@@ -7,6 +7,7 @@ package pt.solvit.probe.server.repository.api;
 
 import java.util.List;
 import pt.solvit.probe.server.repository.model.ObuDao;
+import pt.solvit.probe.server.repository.model.ObuUserDao;
 
 /**
  *
@@ -14,13 +15,13 @@ import pt.solvit.probe.server.repository.model.ObuDao;
  */
 public interface IObuRepository {
 
-    public ObuDao findById(long id);
+    public ObuDao findById(long obuID, Long userID);
 
     public ObuDao findReadyObu(long hardwareId);
 
     public List<ObuDao> findByHardwareId(long hardwareId);
 
-    public List<ObuDao> findAll();
+    public List<ObuDao> findAll(Long userID);
 
     public long add(ObuDao obuDao);
 
@@ -29,4 +30,6 @@ public interface IObuRepository {
     public int deleteAll();
 
     public void update(ObuDao obuDao);
+
+    public ObuUserDao findObuUserRole(long obuID, long userID);
 }

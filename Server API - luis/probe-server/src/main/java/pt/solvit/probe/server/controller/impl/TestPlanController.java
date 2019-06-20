@@ -233,6 +233,8 @@ public class TestPlanController implements ITestPlanController {
 
         //User user = userService.checkUserCredentials(authorization);
 
+        //TODO what users can add testplans? EDITORS? VIEWERS?
+
         testPlanService.addTestPlanToObu(obuId, testPlanId);
 
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.POST, HttpStatus.OK, AppConfiguration.URL_OBU_TESTPLAN_ID, obuId, testPlanId);

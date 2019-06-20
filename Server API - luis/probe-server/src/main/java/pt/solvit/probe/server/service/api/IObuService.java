@@ -6,6 +6,8 @@
 package pt.solvit.probe.server.service.api;
 
 import java.util.List;
+
+import pt.solvit.probe.server.controller.model.input.InputObu;
 import pt.solvit.probe.server.model.Config;
 import pt.solvit.probe.server.model.Obu;
 import pt.solvit.probe.server.model.User;
@@ -16,15 +18,16 @@ import pt.solvit.probe.server.model.User;
  */
 public interface IObuService {
 
-    public long createObu(Obu obu);
+    public long createObu(Obu obu, User loggedInUser);
 
-    public Obu getObu(long obuId);
+    //public Obu getObuByID(long obuId);
+    public Obu getObuByID(long obuId, User loggedInUser);
 
     public List<Obu> getObusWithHardware(long hardwareId);
 
-    public List<Obu> getAllObus();
+    public List<Obu> getAllObus(User loggedInUser);
 
-    public void updateObu(Obu obu);
+    public void updateObu(Obu obu, User loggedInUser);
 
-    public void deleteObu(long obuId, User user);
+    public void deleteObu(long obuId, User loggedInUser);
 }

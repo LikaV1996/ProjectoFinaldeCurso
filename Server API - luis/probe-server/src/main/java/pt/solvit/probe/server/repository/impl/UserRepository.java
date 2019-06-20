@@ -65,7 +65,11 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public UserDao findByName(String userName) {
-        return jdbcTemplate.queryForObject(SELECT_BY_USERNAME, new BeanPropertyRowMapper<>(UserDao.class), userName);
+        try {
+            return jdbcTemplate.queryForObject(SELECT_BY_USERNAME, new BeanPropertyRowMapper<>(UserDao.class), userName);
+        } catch (IncorrectResultSizeDataAccessException e) {
+            throw new EntityWithIdNotFoundException(EntityType.USER);
+        }
     }
 
     @Override
@@ -136,6 +140,7 @@ public class UserRepository implements IUserRepository {
                     userDao.getUserProfile(), userDao.getProperties(), userDao.getModifier(), userDao.getSuspended(), userDao.getId());
         }
 
+        //TODO
         String rip = "not implemented exception";
         return -1;
     }

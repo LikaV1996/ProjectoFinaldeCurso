@@ -149,8 +149,10 @@ public class TestPlanService implements ITestPlanService {
 
     @Override
     public void addTestPlanToObu(long obuId, long testPlanId) {
-        LOGGER.log(Level.INFO, "Checking if obu {0} exists", obuId);
-        obuRepository.findById(obuId);
+        LOGGER.log(Level.INFO, "Checking if obu with ID {0} already exists", obuId);
+
+        //TODO
+        obuRepository.findById(obuId, null);
 
         LOGGER.log(Level.INFO, "Checking if test plan {0} exists", testPlanId);
         testPlanRepository.findById(testPlanId);

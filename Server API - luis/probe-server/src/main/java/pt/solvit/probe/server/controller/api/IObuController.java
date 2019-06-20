@@ -44,7 +44,7 @@ public interface IObuController {
             value = AppConfiguration.URL_OBU, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<Obu>> getAllObus(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization);
+    public ResponseEntity<List<Obu>> getAllObus(HttpServletRequest request);
 
     @ApiOperation(value = "Creates a obu", tags = {"Obu",})
     @ApiResponses(
@@ -60,8 +60,7 @@ public interface IObuController {
             consumes = {MediaType.APPLICATION_JSON_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Obu> createObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @RequestBody InputObu body);
+    public ResponseEntity<Obu> createObu(HttpServletRequest request, @RequestBody InputObu body);
 
     @ApiOperation(value = "Returns a obu", tags = {"Obu",})
     @ApiResponses(
@@ -77,8 +76,7 @@ public interface IObuController {
             value = AppConfiguration.URL_OBU_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Obu> getObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId);
+    public ResponseEntity<Obu> getObuByID(HttpServletRequest request, @PathVariable("obu-id") long obuId);
 
     @ApiOperation(value = "Updates obu", tags = {"Obu",})
     @ApiResponses(
@@ -94,8 +92,7 @@ public interface IObuController {
             consumes = {MediaType.APPLICATION_JSON_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Obu> updateObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @RequestBody InputObu body);
+    public ResponseEntity<Obu> updateObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @RequestBody InputObu body);
 
     @ApiOperation(value = "Deletes a obu", tags = {"Obu",})
     @ApiResponses(
@@ -110,8 +107,7 @@ public interface IObuController {
             value = AppConfiguration.URL_OBU_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> deleteObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId);
+    public ResponseEntity<Void> deleteObu(HttpServletRequest request, @PathVariable("obu-id") long obuId);
 
     @ApiOperation(value = "Updates obu flags", tags = {"Obu",})
     @ApiResponses(
@@ -127,6 +123,5 @@ public interface IObuController {
             consumes = {MediaType.APPLICATION_JSON_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> updateObuFlags(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @RequestBody InputObuFlags body);
+    public ResponseEntity<Void> updateObuFlags(HttpServletRequest request, @PathVariable("obu-id") long obuId, @RequestBody InputObuFlags body);
 }

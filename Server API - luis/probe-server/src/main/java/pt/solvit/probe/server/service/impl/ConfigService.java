@@ -111,7 +111,9 @@ public class ConfigService implements IConfigService {
     @Override
     public void addConfigToObu(long obuId, long configId) {
         LOGGER.log(Level.INFO, "Checking if obu {0} exists", obuId);
-        obuRepository.findById(obuId);
+
+        //TODO
+        obuRepository.findById(obuId, null);
 
         LOGGER.log(Level.INFO, "Checking if configuration {0} exists", configId);
         configRepository.findById(configId);

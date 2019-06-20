@@ -145,6 +145,7 @@ public class ConfigurationController implements IConfigurationController {
 
         //User user = userService.checkUserCredentials(authorization);
 
+        //TODO what users can add configs? EDITORS? VIEWERS?
         configService.addConfigToObu(obuId, configId);
 
         //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.POST, HttpStatus.OK, AppConfiguration.URL_OBU_CONFIG_ID, obuId, configId);

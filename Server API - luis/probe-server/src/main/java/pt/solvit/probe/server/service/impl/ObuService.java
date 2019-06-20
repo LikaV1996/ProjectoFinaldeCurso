@@ -10,13 +10,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pt.solvit.probe.server.controller.model.input.InputObu;
 import pt.solvit.probe.server.model.Obu;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.enums.EntityType;
 import pt.solvit.probe.server.model.enums.ObuState;
+import pt.solvit.probe.server.model.enums.UserObuRole;
 import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.repository.model.ObuDao;
 import pt.solvit.probe.server.repository.api.IObuRepository;
+import pt.solvit.probe.server.repository.model.ObuUserDao;
 import pt.solvit.probe.server.service.api.IObuService;
 import pt.solvit.probe.server.service.impl.util.ServiceUtil;
 import pt.solvit.probe.server.service.api.IUserService;
@@ -39,55 +42,103 @@ public class ObuService implements IObuService {
     private IObuRepository obuRepository;
 
     @Override
-    public long createObu(Obu obu) {
+    public long createObu(Obu obu, User loggedInUser) {
         LOGGER.log(Level.INFO, "Creating new obu");
+
+        if (!userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER))
+            throw new PermissionException();
+
         return obuRepository.add(Obu.transformToObuDao(obu));
     }
 
+    /*
     @Override
-    public Obu getObu(long obuId) {
-        LOGGER.log(Level.INFO, "Finding obu {0}", obuId);
-        ObuDao obuDao = obuRepository.findById(obuId);
+    public Obu getObuByID(long obuId) {
+        ObuDao obuDao = obuRepository.findById(obuId, null);
+        return ObuDao.transformToObu(obuDao);
+    }
+    */
+
+    @Override
+    public Obu getObuByID(long obuId, User loggedInUser) {
+        LOGGER.log(Level.INFO, "Finding obu with ID {0}", obuId);
+
+        Long userID = getUserIdIfNotAdmin(loggedInUser);
+
+        ObuDao obuDao = obuRepository.findById(obuId, userID);
         return ObuDao.transformToObu(obuDao);
     }
 
     @Override
     public List<Obu> getObusWithHardware(long hardwareId) {
-        LOGGER.log(Level.INFO, "Finding obus with hardware {0}", hardwareId);
+        LOGGER.log(Level.INFO, "Finding obus with hardware ID {0}", hardwareId);
         List<ObuDao> obuDaoList = obuRepository.findByHardwareId(hardwareId);
         return ServiceUtil.map(obuDaoList, ObuDao::transformToObu);
     }
 
     @Override
-    public List<Obu> getAllObus() {
+    public List<Obu> getAllObus(User loggedInUser) {
         LOGGER.log(Level.INFO, "Finding all obus");
-        List<ObuDao> obuDaoList = obuRepository.findAll();
+
+        Long userID = getUserIdIfNotAdmin(loggedInUser);
+
+        List<ObuDao> obuDaoList = obuRepository.findAll(userID);
         return ServiceUtil.map(obuDaoList, ObuDao::transformToObu);
     }
 
     @Override
-    public void updateObu(Obu obu) {
+    public void updateObu(Obu obu, User loggedInUser) {
+        LOGGER.log(Level.INFO, "Updating obu with id {0}", obu.getId());
+
+        //not at least superuser
+        LOGGER.log(Level.INFO, "Checking user permissions for obu update");
+        if (!userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER))
+            throw new PermissionException();
+
+        //check if superuser is editor or viewer
+        if (!userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN)) {
+            ObuUserDao obuUserDao = obuRepository.findObuUserRole(obu.getId(), loggedInUser.getId());
+            if (obuUserDao.getRole().equals(UserObuRole.VIEWER.toString()))
+                throw new PermissionException();
+        }
+
         obuRepository.update(Obu.transformToObuDao(obu));
     }
 
     @Override
-    public void deleteObu(long obuId, User user) {
+    public void deleteObu(long obuId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Checking if obu {0} exists", obuId);
-        ObuDao obuDao = obuRepository.findById(obuId);
 
-        try {
-            userService.checkLoggedInUserPermissions(user, UserProfile.SUPER_USER);
-        } catch (PermissionException e) {
-            userOwnsObu(obuDao, user);
+        //not at least superuser
+        if ( ! userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER))
+            throw new PermissionException();
+
+        ObuDao obuDao = obuRepository.findById(obuId, null);
+
+        //check if superuser is editor or viewer
+        if (!userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN)) {
+
         }
 
-        if (!obuDao.getObuState().equals(ObuState.READY.name())) {
+        //check if superuser...
+        if ( ! userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN)) {
+            //...is editor or viewer
+            ObuUserDao obuUserDao = obuRepository.findObuUserRole(obuId, loggedInUser.getId());
+            if (obuUserDao.getRole().equals(UserObuRole.VIEWER.toString()))
+                throw new PermissionException();
+
+            //...owns obu
+            userOwnsObu(obuDao, loggedInUser);
+        }
+
+        //obu not active    TODO check ObuState for delete
+        if ( ! obuDao.getObuState().equals(ObuState.READY.name()))
             throw new ObuActiveException();
-        }
 
         LOGGER.log(Level.INFO, "Deleting obu {0}", obuId);
         obuRepository.deleteById(obuId);
     }
+
 
     private void userOwnsObu(ObuDao obuDao, User user) {
         LOGGER.log(Level.INFO, "Checking if user {0} owns obu {1}", new String[]{user.getUserName(), String.valueOf(obuDao.getId())});
@@ -97,6 +148,8 @@ public class ObuService implements IObuService {
     }
 
 
-
+    private Long getUserIdIfNotAdmin(User loggedInUser){
+        return userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN) ? null : loggedInUser.getId();
+    }
 
 }

@@ -22,6 +22,7 @@ import pt.solvit.probe.server.model.enums.EntityType;
 import pt.solvit.probe.server.repository.model.ObuDao;
 import pt.solvit.probe.server.repository.api.IObuRepository;
 import pt.solvit.probe.server.repository.exception.impl.EntityWithIdNotFoundException;
+import pt.solvit.probe.server.repository.model.ObuUserDao;
 
 /**
  *
@@ -38,13 +39,25 @@ public class ObuRepository implements IObuRepository {
     private static final String INSERT_BASE = "INSERT INTO Obu (hardware_id, obu_state, current_config_id, current_test_plan_id, obu_name, obu_password, properties, creator, creation_date)";
     private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?::ObuState, ?, ?, ?, ?, cast(? as jsonb), ?, ?) RETURNING id";
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private static final String SELECT_ALL = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM Obu";
+
+    private static final String SELECT_ALL = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM Obu AS O";
     private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
-    private static final String SELECT_READY_POSTGRES = SELECT_ALL + " WHERE hardware_id = ? AND obu_state <> 'DEACTIVATED'::ObuState;";
-    private static final String SELECT_READY_MYSQL = SELECT_ALL + " WHERE hardware_id = ? AND obu_state <> 'DEACTIVATED';";
+
+    private static final String SELECT_ALL_INNERJOIN_PROBEUSER_OBU = SELECT_ALL + " INNER JOIN probeuser_obu AS PO ON O.id = PO.obu_id";
+    private static final String SELECT_ALL_REGISTERED_TO_USER = SELECT_ALL_INNERJOIN_PROBEUSER_OBU + " WHERE PO.probeuser_id = ?";
+    private static final String SELECT_BY_ID_REGISTERED_TO_USER = SELECT_ALL_REGISTERED_TO_USER + " AND PO.obu_id = ?;";
+
+    private static final String SELECT_USER_ROLE_OF_OBU = "SELECT probeuser_id, obu_id, role FROM Probeuser_Obu WHERE probeuser_id = ? AND obu_id = ?";
+
+    private static final String SELECT_READY = SELECT_ALL + " WHERE hardware_id = ? AND obu_state <> 'DEACTIVATED'";
+    private static final String SELECT_READY_POSTGRES = SELECT_READY + "::ObuState;";
+    private static final String SELECT_READY_MYSQL = SELECT_READY + ";";
+
     private static final String SELECT_BY_HARDWARE_ID = SELECT_ALL + " WHERE hardware_id = ?;";
-    private static final String UPDATE_POSTGRES = "UPDATE Obu SET obu_name = ?, obu_state = ?::ObuState, current_config_id = ?, current_test_plan_id = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
-    private static final String UPDATE_MYSQL = "UPDATE Obu SET obu_name = ?, obu_state = ?, current_config_id = ?, current_test_plan_id = ?, properties = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
+
+    private static final String UPDATE_POSTGRES = "UPDATE Obu SET hardware_id = ?, obu_state = ?::ObuState, current_config_id = ?, current_test_plan_id = ?, obu_name = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
+    private static final String UPDATE_MYSQL = "UPDATE Obu SET hardware_id = ?, obu_state = ?, current_config_id = ?, current_test_plan_id = ?, obu_name = ?, properties = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
+
     private static final String DELETE_ALL = "DELETE FROM Obu";
     private static final String DELETE_BY_ID = DELETE_ALL + " WHERE id = ?;";
 
@@ -58,10 +71,14 @@ public class ObuRepository implements IObuRepository {
     }
 
     @Override
-    public ObuDao findById(long id) {
+    public ObuDao findById(long obuID, Long userID) {
         try {
-            return jdbcTemplate.queryForObject(SELECT_BY_ID, new BeanPropertyRowMapper<>(ObuDao.class), id);
+            if (userID != null)
+                return jdbcTemplate.queryForObject(SELECT_BY_ID_REGISTERED_TO_USER, new BeanPropertyRowMapper<>(ObuDao.class), userID, obuID);
+            else
+                return jdbcTemplate.queryForObject(SELECT_BY_ID, new BeanPropertyRowMapper<>(ObuDao.class), obuID);
         } catch (IncorrectResultSizeDataAccessException e) {
+            //if (userID != null) return new ObuDao();  TODO what error should be sent?
             throw new EntityWithIdNotFoundException(EntityType.OBU);
         }
     }
@@ -81,8 +98,11 @@ public class ObuRepository implements IObuRepository {
     }
 
     @Override
-    public List<ObuDao> findAll() {
-        return jdbcTemplate.query(SELECT_ALL, new BeanPropertyRowMapper<>(ObuDao.class));
+    public List<ObuDao> findAll(Long userID) {
+        if (userID != null)
+            return jdbcTemplate.query(SELECT_ALL_REGISTERED_TO_USER, new BeanPropertyRowMapper<>(ObuDao.class), userID);
+        else
+            return jdbcTemplate.query(SELECT_ALL, new BeanPropertyRowMapper<>(ObuDao.class));
     }
 
     @Transactional()
@@ -135,7 +155,7 @@ public class ObuRepository implements IObuRepository {
                 } else { //mysql
                     statement = con.prepareStatement(UPDATE_MYSQL);
                 }
-                statement.setString(1, obuDao.getObuName());
+                statement.setLong(1, obuDao.getHardwareId());
                 statement.setString(2, obuDao.getObuState());
                 if (obuDao.getCurrentConfigId() == null) {
                     statement.setNull(3, java.sql.Types.BIGINT);
@@ -147,13 +167,20 @@ public class ObuRepository implements IObuRepository {
                 } else {
                     statement.setLong(4, obuDao.getCurrentTestPlanId());
                 }
-                statement.setString(5, obuDao.getProperties());
-                statement.setString(6, obuDao.getModifier());
-                statement.setLong(7, obuDao.getId());
+                statement.setString(5, obuDao.getObuName());
+                statement.setString(6, obuDao.getProperties());
+                statement.setString(7, obuDao.getModifier());
+                statement.setLong(8, obuDao.getId());
                 return statement;
             }
         });
     }
+
+    @Override
+    public ObuUserDao findObuUserRole(long obuID, long userID) {
+        return jdbcTemplate.queryForObject(SELECT_USER_ROLE_OF_OBU, new BeanPropertyRowMapper<>(ObuUserDao.class), userID, obuID);
+    }
+
 
     @Override
     public int deleteById(long id) {

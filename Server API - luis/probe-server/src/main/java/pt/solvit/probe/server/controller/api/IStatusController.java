@@ -40,6 +40,5 @@ public interface IStatusController {
             value = AppConfiguration.URL_OBU_POSITION, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<ObuStatus>> getObuPosition(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-                                                          @PathVariable("obu-id") long obuId);
+    public ResponseEntity<List<ObuStatus>> getObuPosition(HttpServletRequest request, @PathVariable("obu-id") long obuId);
 }

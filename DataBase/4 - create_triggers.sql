@@ -1,5 +1,6 @@
 BEGIN;
 
+--trigger func for before insertion on probeuser_obu
 CREATE OR REPLACE FUNCTION funcFor_trg_checksBeforeInsert_Probeuser_Obu()
 RETURNS TRIGGER
 LANGUAGE 'plpgsql'
@@ -7,7 +8,8 @@ AS $$
 DECLARE
 	insertedUserProfile VARCHAR(15):= (SELECT user_profile FROM ProbeUser WHERE id = new.probeuser_id);
 BEGIN
-		--if user is admin then skip (all ADMINs have access to all OBUs)
+	
+	--if user is admin then skip (all ADMINs have access to all OBUs)
 	IF (insertedUserProfile = 'ADMIN') THEN
 		RAISE EXCEPTION 'User can already edit and see all OBUs';
 	END IF;
@@ -17,8 +19,8 @@ BEGIN
 		RAISE EXCEPTION 'User with profile "NORMAL_USER" cannot be editor of an OBU';
 	END IF;
 
-	--check if user is already a viewer, then just update
 	/*
+	--check if user is already a viewer, then just update
 	IF EXISTS (SELECT * FROM Probeuser_Obu 
 			WHERE probeuser_id = new.probeuser_id 
 				AND obu_id = new.obu_id 
@@ -34,13 +36,46 @@ BEGIN
 	END IF;
 	*/
 
+	RETURN new;
+END;
+$$;
+
+--trigger for before insertion on probeuser_obu
+CREATE TRIGGER trg_checksBeforeInsert_Probeuser_Obu before INSERT ON Probeuser_Obu
+FOR EACH ROW
+EXECUTE PROCEDURE funcFor_trg_checksBeforeInsert_Probeuser_Obu();
+
+
+
+
+
+
+--trigger func for after insertion on Obu
+CREATE OR REPLACE FUNCTION funcFor_trg_afterInsert_Obu()
+RETURNS TRIGGER
+LANGUAGE 'plpgsql'
+AS $$
+DECLARE
+	creatorID BIGINT := (SELECT id FROM Probeuser WHERE user_name = new.creator);
+	creatorUserProfile VARCHAR(15):= (SELECT user_profile FROM ProbeUser WHERE user_name = new.creator);
+BEGIN
+
+	IF (creatorID = null) THEN
+		RETURN new;
+	END IF;
+
+	IF (creatorUserProfile = 'SUPER_USER') THEN
+		INSERT INTO Probeuser_Obu (probeuser_id, obu_id, role) VALUES (creatorID, new.id, 'EDITOR');
+	END IF;
 
 	RETURN new;
 END;
 $$;
-	
-CREATE TRIGGER trg_checksBeforeInsert_Probeuser_Obu before INSERT ON Probeuser_Obu
+
+--trigger for before insertion on probeuser_obu			drop trigger trg_afterInsert_Obu on Obu
+CREATE TRIGGER trg_afterInsert_Obu before INSERT ON Obu
 FOR EACH ROW
-EXECUTE PROCEDURE funcFor_trg_checksBeforeInsert_Probeuser_Obu();
+EXECUTE PROCEDURE funcFor_trg_afterInsert_Obu();
+
 
 COMMIT;

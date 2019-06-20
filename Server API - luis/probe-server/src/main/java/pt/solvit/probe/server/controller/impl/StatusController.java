@@ -42,8 +42,7 @@ public class StatusController implements IStatusController {
     private IServerLogService serverLogService;
 
     @Override
-    public ResponseEntity<List<ObuStatus>> getObuPosition(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-                                                          @PathVariable("obu-id") long obuId) {
+    public ResponseEntity<List<ObuStatus>> getObuPosition(HttpServletRequest request, @PathVariable("obu-id") long obuId) {
 
         //User user = userService.checkUserCredentials(authorization);
 

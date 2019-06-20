@@ -199,7 +199,7 @@ CREATE TABLE Probeuser_Obu (
 	
   CONSTRAINT PK_ProbeUser_Obu PRIMARY KEY (probeuser_id, obu_id),
 	CONSTRAINT FK_Probeuser_Obu_Probeuser FOREIGN KEY (probeuser_id) REFERENCES Probeuser (id) ON DELETE CASCADE,
-	CONSTRAINT FK_Probeuser_Obu_Obu FOREIGN KEY (obu_id) REFERENCES Obu (id) ON DELETE CASCADE
+	CONSTRAINT FK_Probeuser_Obu_Obu FOREIGN KEY (obu_id) REFERENCES Obu (id) ON DELETE CASCADE  DEFERRABLE INITIALLY DEFERRED
 	
 );
 

@@ -38,7 +38,8 @@ public class ObuStatusRepository implements IObuStatusRepository {
     private static final String INSERT_BASE = "INSERT INTO ObuStatus (obu_id, status_date, latitude, longitude, speed, location_properties, usable_storage, free_storage, critical_alarms, major_alarms, warning_alarms, temperature, network_interfaces)";
     private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, cast(? as jsonb), ?, ?, ?, ?, ?, ?, cast(? as jsonb)) RETURNING id;";
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private static final String SELECT_ALL = "SELECT id, obu_id AS obuId, status_date AS statusDate, latitude AS lat, longitude AS lon, speed, location_properties AS locationProperties, usable_storage AS usableStorage, free_storage AS freeStorage, critical_alarms AS criticalAlarms, major_alarms AS majorAlarms, warning_alarms AS warningAlarms, temperature, network_interfaces AS networkInterfaces FROM ObuStatus";
+    private static final String SELECT_ALL = "SELECT id, obu_id AS obuId, status_date AS statusDate, latitude AS lat, longitude AS lon, speed, location_properties AS locationProperties, usable_storage AS usableStorage, free_storage AS freeStorage, critical_alarms AS criticalAlarms, major_alarms AS majorAlarms, warning_alarms AS warningAlarms, temperature, network_interfaces AS networkInterfaces FROM ObuStatus AS OS";
+    private static final String INNERJOIN_USER_OBU = " INNER JOIN Probeuser_OBU AS PO ON OS.obu_id = PO.obu_id WHERE PO.probeuser_id = ?";
     private static final String ORDER_BY_STATUSDATE = " ORDER BY status_date DESC";
     private static final String SELECT_BY_OBU_ID = SELECT_ALL + " WHERE obu_id = ?" + ORDER_BY_STATUSDATE;
     private static final String SELECT_LAST_BY_OBU_ID = SELECT_BY_OBU_ID + "LIMIT 1";

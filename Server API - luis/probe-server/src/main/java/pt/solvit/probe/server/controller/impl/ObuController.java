@@ -41,33 +41,27 @@ public class ObuController implements IObuController {
     private IServerLogService serverLogService;
 
     @Override
-    public ResponseEntity<List<Obu>> getAllObus(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization) {
+    public ResponseEntity<List<Obu>> getAllObus(HttpServletRequest request) {
 
-        //User user = userService.checkUserCredentials(authorization);
+        User user = (User) request.getAttribute("user");
 
-        List<Obu> obuList = obuService.getAllObus();
+        List<Obu> obuList = obuService.getAllObus(user);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_OBU);
-        //serverLogService.createServerLog(serverLog);
-
-        return ResponseEntity.ok(obuList);
+        return ResponseEntity.ok().body(obuList);
     }
 
     @Override
-    public ResponseEntity<Obu> createObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @RequestBody InputObu body) {
+    public ResponseEntity<Obu> createObu(HttpServletRequest request, @RequestBody InputObu body) {
 
         User user = (User) request.getAttribute("user");
 
         body.validate();
         Hardware hardware = hardwareService.getHardware( body.getHardwareId() );
         Obu obu = Obu.makeObuFromInput( body, user.getUserName() );
-        long obuId = obuService.createObu(obu);
+        long obuId = obuService.createObu(obu, user);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_OBU);
-        //serverLogService.createServerLog(serverLog);
 
-        obu = obuService.getObu(obuId);
+        obu = obuService.getObuByID(obuId, user);
 
         URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_OBU_ID, obuId);
 
@@ -75,60 +69,51 @@ public class ObuController implements IObuController {
     }
 
     @Override
-    public ResponseEntity<Obu> getObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId) {
-
-        //User user = userService.checkUserCredentials(authorization);
-
-        Obu obu = obuService.getObu(obuId);
-
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_OBU_ID, obuId);
-        //serverLogService.createServerLog(serverLog);
-
-        return ResponseEntity.ok(obu);
-    }
-
-    @Override
-    public ResponseEntity<Obu> updateObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @RequestBody InputObu body) {
+    public ResponseEntity<Obu> getObuByID(HttpServletRequest request, @PathVariable("obu-id") long obuId) {
 
         User user = (User) request.getAttribute("user");
 
-        body.validate();
-        Obu obu = obuService.getObu(obuId);
-        //obu.setHardwareId(body.getHardwareId());
-        obu.setSims(body.getSims());
-        obu.setObuName(body.getObuName());
-        obu.setModifier(user.getUserName());
-        obuService.updateObu(obu);
-        obu = obuService.getObu(obuId);
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.PUT, HttpStatus.OK, AppConfiguration.URL_OBU_ID, obuId);
-        //serverLogService.createServerLog(serverLog);
+        Obu obu = obuService.getObuByID(obuId, user);
 
         return ResponseEntity.ok().body(obu);
     }
 
     @Override
-    public ResponseEntity<Void> deleteObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId) {
+    public ResponseEntity<Obu> updateObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @RequestBody InputObu body) {
+
+        User user = (User) request.getAttribute("user");
+
+        //TODO getObuByID returns "OBU doesn't exist" instead of "User doesn't have permission to update a OBU"
+
+        body.validate();
+        Obu updateObu = obuService.getObuByID(obuId, user);
+
+        updateObu(updateObu, body, user.getUserName());
+        obuService.updateObu(updateObu, user);
+
+        updateObu = obuService.getObuByID(obuId, user);
+
+
+        return ResponseEntity.ok().body(updateObu);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteObu(HttpServletRequest request, @PathVariable("obu-id") long obuId) {
 
         User user = (User) request.getAttribute("user");
 
         obuService.deleteObu(obuId, user);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.DELETE, HttpStatus.OK, AppConfiguration.URL_OBU_ID, obuId);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<Void> updateObuFlags(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @RequestBody InputObuFlags body) {
+    public ResponseEntity<Void> updateObuFlags(HttpServletRequest request, @PathVariable("obu-id") long obuId, @RequestBody InputObuFlags body) {
 
-        //User user = userService.checkUserCredentials(authorization);
+        User user = (User) request.getAttribute("user");
 
-        Obu obu = obuService.getObu(obuId);
+        Obu obu = obuService.getObuByID(obuId, user);
 
         if (body.isAuthenticate() != null) {
             obu.setAuthenticate(body.isAuthenticate());
@@ -145,12 +130,18 @@ public class ObuController implements IObuController {
         if (body.isShutdownRequest() != null) {
             obu.setShutdownRequest(body.isShutdownRequest());
         }
-        obuService.updateObu(obu);
+        obuService.updateObu(obu, user);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.POST, HttpStatus.OK, AppConfiguration.URL_OBU_FLAGS, obuId);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok().build();
+    }
+
+    private void updateObu(Obu obu, InputObu inputObu, String modifier){
+        obu.setHardwareId(inputObu.getHardwareId());
+        obu.setSims(inputObu.getSims());
+        obu.setObuName(inputObu.getObuName());
+
+        obu.setModifier(modifier);
     }
 
     /*

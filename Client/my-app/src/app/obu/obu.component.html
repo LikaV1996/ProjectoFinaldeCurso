@@ -26,7 +26,7 @@
                 <button mat-button [matMenuTriggerFor]="menu">Options</button>
                 <mat-menu #menu="matMenu">
                   <button mat-menu-item (click)="edit(obu.id)" data-tooltip="Edit OBU">Edit OBU / Details</button>
-                  <button mat-menu-item>Delete OBU</button>
+                  <button mat-menu-item (click)="delete(obu.id)">Delete OBU</button>
                 </mat-menu>
               
             </div>

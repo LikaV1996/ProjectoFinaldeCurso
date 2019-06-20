@@ -50,4 +50,9 @@ export class OBUService {
     return this.http.get<OBUStatus[]>(getPositionFromOBUByIDUrl)
   }
 
+  deleteOBUByID(id: number) {
+    const deleteOBUByIDUrl = routes.deleteOBU.replace(":id", id.toString());
+    return this.http.delete<OBU>(deleteOBUByIDUrl)
+  }
+
 }

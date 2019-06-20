@@ -49,4 +49,15 @@ export class TestPlansComponent implements OnInit {
     this.router.navigate(['home/testPlan/'+id+'/edit']);
   }
 
+  delete(id: number){
+    this._testPlanService.deleteTestPlanByID(id).subscribe(
+      data =>{
+        //sucesso
+        console.log('TestPlan deleted!', data) 
+        this.testPlans = this.testPlans.filter(testPlan=> testPlan.id != id)
+      },
+      error => alert(error.error.detail) //erro
+    )
+  }
+
 }

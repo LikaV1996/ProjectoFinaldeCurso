@@ -46,4 +46,15 @@ export class ConfigurationComponent implements OnInit {
     this.router.navigate(['home/config/'+id+'/edit']);
   }
 
+  delete(id: number){
+    this._configService.deleteConfigByID(id).subscribe(
+      data =>{
+        //sucesso
+        console.log('Configuration deleted!', data) 
+        this.configs = this.configs.filter(config=> config.id != id)
+      },
+      error => alert(error.error.detail) //erro
+    )
+  }
+
 }

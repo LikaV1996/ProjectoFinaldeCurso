@@ -52,4 +52,15 @@ export class OBUComponent implements OnInit {
     this.obus.sort( (h1,h2)=> h1.id - h2.id)
   }
 
+  delete(id: number){
+    this._obuService.deleteOBUByID(id).subscribe(
+      data =>{
+        //sucesso
+        console.log('OBU deleted!', data) 
+        this.obus = this.obus.filter(obu=> obu.id != id)
+      },
+      error => alert(error.error.detail) //erro
+    )
+  }
+
 }

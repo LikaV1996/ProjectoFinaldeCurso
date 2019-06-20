@@ -51,7 +51,7 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
     return next.handle(req)
         .pipe(
           //retry(1),
-          catchError(this.errorHandler())
+          //catchError(this.errorHandler()) //DEVIA ESTAR A FUNCIONAR!
         )
   }
 

@@ -36,6 +36,11 @@ export class HardwareService {
     const updateHardwareById = routes.updateHardware.replace(":id", id.toString());
     return this.http.put<Hardware>(updateHardwareById, {serialNumber: serialNumber, components: components})
   }
+
+  deleteHardwareByID(id: number){
+    const deleteHardwareByIDUrl = routes.deleteHardware.replace(":id", id.toString());
+    return this.http.delete<Hardware>(deleteHardwareByIDUrl)
+  }
   
 
 }

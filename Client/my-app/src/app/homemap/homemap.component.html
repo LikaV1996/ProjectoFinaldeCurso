@@ -7,7 +7,7 @@
             <div class="three wide column">
                 <div class="field">
                     <div class="ui radio checkbox">
-                        <input type="radio" name="frequency" checked="checked" (change)="showLastPlace()">
+                        <input type="radio" name="frequency" (change)="showLastPlace()">
                         <label>Last Place</label>
                     </div>
                 </div>
@@ -45,17 +45,23 @@
         <div class="ui segment" *ngFor="let obu of obus">
             <div class="ui middle aligned grid">
                 <div class="six wide column">{{obu.obuName}}</div>
-                <div class="six wide right aligned column"></div>
+                <div class="six wide right aligned column">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="public" checked="" (change)="updateMap($event,obu.id)">
+                        <label></label>
+                      </div>
+                </div>
                 <div class="four wide right aligned column">
                     <button mat-button [matMenuTriggerFor]="menu">Options</button>
                     <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="edit(obu.id)" data-tooltip="Edit OBU">Edit OBU / OBU Details</button>
-                    <button mat-menu-item>Delete OBU</button>
+                        <button mat-menu-item (click)="edit(obu.id)" data-tooltip="Edit OBU">Edit OBU / OBU Details</button>
+                        <button mat-menu-item>Delete OBU</button>
                     </mat-menu>
             
                 </div>
             </div>
         </div>
+        <canvas #lineChart>{{ chart }}</canvas>
     </div>
 
     <div class="map"

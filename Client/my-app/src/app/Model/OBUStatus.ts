@@ -5,7 +5,6 @@ export class OBUStatus{
     latitude: number
     longitude: number
     speed: number
-    properties//location_properties
     usableStorage: number
     freeStorage: number
     criticalAlarms: number
@@ -14,6 +13,9 @@ export class OBUStatus{
     temperature: number
     networkInterfaces
 
-    type: String
-    coordinates
+    //O que vem da API
+    date: String
+    location
+    storage
+    alarms
 }

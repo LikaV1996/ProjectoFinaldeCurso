@@ -22,12 +22,13 @@
             <div class="four wide column" *ngIf="obu.CurrentConfigId!=null">{{obu.CurrentConfigId}}</div>
             <div class="four wide column" *ngIf="obu.CurrentConfigId==null">No Configuration</div>
             <div class="four wide right aligned column">
+              
                 <button mat-button [matMenuTriggerFor]="menu">Options</button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item (click)="edit(obu.id)" data-tooltip="Edit OBU">Edit OBU / OBU Details</button>
+                  <button mat-menu-item (click)="edit(obu.id)" data-tooltip="Edit OBU">Edit OBU / Details</button>
                   <button mat-menu-item>Delete OBU</button>
                 </mat-menu>
-              <div class="ui suspend button" (click)="edit(obu.id)" data-tooltip="Edit OBU">Edit</div>
+              
             </div>
             
                 

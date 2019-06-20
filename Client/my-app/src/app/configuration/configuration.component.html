@@ -19,9 +19,17 @@
             <div class="four wide column">{{config.creator}}</div>
             <div *ngIf="config.activationDate!=null" class="four wide column">{{config.activationDate}}</div>
             <div *ngIf="config.activationDate==null" class="four wide column">No Activation Date</div>
+            
             <div class="four wide right aligned column">
-              <div class="ui suspend button" (click)="edit(config.id)" data-tooltip="Edit Configuration">Edit</div>
+              
+                <button mat-button [matMenuTriggerFor]="menu">Options</button>
+                <mat-menu #menu="matMenu" style="width: ;">
+                  <button mat-menu-item (click)="edit(config.id)" data-tooltip="Edit Configuration">Edit Configuration / Details</button>
+                  <button mat-menu-item>Delete Configuration</button>
+                </mat-menu>
+              
             </div>
+
           </div>
         </div>
       </div>

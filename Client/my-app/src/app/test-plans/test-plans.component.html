@@ -21,8 +21,15 @@
             <div class="four wide column">{{testplan.creator}}</div>
             <div class="four wide column">{{testplan.startDate}}</div>
             <div class="four wide right aligned column">
-              <div class="ui suspend button" (click)="edit(testplan.id)" data-tooltip="Edit Test Plan">Edit</div>
+              
+                <button mat-button [matMenuTriggerFor]="menu">Options</button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="edit(testplan.id)" data-tooltip="Edit Test Plan">Edit Test Plan / Details</button>
+                  <button mat-menu-item>Delete Test Plan</button>
+                </mat-menu>
+              
             </div>
+
           </div>
         </div>
       </div>

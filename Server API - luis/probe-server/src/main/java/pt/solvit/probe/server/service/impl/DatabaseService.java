@@ -55,7 +55,7 @@ public class DatabaseService implements IDatabaseService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void resetDb(User user) {
-        userService.checkLoggedInUserPermissions(user, UserProfile.SUPER_USER);
+        userService.checkUserPermissions(user, UserProfile.SUPER_USER);
 
         LOGGER.log(Level.INFO, "Reseting database");
         obuRepository.deleteAll();
@@ -69,7 +69,7 @@ public class DatabaseService implements IDatabaseService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void factoryResetDb(User user) {
-        userService.checkLoggedInUserPermissions(user, UserProfile.ADMIN);
+        userService.checkUserPermissions(user, UserProfile.ADMIN);
 
         LOGGER.log(Level.INFO, "Factory reseting database");
         resetDb(user);

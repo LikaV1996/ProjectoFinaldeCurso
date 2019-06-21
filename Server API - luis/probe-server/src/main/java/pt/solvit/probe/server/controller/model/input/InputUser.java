@@ -26,19 +26,19 @@ public class InputUser {
     private static final Logger LOGGER = Logger.getLogger(InputUser.class.getName());
 
     @JsonProperty("userName")
-    //@NotNull(message = "An userName must be provided.")
+    @NotNull(message = "An userName must be provided.")
     private String userName;
 
     @JsonProperty("userPassword")
-    //@NotNull(message = "An userPassword must be provided.")
+    @NotNull(message = "An userPassword must be provided.")
     private String userPassword;
 
     @JsonProperty("userProfile")
-    //@NotNull(message = "An userProfile must be provided.")
+    @NotNull(message = "An userProfile must be provided.")
     private String userProfile;
 
     @JsonProperty("suspended")
-    //@NotNull(message = "An userProfile must be provided.")
+    @NotNull(message = "An userProfile must be provided.")
     private Boolean suspended;
 
 

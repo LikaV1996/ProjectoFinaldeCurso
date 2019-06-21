@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.solvit.probe.server.controller.model.input.InputComponent;
 import pt.solvit.probe.server.controller.model.input.InputHardware;
+import pt.solvit.probe.server.controller.model.input.InputObuUser;
 import pt.solvit.probe.server.controller.model.input.controlconnection.InputConfigState;
 import pt.solvit.probe.server.controller.model.input.controlconnection.InputConfigStatus;
 import pt.solvit.probe.server.controller.model.input.controlconnection.InputTestPlanState;
@@ -172,6 +173,9 @@ public class ControllerUtil {
 
 
 
+    public static ObuUser transformToObuUser(InputObuUser body) {
+        return new ObuUser(body.getUserID(), body.getObuID(), body.getRole());
+    }
 
 
 
@@ -203,4 +207,5 @@ public class ControllerUtil {
                 return false;
         }
     }
+
 }

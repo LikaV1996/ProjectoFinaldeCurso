@@ -43,11 +43,11 @@ public class ObuRepository implements IObuRepository {
     private static final String SELECT_ALL = "SELECT id, hardware_id AS hardwareId, obu_state AS obuState, current_config_id AS currentConfigId, current_test_plan_id AS currentTestPlanId, obu_name AS obuName, obu_password AS obuPassword, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM Obu AS O";
     private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
 
+
     private static final String SELECT_ALL_INNERJOIN_PROBEUSER_OBU = SELECT_ALL + " INNER JOIN probeuser_obu AS PO ON O.id = PO.obu_id";
     private static final String SELECT_ALL_REGISTERED_TO_USER = SELECT_ALL_INNERJOIN_PROBEUSER_OBU + " WHERE PO.probeuser_id = ?";
     private static final String SELECT_BY_ID_REGISTERED_TO_USER = SELECT_ALL_REGISTERED_TO_USER + " AND PO.obu_id = ?;";
 
-    private static final String SELECT_USER_ROLE_OF_OBU = "SELECT probeuser_id, obu_id, role FROM Probeuser_Obu WHERE probeuser_id = ? AND obu_id = ?";
 
     private static final String SELECT_READY = SELECT_ALL + " WHERE hardware_id = ? AND obu_state <> 'DEACTIVATED'";
     private static final String SELECT_READY_POSTGRES = SELECT_READY + "::ObuState;";
@@ -174,11 +174,6 @@ public class ObuRepository implements IObuRepository {
                 return statement;
             }
         });
-    }
-
-    @Override
-    public ObuUserDao findObuUserRole(long obuID, long userID) {
-        return jdbcTemplate.queryForObject(SELECT_USER_ROLE_OF_OBU, new BeanPropertyRowMapper<>(ObuUserDao.class), userID, obuID);
     }
 
 

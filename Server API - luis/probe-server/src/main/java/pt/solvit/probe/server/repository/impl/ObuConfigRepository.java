@@ -55,7 +55,7 @@ public class ObuConfigRepository implements IObuConfigRepository {
         try {
             return jdbcTemplate.queryForObject(SELECT_BY_IDS, new BeanPropertyRowMapper<>(ObuConfigDao.class), obuId, configId);
         } catch (IncorrectResultSizeDataAccessException e) {
-            throw new EntityWithIdNotFoundException(EntityType.CONFIG);
+            throw new EntityWithIdNotFoundException(EntityType.OBU, EntityType.CONFIG);
         }
     }
 

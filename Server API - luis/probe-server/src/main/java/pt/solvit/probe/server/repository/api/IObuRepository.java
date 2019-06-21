@@ -30,6 +30,4 @@ public interface IObuRepository {
     public int deleteAll();
 
     public void update(ObuDao obuDao);
-
-    public ObuUserDao findObuUserRole(long obuID, long userID);
 }

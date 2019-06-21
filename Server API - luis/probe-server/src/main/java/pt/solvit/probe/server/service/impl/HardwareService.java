@@ -71,7 +71,7 @@ public class HardwareService implements IHardwareService {
         LOGGER.log(Level.INFO, "Checking if hardware {0} exists", hardwareId);
         HardwareDao hardwareDao = hardwareRepository.findById(hardwareId);
 
-        userService.checkLoggedInUserPermissions(user, UserProfile.SUPER_USER);
+        userService.checkUserPermissions(user, UserProfile.SUPER_USER);
 
         verifyHardwareOnUseCondition(hardwareId);
 

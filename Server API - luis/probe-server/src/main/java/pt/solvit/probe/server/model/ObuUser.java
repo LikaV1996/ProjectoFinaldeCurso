@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import pt.solvit.probe.server.controller.impl.util.Profile;
+import pt.solvit.probe.server.model.enums.ObuUserRole;
+import pt.solvit.probe.server.repository.model.ObuUserDao;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,12 +35,16 @@ public class ObuUser {
 
     @JsonView(Profile.ExtendedView.class)
     @JsonProperty("role")
-    private String role;
+    private ObuUserRole role;
 
-    public ObuUser(Long userID, Long obuID, String role) {
+    public ObuUser(Long userID, Long obuID, ObuUserRole role) {
         this.userID = userID;
         this.obuID = obuID;
         this.role = role;
+    }
+
+    public static ObuUserDao transformToObuUserDao(ObuUser obuUser) {
+        return new ObuUserDao(obuUser.getUserID(), obuUser.getObuID(), obuUser.getRole().toString());
     }
 
 
@@ -50,7 +56,7 @@ public class ObuUser {
         return obuID;
     }
 
-    public String getRole() {
+    public ObuUserRole getRole() {
         return role;
     }
 }

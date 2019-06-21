@@ -44,7 +44,7 @@ public class TestPlanSetupRepository implements ITestPlanSetupRepository {
         try {
             return jdbcTemplate.queryForObject(SELECT_BY_ID, new BeanPropertyRowMapper<>(TestPlanSetupDao.class), testPlanId, setupId);
         } catch (IncorrectResultSizeDataAccessException e) {
-            throw new EntityWithIdNotFoundException(EntityType.SETUP);
+            throw new EntityWithIdNotFoundException(EntityType.TESTPLAN,EntityType.SETUP);
         }
     }
 

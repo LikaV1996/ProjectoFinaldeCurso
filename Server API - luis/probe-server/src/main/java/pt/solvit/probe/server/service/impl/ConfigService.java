@@ -77,7 +77,7 @@ public class ConfigService implements IConfigService {
         ConfigDao configDao = configRepository.findById(configId);
 
         try {
-            userService.checkLoggedInUserPermissions(user, UserProfile.SUPER_USER);
+            userService.checkUserPermissions(user, UserProfile.SUPER_USER);
         } catch (PermissionException e) {
             userOwnsConfig(configDao, user);
         }

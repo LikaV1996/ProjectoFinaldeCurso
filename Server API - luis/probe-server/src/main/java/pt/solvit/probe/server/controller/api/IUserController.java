@@ -77,7 +77,7 @@ public interface IUserController {
     @ApiOperation(value = "Updates a user", tags = {"User",})
     @ApiResponses(
             value = {
-                    @ApiResponse(code = 200, message = "The user was successfully suspended."),
+                    @ApiResponse(code = 200, message = "The user was successfully updated."),
                     @ApiResponse(code = 401, message = "There was an error with authentication."),
                     @ApiResponse(code = 404, message = "The user with the requested id was not found.")
             }

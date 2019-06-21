@@ -6,8 +6,6 @@
 package pt.solvit.probe.server.controller.impl;
 
 import java.net.URI;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +22,6 @@ import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.service.api.IServerLogService;
 import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.controller.api.IHardwareController;
-import pt.solvit.probe.server.controller.model.input.InputComponent;
-import pt.solvit.probe.server.model.Component;
 import pt.solvit.probe.server.service.api.IHardwareService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +41,7 @@ public class HardwareController implements IHardwareController {
 
         User user = (User) request.getAttribute("user");
 
-        userService.checkLoggedInUserPermissions(user, UserProfile.ADMIN);
+        userService.checkUserPermissions(user, UserProfile.ADMIN);
 
         List<Hardware> hardwareList = hardwareService.getAllHardware();
 
@@ -60,7 +56,7 @@ public class HardwareController implements IHardwareController {
 
         User user = (User) request.getAttribute("user");
 
-        userService.checkLoggedInUserPermissions(user, UserProfile.ADMIN);
+        userService.checkUserPermissions(user, UserProfile.ADMIN);
 
         body.validate();
         Hardware hardware = ControllerUtil.transformToHardware(body, user.getUserName());
@@ -80,7 +76,7 @@ public class HardwareController implements IHardwareController {
 
         User user = (User) request.getAttribute("user");
 
-        userService.checkLoggedInUserPermissions(user, UserProfile.ADMIN);
+        userService.checkUserPermissions(user, UserProfile.ADMIN);
 
         Hardware hardware = hardwareService.getHardware(hardwareId);
 
@@ -95,7 +91,7 @@ public class HardwareController implements IHardwareController {
 
         User user = (User) request.getAttribute("user");
 
-        userService.checkLoggedInUserPermissions(user, UserProfile.ADMIN);
+        userService.checkUserPermissions(user, UserProfile.ADMIN);
 
         hardwareService.deleteHardware(hardwareId, user);
 
@@ -110,7 +106,7 @@ public class HardwareController implements IHardwareController {
 
         User user = (User) request.getAttribute("user");
 
-        userService.checkLoggedInUserPermissions(user, UserProfile.ADMIN);
+        userService.checkUserPermissions(user, UserProfile.ADMIN);
 
 
         body.validate();

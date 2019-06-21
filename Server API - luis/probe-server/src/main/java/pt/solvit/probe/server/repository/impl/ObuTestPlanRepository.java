@@ -53,7 +53,7 @@ public class ObuTestPlanRepository implements IObuTestPlanRepository {
         try {
             return jdbcTemplate.queryForObject(SELECT_BY_ID, new BeanPropertyRowMapper<>(ObuTestPlanDao.class), obuId, testPlanId);
         } catch (IncorrectResultSizeDataAccessException e) {
-            throw new EntityWithIdNotFoundException(EntityType.TESTPLAN);
+            throw new EntityWithIdNotFoundException(EntityType.OBU, EntityType.TESTPLAN);
         }
     }
 

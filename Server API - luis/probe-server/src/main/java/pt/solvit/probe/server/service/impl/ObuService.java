@@ -10,19 +10,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.solvit.probe.server.controller.model.input.InputObu;
 import pt.solvit.probe.server.model.Obu;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.enums.EntityType;
 import pt.solvit.probe.server.model.enums.ObuState;
-import pt.solvit.probe.server.model.enums.UserObuRole;
+import pt.solvit.probe.server.model.enums.ObuUserRole;
 import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.repository.api.IObuConfigRepository;
 import pt.solvit.probe.server.repository.api.IObuTestPlanRepository;
+import pt.solvit.probe.server.repository.api.IObuUserRepository;
 import pt.solvit.probe.server.repository.model.ObuDao;
 import pt.solvit.probe.server.repository.api.IObuRepository;
 import pt.solvit.probe.server.repository.model.ObuUserDao;
-import pt.solvit.probe.server.service.api.IConfigService;
 import pt.solvit.probe.server.service.api.IObuService;
 import pt.solvit.probe.server.service.exception.impl.*;
 import pt.solvit.probe.server.service.impl.util.ServiceUtil;
@@ -45,13 +44,15 @@ public class ObuService implements IObuService {
     private IObuConfigRepository obuConfigRepository;
     @Autowired
     private IObuTestPlanRepository obuTestPlanRepository;
+    @Autowired
+    private IObuUserRepository obuUserRepository;
 
 
     @Override
     public long createObu(Obu obu, User loggedInUser) {
         LOGGER.log(Level.INFO, "Creating new obu");
 
-        if (!userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER))
+        if (!userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
             throw new PermissionException();
 
         return obuRepository.add(Obu.transformToObuDao(obu));
@@ -98,15 +99,12 @@ public class ObuService implements IObuService {
 
         //not at least superuser
         LOGGER.log(Level.INFO, "Checking user permissions for obu update");
-        if (!userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER))
+        if (!userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
             throw new PermissionException();
 
         //check if superuser is editor or viewer
-        if (!userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN)) {
-            ObuUserDao obuUserDao = obuRepository.findObuUserRole(obu.getId(), loggedInUser.getId());
-            if (obuUserDao.getRole().equals(UserObuRole.VIEWER.toString()))
-                throw new PermissionException();
-        }
+        if (!userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            checkObuUserRoleIsEDITOR(obu.getId(), loggedInUser.getId());
 
         obuRepository.update(Obu.transformToObuDao(obu));
     }
@@ -116,22 +114,20 @@ public class ObuService implements IObuService {
         LOGGER.log(Level.INFO, "Checking if obu {0} exists", obuId);
 
         //not at least superuser
-        if ( ! userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER))
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
             throw new PermissionException();
 
         ObuDao obuDao = obuRepository.findById(obuId, null);
 
         //check if superuser is editor or viewer
-        if (!userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN)) {
+        if (!userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN)) {
 
         }
 
         //check if superuser...
-        if ( ! userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN)) {
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN)) {
             //...is editor or viewer
-            ObuUserDao obuUserDao = obuRepository.findObuUserRole(obuId, loggedInUser.getId());
-            if (obuUserDao.getRole().equals(UserObuRole.VIEWER.toString()))
-                throw new PermissionException();
+            checkObuUserRoleIsEDITOR(obuId, loggedInUser.getId());
 
             //...owns obu
             userOwnsObu(obuDao, loggedInUser);
@@ -163,7 +159,13 @@ public class ObuService implements IObuService {
 
 
     private Long getUserIdIfNotAdmin(User loggedInUser){
-        return userService.checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN) ? null : loggedInUser.getId();
+        return userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ? null : loggedInUser.getId();
+    }
+
+    private void checkObuUserRoleIsEDITOR(long obuID, long userID) {
+        ObuUserDao obuUserDao = obuUserRepository.findById(obuID, userID);
+        if (obuUserDao.getRole().equals(ObuUserRole.VIEWER.toString()))
+            throw new PermissionException();
     }
 
 }

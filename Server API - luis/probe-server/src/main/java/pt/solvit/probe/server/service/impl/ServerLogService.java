@@ -7,7 +7,6 @@ package pt.solvit.probe.server.service.impl;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,7 +80,7 @@ public class ServerLogService implements IServerLogService {
 
     @Override
     public void deleteAllServerLogs(User user) {
-        userService.checkLoggedInUserPermissions(user, UserProfile.ADMIN);
+        userService.checkUserPermissions(user, UserProfile.ADMIN);
 
         LOGGER.log(Level.INFO, "Deleting all server logs");
         serverLogRepository.deleteAll();

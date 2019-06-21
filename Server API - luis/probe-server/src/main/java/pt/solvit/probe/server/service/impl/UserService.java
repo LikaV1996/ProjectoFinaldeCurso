@@ -41,8 +41,8 @@ public class UserService implements IUserService {
 
         User addUser = User.makeUserFromInput(input, loggedInUser.getUserName());
 
-        if( !checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN) &&
-                !checkLoggedInUserPermissionsLowerThanUser(loggedInUser, addUser) )
+        if( !checkUserPermissions(loggedInUser, UserProfile.ADMIN) &&
+                !checkLoggedInUserPermissionsHigherThanUser(loggedInUser, addUser) )
             throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Creating new user");
@@ -52,7 +52,7 @@ public class UserService implements IUserService {
 
     @Override
     public void updateUser(User userToUpdate, InputUser input, User loggedInUser) {
-        if( !checkLoggedInUserPermissionsLowerThanUser(loggedInUser, userToUpdate) )
+        if( !checkLoggedInUserPermissionsHigherThanUser(loggedInUser, userToUpdate) )
             throw new PermissionException();
 
         if ( input.getUserName() != null && !input.getUserName().equals( userToUpdate.getUserName() ) )
@@ -66,7 +66,7 @@ public class UserService implements IUserService {
 
     @Override
     public User getUser(long userId, User loggedInUser) {
-        if( !checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER) )
+        if( !checkUserPermissions(loggedInUser, UserProfile.SUPER_USER) )
             throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Finding user {0}", userId);
@@ -77,7 +77,7 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> getAllUsers(User loggedInUser) {
-        if( !checkLoggedInUserPermissions(loggedInUser, UserProfile.SUPER_USER) )
+        if( !checkUserPermissions(loggedInUser, UserProfile.SUPER_USER) )
             throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Finding all users");
@@ -87,7 +87,7 @@ public class UserService implements IUserService {
 
     @Override
     public void deleteUser(long userId, User loggedInUser) {
-        if( !checkLoggedInUserPermissions(loggedInUser, UserProfile.ADMIN) )
+        if( !checkUserPermissions(loggedInUser, UserProfile.ADMIN) )
             throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Checking if user {0} exists", userId);
@@ -103,7 +103,7 @@ public class UserService implements IUserService {
 
     @Override
     public void suspendUser(User userToSuspend, User loggedInUser) {
-        if( !checkLoggedInUserPermissionsLowerThanUser(loggedInUser, userToSuspend) )
+        if( !checkLoggedInUserPermissionsHigherThanUser(loggedInUser, userToSuspend) )
             throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Suspending user {0}", userToSuspend.getId());
@@ -154,13 +154,13 @@ public class UserService implements IUserService {
     //}
 
     @Override
-    public boolean checkLoggedInUserPermissions(User loggedInUser, UserProfile requiredProfile) {
-        LOGGER.log(Level.INFO, "Checking user {0} permissions", loggedInUser.getUserName());
-        return loggedInUser.getUserProfile().getLevel() >= requiredProfile.getLevel();
+    public boolean checkUserPermissions(User user, UserProfile requiredProfile) {
+        LOGGER.log(Level.INFO, "Checking user {0} permissions", user.getUserName());
+        return user.getUserProfile().getLevel() >= requiredProfile.getLevel();
     }
 
     @Override
-    public boolean checkLoggedInUserPermissionsLowerThanUser(User loggedInUser, User user) {
+    public boolean checkLoggedInUserPermissionsHigherThanUser(User loggedInUser, User user) {
         LOGGER.log(Level.INFO, "Checking user {0} permissions", loggedInUser.getUserName());
         return loggedInUser.getUserProfile().getLevel() > user.getUserProfile().getLevel();
     }

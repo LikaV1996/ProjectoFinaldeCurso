@@ -6,6 +6,6 @@
 package pt.solvit.probe.server.model.enums;
 
 
-public enum UserObuRole {
+public enum ObuUserRole {
     EDITOR, VIEWER
 }

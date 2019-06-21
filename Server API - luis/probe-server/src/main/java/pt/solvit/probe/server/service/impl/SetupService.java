@@ -110,7 +110,7 @@ public class SetupService implements ISetupService {
         SetupDao setupDao = setupRepository.findById(setupId);
 
         try {
-            userService.checkLoggedInUserPermissions(user, UserProfile.SUPER_USER);
+            userService.checkUserPermissions(user, UserProfile.SUPER_USER);
         } catch (PermissionException e) {
             userOwnsSetup(setupDao, user);
         }

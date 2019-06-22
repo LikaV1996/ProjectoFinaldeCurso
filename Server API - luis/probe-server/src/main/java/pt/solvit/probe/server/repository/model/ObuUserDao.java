@@ -8,6 +8,7 @@ package pt.solvit.probe.server.repository.model;
 import pt.solvit.probe.server.model.Obu;
 import pt.solvit.probe.server.model.ObuUser;
 import pt.solvit.probe.server.model.enums.ObuState;
+import pt.solvit.probe.server.model.enums.ObuUserRole;
 import pt.solvit.probe.server.model.properties.ObuProperties;
 
 import java.sql.Timestamp;
@@ -54,6 +55,6 @@ public class ObuUserDao{
     }
 
     public static ObuUser transformToObuUser(ObuUserDao obuUserDao) {
-        return new ObuUser(obuUserDao.getUserID(), obuUserDao.getObuID(), obuUserDao.getRole());
+        return new ObuUser(obuUserDao.getUserID(), obuUserDao.getObuID(), ObuUserRole.valueOf( obuUserDao.getRole()) );
     }
 }

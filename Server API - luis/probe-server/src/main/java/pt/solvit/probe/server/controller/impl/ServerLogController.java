@@ -8,7 +8,6 @@ package pt.solvit.probe.server.controller.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.controller.api.IServerLogController;
@@ -17,10 +16,7 @@ import pt.solvit.probe.server.controller.model.output.OutputServerLog;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.ServerLog;
 import pt.solvit.probe.server.model.enums.AccessType;
-import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.service.api.IServerLogService;
-import pt.solvit.probe.server.service.api.IUserService;
-import pt.solvit.probe.server.service.impl.ServerLogService;
 
 import javax.servlet.http.HttpServletRequest;
 

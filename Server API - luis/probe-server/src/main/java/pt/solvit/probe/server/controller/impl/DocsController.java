@@ -9,16 +9,9 @@ package pt.solvit.probe.server.controller.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pt.solvit.probe.server.controller.api.IAuthenticationController;
 import pt.solvit.probe.server.controller.api.IDocsController;
 import pt.solvit.probe.server.controller.impl.util.LinksAndTemplates;
-import pt.solvit.probe.server.controller.model.input.InputLogin;
-import pt.solvit.probe.server.model.Login;
-import pt.solvit.probe.server.model.User;
-import pt.solvit.probe.server.service.api.IAuthenticationService;
-import pt.solvit.probe.server.service.api.IServerLogService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,8 +21,6 @@ public class DocsController implements IDocsController {
     /*
     @Autowired
     private IAuthenticationService authenticationService;
-    @Autowired
-    private IServerLogService serverLogService;
     */
 
     @Override

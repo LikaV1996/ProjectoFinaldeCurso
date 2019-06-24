@@ -6,21 +6,16 @@
 package pt.solvit.probe.server.controller.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pt.solvit.probe.server.config.AppConfiguration;
 import pt.solvit.probe.server.controller.api.IObuUserController;
-import pt.solvit.probe.server.controller.api.IUserController;
 import pt.solvit.probe.server.controller.impl.util.ControllerUtil;
-import pt.solvit.probe.server.controller.impl.util.UriBuilder;
 import pt.solvit.probe.server.controller.model.input.InputObuUser;
-import pt.solvit.probe.server.controller.model.input.InputUser;
 import pt.solvit.probe.server.model.ObuUser;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.service.api.IObuUserService;
-import pt.solvit.probe.server.service.api.IServerLogService;
 import pt.solvit.probe.server.service.api.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,12 +28,12 @@ public class ObuUserController implements IObuUserController {
 
     @Autowired
     private IObuUserService obuUserService;
-    
+
 
 
 
     @Override
-    public ResponseEntity<List<ObuUser>> getAllObuUserRegistries(HttpServletRequest request,  @PathVariable("user-id") long userId) {
+    public ResponseEntity<List<ObuUser>> getAllObuUserRegistriesByUserID(HttpServletRequest request, @PathVariable("user-id") long userId) {
         User user = (User) request.getAttribute("user");
 
         List<ObuUser> obuUserList = obuUserService.getAllObuUserByUserID(userId, user);
@@ -48,7 +43,7 @@ public class ObuUserController implements IObuUserController {
     }
 
     @Override
-    public ResponseEntity<List<ObuUser>> getObuUserRegistries(HttpServletRequest request) {
+    public ResponseEntity<List<ObuUser>> getAllObuUserRegistriesByUserID(HttpServletRequest request) {
         User user = (User) request.getAttribute("user");
 
         List<ObuUser> obuUserList = obuUserService.getAllObuUser(user);
@@ -66,7 +61,8 @@ public class ObuUserController implements IObuUserController {
 
         obuUserService.createObuUserRegistry(obuUser, user);
 
-        return ResponseEntity.ok().body(obuUser);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(obuUser);
     }
 
     @Override

@@ -5,26 +5,17 @@
  */
 package pt.solvit.probe.server.controller.impl;
 
-import com.mapbox.services.commons.geojson.LineString;
+
 import com.mapbox.services.commons.models.Position;
 import java.util.ArrayList;
-;
 import pt.solvit.probe.server.model.Location;
 import pt.solvit.probe.server.model.ObuStatus;
-import pt.solvit.probe.server.model.ServerLog;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import pt.solvit.probe.server.config.AppConfiguration;
 import pt.solvit.probe.server.controller.api.IStatusController;
-import pt.solvit.probe.server.controller.impl.util.ControllerUtil;
-import pt.solvit.probe.server.model.User;
-import pt.solvit.probe.server.service.api.IServerLogService;
 import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.service.api.IObuStatusService;
 
@@ -38,13 +29,10 @@ public class StatusController implements IStatusController {
     private IObuStatusService obuStatusService;
     @Autowired
     private IUserService userService;
-    @Autowired
-    private IServerLogService serverLogService;
 
     @Override
     public ResponseEntity<List<ObuStatus>> getObuPosition(HttpServletRequest request, @PathVariable("obu-id") long obuId) {
 
-        //User user = userService.checkUserCredentials(authorization);
 
         List<ObuStatus> obuStatusList = obuStatusService.getAllObuStatus(obuId);
 

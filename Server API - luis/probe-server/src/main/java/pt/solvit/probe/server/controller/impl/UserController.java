@@ -17,8 +17,6 @@ import pt.solvit.probe.server.controller.api.IUserController;
 import pt.solvit.probe.server.controller.impl.util.UriBuilder;
 import pt.solvit.probe.server.controller.model.input.InputUser;
 import pt.solvit.probe.server.model.User;
-import pt.solvit.probe.server.model.enums.UserProfile;
-import pt.solvit.probe.server.service.api.IServerLogService;
 import pt.solvit.probe.server.service.api.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +26,6 @@ public class UserController implements IUserController {
 
     @Autowired
     private IUserService userService;
-    @Autowired
-    private IServerLogService serverLogService;
 
     @Override
     public ResponseEntity<List<User>> getAllUsers(HttpServletRequest request) {
@@ -38,8 +34,6 @@ public class UserController implements IUserController {
 
         List<User> userList = userService.getAllUsers(user);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_GET_USERS);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok().body(userList);
     }
@@ -53,8 +47,7 @@ public class UserController implements IUserController {
         long userId = userService.createUser(body, user);
 
         User addUser = userService.getUser(userId, user);
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_GET_USERS);
-        //serverLogService.createServerLog(serverLog);
+
 
         URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_GET_USER_BY_ID, userId);
 
@@ -72,8 +65,7 @@ public class UserController implements IUserController {
         userService.updateUser(updateUser, body, user);
 
         updateUser = userService.getUser(userId, user);
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_GET_USERS);
-        //serverLogService.createServerLog(serverLog);
+
 
         return ResponseEntity.ok().body(updateUser);
     }
@@ -85,8 +77,6 @@ public class UserController implements IUserController {
 
         User getUser = userService.getUser(userId, user);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_GET_USER_BY_ID, userId);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok().body(getUser);
     }
@@ -98,8 +88,6 @@ public class UserController implements IUserController {
 
         userService.deleteUser(userId, user);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.DELETE, HttpStatus.OK, AppConfiguration.URL_GET_USER_BY_ID, userId);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok().build();
     }
@@ -114,15 +102,10 @@ public class UserController implements IUserController {
         userService.suspendUser(suspendedUser, user);
 
         suspendedUser = userService.getUser(userId, user);
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.DELETE, HttpStatus.OK, AppConfiguration.URL_GET_USER_BY_ID, userId);
-        //serverLogService.createServerLog(serverLog);
+
 
         return ResponseEntity.ok().body(suspendedUser);
     }
 
-
-    private ResponseEntity<?> resourceResponse(){
-        return null;
-    }
 
 }

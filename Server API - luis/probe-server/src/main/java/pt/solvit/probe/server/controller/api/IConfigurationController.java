@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.solvit.probe.server.config.AppConfiguration;
@@ -44,7 +43,7 @@ public interface IConfigurationController {
             value = AppConfiguration.URL_CONFIG, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<Config>> getAllConfigs(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization);
+    public ResponseEntity<List<Config>> getAllConfigs(HttpServletRequest request);
 
     @ApiOperation(value = "Creates a configuration", tags = {"Configuration",})
     @ApiResponses(
@@ -60,8 +59,7 @@ public interface IConfigurationController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Config> createConfig(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @RequestBody InputConfig body);
+    public ResponseEntity<Config> createConfig(HttpServletRequest request, @RequestBody InputConfig body);
 
     @ApiOperation(value = "Returns a configuration", tags = {"Configuration",})
     @ApiResponses(
@@ -77,8 +75,7 @@ public interface IConfigurationController {
             value = AppConfiguration.URL_CONFIG_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Config> getConfig(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("config-id") long configId);
+    public ResponseEntity<Config> getConfig(HttpServletRequest request, @PathVariable("config-id") long configId);
 
     @ApiOperation(value = "Updates a configuration", tags = {"Configuration",})
     @ApiResponses(
@@ -108,8 +105,7 @@ public interface IConfigurationController {
             value = AppConfiguration.URL_CONFIG_ID,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> deleteConfig(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("config-id") long configId);
+    public ResponseEntity<Void> deleteConfig(HttpServletRequest request, @PathVariable("config-id") long configId);
 
     @ApiOperation(value = "Returns partial representation of all configurations associated with an obu", tags = {"Obu Configuration",})
     @ApiResponses(
@@ -125,8 +121,7 @@ public interface IConfigurationController {
             value = AppConfiguration.URL_OBU_CONFIG,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<ObuConfig>> getAllConfigsFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId);
+    public ResponseEntity<List<ObuConfig>> getAllConfigsFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId);
 
     @ApiOperation(value = "Removes all configurations associated to an obu", tags = {"Obu Configuration",})
     @ApiResponses(
@@ -141,8 +136,7 @@ public interface IConfigurationController {
             value = AppConfiguration.URL_OBU_CONFIG,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> removeAllConfigsFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId);
+    public ResponseEntity<Void> removeAllConfigsFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId);
 
     @ApiOperation(value = "Adds a configuration to an obu", tags = {"Obu Configuration",})
     @ApiResponses(
@@ -157,8 +151,7 @@ public interface IConfigurationController {
             value = AppConfiguration.URL_OBU_CONFIG_ID,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> addConfigToObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId);
+    public ResponseEntity<Void> addConfigToObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId);
 
     @ApiOperation(value = "Returns a configuration from an obu", tags = {"Obu Configuration",})
     @ApiResponses(
@@ -173,8 +166,7 @@ public interface IConfigurationController {
             method = RequestMethod.GET, 
             value = AppConfiguration.URL_OBU_CONFIG_ID
     )
-    public ResponseEntity<ObuConfig> getConfigFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId);
+    public ResponseEntity<ObuConfig> getConfigFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId);
 
     @ApiOperation(value = "Cancel configuration from an obu", tags = {"Obu Configuration",})
     @ApiResponses(
@@ -190,8 +182,7 @@ public interface IConfigurationController {
             value = AppConfiguration.URL_OBU_CONFIG_ID_CANCEL,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> cancelConfigFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId);
+    public ResponseEntity<Void> cancelConfigFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId);
 
     @ApiOperation(value = "Removes configuration from an obu", tags = {"Obu Configuration",})
     @ApiResponses(
@@ -206,6 +197,5 @@ public interface IConfigurationController {
             value = AppConfiguration.URL_OBU_CONFIG_ID,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> removeConfigFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId);
+    public ResponseEntity<Void> removeConfigFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId);
 }

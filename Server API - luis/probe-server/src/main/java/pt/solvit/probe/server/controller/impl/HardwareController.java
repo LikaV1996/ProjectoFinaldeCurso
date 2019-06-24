@@ -19,7 +19,6 @@ import pt.solvit.probe.server.controller.model.input.InputHardware;
 import pt.solvit.probe.server.model.Hardware;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.enums.UserProfile;
-import pt.solvit.probe.server.service.api.IServerLogService;
 import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.controller.api.IHardwareController;
 import pt.solvit.probe.server.service.api.IHardwareService;
@@ -33,8 +32,6 @@ public class HardwareController implements IHardwareController {
     private IHardwareService hardwareService;
     @Autowired
     private IUserService userService;
-    @Autowired
-    private IServerLogService serverLogService;
 
     @Override
     public ResponseEntity<List<Hardware>> getAllHardware(HttpServletRequest request) {
@@ -45,8 +42,6 @@ public class HardwareController implements IHardwareController {
 
         List<Hardware> hardwareList = hardwareService.getAllHardware();
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_HARDWARE);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok().body(hardwareList);
     }
@@ -63,8 +58,6 @@ public class HardwareController implements IHardwareController {
         long hardwareId = hardwareService.createHardware(hardware);
         hardware = hardwareService.getHardware(hardwareId);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_HARDWARE);
-        //serverLogService.createServerLog(serverLog);
 
         URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_HARDWARE_ID, hardwareId);
 
@@ -80,8 +73,6 @@ public class HardwareController implements IHardwareController {
 
         Hardware hardware = hardwareService.getHardware(hardwareId);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_HARDWARE_ID, hardwareId);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok(hardware);
     }
@@ -95,8 +86,6 @@ public class HardwareController implements IHardwareController {
 
         hardwareService.deleteHardware(hardwareId, user);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.DELETE, HttpStatus.OK, AppConfiguration.URL_HARDWARE_ID, hardwareId);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok().build();
     }
@@ -118,8 +107,6 @@ public class HardwareController implements IHardwareController {
 
         hardware = hardwareService.getHardware(hardwareId);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user, RequestMethod.POST, HttpStatus.CREATED, AppConfiguration.URL_HARDWARE);
-        //serverLogService.createServerLog(serverLog);
 
         URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_HARDWARE_ID, hardwareId);
 

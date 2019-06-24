@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.config.AppConfiguration;
 import pt.solvit.probe.server.controller.api.IConfigurationController;
@@ -21,7 +20,6 @@ import pt.solvit.probe.server.model.Config;
 import pt.solvit.probe.server.model.ObuConfig;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.service.api.IConfigService;
-import pt.solvit.probe.server.service.api.IServerLogService;
 import pt.solvit.probe.server.service.api.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,25 +31,18 @@ public class ConfigurationController implements IConfigurationController {
     private IConfigService configService;
     @Autowired
     private IUserService userService;
-    @Autowired
-    private IServerLogService serverLogService;
 
     @Override
-    public ResponseEntity<List<Config>> getAllConfigs(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization) {
+    public ResponseEntity<List<Config>> getAllConfigs(HttpServletRequest request) {
 
-        //User user = userService.checkUserCredentials(authorization);
 
         List<Config> configList = configService.getAllConfigs();
-
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_CONFIG);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok(configList);
     }
 
     @Override
-    public ResponseEntity<Config> createConfig(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @RequestBody InputConfig body) {
+    public ResponseEntity<Config> createConfig(HttpServletRequest request, @RequestBody InputConfig body) {
 
         User user = (User) request.getAttribute("user");
 
@@ -67,15 +58,9 @@ public class ConfigurationController implements IConfigurationController {
     }
 
     @Override
-    public ResponseEntity<Config> getConfig(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("config-id") long configId) {
-
-        //User user = userService.checkUserCredentials(authorization);
+    public ResponseEntity<Config> getConfig(HttpServletRequest request, @PathVariable("config-id") long configId) {
 
         Config config = configService.getConfig(configId);
-
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_CONFIG_ID, configId);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok(config);
     }
@@ -98,107 +83,71 @@ public class ConfigurationController implements IConfigurationController {
     }
 
     @Override
-    public ResponseEntity<Void> deleteConfig(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("config-id") long configId) {
+    public ResponseEntity<Void> deleteConfig(HttpServletRequest request, @PathVariable("config-id") long configId) {
 
         User user = (User) request.getAttribute("user");
 
         configService.deleteConfig(configId, user);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.DELETE, HttpStatus.OK, AppConfiguration.URL_CONFIG_ID, configId);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<List<ObuConfig>> getAllConfigsFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId) {
+    public ResponseEntity<List<ObuConfig>> getAllConfigsFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId) {
 
-        //User user = userService.checkUserCredentials(authorization);
 
         List<ObuConfig> obuConfigList = configService.getAllObuConfigs(obuId);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_OBU_CONFIG, obuId);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok(obuConfigList);
     }
 
     @Override
-    public ResponseEntity<Void> removeAllConfigsFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId) {
-
-        //User user = userService.checkUserCredentials(authorization);
+    public ResponseEntity<Void> removeAllConfigsFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId) {
 
         configService.removeAllConfigsFromObu(obuId);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.DELETE, HttpStatus.OK, AppConfiguration.URL_OBU_CONFIG, obuId);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<Void> addConfigToObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId) {
+    public ResponseEntity<Void> addConfigToObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId) {
 
-        //User user = userService.checkUserCredentials(authorization);
-
-        //TODO what users can add configs? EDITORS? VIEWERS?
+        //TODO which users can add configs? EDITORS? VIEWERS?
         configService.addConfigToObu(obuId, configId);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.POST, HttpStatus.OK, AppConfiguration.URL_OBU_CONFIG_ID, obuId, configId);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<ObuConfig> getConfigFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId) {
+    public ResponseEntity<ObuConfig> getConfigFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId) {
 
-        //User user = userService.checkUserCredentials(authorization);
 
         ObuConfig obuConfig = configService.getObuConfig(obuId, configId);
 
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.GET, HttpStatus.OK, AppConfiguration.URL_OBU_CONFIG_ID, obuId, configId);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok(obuConfig);
     }
 
     @Override
-    public ResponseEntity<Void> cancelConfigFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId) {
+    public ResponseEntity<Void> cancelConfigFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId) {
 
         User user = (User) request.getAttribute("user");
 
         boolean result = configService.cancelConfigFromObu(obuId, configId);
 
-        if (!result){
-            //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.PATCH, HttpStatus.ACCEPTED, AppConfiguration.URL_OBU_CONFIG_ID_CANCEL, obuId, configId);
-            //serverLogService.createServerLog(serverLog);
 
-            return ResponseEntity.accepted().build();
-        }
-        
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.PATCH, HttpStatus.OK, AppConfiguration.URL_OBU_CONFIG_ID_CANCEL, obuId, configId);
-        //serverLogService.createServerLog(serverLog);
+        return !result ? ResponseEntity.accepted().build() : ResponseEntity.ok().build();
 
-        return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<Void> removeConfigFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId) {
-
-        //User user = userService.checkUserCredentials(authorization);
+    public ResponseEntity<Void> removeConfigFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId) {
 
         configService.removeConfigFromObu(obuId, configId);
-
-        //ServerLog serverLog = ControllerUtil.transformToServerLog(user.getUserName(), RequestMethod.DELETE, HttpStatus.OK, AppConfiguration.URL_OBU_CONFIG_ID, obuId, configId);
-        //serverLogService.createServerLog(serverLog);
 
         return ResponseEntity.ok().build();
     }

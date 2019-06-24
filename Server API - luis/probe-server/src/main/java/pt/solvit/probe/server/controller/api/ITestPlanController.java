@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.solvit.probe.server.config.AppConfiguration;
@@ -45,7 +44,7 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_TESTPLAN, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<TestPlan>> getAllTestPlans(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization);
+    public ResponseEntity<List<TestPlan>> getAllTestPlans(HttpServletRequest request);
 
     @ApiOperation(value = "Creates a test plan", tags = {"Test Plan",})
     @ApiResponses(
@@ -61,8 +60,7 @@ public interface ITestPlanController {
             consumes = {MediaType.APPLICATION_JSON_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<TestPlan> createTestPlan(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @RequestBody InputTestPlan body);
+    public ResponseEntity<TestPlan> createTestPlan(HttpServletRequest request, @RequestBody InputTestPlan body);
 
     @ApiOperation(value = "Returns a test plan", tags = {"Test Plan",})
     @ApiResponses(
@@ -78,8 +76,7 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_TESTPLAN_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<TestPlan> getTestPlan(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("test-plan-id") long testPlanId);
+    public ResponseEntity<TestPlan> getTestPlan(HttpServletRequest request,  @PathVariable("test-plan-id") long testPlanId);
 
     @ApiOperation(value = "Updates a test plan", tags = {"Test Plan",})
     @ApiResponses(
@@ -109,8 +106,7 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_TESTPLAN_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> deleteTestPlan(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("test-plan-id") long testPlanId);
+    public ResponseEntity<Void> deleteTestPlan(HttpServletRequest request, @PathVariable("test-plan-id") long testPlanId);
 
     @ApiOperation(value = "Returns all setups from test plan", tags = {"Test Plan",})
     @ApiResponses(
@@ -126,8 +122,7 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_TESTPLAN_SETUP, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<Setup>> getAllSetupsFromTestPlan(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("test-plan-id") long testPlanId);
+    public ResponseEntity<List<Setup>> getAllSetupsFromTestPlan(HttpServletRequest request, @PathVariable("test-plan-id") long testPlanId);
 
     @ApiOperation(value = "Removes all setups from test plan", tags = {"Test Plan",})
     @ApiResponses(
@@ -142,8 +137,7 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_TESTPLAN_SETUP, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> removeAllSetupsFromTestPlan(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("test-plan-id") long testPlanId);
+    public ResponseEntity<Void> removeAllSetupsFromTestPlan(HttpServletRequest request, @PathVariable("test-plan-id") long testPlanId);
 
     @ApiOperation(value = "Adds setup to test plan", tags = {"Test Plan",})
     @ApiResponses(
@@ -158,8 +152,7 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_TESTPLAN_SETUP_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> addSetupToTestPlan(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("test-plan-id") long testPlanId, @PathVariable("setup-id") long setupId);
+    public ResponseEntity<Void> addSetupToTestPlan(HttpServletRequest request,  @PathVariable("test-plan-id") long testPlanId, @PathVariable("setup-id") long setupId);
 
     @ApiOperation(value = "Returns setup from test plan", tags = {"Test Plan",})
     @ApiResponses(
@@ -174,8 +167,7 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_TESTPLAN_SETUP_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Setup> getSetupFromTestPlan(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("test-plan-id") long testPlanId, @PathVariable("setup-id") long setupId);
+    public ResponseEntity<Setup> getSetupFromTestPlan(HttpServletRequest request,  @PathVariable("test-plan-id") long testPlanId, @PathVariable("setup-id") long setupId);
 
     @ApiOperation(value = "Removes setup from test plan", tags = {"Test Plan",})
     @ApiResponses(
@@ -190,8 +182,7 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_TESTPLAN_SETUP_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> removeSetupFromTestPlan(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("test-plan-id") long testPlanId, @PathVariable("setup-id") long setupId);
+    public ResponseEntity<Void> removeSetupFromTestPlan(HttpServletRequest request,  @PathVariable("test-plan-id") long testPlanId, @PathVariable("setup-id") long setupId);
 
     @ApiOperation(value = "Returns all test plans from obu", tags = {"Obu Test Plan",})
     @ApiResponses(
@@ -207,8 +198,7 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_OBU_TESTPLAN, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<ObuTestPlan>> getAllTestPlansFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId);
+    public ResponseEntity<List<ObuTestPlan>> getAllTestPlansFromObu(HttpServletRequest request,  @PathVariable("obu-id") long obuId);
 
     @ApiOperation(value = "Removes all test plans from obu", tags = {"Obu Test Plan",})
     @ApiResponses(
@@ -223,8 +213,7 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_OBU_TESTPLAN, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> removelAllTestPlansFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId);
+    public ResponseEntity<Void> removelAllTestPlansFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId);
 
     @ApiOperation(value = "Adds test plan to obu", tags = {"Obu Test Plan",})
     @ApiResponses(
@@ -239,8 +228,7 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_OBU_TESTPLAN_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> addTestPlanToObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("test-plan-id") long testPlanId);
+    public ResponseEntity<Void> addTestPlanToObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("test-plan-id") long testPlanId);
 
     @ApiOperation(value = "Returns test plan from obu", tags = {"Obu Test Plan",})
     @ApiResponses(
@@ -256,8 +244,7 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_OBU_TESTPLAN_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<ObuTestPlan> getTestPlanFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("test-plan-id") long testPlanId);
+    public ResponseEntity<ObuTestPlan> getTestPlanFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("test-plan-id") long testPlanId);
 
     @ApiOperation(value = "Cancel test plan from obu", tags = {"Obu Test Plan",})
     @ApiResponses(
@@ -273,8 +260,7 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_OBU_TESTPLAN_ID_CANCEL, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> cancelTestPlanFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("test-plan-id") long testPlanId);
+    public ResponseEntity<Void> cancelTestPlanFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("test-plan-id") long testPlanId);
 
     @ApiOperation(value = "Removes test plan from obu", tags = {"Obu Test Plan",})
     @ApiResponses(
@@ -289,6 +275,5 @@ public interface ITestPlanController {
             value = AppConfiguration.URL_OBU_TESTPLAN_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> removeTestPlanFromObu(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("test-plan-id") long testPlanId);
+    public ResponseEntity<Void> removeTestPlanFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("test-plan-id") long testPlanId);
 }

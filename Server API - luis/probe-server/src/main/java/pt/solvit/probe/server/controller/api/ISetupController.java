@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.solvit.probe.server.config.AppConfiguration;
@@ -43,7 +42,7 @@ public interface ISetupController {
             value = AppConfiguration.URL_SETUP, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<Setup>> getAllSetups(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization);
+    public ResponseEntity<List<Setup>> getAllSetups(HttpServletRequest request);
 
     @ApiOperation(value = "Creates a setup", tags = {"Setup",})
     @ApiResponses(
@@ -59,8 +58,7 @@ public interface ISetupController {
             consumes = {MediaType.APPLICATION_JSON_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> createSetup(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @RequestBody InputSetup body);
+    public ResponseEntity<Void> createSetup(HttpServletRequest request, @RequestBody InputSetup body);
 
     @ApiOperation(value = "Returns a setup", tags = {"Setup",})
     @ApiResponses(
@@ -76,8 +74,7 @@ public interface ISetupController {
             value = AppConfiguration.URL_SETUP_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Setup> getSetup(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("setup-id") long setupId);
+    public ResponseEntity<Setup> getSetup(HttpServletRequest request, @PathVariable("setup-id") long setupId);
 
     @ApiOperation(value = "Updates a setup", tags = {"Setup",})
     @ApiResponses(
@@ -107,7 +104,6 @@ public interface ISetupController {
             value = AppConfiguration.URL_SETUP_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> deleteSetup(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("setup-id") long setupId);
+    public ResponseEntity<Void> deleteSetup(HttpServletRequest request, @PathVariable("setup-id") long setupId);
 
 }

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.config.AppConfiguration;
 import pt.solvit.probe.server.controller.api.IObuController;
@@ -22,7 +21,6 @@ import pt.solvit.probe.server.model.Hardware;
 import pt.solvit.probe.server.model.Obu;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.service.api.IObuService;
-import pt.solvit.probe.server.service.api.IServerLogService;
 import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.service.api.IHardwareService;
 
@@ -37,8 +35,6 @@ public class ObuController implements IObuController {
     private IHardwareService hardwareService;
     @Autowired
     private IUserService userService;
-    @Autowired
-    private IServerLogService serverLogService;
 
     @Override
     public ResponseEntity<List<Obu>> getAllObus(HttpServletRequest request) {

@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.solvit.probe.server.config.AppConfiguration;
@@ -35,7 +34,7 @@ public interface IDatabaseController {
             value = AppConfiguration.URL_RESET_DB, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> reset(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization);
+    public ResponseEntity<Void> reset(HttpServletRequest request);
 
     @ApiOperation(value = "Factory reset database", tags = {"Database",})
     @ApiResponses(
@@ -49,5 +48,5 @@ public interface IDatabaseController {
             value = AppConfiguration.URL_FACTORY_RESET_DB, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Void> factoryReset(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization);
+    public ResponseEntity<Void> factoryReset(HttpServletRequest request);
 }

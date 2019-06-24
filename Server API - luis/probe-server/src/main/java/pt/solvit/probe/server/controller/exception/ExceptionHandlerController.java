@@ -31,8 +31,10 @@ public class ExceptionHandlerController {
 
     private static final Logger LOGGER = Logger.getLogger(ExceptionHandlerController.class.getName());
 
+    /*
     @Autowired
-    /*static */ServerLogService serverLogService;
+    ServerLogService serverLogService;
+    */
 
 
     /**

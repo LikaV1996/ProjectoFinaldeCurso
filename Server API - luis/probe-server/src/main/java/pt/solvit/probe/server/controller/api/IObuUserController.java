@@ -39,7 +39,7 @@ public interface IObuUserController {
             value = AppConfiguration.URL_GET_OBU_USERS_BY_USER_ID,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<ObuUser>> getAllObuUserRegistries(HttpServletRequest request,  @PathVariable("user-id") long userId);
+    public ResponseEntity<List<ObuUser>> getAllObuUserRegistriesByUserID(HttpServletRequest request, @PathVariable("user-id") long userId);
 
     @ApiOperation(value = "Returns a obu_user registry", tags = {"User", "Obu"})
     @ApiResponses(
@@ -54,7 +54,7 @@ public interface IObuUserController {
             value = AppConfiguration.URL_GET_OBU_USERS,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<ObuUser>> getObuUserRegistries(HttpServletRequest request);
+    public ResponseEntity<List<ObuUser>> getAllObuUserRegistriesByUserID(HttpServletRequest request);
 
     @ApiOperation(value = "Creates a obu_user registry", tags = {"User", "Obu"})
     @ApiResponses(

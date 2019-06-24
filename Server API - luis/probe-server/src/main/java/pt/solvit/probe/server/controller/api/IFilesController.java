@@ -12,7 +12,6 @@ import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.solvit.probe.server.config.AppConfiguration;
@@ -38,8 +37,7 @@ public interface IFilesController {
             value = AppConfiguration.URL_OBU_TESTLOG, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<ObuFile>> getAllObuTestLogs(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-                                                           @PathVariable("obu-id") long obuId);
+    public ResponseEntity<List<ObuFile>> getAllObuTestLogs(HttpServletRequest request, @PathVariable("obu-id") long obuId);
 
     @ApiOperation(value = "Returns obu test log", tags = {"Files",})
     @ApiResponses(
@@ -53,8 +51,7 @@ public interface IFilesController {
             value = AppConfiguration.URL_OBU_TESTLOG_ID
             //produces = {MediaType.TEXT_PLAIN_VALUE}
     )
-    public ResponseEntity<String> getObuTestLog(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("test-log-id") long testLogId);
+    public ResponseEntity<String> getObuTestLog(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("test-log-id") long testLogId);
 
     @ApiOperation(value = "Returns all obu system logs", tags = {"Files",})
     @RequestMapping(
@@ -68,8 +65,7 @@ public interface IFilesController {
                 @ApiResponse(code = 404, message = "The obu with the requested id was not found.")
             }
     )
-    public ResponseEntity<List<ObuFile>> getAllObuSysLogs(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId);
+    public ResponseEntity<List<ObuFile>> getAllObuSysLogs(HttpServletRequest request, @PathVariable("obu-id") long obuId);
 
     @ApiOperation(value = "Returns obu system log", tags = {"Files",})
     @ApiResponses(
@@ -83,6 +79,5 @@ public interface IFilesController {
             value = AppConfiguration.URL_OBU_SYSLOG_ID
             //produces = {MediaType.TEXT_PLAIN_VALUE}
     )
-    public ResponseEntity<String> getObuSysLog(HttpServletRequest request, @RequestHeader(value = "Authorization", required = true) String authorization,
-            @PathVariable("obu-id") long obuId, @PathVariable("sys-log-id") long sysLogId);
+    public ResponseEntity<String> getObuSysLog(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("sys-log-id") long sysLogId);
 }

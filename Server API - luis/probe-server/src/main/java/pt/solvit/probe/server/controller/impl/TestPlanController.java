@@ -88,7 +88,7 @@ public class TestPlanController implements ITestPlanController {
         testPlan = testPlanService.getTestPlan(testPlanId);
 
 
-        URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_TESTPLAN_ID, testPlanId);
+        //URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_TESTPLAN_ID, testPlanId);
 
         return ResponseEntity.ok().body(testPlan);
     }

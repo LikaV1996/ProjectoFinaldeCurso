@@ -108,9 +108,11 @@ public class HardwareController implements IHardwareController {
         hardware = hardwareService.getHardware(hardwareId);
 
 
-        URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_HARDWARE_ID, hardwareId);
+        //URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_HARDWARE_ID, hardwareId);
 
-        return ResponseEntity.created(createdURI).body(hardware);
+        //return ResponseEntity.created(createdURI).body(hardware);
+
+        return ResponseEntity.ok().body(hardware);
     }
 
 

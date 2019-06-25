@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -71,6 +72,15 @@ public class ExceptionHandlerController {
         forServerLog(request, ex.getExceptionDetail());
         //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.NOT_ACCEPTABLE.toString(), ex.getExceptionDetail());
         return ex.getError();
+    }
+
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ExceptionHandler(value = {HttpRequestMethodNotSupportedException.class})
+    public ErrorModelOutput handleThrowable(HttpServletRequest request,  HttpRequestMethodNotSupportedException ex) {
+        LOGGER.log(Level.SEVERE, "", ex);
+        forServerLog(request, "Method not allowed.");
+        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.INTERNAL_SERVER_ERROR.toString(), "Internal server error");
+        return new ErrorModelOutput("Method not allowed.", "This method is not allowed for the requested path.", HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     /**

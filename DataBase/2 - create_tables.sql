@@ -107,7 +107,7 @@ CREATE TABLE SysLog (
   	file_name VARCHAR(45) NOT NULL,
   	close_date TIMESTAMP NOT NULL,
   	upload_date TIMESTAMP NOT NULL,
-  	file_data BYTEA NOT NULL,
+  	file_data BYTEA,
   	properties jsonb,
   	
   	CONSTRAINT PK_SysLog PRIMARY KEY (id),
@@ -120,7 +120,7 @@ CREATE TABLE TestLog (
   	file_name VARCHAR(45) NOT NULL,
   	close_date TIMESTAMP NOT NULL,
   	upload_date TIMESTAMP NOT NULL,
-  	file_data BYTEA NOT NULL,
+  	file_data BYTEA,
   	properties jsonb,
   	
   	CONSTRAINT PK_TestLog PRIMARY KEY (id),

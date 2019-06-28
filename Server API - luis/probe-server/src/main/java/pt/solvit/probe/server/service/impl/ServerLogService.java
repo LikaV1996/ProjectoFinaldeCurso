@@ -63,10 +63,10 @@ public class ServerLogService implements IServerLogService {
     }
 
     @Override
-    public List<ServerLog> getAllServerLogs(boolean ascending, String accessType, String username, Integer pageNumber, Integer pageLimit) {
+    public List<ServerLog> getAllServerLogs(boolean ascending, String accessType, String accessor_name, Integer pageNumber, Integer pageLimit) {
         LOGGER.log(Level.INFO, "Finding all server logs with a page limit");
 
-        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(ascending, accessType, username, pageNumber, pageLimit);
+        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(ascending, accessType, accessor_name, pageNumber, pageLimit);
 
         return ServiceUtil.map(serverLogDaoList, this::transformToServerLog);
     }
@@ -99,7 +99,7 @@ public class ServerLogService implements IServerLogService {
         List<ServerLogDao> userServerLogList = new ArrayList();
 
         for (ServerLogDao curServerLog : serverLogList) {
-            if (curServerLog.getAccessUser().contains(username)) {
+            if (curServerLog.getAccessorName().contains(username)) {
                 userServerLogList.add(curServerLog);
             }
         }
@@ -140,7 +140,7 @@ public class ServerLogService implements IServerLogService {
         Timestamp responseDate = serverLog.getResponseDateLocalDateTime() == null ? null : Timestamp.valueOf(serverLog.getResponseDateLocalDateTime());
 
         return new ServerLogDao(serverLog.getId(), Timestamp.valueOf(serverLog.getDateLocalDateTime()), serverLog.getAccessType().name(), serverLog.getAccessPath(),
-                serverLog.getAccessUser(), responseDate, serverLog.getStatus(), serverLog.getDetail());
+                serverLog.getAccessorName(), responseDate, serverLog.getStatus(), serverLog.getDetail());
     }
 
     private ServerLog transformToServerLog(ServerLogDao serverLogDao) {
@@ -148,6 +148,6 @@ public class ServerLogService implements IServerLogService {
         LocalDateTime responseDate = serverLogDao.getResponseDate() == null ? null : serverLogDao.getResponseDate().toLocalDateTime();
 
         return new ServerLog(serverLogDao.getId(), serverLogDao.getLogDate().toLocalDateTime(), accessType, serverLogDao.getAccessPath(),
-                serverLogDao.getAccessUser(), responseDate, serverLogDao.getStatus(), serverLogDao.getDetail());
+                serverLogDao.getAccessorName(), responseDate, serverLogDao.getStatus(), serverLogDao.getDetail());
     }
 }

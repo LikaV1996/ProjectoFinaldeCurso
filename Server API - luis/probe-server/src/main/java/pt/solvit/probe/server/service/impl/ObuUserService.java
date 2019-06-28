@@ -7,7 +7,6 @@ package pt.solvit.probe.server.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.solvit.probe.server.model.Obu;
 import pt.solvit.probe.server.model.ObuUser;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.enums.ObuUserRole;
@@ -15,7 +14,6 @@ import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.repository.api.IObuUserRepository;
 import pt.solvit.probe.server.repository.exception.impl.EntityWithIdNotFoundException;
 import pt.solvit.probe.server.repository.exception.impl.ObuUserAlreadyExistsException;
-import pt.solvit.probe.server.repository.model.ObuDao;
 import pt.solvit.probe.server.repository.model.ObuUserDao;
 import pt.solvit.probe.server.service.api.IObuUserService;
 import pt.solvit.probe.server.service.api.IUserService;
@@ -46,20 +44,15 @@ public class ObuUserService implements IObuUserService {
     public long createObuUserRegistry(ObuUser obuUser, User loggedInUser) {
         LOGGER.log(Level.INFO, "Creating new obu_user registry.");
 
-        checkIfObuUserRegistryAlreadyExists(obuUser);
-
+        /*  //old check
         //check permissions
         if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
             throw new PermissionException();
+        */
 
+        checkIfObuUserRegistryAlreadyExists(obuUser);
 
-        User userToCheck = userService.getUser(obuUser.getUserID(), loggedInUser);
-
-        //if normal_user
-        if ( ! userService.checkUserPermissions(userToCheck, UserProfile.SUPER_USER))
-            //if is EDITOR
-            if (obuUser.getRole() == ObuUserRole.EDITOR)
-                throw new NormalObuUserEditorException(userToCheck.getUserName());
+        checkIfObuUserCanBeCreatedOrUpdated(obuUser, loggedInUser);
 
         return obuUserRepository.add(ObuUser.transformToObuUserDao(obuUser));
     }
@@ -86,6 +79,11 @@ public class ObuUserService implements IObuUserService {
         LOGGER.log(Level.INFO, "Finding registry with user ID {0}", userID);
 
         //check permissions
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
+
+        /*  //old check
+        //check permissions
         if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
             throw new PermissionException();
 
@@ -96,6 +94,7 @@ public class ObuUserService implements IObuUserService {
                 userService.checkLoggedInUserPermissionsHigherThanUser(loggedInUser, userToCheck);
             }
         }
+        */
 
 
         List<ObuUserDao> obuUserDaoList = obuUserRepository.findAllByUserId(userID);
@@ -122,9 +121,12 @@ public class ObuUserService implements IObuUserService {
     }
 
     @Override
-    public void updateObuUser(ObuUser obuUser, User loggedInUser) {
+    public void updateObuUserRole(ObuUser obuUser, User loggedInUser) {
         LOGGER.log(Level.INFO, "Updating obu_user registry with obu ID {0} and user ID {1}", new long[]{obuUser.getObuID(), obuUser.getUserID()});
 
+        checkIfObuUserCanBeCreatedOrUpdated(obuUser, loggedInUser);
+
+        /*  //old check
         //not at least superuser
         if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER) )
             throw new PermissionException();
@@ -155,15 +157,21 @@ public class ObuUserService implements IObuUserService {
             if (ObuUserRole.valueOf(selfObuUserDao.getRole()) == ObuUserRole.VIEWER)
                 throw new ObuUserInsufficientRoleException();
         }
+        */
 
 
-        obuUserRepository.update(ObuUser.transformToObuUserDao(obuUser));
+        obuUserRepository.updateRole(ObuUser.transformToObuUserDao(obuUser));
     }
 
     @Override
     public void deleteObuUser(long obuID, long userID, User loggedInUser) {
         LOGGER.log(Level.INFO, "Checking if obu_user registry with obu ID {0} and user ID {1} exists", new long[]{obuID,userID});
 
+        //check permissions
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
+
+        /*  //old check
         //not at least superuser
         if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
             throw new PermissionException();
@@ -174,7 +182,8 @@ public class ObuUserService implements IObuUserService {
             //if self not admin
             if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) )
                 //if this doesn't throw an exception it's because logged in user has connection to OBU
-                /*ObuUserDao selfObuUserDao = */obuUserRepository.findById(obuID, loggedInUser.getId());
+                //ObuUserDao selfObuUserDao =
+                    obuUserRepository.findById(obuID, loggedInUser.getId());
 
 
             User userToCheck = userService.getUser(userID, loggedInUser);
@@ -186,6 +195,7 @@ public class ObuUserService implements IObuUserService {
             if ( userService.checkUserPermissions(userToCheck, UserProfile.ADMIN) )
                 throw new AdminNeedsNoRegistryException(userToCheck.getUserName());
         }
+        */
 
 
         LOGGER.log(Level.INFO, "Deleting obu_user registry with obu ID {0} and user ID {1}", new long[]{obuID,userID});
@@ -205,6 +215,23 @@ public class ObuUserService implements IObuUserService {
         } catch (EntityWithIdNotFoundException ex) {
             //ignore
         }
+    }
+
+
+
+
+    private void checkIfObuUserCanBeCreatedOrUpdated(ObuUser obuUser, User loggedInUser) {
+        //check permissions
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) )
+            throw new PermissionException();
+
+        User userToCheck = userService.getUser(obuUser.getUserID(), loggedInUser);
+
+        //if normal_user
+        if ( ! userService.checkUserPermissions(userToCheck, UserProfile.SUPER_USER))
+            //if is EDITOR
+            if (obuUser.getRole() == ObuUserRole.EDITOR)
+                throw new NormalObuUserEditorException(userToCheck.getUserName());
     }
 
 }

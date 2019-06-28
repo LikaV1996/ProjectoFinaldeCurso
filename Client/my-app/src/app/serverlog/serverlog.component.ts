@@ -15,7 +15,7 @@ export class ServerLogComponent implements OnInit {
 
   @Input() private dateOrder : string = "true"
   @Input() private accessType : string = ""
-  @Input() private username : string = ""
+  @Input() private accessor : string = ""
 
   private curPage : number = 1
   private totalNumberOfPages : number = this.curPage
@@ -33,7 +33,7 @@ export class ServerLogComponent implements OnInit {
 
     //debugger
     this.serverLogs = null;
-    this._serverLogService.getServerLogs(order, this.curPage, this.pageLimit, this.username, this.accessType).subscribe(
+    this._serverLogService.getServerLogs(order, this.curPage, this.pageLimit, this.accessor, this.accessType).subscribe(
       ServerLogObj => {
         this.serverLogs = ServerLogObj.serverLogList
         this.updateNumberOfPages(ServerLogObj.fullCount)

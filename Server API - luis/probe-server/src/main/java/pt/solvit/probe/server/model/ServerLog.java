@@ -36,8 +36,8 @@ public class ServerLog {
     @JsonProperty("accessType")
     private AccessType accessType;
 
-    @JsonProperty("accessUser")
-    private String accessUser;
+    @JsonProperty("accessorName")
+    private String accessorName;
 
     @JsonProperty("responseDate")
     private LocalDateTime responseDate;
@@ -49,23 +49,23 @@ public class ServerLog {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String detail;
 
-    public ServerLog(Long id, LocalDateTime date, AccessType accessType, String accessPath, String accessUser,
+    public ServerLog(Long id, LocalDateTime date, AccessType accessType, String accessPath, String accessorName,
             LocalDateTime responseDate, String status, String detail) {
         this.id = id;
         this.date = date;
         this.accessType = accessType;
         this.accessPath = accessPath;
-        this.accessUser = accessUser;
+        this.accessorName = accessorName;
         this.responseDate = responseDate;
         this.status = status;
         this.detail = detail;
     }
 
-    public ServerLog(LocalDateTime date, AccessType accessType, String accessPath, String accessUser) {
+    public ServerLog(LocalDateTime date, AccessType accessType, String accessPath, String accessorName) {
         this.date = date;
         this.accessType = accessType;
         this.accessPath = accessPath;
-        this.accessUser = accessUser;
+        this.accessorName = accessorName;
     }
 
     public Long getId() {
@@ -91,12 +91,12 @@ public class ServerLog {
         return accessPath;
     }
 
-    public String getAccessUser() {
-        return accessUser;
+    public String getAccessorName() {
+        return accessorName;
     }
 
-    public ServerLog setAccessUser(String accessUser) {
-        this.accessUser = accessUser;
+    public ServerLog setAccessorName(String accessorName) {
+        this.accessorName = accessorName;
         return this;
     }
 
@@ -133,8 +133,8 @@ public class ServerLog {
         StringBuilder sb = new StringBuilder();
 
         sb.append(" ").append(PRETTY_DATE_FORMATTER.format(date));
-        sb.append("  |  ").append(accessUser);
-        for (int userSize = accessUser.length(); userSize < maxUserSize; userSize++) {
+        sb.append("  |  ").append(accessorName);
+        for (int userSize = accessorName.length(); userSize < maxUserSize; userSize++) {
             sb.append(" ");
         }
         sb.append("  |  ").append(accessPath);

@@ -17,7 +17,7 @@ public class ServerLogDao {
     private Timestamp logDate;
     private String accessPath;
     private String accessType;
-    private String accessUser;
+    private String accessorName;
     private Timestamp responseDate;
     private String status;
     private String detail;
@@ -25,13 +25,13 @@ public class ServerLogDao {
     public ServerLogDao() {
     }
 
-    public ServerLogDao(Long id, Timestamp logDate, String accessType, String accessPath, String accessUser,
+    public ServerLogDao(Long id, Timestamp logDate, String accessType, String accessPath, String accessorName,
             Timestamp responseDate, String status, String detail) {
         this.id = id;
         this.logDate = logDate;
         this.accessType = accessType;
         this.accessPath = accessPath;
-        this.accessUser = accessUser;
+        this.accessorName = accessorName;
         this.responseDate = responseDate;
         this.status = status;
         this.detail = detail;
@@ -53,8 +53,8 @@ public class ServerLogDao {
         return accessPath;
     }
 
-    public String getAccessUser() {
-        return accessUser;
+    public String getAccessorName() {
+        return accessorName;
     }
 
     public Timestamp getResponseDate() {
@@ -85,8 +85,8 @@ public class ServerLogDao {
         this.accessType = accessType;
     }
 
-    public void setAccessUser(String accessUser) {
-        this.accessUser = accessUser;
+    public void setAccessorName(String accessorName) {
+        this.accessorName = accessorName;
     }
 
     public void setResponseDate(Timestamp responseDate) {

@@ -25,12 +25,12 @@ export class ServerLogService {
     
   //http://localhost:8080/api/v1/frontoffice/server-log?order=true&page=4&limit=20&user=tester&accessType=user
 
-  getServerLogs(order : boolean, pageNumber : number, pageLimit : number, username : string, accessType : string) : Observable<ServerLogResp> {
+  getServerLogs(order : boolean, pageNumber : number, pageLimit : number, accessor : string, accessType : string) : Observable<ServerLogResp> {
     let params = new HttpParams()
     params = params.append("order", (order ? "true" : "false"))
     params = params.append("page", pageNumber.toString())
     params = params.append("limit", pageLimit.toString())
-    if(username && username != "") params = params.append("user", username.toString())
+    if(accessor && accessor != "") params = params.append("accessor", accessor.toString())
     if(accessType && accessType != "") params = params.append("accessType", accessType.toString())
     
     return this.http.get<ServerLogResp>(routes.getServerLogs, { params: params })

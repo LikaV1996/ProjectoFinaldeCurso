@@ -35,13 +35,13 @@ public class ServerLogRepository implements IServerLogRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    private static final String INSERT_BASE = "INSERT INTO ServerLog (log_date, access_type, access_path, access_user, response_date, status, detail)";
+    private static final String INSERT_BASE = "INSERT INTO ServerLog (log_date, access_type, access_path, accessor_name, response_date, status, detail)";
     private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?::AccessType, ?, ?, ?, ?, ?) RETURNING id;";
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?, ?);";
-    private static final String SELECT_ALL = "SELECT id, log_date AS logDate, access_type AS accessType, access_path AS accessPath, access_user AS accessUser, response_date AS responseDate, status, detail FROM ServerLog";
+    private static final String SELECT_ALL = "SELECT id, log_date AS logDate, access_type AS accessType, access_path AS accessPath, accessor_name AS accessorName, response_date AS responseDate, status, detail FROM ServerLog";
     private static final String SELECT_ALL_W_LIMIT_OFFSET = SELECT_ALL + " LIMIT ? OFFSET ?";
     private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ? ";
-    private static final String UPDATE = "UPDATE ServerLog SET access_user = ?, response_date = ?, status = ?, detail = ? WHERE id = ?;";
+    private static final String UPDATE = "UPDATE ServerLog SET accessor_name = ?, response_date = ?, status = ?, detail = ? WHERE id = ?;";
     private static final String DELETE_BY_ID = "DELETE FROM ServerLog WHERE id = ?;";
     private static final String DELETE_ALL = "DELETE FROM ServerLog;";
 
@@ -64,9 +64,9 @@ public class ServerLogRepository implements IServerLogRepository {
     }
 
     @Override
-    public List<ServerLogDao> findAll(Boolean ascending, String access_user, String access_type, Integer pageNumber, Integer pageLimit) {
+    public List<ServerLogDao> findAll(Boolean ascending, String accessor_name, String access_type, Integer pageNumber, Integer pageLimit) {
 
-        return jdbcTemplate.query(makeFilteredServerLogQuery(ascending, access_user, access_type, pageNumber, pageLimit) , new BeanPropertyRowMapper<>(ServerLogDao.class));
+        return jdbcTemplate.query(makeFilteredServerLogQuery(ascending, accessor_name, access_type, pageNumber, pageLimit) , new BeanPropertyRowMapper<>(ServerLogDao.class));
     }
 
     @Transactional()
@@ -75,7 +75,7 @@ public class ServerLogRepository implements IServerLogRepository {
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
             return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, serverLogDao.getLogDate(), serverLogDao.getAccessType(),  serverLogDao.getAccessPath(),
-                    serverLogDao.getAccessUser(), serverLogDao.getResponseDate(), serverLogDao.getStatus(), serverLogDao.getDetail());
+                    serverLogDao.getAccessorName(), serverLogDao.getResponseDate(), serverLogDao.getStatus(), serverLogDao.getDetail());
         }
 
         jdbcTemplate.update(new PreparedStatementCreator() {
@@ -85,7 +85,7 @@ public class ServerLogRepository implements IServerLogRepository {
                 statement.setTimestamp(1, serverLogDao.getLogDate());
                 statement.setString(2, serverLogDao.getAccessType());
                 statement.setString(3, serverLogDao.getAccessPath());
-                statement.setString(4, serverLogDao.getAccessUser());
+                statement.setString(4, serverLogDao.getAccessorName());
                 if (serverLogDao.getResponseDate() == null) {
                     statement.setNull(5, java.sql.Types.TIMESTAMP);
                     statement.setNull(6, java.sql.Types.VARCHAR);
@@ -129,7 +129,7 @@ public class ServerLogRepository implements IServerLogRepository {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(UPDATE);
-                statement.setString(1, serverLog.getAccessUser());
+                statement.setString(1, serverLog.getAccessorName());
                 statement.setTimestamp(2, serverLog.getResponseDate());
                 statement.setString(3, serverLog.getStatus());
                 if (serverLog.getDetail() == null) {
@@ -145,7 +145,7 @@ public class ServerLogRepository implements IServerLogRepository {
 
 
 
-    private String makeFilteredServerLogQuery(Boolean ascending, String access_type, String access_user, Integer pageNumber, Integer pageLimit){
+    private String makeFilteredServerLogQuery(Boolean ascending, String access_type, String accessor_name, Integer pageNumber, Integer pageLimit){
 
         //ASCENDING or DESCENDING
         String orderBy = " ORDER BY " + "log_date" + " ",
@@ -156,13 +156,13 @@ public class ServerLogRepository implements IServerLogRepository {
         orderBy += order;
 
         //filter/where statements
-        boolean whereStmtBool = access_user != null || access_type != null,
-                doubleWhereStmtBool = access_user != null && access_type != null;
+        boolean whereStmtBool = accessor_name != null || access_type != null,
+                doubleWhereStmtBool = accessor_name != null && access_type != null;
 
-        String access_userWhereStmt = access_user != null ? ("access_user LIKE '%' || '"+ access_user +"' || '%'") : "";
+        String accessor_nameWhereStmt = accessor_name != null ? ("accessor_name LIKE '%' || '"+ accessor_name +"' || '%'") : "";
         String access_typeWhereStmt = access_type != null ? ("access_type = '"+ access_type +"'") : "";
 
-        String whereStmt = whereStmtBool ? (" WHERE " + access_userWhereStmt + (doubleWhereStmtBool ? " AND " : "") + access_typeWhereStmt) : "";
+        String whereStmt = whereStmtBool ? (" WHERE " + accessor_nameWhereStmt + (doubleWhereStmtBool ? " AND " : "") + access_typeWhereStmt) : "";
 
         //pagination
         String limit = "";

@@ -16,10 +16,8 @@ import pt.solvit.probe.server.controller.model.input.InputObuUser;
 import pt.solvit.probe.server.model.ObuUser;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.service.api.IObuUserService;
-import pt.solvit.probe.server.service.api.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -72,7 +70,7 @@ public class ObuUserController implements IObuUserController {
         body.validate();
         ObuUser obuUser = ControllerUtil.transformToObuUser(body);
 
-        obuUserService.updateObuUser(obuUser, user);
+        obuUserService.updateObuUserRole(obuUser, user);
 
         return ResponseEntity.ok().body(obuUser);
     }

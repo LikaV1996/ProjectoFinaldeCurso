@@ -5,6 +5,7 @@
  */
 package pt.solvit.probe.server.service.api;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import pt.solvit.probe.server.model.Location;
 import pt.solvit.probe.server.model.ObuStatus;
@@ -15,7 +16,7 @@ import pt.solvit.probe.server.model.ObuStatus;
  */
 public interface IObuStatusService {
 
-    public List<ObuStatus> getAllObuStatus(long obuId);
+    public List<ObuStatus> getAllObuStatus(long obuId, LocalDateTime endDateLDT, LocalDateTime startDateLDT);
 
     public List<Location> getAllObuLocations(long obuId);
 

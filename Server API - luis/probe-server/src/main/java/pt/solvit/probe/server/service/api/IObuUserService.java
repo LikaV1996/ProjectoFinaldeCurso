@@ -27,7 +27,7 @@ public interface IObuUserService {
 
     public List<ObuUser> getAllObuUser(User loggedInUser);
 
-    public void updateObuUser(ObuUser obuUser, User loggedInUser);
+    public void updateObuUserRole(ObuUser obuUser, User loggedInUser);
 
     public void deleteObuUser(long obuID, long userID, User loggedInUser);
 

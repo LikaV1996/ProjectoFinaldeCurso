@@ -7,9 +7,19 @@ package pt.solvit.probe.server.controller.impl;
 
 
 import com.mapbox.services.commons.models.Position;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.RequestParam;
 import pt.solvit.probe.server.model.Location;
 import pt.solvit.probe.server.model.ObuStatus;
+
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,10 +41,14 @@ public class StatusController implements IStatusController {
     private IUserService userService;
 
     @Override
-    public ResponseEntity<List<ObuStatus>> getObuPosition(HttpServletRequest request, @PathVariable("obu-id") long obuId) {
+    public ResponseEntity<List<ObuStatus>> getObuPosition(
+            HttpServletRequest request,
+            @PathVariable("obu-id") long obuId,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateLDT,
+            @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateLDT
+        ) {
 
-
-        List<ObuStatus> obuStatusList = obuStatusService.getAllObuStatus(obuId);
+        List<ObuStatus> obuStatusList = obuStatusService.getAllObuStatus(obuId, endDateLDT, startDateLDT);
 
         return ResponseEntity.ok().body(obuStatusList);
 
@@ -54,4 +68,14 @@ public class StatusController implements IStatusController {
         }
         return positionList;
     }
+
+
+/*
+    private LocalDateTime parseStringToLocalDateTime(String datetime) {
+        if (datetime.split("T").length > 1 || datetime.split(" ").length > 1)
+
+
+        return ;
+    }
+    */
 }

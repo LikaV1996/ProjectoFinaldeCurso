@@ -39,23 +39,24 @@ public class ServerLogController implements IServerLogController {
             HttpServletRequest request,
             @RequestParam(value = "order", required = false) Boolean ascending,
             @RequestParam(value = "accessType", required = false) String accessType,
-            @RequestParam(value = "user", required = false) String user,
+            @RequestParam(value = "accessor", required = false) String accessor,
             @RequestParam(value = "page", required = false) Integer pageNumber,
             @RequestParam(value = "limit", required = false) Integer pageLimit
     ) {
 
-        boolean asc = ascending == null ? true : ascending;
+        boolean asc = ascending == null ? false : ascending;
         if (accessType != null)
             accessType = validateAccessType(accessType);
-        String username = user != null && user.equals("") ? null : user;
+        String accessor_name = accessor != null && accessor.equals("") ? null : accessor;
 
 
-        List<ServerLog> serverLogList = serverLogService.getAllServerLogs(asc, accessType, username, pageNumber, pageLimit);
+        List<ServerLog> serverLogList = serverLogService.getAllServerLogs(asc, accessType, accessor_name, pageNumber, pageLimit);
 
 
         return ResponseEntity.ok().body( new OutputServerLog(serverLogList.size(), serverLogList) );
     }
 
+    //not being used
     @Override
     public ResponseEntity<String> getObuServerLog(HttpServletRequest request) {
 
@@ -66,6 +67,7 @@ public class ServerLogController implements IServerLogController {
         return ResponseEntity.ok(serverLogStr);
     }
 
+    //not being used
     @Override
     public ResponseEntity<String> getUserServerLog(HttpServletRequest request) {
 
@@ -99,7 +101,7 @@ public class ServerLogController implements IServerLogController {
         //Calculate header size - User
         int maxUserSize = USER.length();
         for (ServerLog curServerLog : serverLogList) {
-            int userSize = curServerLog.getAccessUser().length();
+            int userSize = curServerLog.getAccessorName().length();
             if (userSize > maxUserSize) {
                 maxUserSize = userSize;
             }

@@ -210,7 +210,7 @@ CREATE TABLE ServerLog (
   	log_date TIMESTAMP NOT NULL,
   	access_path VARCHAR(150) NOT NULL,
   	access_type AccessType NOT NULL,
-  	access_user VARCHAR(45) NOT NULL,
+  	accessor_name VARCHAR(45) NOT NULL,
   	response_date TIMESTAMP,
   	status VARCHAR(45),
   	detail VARCHAR(5000),

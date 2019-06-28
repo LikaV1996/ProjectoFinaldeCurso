@@ -38,9 +38,14 @@ public class ObuStatusService implements IObuStatusService {
     private IObuStatusRepository obuStatusRepository;
 
     @Override
-    public List<ObuStatus> getAllObuStatus(long obuId) {
+    public List<ObuStatus> getAllObuStatus(long obuId, LocalDateTime endDateLDT, LocalDateTime startDateLDT) {
         LOGGER.log(Level.INFO, "Finding all status from obu {0}", obuId);
-        List<ObuStatusDao> obuStatusDaoList = obuStatusRepository.findByObuId(obuId);
+        List<ObuStatusDao> obuStatusDaoList;
+        obuStatusDaoList = obuStatusRepository.findIntervalByObuId(
+                obuId,
+                endDateLDT != null ? Timestamp.valueOf(endDateLDT) : null,
+                startDateLDT != null ? Timestamp.valueOf(startDateLDT) : null
+        );
         return ServiceUtil.map(obuStatusDaoList, this::transformToObuStatus);
     }
 

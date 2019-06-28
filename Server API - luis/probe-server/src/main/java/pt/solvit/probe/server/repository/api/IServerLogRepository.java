@@ -16,7 +16,7 @@ public interface IServerLogRepository {
 
     public ServerLogDao findById(long id);
 
-    public List<ServerLogDao> findAll(Boolean ascending, String access_user, String access_type, Integer pageNumber, Integer pageLimit);
+    public List<ServerLogDao> findAll(Boolean ascending, String accessor_name, String access_type, Integer pageNumber, Integer pageLimit);
 
     public long add(ServerLogDao serverLogDao);
 

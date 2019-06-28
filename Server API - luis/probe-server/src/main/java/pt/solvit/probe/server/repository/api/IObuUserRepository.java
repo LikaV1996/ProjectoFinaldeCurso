@@ -33,6 +33,6 @@ public interface IObuUserRepository {
 
     //public int deleteAll();
 
-    public void update(ObuUserDao obuDao);
+    public void updateRole(ObuUserDao obuUserDao);
 
 }

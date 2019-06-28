@@ -124,7 +124,7 @@ public class ObuUserRepository implements IObuUserRepository {
 
 
     @Override
-    public void update(ObuUserDao obuUserDao) {
+    public void updateRole(ObuUserDao obuUserDao) {
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {

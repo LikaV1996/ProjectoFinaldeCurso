@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { OBU } from '../Model/OBU';
 import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Routes } from "../httproutes"
 import { OBUStatus } from '../Model/OBUStatus';
@@ -45,9 +45,14 @@ export class OBUService {
     })
   }
 
-  getPositionFromOBU(id: number): Observable<OBUStatus[]>{
+  getPositionFromOBU(id: number, endDate: Date, startDate: Date): Observable<OBUStatus[]>{
+    let params = new HttpParams()
+    
+    if(endDate) params = params.append("endDate", endDate.toISOString())
+    if(startDate) params = params.append("startDate", startDate.toISOString())
+    //debugger
     const getPositionFromOBUByIDUrl = routes.getPositionFromOBU.replace(":id", id.toString());
-    return this.http.get<OBUStatus[]>(getPositionFromOBUByIDUrl)
+    return this.http.get<OBUStatus[]>(getPositionFromOBUByIDUrl, {params: ((endDate || startDate) ? params : null) })
   }
 
   deleteOBUByID(id: number) {

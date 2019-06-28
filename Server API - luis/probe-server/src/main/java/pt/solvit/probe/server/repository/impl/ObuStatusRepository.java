@@ -8,6 +8,7 @@ package pt.solvit.probe.server.repository.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -40,9 +41,8 @@ public class ObuStatusRepository implements IObuStatusRepository {
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     private static final String SELECT_ALL = "SELECT id, obu_id AS obuId, status_date AS statusDate, latitude AS lat, longitude AS lon, speed, location_properties AS locationProperties, usable_storage AS usableStorage, free_storage AS freeStorage, critical_alarms AS criticalAlarms, major_alarms AS majorAlarms, warning_alarms AS warningAlarms, temperature, network_interfaces AS networkInterfaces FROM ObuStatus AS OS";
     private static final String INNERJOIN_USER_OBU = " INNER JOIN Probeuser_OBU AS PO ON OS.obu_id = PO.obu_id WHERE PO.probeuser_id = ?";
+
     private static final String ORDER_BY_STATUSDATE = " ORDER BY status_date DESC";
-    private static final String SELECT_BY_OBU_ID = SELECT_ALL + " WHERE obu_id = ?" + ORDER_BY_STATUSDATE;
-    private static final String SELECT_LAST_BY_OBU_ID = SELECT_BY_OBU_ID + "LIMIT 1";
 
     public ObuStatusRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -52,10 +52,39 @@ public class ObuStatusRepository implements IObuStatusRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+
+    private String makeFilteredObuStatusQuery(long obuId, Timestamp endDateTS, Timestamp startDateTS, boolean lastPosition) {
+        String SELECT_INTERVAL_BY_OBU_ID = SELECT_ALL;
+
+        SELECT_INTERVAL_BY_OBU_ID += " WHERE obu_id = " + obuId;
+
+        if (endDateTS != null)  SELECT_INTERVAL_BY_OBU_ID += " AND status_date <= " + "'"+endDateTS.toString()+"'";
+        if(startDateTS != null) SELECT_INTERVAL_BY_OBU_ID += " AND status_date >= " + "'"+startDateTS.toString()+"'";
+
+        SELECT_INTERVAL_BY_OBU_ID += ORDER_BY_STATUSDATE;
+
+        if (lastPosition)   SELECT_INTERVAL_BY_OBU_ID += " LIMIT 1";
+
+        return SELECT_INTERVAL_BY_OBU_ID;
+    }
+
+
     @Override
     public List<ObuStatusDao> findByObuId(long obuId) {
+        return this.findIntervalByObuId(obuId, null, null);
+        /*
         try{
-            return jdbcTemplate.query(SELECT_BY_OBU_ID, new BeanPropertyRowMapper<>(ObuStatusDao.class), obuId);
+            return jdbcTemplate.query(makeFilteredObuStatusQuery(obuId, null, null), new BeanPropertyRowMapper<>(ObuStatusDao.class));
+        } catch (IncorrectResultSizeDataAccessException e) {
+            throw new EntityWithIdNotFoundException(EntityType.OBU);
+        }
+        */
+    }
+
+    @Override
+    public List<ObuStatusDao> findIntervalByObuId(long obuId, Timestamp endDateLDT, Timestamp startDateLDT) {
+        try{
+            return jdbcTemplate.query(makeFilteredObuStatusQuery(obuId, endDateLDT, startDateLDT, false), new BeanPropertyRowMapper<>(ObuStatusDao.class));
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new EntityWithIdNotFoundException(EntityType.OBU);
         }
@@ -63,7 +92,7 @@ public class ObuStatusRepository implements IObuStatusRepository {
 
     @Override
     public ObuStatusDao findLastByObuId(long obuId) {
-        return jdbcTemplate.queryForObject(SELECT_LAST_BY_OBU_ID, new BeanPropertyRowMapper<>(ObuStatusDao.class), obuId);
+        return jdbcTemplate.queryForObject(makeFilteredObuStatusQuery(obuId, null, null, true), new BeanPropertyRowMapper<>(ObuStatusDao.class));
     }
 
     @Transactional()

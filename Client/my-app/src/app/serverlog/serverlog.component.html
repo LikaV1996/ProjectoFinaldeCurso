@@ -10,8 +10,8 @@
           <b>Date order: </b>
           <mat-form-field>
           <select matNativeControl required [(ngModel)]="dateOrder">
-            <option value="true">Ascending</option>
             <option value="false">Descending</option>
+            <option value="true">Ascending</option>
           </select>
           </mat-form-field>
         </div>
@@ -26,7 +26,7 @@
           </mat-form-field>
         </div>
         <div class="four wide column">
-          <b>Serial Number:
+          <b>User/OBU name:
             <mat-form-field appearance="standard">
             <input [(ngModel)]="username" matInput placeholder="Search by User...">
             </mat-form-field>
@@ -46,7 +46,7 @@
       <div class="four wide column"><h3>Request Date</h3></div>
       <div class="five wide column"><h3>Access Path</h3></div>
       <div class="one wide column"><h3>Access Type</h3></div>
-      <div class="one wide column"><h3>Access User</h3></div>
+      <div class="one wide column"><h3>Accessor Name</h3></div>
       <div class="four wide column"><h3>Response Date</h3></div>
       <div class="one wide column"><h3>Status</h3></div>
     </div>
@@ -59,7 +59,7 @@
           <div class="four wide column">{{serverLog.date}}</div>
           <div class="five wide column">{{serverLog.accessPath}}</div>
           <div class="one wide column">{{serverLog.accessType}}</div>
-          <div class="one wide column">{{serverLog.accessUser}}</div>
+          <div class="one wide column">{{serverLog.accessorName}}</div>
           <div class="four wide column">{{serverLog.responseDate}}</div>
           <div class="one wide column">{{serverLog.status}}</div>
         </div>

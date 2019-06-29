@@ -85,7 +85,7 @@
                 <div *ngIf="obuConfigs.config.activationDate != null" class="eight wide column">{{obuConfigs.config.activationDate}}</div>      
                 <!--<div class="four wide column"></div>-->
                 <div class="four wide right aligned column">
-                    <div class="ui suspend button" (click)="editConfig(obu.id)" data-tooltip="Edit Config">Edit</div>
+                    <div class="ui suspend button" (click)="deleteConfig(obu.id,obuConfigs.config.id)" data-tooltip="Delete Config From OBU">Delete</div>
                 </div>
             </div>
         </div>
@@ -115,7 +115,7 @@
                     <div *ngIf="obuTestPlan.testPlan.startDate != null" class="eight wide column">{{obuTestPlan.testPlan.startDate}}</div>      
                     <!--<div class="four wide column"></div>-->
                     <div class="four wide right aligned column">
-                        <div class="ui suspend button" (click)="editTestPlan(obu.id)" data-tooltip="Edit Test Plan">Edit</div>
+                        <div class="ui suspend button" (click)="deleteTestPlan(obu.id,obuTestPlan.testPlan.id)" data-tooltip="Delete Test Plan From OBU">Delete</div>
                     </div>
                 </div>
             </div>

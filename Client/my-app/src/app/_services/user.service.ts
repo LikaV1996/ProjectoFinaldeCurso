@@ -18,7 +18,6 @@ export class UserService {
     private http: HttpClient
   ) { }
     
-  
 
   //Get all users from the server
   getUsers(): Observable<User[]> {
@@ -40,7 +39,6 @@ export class UserService {
   }
 
   updateUser(id:number, user_name: string, user_profile: string, suspended: boolean){
-
     const updateUserByIdUrl = routes.updateUser.replace(":id", id.toString());
     return this.http.put<User>(updateUserByIdUrl,{id,user_name: user_name, user_profile: user_profile, properties: null, suspended: suspended})
   }

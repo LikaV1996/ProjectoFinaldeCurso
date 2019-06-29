@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { OBUHasConfig } from '../Model/OBUHasConfig';
+import { UserHasOBU } from '../Model/UserHasOBU';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -11,19 +11,20 @@ const routes = new Routes
 @Injectable({
   providedIn: 'root'
 })
-export class OBUHasConfigService {
+export class UserHasObuService {
   
   constructor(
     private http: HttpClient
   ) { }
     
   
-  getObuConfigs(id: number): Observable<OBUHasConfig[]> {
-    const getOBUConfigsByIDUrl = routes.getObuConfigs.replace(":id", id.toString());
-    console.log(getOBUConfigsByIDUrl)
-    return this.http.get<OBUHasConfig[]>(getOBUConfigsByIDUrl)
+  getUserObus(id: number): Observable<UserHasOBU[]> {
+    const getUserObusByIDUrl = routes.getUserObus.replace(":id", id.toString());
+    //console.log(getUserObusByIDUrl)
+    return this.http.get<UserHasOBU[]>(getUserObusByIDUrl)
   }
 
+  /*
   addConfigToObu(idObu: number, idConfig: number){
     const addConfigToObuUrl = routes.addConfigToObu.replace(":idObu", idObu.toString()).replace(":idConfig", idConfig.toString());
     return this.http.post(addConfigToObuUrl,{})
@@ -33,5 +34,6 @@ export class OBUHasConfigService {
     const deleteConfigFromObuUrl = routes.deleteConfigFromObu.replace(":idObu", idObu.toString()).replace(":idConfig", idConfig.toString());
     return this.http.delete(deleteConfigFromObuUrl,{})
   }
+  */
 
 }

@@ -125,26 +125,55 @@ export class ObuDetailComponent implements OnInit {
     if(id==null)
       alert('You must choose a configuration!')
 
-    this._obuHasConfigService.addConfigToObu(this.obu.id,this.configToAddId).subscribe(
-      _ => {
-        alert('Configuration associated sucessfully')
-        this._obuHasConfigService.getObuConfigs(this.id).subscribe(configs =>{
-          this.obu_has_configs = configs
+    if(confirm("This will save immediately, do you want to continue?")){  
+      this._obuHasConfigService.addConfigToObu(this.obu.id,this.configToAddId).subscribe(
+        _ => {
+          alert('Configuration associated sucessfully')
+          this._obuHasConfigService.getObuConfigs(this.id).subscribe(configs =>{
+            this.obu_has_configs = configs
+          })
         })
-      })
+    }
   }
 
   addTestPlanToObu(id:number){
     if(id==null)
       alert('You must choose a test plan!')
 
-    this._obuHasTestPlanService.addTestPlanToObu(this.obu.id,this.testPlanToAddId).subscribe(
-      _ => {
-        alert('Test Plan associated sucessfully')
-        this._obuHasTestPlanService.getObuTestPlans(this.id).subscribe(testplans =>{
-          this.obu_has_testplans = testplans
+    if(confirm("This will save immediately, do you want to continue?")){
+      this._obuHasTestPlanService.addTestPlanToObu(this.obu.id,this.testPlanToAddId).subscribe(
+        _ => {
+          alert('Test Plan associated sucessfully')
+          this._obuHasTestPlanService.getObuTestPlans(this.id).subscribe(testplans =>{
+            this.obu_has_testplans = testplans
+          })
         })
+    }  
+    
+  }
+
+
+  
+  deleteConfig(obuId:number, configId:number){
+    if(confirm("This will save immediately, do you want to continue?")){
+      this._obuHasConfigService.deleteConfigFromObu(obuId, configId).subscribe(_ =>{
+        alert('Configuration disassociated sucessfully')
+          this._obuHasConfigService.getObuConfigs(this.id).subscribe(configs =>{
+            this.obu_has_configs = configs
+          })
       })
+    }  
+  }
+
+  deleteTestPlan(obuId:number, testPlanId:number){
+    if(confirm("This will save immediately, do you want to continue?")){
+      this._obuHasTestPlanService.deleteTestPlanFromObu(obuId, testPlanId).subscribe(_ =>{
+        alert('Test Plan disassociated sucessfully')
+          this._obuHasTestPlanService.getObuTestPlans(this.id).subscribe(testplans =>{
+            this.obu_has_testplans = testplans
+          })
+      })
+    }  
   }
 
 }

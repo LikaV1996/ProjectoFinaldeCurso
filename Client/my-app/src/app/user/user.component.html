@@ -9,8 +9,8 @@
       <div class="four wide column"><h3>Profile</h3></div>
       <div class="four wide column"><h3>Suspended</h3></div>
     </div>
-
-    <div class="ui divider"></div>
+    <mat-spinner *ngIf="users == null"></mat-spinner>
+    <div *ngIf="users" class="ui divider"></div>
     
     <div class="ui" style="height: 70%;">
       <div class="ui segment" *ngFor="let user of users">

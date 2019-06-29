@@ -1,7 +1,7 @@
 <p></p>
 
-<div class="ui raised very padded text container segment">
-
+<div class="ui raised very padded text container segment" >
+<mat-spinner *ngIf="user == null"></mat-spinner>
 <div *ngIf="user">
   <h2>User Details</h2>
   <div><b>id: </b>{{user.id}}</div>
@@ -12,7 +12,7 @@
 
   <b>User Profile: </b>
   <mat-form-field>
-    <select matNativeControl required [value]="user.userProfile">
+    <select matNativeControl required [(ngModel)]="user.userProfile">
       <option value="ADMIN">ADMIN</option>
       <option value="SUPER_USER">SUPER_USER</option>
       <option value="NORMAL_USER">NORMAL_USER</option>
@@ -22,34 +22,53 @@
   <div><mat-checkbox [(ngModel)]="user.suspended" [checked]="user.suspended"><b>Suspended</b></mat-checkbox></div>
 
     
-    <div *ngIf="user.userProfile!=ADMIN" class="ui container segment" >
+    <div *ngIf="user.userProfile!='ADMIN'" class="ui container segment" >
       <h4>OBU Associations</h4>
       <mat-spinner *ngIf="user_has_obu == null"></mat-spinner>
       <div class="ui segment" *ngFor="let userobu of user_has_obu">
           <div class="ui middle aligned grid">
-              <div class="four wide column">{{userobu.obuID}}</div>
+              <div class="four wide column">{{userobu.obuName}}</div>
               <div class="eight wide column">{{userobu.role}}</div>
               <div class="four wide right aligned column">
-                  <div class="ui suspend button" (click)="deleteUserOBU(userobu.obuID, user.id)" data-tooltip="Delete OBU From User">Delete</div>
+                  <div class="ui suspend button" (click)="deleteObuFromUser(userobu.obuID, user.id)" data-tooltip="Delete OBU From User">Delete</div>
               </div>
           </div>
       </div>
-    </div> <!--ESTE DIV é para Apagar depois de descomentar o que esta em baixo-->
-<!--
       <p></p>
-
-      <div><b>Configurations: </b>
+      <div><b>OBUs: </b>
           <mat-form-field>
-          <select matNativeControl required [(ngModel)]="configToAddId">
-              <option value="null">Choose Configuration</option>
-              <option *ngFor="let config of configs" value="{{config.id}}">{{config.configName}}</option>
+          <select matNativeControl required [(ngModel)]="obuToAddId">
+              <option value="null">Choose OBU</option>
+              <option *ngFor="let obu of obus" value="{{obu.id}}">{{obu.obuName}}</option>
           </select>
           </mat-form-field>
       </div>
-      <button class="ui primary button" (click)="addConfigToObu(configToAddId)" data-tooltip="Add Configuration To OBU"> Add Config</button>
+
+      <div class="ui middle aligned grid">
+        <div class="one wide column"><b>Role: </b></div> 
+        <div class="three wide column">
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input type="radio" name="frequency" value=0 (click)="setViewer()"  checked="checked">
+                    <label>Viewer</label>
+                </div>
+            </div>
+        </div>
+        <div class="three wide column">
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input type="radio" name="frequency" value=1 (click)="setEditor()" >
+                    <label>Editor</label>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+      <p></p>
+      <button class="ui primary button" (click)="addObuToUser(obuToAddId,user.id)" data-tooltip="Add OBU To User"> Add OBU</button>
       
   </div>
--->
+
 
   <p></p>
   <div><b>Creator: </b>{{user.creator}}</div>

@@ -10,10 +10,10 @@ export class Routes{
     getUserByParam = this.basePath + "/user/:param";
     createUser = this.basePath + "/user";
     suspendUser = this.basePath + "/user/:id/suspend";
-    updateUser = this.basePath + "/user/:id/edit";
+    updateUser = this.basePath + "/user/:id";
     getUserObus = this.basePath + "/obu-user/user/:id"
     addObuToUser = this.basePath + "/obu-user";
-    deleteObuFromUser = this.basePath + "/obu-user/:idObu/1/user/:idUser"
+    deleteObuFromUser = this.basePath + "/obu-user/obu/:idObu/user/:idUser"
 
     getServerLogs = this.basePath + "/server-log";
 

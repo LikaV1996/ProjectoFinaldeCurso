@@ -17,23 +17,20 @@ export class UserHasObuService {
     private http: HttpClient
   ) { }
     
-  
   getUserObus(id: number): Observable<UserHasOBU[]> {
     const getUserObusByIDUrl = routes.getUserObus.replace(":id", id.toString());
-    //console.log(getUserObusByIDUrl)
     return this.http.get<UserHasOBU[]>(getUserObusByIDUrl)
   }
 
-  /*
-  addConfigToObu(idObu: number, idConfig: number){
-    const addConfigToObuUrl = routes.addConfigToObu.replace(":idObu", idObu.toString()).replace(":idConfig", idConfig.toString());
-    return this.http.post(addConfigToObuUrl,{})
+  
+  addObuToUser(idObu: number, idUser: number, role:string){
+    return this.http.post(routes.addObuToUser,{userID: idUser, obuID: idObu, role: role})
   }
 
-  deleteConfigFromObu(idObu: number, idConfig: number){
-    const deleteConfigFromObuUrl = routes.deleteConfigFromObu.replace(":idObu", idObu.toString()).replace(":idConfig", idConfig.toString());
-    return this.http.delete(deleteConfigFromObuUrl,{})
+  deleteObuFromUser(idObu: number, idUser: number){
+    const deleteObuFromUserUrl = routes.deleteObuFromUser.replace(":idObu", idObu.toString()).replace(":idUser", idUser.toString());
+    return this.http.delete(deleteObuFromUserUrl,{})
   }
-  */
+  
 
 }

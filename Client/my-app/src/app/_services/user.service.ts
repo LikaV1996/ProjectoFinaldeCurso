@@ -38,9 +38,9 @@ export class UserService {
     return this.http.post<User>(routes.createUser,{userName: user_name, userPassword: user_password, userProfile: user_profile, properties: null})
   }
 
-  updateUser(id:number, user_name: string, user_profile: string, suspended: boolean){
+  updateUser(id:number, user_profile: string, suspended: boolean){
     const updateUserByIdUrl = routes.updateUser.replace(":id", id.toString());
-    return this.http.put<User>(updateUserByIdUrl,{id,user_name: user_name, user_profile: user_profile, properties: null, suspended: suspended})
+    return this.http.put<User>(updateUserByIdUrl,{userProfile: user_profile, suspended: suspended})
   }
 
 }

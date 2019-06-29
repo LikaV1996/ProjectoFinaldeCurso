@@ -14,11 +14,13 @@ import org.springframework.stereotype.Service;
 import pt.solvit.probe.server.controller.model.input.InputUser;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.enums.UserProfile;
+import pt.solvit.probe.server.repository.exception.impl.EntityWithIdNotFoundException;
 import pt.solvit.probe.server.repository.model.UserDao;
 import pt.solvit.probe.server.repository.exception.impl.UserAlreadyExistsException;
 import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.service.exception.impl.AdminNotDeletableException;
 import pt.solvit.probe.server.service.exception.impl.PermissionException;
+import pt.solvit.probe.server.service.exception.impl.SelfUpdateException;
 import pt.solvit.probe.server.service.impl.util.ServiceUtil;
 import pt.solvit.probe.server.repository.api.IUserRepository;
 
@@ -41,8 +43,9 @@ public class UserService implements IUserService {
 
         User addUser = User.makeUserFromInput(input, loggedInUser.getUserName());
 
-        if( !checkUserPermissions(loggedInUser, UserProfile.ADMIN) &&
-                !checkLoggedInUserPermissionsHigherThanUser(loggedInUser, addUser) )
+        if( !checkUserPermissions(loggedInUser, UserProfile.ADMIN)
+                //&& !checkLoggedInUserPermissionsHigherThanUser(loggedInUser, addUser)
+        )
             throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Creating new user");
@@ -52,11 +55,15 @@ public class UserService implements IUserService {
 
     @Override
     public void updateUser(User userToUpdate, InputUser input, User loggedInUser) {
+
+        if ( userToUpdate.getId().equals( loggedInUser.getId() ) )
+            throw new SelfUpdateException();
+
         if( !checkLoggedInUserPermissionsHigherThanUser(loggedInUser, userToUpdate) )
             throw new PermissionException();
 
         if ( input.getUserName() != null && !input.getUserName().equals( userToUpdate.getUserName() ) )
-            checkIfUserAlreadyExists(userToUpdate.getUserName());
+            checkIfUserAlreadyExists(input.getUserName());
 
         userToUpdate = User.updateUser(userToUpdate, input, loggedInUser);
 
@@ -87,6 +94,10 @@ public class UserService implements IUserService {
 
     @Override
     public void deleteUser(long userId, User loggedInUser) {
+
+        if ( userId == loggedInUser.getId() )
+            throw new SelfUpdateException();
+
         if( !checkUserPermissions(loggedInUser, UserProfile.ADMIN) )
             throw new PermissionException();
 
@@ -103,6 +114,10 @@ public class UserService implements IUserService {
 
     @Override
     public void suspendUser(User userToSuspend, User loggedInUser) {
+
+        if ( userToSuspend.getId().equals( loggedInUser.getId() ) )
+            throw new SelfUpdateException();
+
         if( !checkLoggedInUserPermissionsHigherThanUser(loggedInUser, userToSuspend) )
             throw new PermissionException();
 
@@ -170,7 +185,7 @@ public class UserService implements IUserService {
         try {
             userRepository.findByName(userName);
             throw new UserAlreadyExistsException();
-        } catch (IncorrectResultSizeDataAccessException e) {
+        } catch (EntityWithIdNotFoundException e) {
             //Ignore
         }
     }

@@ -19,14 +19,18 @@ import static pt.solvit.probe.server.util.ServerUtil.GSON;
 public class ObuUserDao{
 
     private long userID;
+    private String userName;
     private long obuID;
+    private String obuName;
     private String role;
 
     public ObuUserDao(){ super(); }
 
-    public ObuUserDao(long userID, long obuID, String role) {
+    public ObuUserDao(long userID, String userName, long obuID, String obuName, String role) {
         this.userID = userID;
+        this.userName = userName;
         this.obuID = obuID;
+        this.obuName = obuName;
         this.role = role;
     }
 
@@ -34,8 +38,16 @@ public class ObuUserDao{
         return userID;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
     public long getObuID() {
         return obuID;
+    }
+
+    public String getObuName() {
+        return obuName;
     }
 
     public String getRole() {
@@ -46,8 +58,16 @@ public class ObuUserDao{
         this.userID = userID;
     }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public void setObuID(long obuID) {
         this.obuID = obuID;
+    }
+
+    public void setObuName(String obuName) {
+        this.obuName = obuName;
     }
 
     public void setRole(String role) {
@@ -55,6 +75,6 @@ public class ObuUserDao{
     }
 
     public static ObuUser transformToObuUser(ObuUserDao obuUserDao) {
-        return new ObuUser(obuUserDao.getUserID(), obuUserDao.getObuID(), ObuUserRole.valueOf( obuUserDao.getRole()) );
+        return new ObuUser(obuUserDao.getUserID(), obuUserDao.getUserName(), obuUserDao.getObuID(), obuUserDao.getObuName(), ObuUserRole.valueOf( obuUserDao.getRole()) );
     }
 }

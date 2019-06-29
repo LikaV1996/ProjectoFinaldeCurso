@@ -174,7 +174,7 @@ public class ControllerUtil {
 
 
     public static ObuUser transformToObuUser(InputObuUser body) {
-        return new ObuUser(body.getUserID(), body.getObuID(), body.getRole());
+        return new ObuUser(body.getUserID(), null, body.getObuID(), null, body.getRole());
     }
 
 

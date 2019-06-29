@@ -21,74 +21,266 @@ DO $$
 	DECLARE hw_id_2 INT;
 	DECLARE hw_id_3 INT;
 BEGIN
-	INSERT INTO Hardware (serial_number, properties, creator) VALUES ('OBU001','{"components":[{"serialNumber":"MDBM1215057","componentType":"MOTHERBOARD","manufacturer":"Micro I/O","model":"MDB Monitor v1.2"},{"serialNumber":"Unknown","componentType":"COMPUTER","manufacturer":"Raspberry Pi","model":"BCM2837 Raspberry Pi Compute 3"},{"serialNumber":"Unknown","componentType":"POWER_BOARD","manufacturer":"Micro I/O","model":"Unknown"},{"serialNumber":"H3MDU16129000920","componentType":"MODEM","manufacturer":"Huawei","model":"MU709s-2","modemType":"PLMN","imei":"864881025311174"},{"componentType":"MODEM","manufacturer":"Triorail","model":"TRC-3","modemType":"GSMR","imei":"351962025030970"},{"serialNumber":"Unknown","componentType":"GPS","manufacturer":"Micro I/O","model":"Unknown"}]}'::jsonb,'rita') RETURNING id INTO hw_id_1;
-	INSERT INTO Hardware (serial_number, properties, creator) VALUES ('OBU002','{"components":[{"serialNumber":"MDBM1215135","componentType":"MOTHERBOARD","manufacturer":"Micro I/O","model":"MDB Monitor v1.2"},{"serialNumber":"00000000d3a30eee","componentType":"COMPUTER","manufacturer":"Raspberry Pi","model":"BCM2837 Raspberry Pi Compute 3"},{"serialNumber":"Unknown","componentType":"POWER_SUPPLY","manufacturer":"Mean Well","model":"RSD-100D-24"},{"serialNumber":"H3MDU16129000746","componentType":"MODEM","manufacturer":"Huawei","model":"MU709s-2","modemType":"PLMN","imei":"864881025309434"},{"componentType":"MODEM","manufacturer":"Triorail","model":"TRC-5","modemType":"GSMR","imei":"351962025549615"},{"serialNumber":"78500081163","componentType":"GPS","manufacturer":"U-Blox","model":"Neo-M8U-0-1C"}]}'::jsonb,'rita') RETURNING id INTO hw_id_2;
-	INSERT INTO Hardware (serial_number, properties, creator) VALUES ('OBU003','{"components":[{"serialNumber":"MDBM1317392","componentType":"MOTHERBOARD","manufacturer":"Micro I/O","model":"MDB Monitor v1.3"},{"serialNumber":"Unknown","componentType":"COMPUTER","manufacturer":"Raspberry Pi","model":"BCM2837 Raspberry Pi Compute 3"},{"serialNumber":"Unknown","componentType":"POWER_SUPPLY","manufacturer":"Mean Well","model":"RSD-100B-24"},{"serialNumber":"H3MDU16129000726","componentType":"MODEM","manufacturer":"Huawei","model":"MU709s-2","modemType":"PLMN","imei":"864881025309236"},{"componentType":"MODEM","manufacturer":"Triorail","model":"TRC-5","modemType":"GSMR","imei":"351962025671419"},{"serialNumber":"GPS_0001","componentType":"GPS","manufacturer":"ETConcept","model":"GPS Board Neo-M8U"}]}'::jsonb,'rita') RETURNING id INTO hw_id_3;
-	INSERT INTO Obu (hardware_id, obu_name, obu_password, properties, creator) VALUES (hw_id_2,'OBU002','1234','{"sims":[{"modemType":"PLMN","msisdn":"911965014","simPin":"","simPuk":"Unknown","apn":"net2.vodafone.pt","apnUser":"vodafone","apnPass":"vodafone"},{"modemType":"GSMR","msisdn":"703801154","simPin":"","simPuk":"Unknown","iccid":"110101001809","apn":"exploracao.refertelecom.pt","apnUser":"","apnPass":""}]}'::jsonb,'rita');
-	INSERT INTO Obu (hardware_id, obu_name, obu_password, properties, creator) VALUES (hw_id_3,'OBU003','0000','{"sims":[{"modemType":"PLMN","msisdn":"968995024","simPin":"","simPuk":"Unknown","apn":"internet","apnUser":"","apnPass":""},{"modemType":"GSMR","msisdn":"703801156","simPin":"","simPuk":"Unknown","iccid":"110101001791","apn":"exploracao.refertelecom.pt","apnUser":"","apnPass":""}]}'::jsonb,'rita');
+	INSERT INTO Hardware (serial_number, properties, creator) VALUES (
+		'OBU001',
+		'{
+			"components":[
+				{
+					"serialNumber":"MDBM1215057",
+					"componentType":"MOTHERBOARD",
+					"manufacturer":"Micro I/O",
+					"model":"MDB Monitor v1.2"
+				},
+				{
+					"serialNumber":"Unknown",
+					"componentType":"COMPUTER",
+					"manufacturer":"Raspberry Pi",
+					"model":"BCM2837 Raspberry Pi Compute 3"
+				},
+				{
+					"serialNumber":"Unknown",
+					"componentType":"POWER_BOARD",
+					"manufacturer":"Micro I/O",
+					"model":"Unknown"
+				},
+				{
+					"serialNumber":"H3MDU16129000920",
+					"componentType":"MODEM",
+					"manufacturer":"Huawei",
+					"model":"MU709s-2",
+					"modemType":"PLMN",
+					"imei":"864881025311174"
+				},
+				{
+					"componentType":"MODEM",
+					"manufacturer":"Triorail",
+					"model":"TRC-3",
+					"modemType":"GSMR",
+					"imei":"351962025030970"
+				},
+				{
+					"serialNumber":"Unknown",
+					"componentType":"GPS",
+					"manufacturer":"Micro I/O",
+					"model":"Unknown"
+				}
+			]
+		}'::jsonb,
+		'rita') RETURNING id INTO hw_id_1;
+	INSERT INTO Hardware (serial_number, properties, creator) VALUES (
+		'OBU002',
+		'{
+			"components":[
+				{
+					"serialNumber":"MDBM1215135",
+					"componentType":"MOTHERBOARD",
+					"manufacturer":"Micro I/O",
+					"model":"MDB Monitor v1.2"
+				},
+				{
+					"serialNumber":"00000000d3a30eee",
+					"componentType":"COMPUTER",
+					"manufacturer":"Raspberry Pi",
+					"model":"BCM2837 Raspberry Pi Compute 3"
+				},
+				{
+					"serialNumber":"Unknown",
+					"componentType":"POWER_SUPPLY",
+					"manufacturer":"Mean Well",
+					"model":"RSD-100D-24"
+				},
+				{
+					"serialNumber":"H3MDU16129000746",
+					"componentType":"MODEM",
+					"manufacturer":"Huawei",
+					"model":"MU709s-2",
+					"modemType":"PLMN",
+					"imei":"864881025309434"
+				},
+				{
+					"componentType":"MODEM",
+					"manufacturer":"Triorail",
+					"model":"TRC-5",
+					"modemType":"GSMR",
+					"imei":"351962025549615"
+				},
+				{
+					"serialNumber":"78500081163",
+					"componentType":"GPS",
+					"manufacturer":"U-Blox",
+					"model":"Neo-M8U-0-1C"
+				}
+			]
+		}'::jsonb,
+		'rita') RETURNING id INTO hw_id_2;
+	INSERT INTO Hardware (serial_number, properties, creator) VALUES (
+		'OBU003',
+		'{
+  			"components": [
+  			 	{
+  			 	  	"serialNumber": "MDBM1317392",
+  			 	  	"componentType": "MOTHERBOARD",
+  			 	  	"manufacturer": "Micro I/O",
+  			 	  	"model": "MDB Monitor v1.3"
+  			 	},	
+  			 	{	
+  			 	  	"serialNumber": "Unknown",
+  			 	  	"componentType": "COMPUTER",
+  			 	  	"manufacturer": "Raspberry Pi",
+  			 	  	"model": "BCM2837 Raspberry Pi Compute 3"
+  			 	},	
+  			 	{	
+  			 	  	"serialNumber": "Unknown",
+  			 	  	"componentType": "POWER_SUPPLY",
+  			 	  	"manufacturer": "Mean Well",
+  			 	  	"model": "RSD-100B-24"
+  			 	},	
+  			 	{	
+  			 	  	"serialNumber": "H3MDU16129000726",
+  			 	  	"componentType": "MODEM",
+  			 	  	"manufacturer": "Huawei",
+  			 	  	"model": "MU709s-2",
+  			 	  	"modemType": "PLMN",
+  			 	  	"imei": "864881025309236"
+  			 	},	
+  			 	{	
+  			 	  	"componentType": "MODEM",
+  			 	  	"manufacturer": "Triorail",
+  			 	  	"model": "TRC-5",
+  			 	  	"modemType": "GSMR",
+  			 	  	"imei": "351962025671419"
+  			 	},	
+  			 	{	
+  			 	  	"serialNumber": "GPS_0001",
+  			 	  	"componentType": "GPS",
+  			 	  	"manufacturer": "ETConcept",
+  			 	  	"model": "GPS Board Neo-M8U"
+  			 	}
+  			]
+		}'::jsonb,
+		'rita') RETURNING id INTO hw_id_3;
+		
+		
+	INSERT INTO Obu (hardware_id, obu_name, obu_password, properties, creator) VALUES (
+		hw_id_2,
+		'OBU002',
+		'1234',
+		'{
+  			"sims": [
+    			{
+      				"modemType": "PLMN",
+      				"msisdn": "911965014",
+      				"simPin": "",
+      				"simPuk": "Unknown",
+      				"apn": "net2.vodafone.pt",
+      				"apnUser": "vodafone",
+      				"apnPass": "vodafone"
+    			},
+    			{
+    			  	"modemType": "GSMR",
+    			  	"msisdn": "703801154",
+    			  	"simPin": "",
+    			  	"simPuk": "Unknown",
+    			  	"iccid": "110101001809",
+    			  	"apn": "exploracao.refertelecom.pt",
+    			  	"apnUser": "",
+    			  	"apnPass": ""
+    			}
+  			]
+		}'::jsonb,
+		'rita');
+	INSERT INTO Obu (hardware_id, obu_name, obu_password, properties, creator) VALUES (
+		hw_id_3,
+		'OBU003',
+		'0000',
+		'{
+  			"sims": [
+  			  	{
+  			  	  	"modemType": "PLMN",
+  			  	  	"msisdn": "968995024",
+  			  	  	"simPin": "",
+  			  	  	"simPuk": "Unknown",
+  			  	  	"apn": "internet",
+  			  	  	"apnUser": "",
+  			  	  	"apnPass": ""
+  			  	},
+  			  	{
+  			  	  	"modemType": "GSMR",
+  			  	  	"msisdn": "703801156",
+  			  	  	"simPin": "",
+  			  	  	"simPuk": "Unknown",
+  			  	  	"iccid": "110101001791",
+  			  	  	"apn": "exploracao.refertelecom.pt",
+  			  	  	"apnUser": "",
+  			  	  	"apnPass": ""
+  			  	}
+  			]
+		}'::jsonb,
+		'rita');
+		
 END $$;
 
 
 INSERT INTO config (config_name, properties, creator) VALUES (
     'Config001',
     '{
-    "activationDate": "2018-12-11T15:30:00",
-    "archive": {
-        "expiration": 2592000,
-        "period": 86400,
-        "referenceDate": "2018-12-10T10:00:00"
-    },
-    "controlConnection": {
-        "referenceDate": "2018-12-10T10:00:00.000",
-        "period": 600,
-        "retryDelay": 60,
-        "maxRetries": 3
-    },
-    "core": {
-    	"maxSystemLogSize": 10485760,
-    	"storageMonitorPeriod": 300,
-    	"storageWarningThreshold": 524288000,
-    	"storageCriticalThreshold": 209715200
-    },
-    "data": {
-        "defaultMessage": "SOLVIT Probe default message"
-    },
-    "download": {
-        "retryDelay": 120,
-        "maxRetries": 3
-    },
-    "scanning": {
-        "enableMonitor": false,
-        "enableCsq": true,
-        "enableMoni": true,
-        "enableMonp": true,
-        "enableSmond": true,
-        "enableSmonc": true,
-        "sampleTime": 60
-    },
-    "server": {
-        "serverInterface": "MODEM_GSMR",
-        "registrationRetryDelay": 60,
-        "serverAddress": "10.228.101.29:8080",
-        "serverUser": "probe",
-        "serverPassword": "probe"
-    },
-    "testPlan": {
-        "defaultMaxRetries": 3,
-        "defaultRetryDelay": 60,
-        "maxLogSize": 10485760
-    },
-    "upload": {
-        "autoUpload": true,
-        "referenceDate": "2018-12-10T10:05:00.000",
-        "period": 86400,
-        "retryDelay": 60,
-        "maxRetries": 3,
-        "maxUploadSize": 5242880
-    },
-    "voice": {
-        "defaultCallDuration": 300,
-        "incomingCallTimeout": 3600
+    	"activationDate": "2018-12-11T15:30:00",
+    	"archive": {
+        	"expiration": 2592000,
+        	"period": 86400,
+        	"referenceDate": "2018-12-10T10:00:00"
+    	},
+    	"controlConnection": {
+        	"referenceDate": "2018-12-10T10:00:00.000",
+        	"period": 600,
+        	"retryDelay": 60,
+        	"maxRetries": 3
+    	},
+    	"core": {
+    		"maxSystemLogSize": 10485760,
+    		"storageMonitorPeriod": 300,
+    		"storageWarningThreshold": 524288000,
+    		"storageCriticalThreshold": 209715200
+    	},
+    	"data": {
+    	    "defaultMessage": "SOLVIT Probe default message"
+    	},
+    	"download": {
+    	    "retryDelay": 120,
+    	    "maxRetries": 3
+    	},
+    	"scanning": {
+    	    "enableMonitor": false,
+    	    "enableCsq": true,
+    	    "enableMoni": true,
+    	    "enableMonp": true,
+    	    "enableSmond": true,
+    	    "enableSmonc": true,
+    	    "sampleTime": 60
+    	},
+    	"server": {
+    	    "serverInterface": "MODEM_GSMR",
+    	    "registrationRetryDelay": 60,
+    	    "serverAddress": "10.228.101.29:8080",
+    	    "serverUser": "probe",
+    	    "serverPassword": "probe"
+    	},
+    	"testPlan": {
+    	    "defaultMaxRetries": 3,
+    	    "defaultRetryDelay": 60,
+    	    "maxLogSize": 10485760
+    	},
+    	"upload": {
+    	    "autoUpload": true,
+    	    "referenceDate": "2018-12-10T10:05:00.000",
+    	    "period": 86400,
+    	    "retryDelay": 60,
+    	    "maxRetries": 3,
+    	    "maxUploadSize": 5242880
+    	},
+    	"voice": {
+    	    "defaultCallDuration": 300,
+    	    "incomingCallTimeout": 3600
     }
 }','tester');
 

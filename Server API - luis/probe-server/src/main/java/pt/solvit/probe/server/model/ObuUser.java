@@ -30,21 +30,31 @@ public class ObuUser {
     private Long userID;
 
     @JsonView(Profile.ExtendedView.class)
+    @JsonProperty("userName")
+    private String userName;
+
+    @JsonView(Profile.ExtendedView.class)
     @JsonProperty("obuID")
     private Long obuID;
+
+    @JsonView(Profile.ExtendedView.class)
+    @JsonProperty("obuName")
+    private String obuName;
 
     @JsonView(Profile.ExtendedView.class)
     @JsonProperty("role")
     private ObuUserRole role;
 
-    public ObuUser(Long userID, Long obuID, ObuUserRole role) {
+    public ObuUser(Long userID, String userName, Long obuID, String obuName, ObuUserRole role) {
         this.userID = userID;
+        this.userName = userName;
         this.obuID = obuID;
+        this.obuName = obuName;
         this.role = role;
     }
 
     public static ObuUserDao transformToObuUserDao(ObuUser obuUser) {
-        return new ObuUserDao(obuUser.getUserID(), obuUser.getObuID(), obuUser.getRole().toString());
+        return new ObuUserDao(obuUser.getUserID(), obuUser.getUserName(), obuUser.getObuID(), obuUser.getUserName(), obuUser.getRole().toString());
     }
 
 
@@ -52,8 +62,16 @@ public class ObuUser {
         return userID;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
     public Long getObuID() {
         return obuID;
+    }
+
+    public String getObuName() {
+        return obuName;
     }
 
     public ObuUserRole getRole() {

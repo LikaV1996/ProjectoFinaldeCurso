@@ -159,7 +159,7 @@ public class AppConfiguration {
      * OBU_USER ROUTES **************
      */
     public static final String URL_GET_OBU_USERS_BY_USER_ID = URL_BEGINNING + "/obu-user/user/{user-id}",
-            URL_GET_OBU_USERS = URL_BEGINNING + "/obu-user/",
+            URL_GET_OBU_USERS = URL_BEGINNING + "/obu-user",
             URL_CREATE_OBU_USER = URL_BEGINNING + "/obu-user",
             URL_DELETE_OBU_USER = URL_BEGINNING + "/obu-user/obu/{obu-id}/user/{user-id}",
             URL_UPDATE_OBU_USER = URL_BEGINNING + "/obu-user/obu/{obu-id}/user/{user-id}";

@@ -36,10 +36,10 @@ public class ObuUserRepository implements IObuUserRepository {
     private JdbcTemplate jdbcTemplate;
 
     private static final String INSERT_BASE = "INSERT INTO ProbeUser_Obu (probeuser_id, obu_id, role)";
-    private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?, ?::PO_Role) RETURNING id";
+    private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?, ?::PO_Role) RETURNING probeuser_id";
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?);";
 
-    private static final String SELECT_ALL = "SELECT probeuser_id, obu_id, role FROM Probeuser_Obu";
+    private static final String SELECT_ALL = "SELECT probeuser_id AS userID, user_name AS userName, obu_id AS obuID, obu_name AS obuName, role FROM view_Probeuser_Obu";
     private static final String SELECT_BY_ID = SELECT_ALL + " WHERE probeuser_id = ? AND obu_id = ?;";
     private static final String SELECT_BY_USER_ID = SELECT_ALL + " WHERE probeuser_id = ?;";
     private static final String SELECT_BY_OBU_ID = SELECT_ALL + " WHERE obu_id = ?;";
@@ -95,24 +95,24 @@ public class ObuUserRepository implements IObuUserRepository {
 
     @Override
     public long add(ObuUserDao obuUserDao) {
-        return jdbcTemplate.update(INSERT_POSTGRES, obuUserDao.getUserID(), obuUserDao.getObuID(), obuUserDao.getRole());
+        return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, obuUserDao.getUserID(), obuUserDao.getObuID(), obuUserDao.getRole());
     }
 
     /*
     @Override
     public int deleteByUserId(long userID) {
-        return jdbcTemplate.update(DELETE_BY_USER_ID);
+        return jdbcTemplate.update(DELETE_BY_USER_ID, userID);
     }
 
     @Override
     public int deleteByObuId(long obuID) {
-        return jdbcTemplate.update(DELETE_BY_OBU_ID);
+        return jdbcTemplate.update(DELETE_BY_OBU_ID), obuID;
     }
     */
 
     @Override
     public int deleteById(long obuID, long userID) {
-        return jdbcTemplate.update(DELETE_BY_ID);
+        return jdbcTemplate.update(DELETE_BY_ID, userID, obuID);
     }
 
     /*

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.controller.api.IObuUserController;
 import pt.solvit.probe.server.controller.impl.util.ControllerUtil;
@@ -31,7 +32,7 @@ public class ObuUserController implements IObuUserController {
 
 
     @Override
-    public ResponseEntity<List<ObuUser>> getAllObuUserRegistriesByUserID(HttpServletRequest request, @PathVariable("user-id") long userId) {
+    public ResponseEntity<List<ObuUser>> getAllObuUserRegistries(HttpServletRequest request, @PathVariable("user-id") long userId) {
         User user = (User) request.getAttribute("user");
 
         List<ObuUser> obuUserList = obuUserService.getAllObuUserByUserID(userId, user);
@@ -41,7 +42,7 @@ public class ObuUserController implements IObuUserController {
     }
 
     @Override
-    public ResponseEntity<List<ObuUser>> getAllObuUserRegistriesByUserID(HttpServletRequest request) {
+    public ResponseEntity<List<ObuUser>> getAllObuUserRegistries(HttpServletRequest request) {
         User user = (User) request.getAttribute("user");
 
         List<ObuUser> obuUserList = obuUserService.getAllObuUser(user);
@@ -51,7 +52,7 @@ public class ObuUserController implements IObuUserController {
     }
 
     @Override
-    public ResponseEntity<ObuUser> createObuUserRegistry(HttpServletRequest request, InputObuUser body) {
+    public ResponseEntity<ObuUser> createObuUserRegistry(HttpServletRequest request, @RequestBody InputObuUser body) {
         User user = (User) request.getAttribute("user");
 
         body.validate();
@@ -64,7 +65,7 @@ public class ObuUserController implements IObuUserController {
     }
 
     @Override
-    public ResponseEntity<ObuUser> updateObuUserRegistry(HttpServletRequest request, long userId, long obuId, InputObuUser body) {
+    public ResponseEntity<ObuUser> updateObuUserRegistry(HttpServletRequest request, @PathVariable("user-id") long userId, @PathVariable("obu-id") long obuId, @RequestBody  InputObuUser body) {
         User user = (User) request.getAttribute("user");
 
         body.validate();
@@ -76,7 +77,7 @@ public class ObuUserController implements IObuUserController {
     }
 
     @Override
-    public ResponseEntity<Void> deleteObuUserRegistry(HttpServletRequest request, long userId, long obuId) {
+    public ResponseEntity<Void> deleteObuUserRegistry(HttpServletRequest request, @PathVariable("user-id") long userId, @PathVariable("obu-id") long obuId) {
         User user = (User) request.getAttribute("user");
 
         obuUserService.deleteObuUser(obuId, userId, user);

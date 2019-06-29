@@ -34,6 +34,7 @@ public class InputObu {
     @Valid
     private String obuName;
 
+    //TODO MORE FIELDS FOR UPDATE
     /*
     @JsonProperty("obuPassword")
     @Valid

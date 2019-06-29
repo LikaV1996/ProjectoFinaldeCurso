@@ -1,3 +1,5 @@
+<p></p>
+
 <div class="ui raised very padded text container segment">
 
 <div *ngIf="user">
@@ -5,44 +7,58 @@
   <div><b>id: </b>{{user.id}}</div>
 
   <div>
-    <b>user_name: 
-      <mat-form-field appearance="standard">
-        <mat-label>{{user.userName}}</mat-label>
-        <input matInput placeholder="user_name">
-      </mat-form-field>
-    </b>
+    <b>User Name: </b>{{user.userName}}     
   </div>
 
-<b>userProfile: </b>
-<mat-form-field>
-  <select matNativeControl required [value]="user.userProfile">
-    <option value="ADMIN">ADMIN</option>
-    <option value="SUPER_USER">SUPER_USER</option>
-    <option value="NORMAL_USER">NORMAL_USER</option>
-  </select>
-</mat-form-field>
-  
-  <div>
-      <b>properties:
-        <input [(ngModel)]="user.properties" placeholder="properties"/>
-      </b>
-  </div>
-
-  <div><b>creator: </b>{{user.creator}}</div>
-
-  <div><b>creation_date: </b>{{user.creationDate}}</div>
-
-  <b>suspended: </b>
+  <b>User Profile: </b>
   <mat-form-field>
-    <select matNativeControl required [value]="user.suspended">
-      <option value="true">true</option>
-      <option value="false">false</option>
+    <select matNativeControl required [value]="user.userProfile">
+      <option value="ADMIN">ADMIN</option>
+      <option value="SUPER_USER">SUPER_USER</option>
+      <option value="NORMAL_USER">NORMAL_USER</option>
     </select>
   </mat-form-field>
 
+  <div><mat-checkbox [(ngModel)]="user.suspended" [checked]="user.suspended"><b>Suspended</b></mat-checkbox></div>
+
+    
+    <div *ngIf="user.userProfile!=ADMIN" class="ui container segment" >
+      <h4>OBU Associations</h4>
+      <mat-spinner *ngIf="user_has_obu == null"></mat-spinner>
+      <div class="ui segment" *ngFor="let userobu of user_has_obu">
+          <div class="ui middle aligned grid">
+              <div class="four wide column">{{userobu.obuID}}</div>
+              <div class="eight wide column">{{userobu.role}}</div>
+              <div class="four wide right aligned column">
+                  <div class="ui suspend button" (click)="deleteUserOBU(userobu.obuID, user.id)" data-tooltip="Delete OBU From User">Delete</div>
+              </div>
+          </div>
+      </div>
+    </div> <!--ESTE DIV é para Apagar depois de descomentar o que esta em baixo-->
+<!--
+      <p></p>
+
+      <div><b>Configurations: </b>
+          <mat-form-field>
+          <select matNativeControl required [(ngModel)]="configToAddId">
+              <option value="null">Choose Configuration</option>
+              <option *ngFor="let config of configs" value="{{config.id}}">{{config.configName}}</option>
+          </select>
+          </mat-form-field>
+      </div>
+      <button class="ui primary button" (click)="addConfigToObu(configToAddId)" data-tooltip="Add Configuration To OBU"> Add Config</button>
+      
+  </div>
+-->
+
+  <p></p>
+  <div><b>Creator: </b>{{user.creator}}</div>
+
+  <div><b>Creation Date: </b>{{user.creationDate.slice(0,10)}} {{user.creationDate.slice(11,19)}}</div>
+
   <div *ngIf="user.modifiedDate!=null || user.modifier!=null">
-      <div><b>modifier: </b>{{user.modifier}}</div>
-      <div><b>modifiedDate: </b>{{user.modifiedDate}}</div>
+      <div><b>Modifier: </b>{{user.modifier}}</div>
+      <div><b>Modified Date: </b>{{user.modifiedDate.slice(0,10)}} {{user.modifiedDate.slice(11,19)}}</div>
       </div>
    
 </div>

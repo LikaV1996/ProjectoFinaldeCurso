@@ -51,7 +51,7 @@ export class HomemapComponent implements OnInit {
         this.obus = obus
         this.orderById()
         this.obus.forEach(obu => { //Em cada OBU, fazer o pedido das localizaçoes
-          this._obuService.getPositionFromOBU(obu.id).subscribe( obuStatus =>{
+          this._obuService.getPositionFromOBU(obu.id,null,null).subscribe( obuStatus =>{
             if(obuStatus.length != 0){//Caso a OBU nao tenha a obuStatus
               var aux = new Positions()
               aux.obuId = obu.id

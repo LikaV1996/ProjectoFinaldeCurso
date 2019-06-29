@@ -11,6 +11,8 @@ import { UserService } from '../_services/user.service';
 import {Location} from '@angular/common';
 import { UserHasOBU } from '../Model/UserHasOBU';
 import { UserHasObuService } from '../_services/userHasObu.service';
+import { OBUService } from '../_services/obu.service';
+import { OBU } from '../Model/OBU';
 
 let routes = new Routes
 
@@ -23,14 +25,18 @@ export class UserDetailComponent implements OnInit {
   @Input() user: User;
 
 
-  private id: number;
-
+  private id: number;//id do user que está a ser visto
   private user_has_obu: UserHasOBU[];
+  private obuToAddId: number;
+  private obus: OBU[];
+
+  private selectedRole: string = "VIEWER";
 
   constructor(
     private router: Router,
     private _userService: UserService,
     private _userHasObuService: UserHasObuService,
+    private _obuService: OBUService,
     private route: ActivatedRoute,
     private http: HttpClient,
     private _location: Location
@@ -41,37 +47,61 @@ export class UserDetailComponent implements OnInit {
     
     this._userService.getUserByParam(this.id).subscribe(user => {
      this.user = user
-   })
 
-   this._userHasObuService.getUserObus(this.id).subscribe(userobus =>{
-    this.user_has_obu = userobus
-  })
+      this._userHasObuService.getUserObus(this.id).subscribe(userobus =>{
+        this.user_has_obu = userobus
+      })
+
+      this._obuService.getOBUs().subscribe(obus => {
+        this.obus = obus
+      })
+    })
+
   }
 
   goBack(){
     this._location.back();
   }
+
   saveChanges(){
-    console.log("updating user")
-    this._userService.updateUser(this.user.id, this.user.userName, this.user.userProfile, this.user.suspended)
-    .subscribe(user => {
+    this._userService.updateUser(this.user.id, this.user.userProfile, this.user.suspended).subscribe(user => {
       this.user = user
-      console.log("user updated")
+      alert("User updated!")
+      this.goBack()
     })
   }
 
-  deleteUserOBU(obuId:number, testPlanId:number){
-    if(confirm("This will save immediately, do you want to continue?")){
-      alert("TODO")
-      /*
-      this._obuHasTestPlanService.deleteTestPlanFromObu(obuId, testPlanId).subscribe(_ =>{
-        alert('OBU disassociated sucessfully')
-          this._obuHasTestPlanService.getObuTestPlans(this.id).subscribe(testplans =>{
-            this.obu_has_testplans = testplans
+  
+  addObuToUser(obuId:number, userId:number){
+    if(obuId==null)
+      alert('You must choose a configuration!')
+
+    if(confirm("This will save immediately, do you want to continue?")){  
+      this._userHasObuService.addObuToUser(obuId,userId, this.selectedRole).subscribe(
+          data =>{
+            //sucesso
+            alert('OBU associated sucessfully')
+            this._userHasObuService.getUserObus(this.id).subscribe(userobus =>{
+            this.user_has_obu = userobus
           })
+          },
+          error => alert(error.error.detail) //erro
+        )
+    }
+  }
+
+  deleteObuFromUser(obuId:number, userId:number){
+    if(confirm("This will save immediately, do you want to continue?")){
+      this._userHasObuService.deleteObuFromUser(obuId, userId).subscribe(_ =>{
+        alert('OBU disassociated sucessfully')
+        this._userHasObuService.getUserObus(this.id).subscribe(userobus =>{
+          this.user_has_obu = userobus
+        })
       })
-      */
     }  
   }
+
+  setViewer(){ this.selectedRole = "VIEWER"}
+  setEditor(){ this.selectedRole = "EDITOR"}
 
 }

@@ -93,8 +93,6 @@ export class UserComponent implements OnInit {
   }
 
   canBeSuspended(id: number) : boolean{  //function for displaying (or not) the "suspend" button
-    //console.log("curID: " + id + " LStorage ID: " + this._localStorage.getCurrentUserDetails().id)
-
     let idx = this.users.findIndex( u => u.id == id)
     let curUserProfile = UserProfile.getValueFromString(this.users[idx].userProfile)
 

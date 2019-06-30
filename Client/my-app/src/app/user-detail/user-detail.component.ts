@@ -64,7 +64,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   saveChanges(){
-    this._userService.updateUser(this.user.id, this.user.userProfile, this.user.suspended).subscribe(user => {
+    this._userService.updateUser(this.user.id, this.user.userProfile, this.user.userName).subscribe(user => {
       this.user = user
       alert("User updated!")
       this.goBack()

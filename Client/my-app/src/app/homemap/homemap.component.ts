@@ -42,6 +42,8 @@ export class HomemapComponent implements OnInit {
   private polylines: L.Polyline[] = new Array();
   private obusToShow= new Array(); //id das obus a mostrar
   private layerGroup
+  private startDate
+  private endDate
 
   ngOnInit() {
     this.user = this._localStorage.getCurrentUserDetails()

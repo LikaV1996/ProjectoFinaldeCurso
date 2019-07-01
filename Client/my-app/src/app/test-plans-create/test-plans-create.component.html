@@ -51,16 +51,6 @@
     </mat-form-field>
     </b>
   </div>
-
-  <!--VERIFICAR AQUI, é suposto aparecer uma lista de setups onde se vai dando ADD?!?!-->
-  <div><b>Setups: </b>
-    <mat-form-field>
-    <select matNativeControl required [(ngModel)]="properties.setups">
-        <option *ngFor="let setup of setups" value="{{setup.id}}">{{setup.setupName}}</option>
-    </select>
-    </mat-form-field>
-  </div>
-
   
 
   <div style="margin-top:30px;">

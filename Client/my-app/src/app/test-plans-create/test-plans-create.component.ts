@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { TestPlanService } from '../_services/test-plans.service';
+import { TestPlan } from '../Model/TestPlan';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-test-plans-create',
@@ -18,10 +23,16 @@ export class TestPlansCreateComponent implements OnInit {
   }
 
   constructor(
+    private router: Router,
+    private _testPlanService: TestPlanService,
+    private route: ActivatedRoute,
+    private http: HttpClient,
     private _location: Location
   ) { }
 
+
   ngOnInit() {
+    
   }
 
   goBack(){
@@ -29,8 +40,23 @@ export class TestPlansCreateComponent implements OnInit {
   }
 
   createConfig(){
-    alert('Doing nothing yet!')
-    //alert(JSON.stringify(this.properties))
+    console.log("creating hardware")
+    
+    if(!this.serialNumber){ 
+      alert("Serial Number is required!")
+      return
+     }
+     
+    this.components.forEach(element => {
+      element.componentType=element.componentType.toUpperCase();
+    });
+    this._hardwareService.createHardware(this.serialNumber, this.components)
+    .subscribe(hardware => {
+      console.log(JSON.stringify(hardware))
+      alert("Hardware created!")
+      this.goBack();
+      console.log("Hardware created!")
+    })
   }
 
 }

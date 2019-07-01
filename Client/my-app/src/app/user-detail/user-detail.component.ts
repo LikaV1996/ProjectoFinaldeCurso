@@ -73,9 +73,10 @@ export class UserDetailComponent implements OnInit {
 
   
   addObuToUser(obuId:number, userId:number){
-    if(obuId==null)
+    if(obuId==null){
       alert('You must choose a configuration!')
-
+      return
+    }
     if(confirm("This will save immediately, do you want to continue?")){  
       this._userHasObuService.addObuToUser(obuId,userId, this.selectedRole).subscribe(
           data =>{

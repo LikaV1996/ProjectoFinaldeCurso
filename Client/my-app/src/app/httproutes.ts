@@ -41,6 +41,9 @@ export class Routes{
     createTestPlan = this.basePath + "/test-plan";
     updateTestPlan = this.basePath + "/test-plan/:id";
     deleteTestPlan = this.basePath + "/test-plan/:id";
+    getTestPlanSetups = this.basePath + "/test-plan/:id/setup"
+    addSetupToTestPlan = this.basePath + "/test-plan/:idTestPlan/setup/:idSetup"
+    deleteSetupFromTestPlan = this.basePath + "/test-plan/:idTestPlan/setup/:idSetup"
 
     getSetups = this.basePath + "/setup";
     getSetupById = this.basePath + "/setup/:id";

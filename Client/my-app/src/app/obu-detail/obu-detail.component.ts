@@ -122,8 +122,10 @@ export class ObuDetailComponent implements OnInit {
   }
 
   addConfigToObu(id:number){
-    if(id==null)
+    if(!id){
       alert('You must choose a configuration!')
+      return
+    }
 
     if(confirm("This will save immediately, do you want to continue?")){  
       this._obuHasConfigService.addConfigToObu(this.obu.id,this.configToAddId).subscribe(
@@ -137,8 +139,10 @@ export class ObuDetailComponent implements OnInit {
   }
 
   addTestPlanToObu(id:number){
-    if(id==null)
+    if(!id){
       alert('You must choose a test plan!')
+      return
+    }
 
     if(confirm("This will save immediately, do you want to continue?")){
       this._obuHasTestPlanService.addTestPlanToObu(this.obu.id,this.testPlanToAddId).subscribe(

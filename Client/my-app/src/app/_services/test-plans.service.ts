@@ -27,11 +27,18 @@ export class TestPlanService {
     return this.http.get<TestPlan>(getTestPlanByIDUrl)
   }
 
-  /*
-  createTestPlan(obu_name: string, obu_password: string){//verificar ****** 
-    return this.http.post<{obu: OBU}>(routes.createObu,{obu_name: obu_name, obu_password: obu_password, properties: "null", hardware_id:-1, current_config_id:-1,current_test_plan_id:-1 })
+  
+  createTestPlan(newTestPlan : TestPlan){
+    return this.http.post<{testPlan: TestPlan}>(routes.createTestPlan,
+      {
+        testplanName: newTestPlan.testplanName, 
+        startDate: newTestPlan.startDate.toISOString().substring(0, 22), //Formatar para ISO
+        stopDate: newTestPlan.stopDate.toISOString().substring(0, 22), 
+        period: newTestPlan.period 
+      })
   }
 
+  /*
   updateTestPlan(id: number, hardware_id: number, obuState: String, currentConfigId: number, currentTestPlanId: number, obu_name: String, obu_password: String, sims){
     const updateObuById = routes.updateObu.replace(":id", id.toString());
     return this.http.put<OBU>(updateObuById, {

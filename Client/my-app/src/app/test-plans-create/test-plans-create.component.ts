@@ -13,14 +13,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class TestPlansCreateComponent implements OnInit {
 
-  private testPlanName: string;
-  private startDate: Date;
-  private stopDate: Date;
+  //private testPlanName: string;
+  //private startDate: Date;
+  //private stopDate: Date;
+  private newTestPlan = new TestPlan;
 
+  /*
   properties = {
     period:"",
     setups:[]
   }
+  */
 
   constructor(
     private router: Router,
@@ -39,23 +42,27 @@ export class TestPlansCreateComponent implements OnInit {
     this._location.back();
   }
 
-  createConfig(){
-    console.log("creating hardware")
+  createTestPlan(){
     
-    if(!this.serialNumber){ 
-      alert("Serial Number is required!")
+    if(!this.newTestPlan.testplanName){ 
+      alert("Name is required!")
       return
      }
-     
-    this.components.forEach(element => {
-      element.componentType=element.componentType.toUpperCase();
-    });
-    this._hardwareService.createHardware(this.serialNumber, this.components)
-    .subscribe(hardware => {
-      console.log(JSON.stringify(hardware))
-      alert("Hardware created!")
+
+     if(!this.newTestPlan.startDate || !this.newTestPlan.stopDate){ 
+      alert("Date is required!")
+      return
+     }
+
+     if(!this.newTestPlan.period){ 
+      alert("Period is required! (Ex: P1D)")
+      return
+     }
+
+    this._testPlanService.createTestPlan(this.newTestPlan)
+    .subscribe(_ => {
+      alert("Test Plan created!")
       this.goBack();
-      console.log("Hardware created!")
     })
   }
 

@@ -53,9 +53,11 @@ public class TestPlan extends CreatorModel {
     @JsonProperty("period")
     private Duration period;
 
+    /*  //removed
     @JsonView(Profile.ExtendedView.class)
     @JsonProperty("setups")
     private List<Setup> setups;
+    */
 
     @JsonView(Profile.ExtendedView.class)
     @JsonProperty("maxRetries")
@@ -69,9 +71,11 @@ public class TestPlan extends CreatorModel {
     @JsonProperty("redialTriggers")
     private List<RedialTrigger> redialTriggers;
 
-    public TestPlan(Long id, String testplanName, LocalDateTime startDate, LocalDateTime stopDate, List<InputCoordinates> triggerCoordinates,
-            Duration period, List<Setup> setups, Long maxRetries, Long retryDelay, List<RedialTrigger> redialTriggers,
-            String creator, LocalDateTime creationDate, String modifier, LocalDateTime modifiedDate) {
+    public TestPlan(Long id, String testplanName, LocalDateTime startDate, LocalDateTime stopDate,
+                    List<InputCoordinates> triggerCoordinates, Duration period, //List<Setup> setups,
+                    Long maxRetries, Long retryDelay, List<RedialTrigger> redialTriggers,
+                    String creator, LocalDateTime creationDate, String modifier, LocalDateTime modifiedDate
+        ) {
         super(creator, creationDate, modifier, modifiedDate);
         this.id = id;
         this.testplanName = testplanName;
@@ -79,7 +83,10 @@ public class TestPlan extends CreatorModel {
         this.stopDate = stopDate;
         this.triggerCoordinates = triggerCoordinates;
         this.period = period;
-        this.setups = setups;
+
+        //  removed
+        //this.setups = setups;
+
         this.maxRetries = maxRetries;
         this.retryDelay = retryDelay;
         this.redialTriggers = redialTriggers;
@@ -156,6 +163,7 @@ public class TestPlan extends CreatorModel {
         this.period = period;
     }
 
+    /*  //removed
     @ApiModelProperty(value = "Setup list")
     public List<Setup> getSetups() {
         return setups;
@@ -164,6 +172,7 @@ public class TestPlan extends CreatorModel {
     public void setSetups(List<Setup> setups) {
         this.setups = setups;
     }
+    */
 
     @ApiModelProperty(value = "Maximum number of retries")
     public Long getMaxRetries() {

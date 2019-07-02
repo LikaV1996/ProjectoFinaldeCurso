@@ -116,7 +116,7 @@ public class ObuDao extends CreatorDao{
         ObuProperties properties = GSON.fromJson(obuDao.getProperties(), ObuProperties.class);
 
         return new Obu(obuDao.getId(), obuDao.getHardwareId(), obuState, obuDao.getObuName(), obuDao.getObuPassword(),
-                properties.getSims(), obuDao.getCurrentConfigId(), obuDao.getCurrentTestPlanId(), properties.getFactoryConfig(),
+                properties.getSims(), obuDao.getCurrentConfigId(), obuDao.getCurrentTestPlanId(), //properties.getFactoryConfig(),
                 properties.isAuthenticate(), properties.isUploadRequest(), properties.isClearAlarmsRequest(),
                 properties.isResetRequest(), properties.isShutdownRequest(),
                 obuDao.getCreator(), obuDao.getCreationDate().toLocalDateTime(),

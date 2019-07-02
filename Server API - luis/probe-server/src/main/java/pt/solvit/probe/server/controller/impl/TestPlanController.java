@@ -221,7 +221,10 @@ public class TestPlanController implements ITestPlanController {
         testPlan.setStopDate( inputTestPlan.getStopDateLocalDateTime() );
         testPlan.setPeriod(inputTestPlan.getPeriod());
         testPlan.setRedialTriggers(inputTestPlan.getRedialTriggers());
-        testPlan.setSetups( ControllerUtil.transformToSetupList(inputTestPlan.getSetups(), testPlan.getCreator()) );
+
+        //  removed
+        //testPlan.setSetups( ControllerUtil.transformToSetupList(inputTestPlan.getSetups(), testPlan.getCreator()) );
+
         testPlan.setMaxRetries(inputTestPlan.getMaxRetries());
         testPlan.setRetryDelay(inputTestPlan.getRetryDelay());
         testPlan.setTriggerCoordinates(inputTestPlan.getTriggerCoordinates());

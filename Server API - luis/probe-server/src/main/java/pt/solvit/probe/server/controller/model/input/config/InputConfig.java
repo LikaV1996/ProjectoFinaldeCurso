@@ -145,17 +145,12 @@ public class InputConfig {
             throw new BadRequestException("Invalid configuration.", "configName is null.", "string", "about:blank");
         }
         /*
-        if (activationDate == null) {
-            throw new BadRequestException("Invalid configuration.", "ActivationDate is null.", "string", "about:blank");
-        }
-        if (getActivationLocalDateTime() == null) {
-            throw new BadRequestException("Invalid configuration.", "ActivationDate is not on ISO format.", "string", "about:blank");
+        if (activationDate == null || getActivationLocalDateTime() == null) {
+            throw new BadRequestException("Invalid configuration.", "ActivationDate is null or not on ISO format.", "string", "about:blank");
         }
         */
-        if (activationDate != null) {
-            if (getActivationLocalDateTime() == null) {
+        if (activationDate != null && getActivationLocalDateTime() == null) {
                 throw new BadRequestException("Invalid configuration.", "ActivationDate is not on ISO format.", "string", "about:blank");
-            }
         }
 
         if (archive == null) {

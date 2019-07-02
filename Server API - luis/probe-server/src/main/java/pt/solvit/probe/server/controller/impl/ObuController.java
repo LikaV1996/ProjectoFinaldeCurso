@@ -128,7 +128,8 @@ public class ObuController implements IObuController {
         obu.setSims(inputObu.getSims());
         obu.setObuName(inputObu.getObuName());
 
-        obu.setFactoryConfig(ControllerUtil.transformToConfig( inputObu.getFactoryConfig(), obu.getCreator() ));
+        //  removed
+        //obu.setFactoryConfig(ControllerUtil.transformToConfig( inputObu.getFactoryConfig(), obu.getCreator() ));
 
         obu.setAuthenticate(inputObu.isAuthenticate());
         obu.setUploadRequest(inputObu.isUploadRequest());

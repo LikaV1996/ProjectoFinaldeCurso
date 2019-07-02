@@ -36,9 +36,10 @@ public class InputObu {
     @Valid
     private String obuName;
 
+    /*  //removed (read-only ; not updatable ; not user created)
     @JsonProperty("factoryConfig")
     private InputConfig factoryConfig;
-
+    */
 
     @JsonProperty("authenticate")
     private Boolean authenticate;
@@ -58,10 +59,12 @@ public class InputObu {
         return hardwareId;
     }
 
+    /*  //removed
     @ApiModelProperty(value = "Factory config")
     public InputConfig getFactoryConfig() {
         return factoryConfig;
     }
+    */
 
     @ApiModelProperty(value = "SIM list")
     public List<SimCard> getSims() {
@@ -88,6 +91,9 @@ public class InputObu {
 
     @ApiModelProperty(hidden = true)
     public void validateForCreate() {
+        if(obuName == null){
+            throw new BadRequestException("Invalid obu.", "obuName is null.", "string", "about:blank");
+        }
         if (hardwareId == null) {
             throw new BadRequestException("Invalid obu.", "HardwareId is null.", "string", "about:blank");
         }
@@ -95,9 +101,6 @@ public class InputObu {
             for (SimCard curSim : sims) {
                 curSim.validate();
             }
-        }
-        if(obuName == null){
-            throw new BadRequestException("Invalid obu.", "obuName is null.", "string", "about:blank");
         }
         /*
         if(obuPassword == null){
@@ -109,12 +112,14 @@ public class InputObu {
     @ApiModelProperty(hidden = true)
     public void validateForUpdate() {
         boolean updatingFlags = authenticate != null || uploadRequest != null || clearAlarmsRequest != null || resetRequest != null || shutdownRequest != null;
-        if (hardwareId == null && sims == null && obuName == null && !updatingFlags && factoryConfig == null) {
+        if (hardwareId == null && sims == null && obuName == null && !updatingFlags) { //&& factoryConfig == null) {
             throw new BadRequestException("Invalid obu.", "Nothing fields to update.", "string", "about:blank");
         }
+        /*  //removed
         if (factoryConfig != null) {
             factoryConfig.validate();
         }
+        */
         if (sims != null) {
             for (SimCard curSim : sims) {
                 curSim.validate();

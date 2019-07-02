@@ -52,8 +52,8 @@ public class InputObuFlags {
 
     @ApiModelProperty(hidden = true)
     public void validate() {
-        if (authenticate != null || uploadRequest != null || clearAlarmsRequest != null || resetRequest != null || shutdownRequest != null)
-            throw new BadRequestException("Invalid obu flags.", "Nothing fields to update.", "boolean", "about:blank");
+        if (authenticate == null && uploadRequest == null && clearAlarmsRequest == null & resetRequest == null && shutdownRequest == null)
+            throw new BadRequestException("Invalid obu flags.", "No fields to update.", "boolean", "about:blank");
 
     }
 }

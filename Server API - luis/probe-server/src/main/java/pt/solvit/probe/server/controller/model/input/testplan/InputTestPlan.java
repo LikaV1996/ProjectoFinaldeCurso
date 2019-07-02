@@ -52,9 +52,11 @@ public class InputTestPlan {
     @JsonProperty("period")
     private String period;
 
+    /*  //removed
     @JsonProperty("setups")
     @Valid
     private List<InputSetup> setups;
+    */
 
     @JsonProperty("maxRetries")
     private Long maxRetries;
@@ -110,10 +112,12 @@ public class InputTestPlan {
         }
     }
 
+    /*  //removed
     @ApiModelProperty(value = "Setup list")
     public List<InputSetup> getSetups() {
         return setups;
     }
+    */
 
     @ApiModelProperty(example = "3", value = "Maximum number of retries")
     public Long getMaxRetries() {
@@ -169,6 +173,7 @@ public class InputTestPlan {
         } else if (period != null && getPeriod() == null) {
             throw new BadRequestException("Invalid test plan.", "Invalid period.", "string", "about:blank");
         }
+        /*  //removed
         if (setups != null) {
             for (InputSetup curSetup : setups) {
                 curSetup.validateForCreate();
@@ -187,6 +192,7 @@ public class InputTestPlan {
                 i++;
             }
         }
+        */
         if (redialTriggers != null && getRedialTriggers() == null) {
             throw new BadRequestException("Invalid test plan.", "Invalid redialTriggers.", "string", "about:blank");
         }

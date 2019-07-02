@@ -40,8 +40,8 @@ public class HardwareRepository implements IHardwareRepository {
     private static final String SELECT_BY_ID = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate, modifier, modified_date AS modifiedDate FROM Hardware WHERE id = ?;";
     private static final String SELECT_BY_SERIAL_NUMBER = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate, modifier, modified_date AS modifiedDate FROM Hardware WHERE serial_number = ?;";
     private static final String SELECT_ALL = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate, modifier, modified_date AS modifiedDate FROM Hardware;";
-    private static final String UPDATE_POSTGRES = "UPDATE Hardware SET serial_number = ?, properties = cast(? as jsonb) WHERE id = ? RETURNING id;";
-    private static final String UPDATE_MYSQL = "UPDATE Hardware SET serial_number = ?, properties = cast(? as jsonb) WHERE id = ?;";
+    private static final String UPDATE_POSTGRES = "UPDATE Hardware SET serial_number = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ? RETURNING id;";
+    private static final String UPDATE_MYSQL = "UPDATE Hardware SET serial_number = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
     private static final String DELETE_BY_ID = "DELETE FROM Hardware WHERE id = ?;";
     private static final String DELETE_ALL = "DELETE FROM Hardware;";
 

@@ -66,9 +66,11 @@ public class Obu extends CreatorModel {
     @JsonProperty("currentTestPlanId")
     private Long currentTestPlanId = null;
 
+    /*  //removed
     @JsonView(Profile.ExtendedView.class)
     @JsonProperty("factoryConfig")
     private Config factoryConfig;
+    */
 
     @JsonView(Profile.ExtendedView.class)
     @JsonProperty("authenticate")
@@ -91,9 +93,10 @@ public class Obu extends CreatorModel {
     private boolean shutdownRequest = false;
 
     public Obu(Long id, long hardwareId, ObuState obuState, String obuName, String obuPassword, List<SimCard> sims,
-            Long currentConfigId, Long currentTestPlanId, Config factoryConfig,
+            Long currentConfigId, Long currentTestPlanId, //Config factoryConfig,
             boolean authenticate, boolean uploadRequest, boolean clearAlarmsRequest, boolean resetRequest, boolean shutdownRequest,
-            String creator, LocalDateTime creationDate, String modifier, LocalDateTime modifiedDate) {
+            String creator, LocalDateTime creationDate, String modifier, LocalDateTime modifiedDate
+        ) {
         super(creator, creationDate, modifier, modifiedDate);
         this.id = id;
         this.hardwareId = hardwareId;
@@ -104,7 +107,9 @@ public class Obu extends CreatorModel {
 
         this.currentConfigId = currentConfigId;
         this.currentTestPlanId = currentTestPlanId;
-        this.factoryConfig = factoryConfig;
+
+        //  removed
+        //this.factoryConfig = factoryConfig;
 
         this.authenticate = authenticate;
         this.uploadRequest = uploadRequest;
@@ -184,6 +189,7 @@ public class Obu extends CreatorModel {
         this.currentTestPlanId = currentTestPlanId;
     }
 
+    /*  //removed
     public Config getFactoryConfig() {
         return factoryConfig;
     }
@@ -191,6 +197,7 @@ public class Obu extends CreatorModel {
     public void setFactoryConfig(Config factoryConfig) {
         this.factoryConfig = factoryConfig;
     }
+    */
 
     public boolean isAuthenticate() {
         return authenticate;

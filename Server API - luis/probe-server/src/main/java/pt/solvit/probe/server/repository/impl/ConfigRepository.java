@@ -40,8 +40,8 @@ public class ConfigRepository implements IConfigRepository {
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?);";
     private static final String SELECT_ALL = "SELECT id, config_name, activation_date AS activationDate, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM Config";
     private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
-    private static final String UPDATE_POSTGRES = "UPDATE Config SET config_name = ?, activation_date = ?, properties = cast(? as jsonb) WHERE id = ?;";
-    private static final String UPDATE_MYSQL = "UPDATE Config SET config_name = ?, activation_date = ?, properties = ? WHERE id = ?;";
+    private static final String UPDATE_POSTGRES = "UPDATE Config SET config_name = ?, activation_date = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
+    private static final String UPDATE_MYSQL = "UPDATE Config SET config_name = ?, activation_date = ?, properties = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
     private static final String DELETE_ALL = "DELETE FROM Config";
     private static final String DELETE_BY_ID = DELETE_ALL + " WHERE id = ?;";
 

@@ -108,6 +108,7 @@ public interface IObuController {
     )
     public ResponseEntity<Void> deleteObu(HttpServletRequest request, @PathVariable("obu-id") long obuId);
 
+    /*
     @ApiOperation(value = "Updates obu flags", tags = {"Obu",})
     @ApiResponses(
             value = {
@@ -123,4 +124,6 @@ public interface IObuController {
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<Void> updateObuFlags(HttpServletRequest request, @PathVariable("obu-id") long obuId, @RequestBody InputObuFlags body);
+    */
 }
+

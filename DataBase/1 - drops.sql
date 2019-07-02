@@ -2,6 +2,7 @@ BEGIN;
 
 DROP VIEW IF EXISTS view_probeuser_obu;
 DROP VIEW IF EXISTS view_probeuser;
+DROP VIEW IF EXISTS view_obu_testplan_setup;
 
 DROP TABLE IF EXISTS ServerLog;
 DROP TYPE IF EXISTS AccessType;

@@ -74,7 +74,7 @@ public class TestPlanController implements ITestPlanController {
     }
 
     @Override
-    public ResponseEntity<TestPlan> updateTestPlan(HttpServletRequest request, long testPlanId, @RequestBody InputTestPlan body) {
+    public ResponseEntity<TestPlan> updateTestPlan(HttpServletRequest request, @PathVariable("test-plan-id") long testPlanId, @RequestBody InputTestPlan body) {
 
         User user = (User) request.getAttribute("user");
 
@@ -87,8 +87,6 @@ public class TestPlanController implements ITestPlanController {
 
         testPlan = testPlanService.getTestPlan(testPlanId);
 
-
-        //URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_TESTPLAN_ID, testPlanId);
 
         return ResponseEntity.ok().body(testPlan);
     }
@@ -223,7 +221,10 @@ public class TestPlanController implements ITestPlanController {
         testPlan.setStopDate( inputTestPlan.getStopDateLocalDateTime() );
         testPlan.setPeriod(inputTestPlan.getPeriod());
         testPlan.setRedialTriggers(inputTestPlan.getRedialTriggers());
-        testPlan.setSetups( ControllerUtil.transformToSetupList(inputTestPlan.getSetups(), testPlan.getCreator()) );
+
+        //  removed
+        //testPlan.setSetups( ControllerUtil.transformToSetupList(inputTestPlan.getSetups(), testPlan.getCreator()) );
+
         testPlan.setMaxRetries(inputTestPlan.getMaxRetries());
         testPlan.setRetryDelay(inputTestPlan.getRetryDelay());
         testPlan.setTriggerCoordinates(inputTestPlan.getTriggerCoordinates());

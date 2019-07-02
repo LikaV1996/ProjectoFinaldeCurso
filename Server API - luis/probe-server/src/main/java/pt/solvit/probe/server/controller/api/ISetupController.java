@@ -85,7 +85,7 @@ public interface ISetupController {
     )
     @RequestMapping(
             method = RequestMethod.PUT,
-            value = AppConfiguration.URL_SETUP,
+            value = AppConfiguration.URL_SETUP_ID,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
@@ -100,7 +100,7 @@ public interface ISetupController {
             }
     )
     @RequestMapping(
-            method = RequestMethod.DELETE, 
+            method = RequestMethod.DELETE,
             value = AppConfiguration.URL_SETUP_ID, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )

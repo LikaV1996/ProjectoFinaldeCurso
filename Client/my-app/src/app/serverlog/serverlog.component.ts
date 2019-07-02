@@ -13,7 +13,7 @@ export class ServerLogComponent implements OnInit {
     private _serverLogService : ServerLogService
   ) { }
 
-  @Input() private dateOrder : string = "true"
+  @Input() private dateOrder : string = "false"
   @Input() private accessType : string = ""
   @Input() private accessor : string = ""
 

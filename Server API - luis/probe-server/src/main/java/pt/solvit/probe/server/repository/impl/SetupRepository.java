@@ -40,8 +40,8 @@ public class SetupRepository implements ISetupRepository {
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?);";
     private static final String SELECT_ALL = "SELECT id, setup_name, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM Setup";
     private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
-    private static final String UPDATE_POSTGRES = "UPDATE Setup SET setup_name = ?, properties = ? WHERE id = ? RETURNING id;";
-    private static final String UPDATE_MYSQL = "UPDATE Setup SET setup_name = ?, properties = cast(? as jsonb) WHERE id = ?;";
+    private static final String UPDATE_MYSQL = "UPDATE Setup SET setup_name = ?, properties = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
+    private static final String UPDATE_POSTGRES = "UPDATE Setup SET setup_name = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
     private static final String DELETE_ALL = "DELETE FROM Setup";
     private static final String DELETE_BY_ID = DELETE_ALL + " WHERE id = ?;";
 
@@ -125,7 +125,8 @@ public class SetupRepository implements ISetupRepository {
                 }
                 statement.setString(1, setupDao.getSetupName());
                 statement.setString(2, setupDao.getProperties());
-                statement.setLong(3, setupDao.getId());
+                statement.setString(3, setupDao.getModifier());
+                statement.setLong(4, setupDao.getId());
                 return statement;
             }
         });

@@ -47,7 +47,7 @@ public class SetupController implements ISetupController {
 
         User user = (User) request.getAttribute("user");
 
-        body.validate();
+        body.validateForCreate();
         Setup setup = ControllerUtil.transformToSetup(body, user.getUserName());
         long setupId = setupService.createSetup(setup);
 
@@ -67,11 +67,11 @@ public class SetupController implements ISetupController {
     }
 
     @Override
-    public ResponseEntity<Setup> updateSetup(HttpServletRequest request, long setupId, InputSetup body) {
+    public ResponseEntity<Setup> updateSetup(HttpServletRequest request, @PathVariable("setup-id") long setupId, @RequestBody InputSetup body) {
 
         User user = (User) request.getAttribute("user");
 
-        body.validate();
+        body.validateForUpdate();
         Setup setup = setupService.getSetup(setupId);
 
         updateSetup(body, setup, user.getUserName());

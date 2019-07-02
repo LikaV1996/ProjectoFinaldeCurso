@@ -69,6 +69,7 @@ public class TestPlanService implements ITestPlanService {
         LOGGER.log(Level.INFO, "Creating new test plan");
         long testPlanId = testPlanRepository.add(transformToTestPlanDao(testPlan));
 
+        /*  //removed
         //Add setups
         if (testPlan.getSetups() != null) {
             for (Setup curSetup : testPlan.getSetups()) {
@@ -77,6 +78,7 @@ public class TestPlanService implements ITestPlanService {
                 testPlanSetupRepository.add(testPlanId, setupId);
             }
         }
+        */
 
         return testPlanId;
     }
@@ -233,7 +235,7 @@ public class TestPlanService implements ITestPlanService {
 
         return new TestPlan(testPlanDao.getId(), testPlanDao.getTestplanName(), testPlanDao.getStartDate().toLocalDateTime(), testPlanDao.getStopDate().toLocalDateTime(),
                 properties.getTriggerCoordinates(), properties.getPeriodDuration(),
-                setupList,
+                //setupList,
                 properties.getMaxRetries(),
                 properties.getRetryDelay(), properties.getRedialTriggers(),
                 testPlanDao.getCreator(), testPlanDao.getCreationDate().toLocalDateTime(),

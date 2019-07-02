@@ -40,8 +40,8 @@ public class TestPlanRepository implements ITestPlanRepository {
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?);";
     private static final String SELECT_ALL = "SELECT id, testplan_name, start_date AS startDate, stop_date AS stopDate, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM TestPlan";
     private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
-    private static final String UPDATE_POSTGRES = "UPDATE TestPlan SET testplan_name = ?, start_date = ?, stop_date = ?, properties = ? WHERE id = ?;";
-    private static final String UPDATE_MYSQL = "UPDATE TestPlan SET testplan_name = ?, start_date = ?, stop_date = ?, properties = cast(? as jsonb) WHERE id = ?;";
+    private static final String UPDATE_MYSQL = "UPDATE TestPlan SET testplan_name = ?, start_date = ?, stop_date = ?, properties = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
+    private static final String UPDATE_POSTGRES = "UPDATE TestPlan SET testplan_name = ?, start_date = ?, stop_date = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
     private static final String DELETE_ALL = "DELETE FROM TestPlan";
     private static final String DELETE_BY_ID =  DELETE_ALL + " WHERE id = ?;";
 
@@ -131,6 +131,8 @@ public class TestPlanRepository implements ITestPlanRepository {
                 statement.setTimestamp(2, testPlanDao.getStartDate());
                 statement.setTimestamp(3, testPlanDao.getStopDate());
                 statement.setString(4, testPlanDao.getProperties());
+                statement.setString(5, testPlanDao.getModifier());
+                statement.setLong(6, testPlanDao.getId());
                 return statement;
             }
         });

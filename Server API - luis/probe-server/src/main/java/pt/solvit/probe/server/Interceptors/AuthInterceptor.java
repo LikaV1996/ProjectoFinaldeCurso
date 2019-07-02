@@ -28,21 +28,24 @@ public class AuthInterceptor implements HandlerInterceptor {
         if(handler instanceof HandlerMethod /*&& ((HandlerMethod) handler).getMethod().getDeclaringClass().isAnnotationPresent(NoAuthorizationRequired.class)*/ ) {
 
             String authHeader = request.getHeader("Authorization");
-            if(authHeader != null) {
-                String[] authHeaderArr = authHeader.split(" ");
-                if (authHeaderArr.length != 2 && !authHeaderArr[0].equals("Basic")) {
-                    throw new UnauthorizedException("Invalid token.", "Token is null or not Basic.", "string", "about:blank");
-                }
 
-                User user = verify(authHeaderArr[1]);
+            if (authHeader == null)
+                throw new UnauthorizedException("Invalid token.", "Token is null.", "string", "about:blank");
 
-                request.setAttribute("user", user);
+            String[] authHeaderArr = authHeader.split(" ");
+            if (authHeaderArr.length != 2 && !authHeaderArr[0].equals("Basic")) {
+                throw new UnauthorizedException("Invalid token.", "Token is null or not Basic.", "string", "about:blank");
+            }
+
+            User user = verify(authHeaderArr[1]);
+
+            request.setAttribute("user", user);
             /*
             request.setAttribute("userID",user.getId());
             request.setAttribute("userName",user.getUserName());
             request.setAttribute("userProfile",user.getUserProfile());//.toUpperCase());
             */
-            }
+
         }
 
         return true;
@@ -52,7 +55,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         String[] decodedToken = new String(Base64.getDecoder().decode(token)).split(":");
 
         if(decodedToken.length != 2)
-            throw new UnauthorizedException("Invalid token.", "Token is null or not Basic.", "string", "about:blank");
+            throw new UnauthorizedException("Invalid token.", "Token is not Basic.", "string", "about:blank");
 
         User user = authenticationService.getAuthenticatedUser(decodedToken[0], decodedToken[1]);
 

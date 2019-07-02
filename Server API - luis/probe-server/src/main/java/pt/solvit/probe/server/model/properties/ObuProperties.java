@@ -16,7 +16,9 @@ import pt.solvit.probe.server.model.Config;
  */
 public class ObuProperties {
 
-    private Config factoryConfig;
+    //  removed
+    //private Config factoryConfig;
+
     private List<SimCard> sims;
     private boolean authenticate = true;
     private boolean uploadRequest = false;
@@ -25,7 +27,9 @@ public class ObuProperties {
     private boolean shutdownRequest = false;
 
     public ObuProperties(Obu obu) {
-        this.factoryConfig = obu.getFactoryConfig();
+        //  removed
+        //this.factoryConfig = obu.getFactoryConfig();
+
         this.sims = obu.getSims();
         this.authenticate = obu.isAuthenticate();
         this.uploadRequest = obu.isUploadRequest();
@@ -34,9 +38,11 @@ public class ObuProperties {
         this.shutdownRequest = obu.isShutdownRequest();
     }
 
+    /*  //removed
     public Config getFactoryConfig() {
         return factoryConfig;
     }
+    */
 
     public List<SimCard> getSims() {
         return sims;

@@ -13,6 +13,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 import pt.solvit.probe.server.controller.exception.BadRequestException;
+import pt.solvit.probe.server.controller.model.input.config.InputConfig;
+import pt.solvit.probe.server.model.Config;
 
 /**
  *
@@ -34,17 +36,35 @@ public class InputObu {
     @Valid
     private String obuName;
 
-    //TODO MORE FIELDS FOR UPDATE
-    /*
-    @JsonProperty("obuPassword")
-    @Valid
-    private String obuPassword;
+    /*  //removed (read-only ; not updatable ; not user created)
+    @JsonProperty("factoryConfig")
+    private InputConfig factoryConfig;
     */
 
-    @ApiModelProperty(example = "1", required = true, value = "Hardware identifier")
+    @JsonProperty("authenticate")
+    private Boolean authenticate;
+    @JsonProperty("uploadRequest")
+    private Boolean uploadRequest;
+    @JsonProperty("clearAlarmsRequest")
+    private Boolean clearAlarmsRequest;
+    @JsonProperty("resetRequest")
+    private Boolean resetRequest;
+    @JsonProperty("shutdownRequest")
+    private Boolean shutdownRequest;
+
+
+
+    @ApiModelProperty(example = "1", value = "Hardware identifier")
     public Long getHardwareId() {
         return hardwareId;
     }
+
+    /*  //removed
+    @ApiModelProperty(value = "Factory config")
+    public InputConfig getFactoryConfig() {
+        return factoryConfig;
+    }
+    */
 
     @ApiModelProperty(value = "SIM list")
     public List<SimCard> getSims() {
@@ -56,15 +76,24 @@ public class InputObu {
         return obuName;
     }
 
-    /*
-    @ApiModelProperty(value = "Obu password")
-    public String getObuPassword() {
-        return obuPassword;
-    }
-    */
+
+    @ApiModelProperty(value = "Flag authenticate")
+    public Boolean isAuthenticate() { return authenticate; }    //used on update
+    @ApiModelProperty(value = "Flag uploadRequest")
+    public Boolean isUploadRequest() { return uploadRequest; }  //used on update
+    @ApiModelProperty(value = "Flag clearAlarmsRequest")
+    public Boolean isClearAlarmsRequest() { return clearAlarmsRequest; }  //used on update
+    @ApiModelProperty(value = "Flag resetRequest")
+    public Boolean isResetRequest() { return resetRequest; }  //used on update
+    @ApiModelProperty(value = "Flag shutdownRequest")
+    public Boolean isShutdownRequest() { return shutdownRequest; }  //used on update
+
 
     @ApiModelProperty(hidden = true)
-    public void validate() {
+    public void validateForCreate() {
+        if(obuName == null){
+            throw new BadRequestException("Invalid obu.", "obuName is null.", "string", "about:blank");
+        }
         if (hardwareId == null) {
             throw new BadRequestException("Invalid obu.", "HardwareId is null.", "string", "about:blank");
         }
@@ -73,14 +102,29 @@ public class InputObu {
                 curSim.validate();
             }
         }
-        if(obuName == null){
-            throw new BadRequestException("Invalid obu.", "obuName is null.", "string", "about:blank");
-        }
         /*
         if(obuPassword == null){
             throw new BadRequestException("Invalid obu.", "obuPassword is null.", "string", "about:blank");
         }
         */
+    }
+
+    @ApiModelProperty(hidden = true)
+    public void validateForUpdate() {
+        boolean updatingFlags = authenticate != null || uploadRequest != null || clearAlarmsRequest != null || resetRequest != null || shutdownRequest != null;
+        if (hardwareId == null && sims == null && obuName == null && !updatingFlags) { //&& factoryConfig == null) {
+            throw new BadRequestException("Invalid obu.", "Nothing fields to update.", "string", "about:blank");
+        }
+        /*  //removed
+        if (factoryConfig != null) {
+            factoryConfig.validate();
+        }
+        */
+        if (sims != null) {
+            for (SimCard curSim : sims) {
+                curSim.validate();
+            }
+        }
 
     }
 }

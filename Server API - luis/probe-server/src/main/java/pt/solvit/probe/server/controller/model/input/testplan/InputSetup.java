@@ -69,7 +69,7 @@ public class InputSetup {
     }
 
     @ApiModelProperty(hidden = true)
-    public void validate() {
+    public void validateForCreate() {
         if(setupName == null){
             throw new BadRequestException("Invalid setup.", "SetupName is null.", "string", "about:blank");
         }
@@ -83,22 +83,44 @@ public class InputSetup {
             scanning.validate();
         }
         if (tests != null) {
-            for (InputTest curTest : tests) {
-                curTest.validate();
+            checkTests();
+        }
+    }
+
+    @ApiModelProperty(hidden = true)
+    public void validateForUpdate() {
+        if(setupName == null && modemType == null && scanning == null && tests == null){
+            throw new BadRequestException("Invalid setup.", "No fields to update.", "string", "about:blank");
+        }
+        if (modemType != null) {
+            if (getModemType() == null) {
+                throw new BadRequestException("Invalid setup.", "Invalid modemType.", "string", "about:blank");
             }
-            int i = 0;
-            for (InputTest curTest1 : tests) {
-                int j = 0;
-                for (InputTest curTest2 : tests) {
-                    if (i != j) {
-                        if (curTest1.getIndex() == curTest2.getIndex()) {
-                            throw new BadRequestException("Invalid setup.", "Different tests can not have the same index.", "string", "about:blank");
-                        }
+        }
+        if (scanning != null) {
+            scanning.validate();
+        }
+        if (tests != null) {
+            checkTests();
+        }
+    }
+
+    private void checkTests() {
+        for (InputTest curTest : tests) {
+            curTest.validate();
+        }
+        int i = 0;
+        for (InputTest curTest1 : tests) {
+            int j = 0;
+            for (InputTest curTest2 : tests) {
+                if (i != j) {
+                    if (curTest1.getIndex() == curTest2.getIndex()) {
+                        throw new BadRequestException("Invalid setup.", "Different tests can not have the same index.", "string", "about:blank");
                     }
-                    j++;
                 }
-                i++;
+                j++;
             }
+            i++;
         }
     }
 }

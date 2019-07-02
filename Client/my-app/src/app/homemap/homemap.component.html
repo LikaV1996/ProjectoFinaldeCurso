@@ -1,34 +1,18 @@
 <p></p>
 
     <div class="ui segment" style="margin: 1%">
-        <!-- filters -->
+        
         <div class="ui middle aligned grid">
             <div class="four wide column"><h2>Show on Map:</h2></div> 
             <div class="three wide column">
                 
                 <button mat-button (click)="showLastPlace()">Show Last Places</button>
 
-                <!--
-                <div class="field">
-                    <div class="ui radio checkbox">
-                        <input type="radio" name="frequency" (change)="showLastPlace()">
-                        <label>Last Place</label>
-                    </div>
-                </div>
-                -->
             </div>
             <div class="three wide column">
 
                 <button mat-button (click)="showPlaces()">Show Places Between Dates</button>
 
-                <!--
-                <div class="field">
-                    <div class="ui radio checkbox">
-                        <input type="radio" name="frequency" (change)="showLast24h()">
-                        <label>Last 24h</label>
-                    </div>
-                </div>
-                -->
             </div>
             <div class="three wide column">
                     <div class="input-wrapper">
@@ -37,14 +21,6 @@
                                 [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1">
                         <owl-date-time #dtPicker1></owl-date-time>
                     </div>
-                <!--
-                <div class="field">
-                    <div class="ui radio checkbox">
-                      <input type="radio" name="frequency" (change)="showLast48h()">
-                      <label>Last 48h</label>
-                    </div>
-                </div>
-                -->
             </div>
             <div class="three wide column">
                     <div class="input-wrapper">
@@ -53,14 +29,6 @@
                                 [owlDateTimeTrigger]="dtPicker2" [owlDateTime]="dtPicker2">
                         <owl-date-time #dtPicker2></owl-date-time>
                     </div>
-                    <!--                
-                    <div class="field">
-                        <div class="ui radio checkbox">
-                          <input type="radio" name="frequency" (change)="showLast72h()">
-                          <label>Last 72h</label>
-                        </div>
-                    </div>
-                    -->
                 </div>
         </div>
     </div>
@@ -74,20 +42,11 @@
                 <div class="six wide column"></div>
                 <div class="four wide right aligned column">
                     <div class="ui toggle checkbox">
-                        <input type="checkbox" name="public" checked="" (change)="updateMap($event,obu.id)">
+                        <input *ngIf="toogleButtonVisible==true" type="checkbox" name="public" checked="" (change)="updateMap($event,obu.id)">
+                        <input *ngIf="toogleButtonVisible==false" disabled="disabled" type="checkbox" name="public" checked="" (change)="updateMap($event,obu.id)">
                         <label></label>
                       </div>
                 </div>
-                <!--
-                <div class="four wide right aligned column">
-                    <button mat-button [matMenuTriggerFor]="menu">Options</button>
-                    <mat-menu #menu="matMenu">
-                        <button mat-menu-item (click)="edit(obu.id)" data-tooltip="Edit OBU">Edit OBU / OBU Details</button>
-                        <button mat-menu-item>Delete OBU</button>
-                    </mat-menu>
-            
-                </div>
-                -->
             </div>
         </div>
         <canvas #lineChart>{{ chart }}</canvas>

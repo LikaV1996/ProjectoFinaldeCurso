@@ -38,13 +38,12 @@ export class HomemapComponent implements OnInit {
   private positions= new Array() //Todas as posiçoes
   private filteredPositions: Positions[] = new Array()
   private user: User;
-  //private radioValue: number;
   private map : L.Map //Mapa a ser usado
   private polylines: L.Polyline[] = new Array();
-  private obusToShow= new Array(); //id das obus a mostrar
   private layerGroup
   private startDate = null
   private endDate = null
+  private toogleButtonVisible : boolean = false
 
   ngOnInit() {
     this.user = this._localStorage.getCurrentUserDetails()
@@ -61,7 +60,6 @@ export class HomemapComponent implements OnInit {
               aux.obuName = obu.obuName
               aux.obuStatus = obuStatus
               this.positions.push(aux)
-              this.obusToShow.push(obu.id)  
             }
            
           })
@@ -142,6 +140,7 @@ export class HomemapComponent implements OnInit {
 
   showLastPlace(){
     this.cleanMap()
+    this.toogleButtonVisible = false
 
     //Criar Markers correspondentes ao sitio de cada obu
     var latitude,longitude, coordenadas, newMarker
@@ -159,6 +158,8 @@ export class HomemapComponent implements OnInit {
 
   async showPlaces(){
     this.cleanMap()
+    this.toogleButtonVisible = true
+
     await Promise.all(
       this.obus.map(obu =>  //Em cada OBU, fazer o pedido das localizaçoes
         this._obuService.getPositionFromOBU(obu.id,this.startDate,this.endDate).toPromise().then( obuStatus =>{
@@ -175,7 +176,6 @@ export class HomemapComponent implements OnInit {
               }
             })
             if (!found) this.filteredPositions.push(aux)
-            //this.obusToShow.push(obu.id)
           }
         })
       ))
@@ -194,7 +194,6 @@ export class HomemapComponent implements OnInit {
 
     this.polylines.forEach(line =>{ //Activa as polylines
       this.map.addLayer(line);
-      //this.layerGroup.addLayer(line);
     })
     
     if(this.polylines.length != 0)
@@ -277,31 +276,6 @@ export class HomemapComponent implements OnInit {
       }
     })
     this.showPlaces()
-    /*
-    //alert(event.currentTarget.checked)
-    this.cleanMap()
-    if(!event.currentTarget.checked){ //está a ir para false
-      this.obusToShow = this.obusToShow.filter(c=>c!== obuId)
-      var latitude,longitude, coordenadas, newMarker
-      this.positions.forEach(pos=>{
-        if(this.obusToShow.some(curr=>curr === pos.obuId)){
-          coordenadas = this.getLastDate(pos.obuStatus)
-          latitude = coordenadas.location.lat
-          longitude = coordenadas.location.lon
-          newMarker = this.NewMarkerToMap(latitude, longitude, pos.obuName)
-          newMarker.addTo(this.layerGroup);//Adiciona o marker ao layerGroup
-        }
-      })
-
-      
-      
-      
-
-
-    }else{ //se esta a ir para true
-      
-    }
-         */
   }
   
 

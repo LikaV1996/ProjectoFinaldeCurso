@@ -19,7 +19,7 @@
             </div>
             <div class="three wide column">
 
-                <button mat-button (click)="showLast24h()">Show Places Between Dates</button>
+                <button mat-button (click)="showPlaces()">Show Places Between Dates</button>
 
                 <!--
                 <div class="field">
@@ -71,12 +71,14 @@
         <div class="ui segment" *ngFor="let obu of obus">
             <div class="ui middle aligned grid">
                 <div class="six wide column">{{obu.obuName}}</div>
-                <div class="six wide right aligned column">
+                <div class="six wide column"></div>
+                <div class="four wide right aligned column">
                     <div class="ui toggle checkbox">
                         <input type="checkbox" name="public" checked="" (change)="updateMap($event,obu.id)">
                         <label></label>
                       </div>
                 </div>
+                <!--
                 <div class="four wide right aligned column">
                     <button mat-button [matMenuTriggerFor]="menu">Options</button>
                     <mat-menu #menu="matMenu">
@@ -85,6 +87,7 @@
                     </mat-menu>
             
                 </div>
+                -->
             </div>
         </div>
         <canvas #lineChart>{{ chart }}</canvas>

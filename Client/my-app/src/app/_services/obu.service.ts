@@ -45,7 +45,7 @@ export class OBUService {
     })
   }
 
-  getPositionFromOBU(id: number, endDate: Date, startDate: Date): Observable<OBUStatus[]>{
+  getPositionFromOBU(id: number, startDate: Date, endDate: Date): Observable<OBUStatus[]>{
     let params = new HttpParams()
     
     if(endDate) params = params.append("endDate", endDate.toISOString())

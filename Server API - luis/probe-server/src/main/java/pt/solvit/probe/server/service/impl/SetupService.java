@@ -152,7 +152,7 @@ public class SetupService implements ISetupService {
         try {
             testPlanSetupRepository.findById(testPlanId, setupId);
             throw new AssociationAlreadyExistsException(EntityType.SETUP, EntityType.TESTPLAN);
-        } catch (IncorrectResultSizeDataAccessException e) {
+        } catch (EntityWithIdNotFoundException e) {
             //Ignore
         }
 

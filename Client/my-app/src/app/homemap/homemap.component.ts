@@ -35,15 +35,16 @@ export class HomemapComponent implements OnInit {
   }];
   */
   private obus: OBU[];
-  private positions= new Array()
+  private positions= new Array() //Todas as posiçoes
+  private filteredPositions: Positions[] = new Array()
   private user: User;
   //private radioValue: number;
   private map : L.Map //Mapa a ser usado
   private polylines: L.Polyline[] = new Array();
   private obusToShow= new Array(); //id das obus a mostrar
   private layerGroup
-  private startDate
-  private endDate
+  private startDate = null
+  private endDate = null
 
   ngOnInit() {
     this.user = this._localStorage.getCurrentUserDetails()
@@ -156,34 +157,49 @@ export class HomemapComponent implements OnInit {
     this.map.fitBounds(this.layerGroup.getBounds().pad(0.5));
   }
 
-  showLast24h(){
+  async showPlaces(){
     this.cleanMap()
+    await Promise.all(
+      this.obus.map(obu =>  //Em cada OBU, fazer o pedido das localizaçoes
+        this._obuService.getPositionFromOBU(obu.id,this.startDate,this.endDate).toPromise().then( obuStatus =>{
+          if(obuStatus.length != 0){//Caso a OBU nao tenha a obuStatus
+            var aux = new Positions()
+            aux.obuId = obu.id
+            aux.obuName = obu.obuName
+            aux.obuStatus = obuStatus
+            var found = false
+            this.filteredPositions.forEach( obj => {
+              if(obj.obuId == obu.id){
+                obj.obuStatus = obuStatus
+                found = true
+              }
+            })
+            if (!found) this.filteredPositions.push(aux)
+            //this.obusToShow.push(obu.id)
+          }
+        })
+      ))
 
     var pointList, newPolyline
-    this.positions.forEach(pos=>{
-      if(pos.obuStatus.length >= 2){ //Tem de haver pelo menos 2 pontos
-        pointList = this.getLast24h(pos.obuStatus)
-        newPolyline = this.NewPolylineToMap(pointList,pos.obuName)
-        this.polylines.push(newPolyline);
+    this.filteredPositions.forEach(pos=>{
+      if(pos.visible){
+      
+        if(pos.obuStatus.length >= 2){ //Tem de haver pelo menos 2 pontos
+          pointList = this.getPointList(pos.obuStatus)
+          newPolyline = this.NewPolylineToMap(pointList,pos.obuName)
+          this.polylines.push(newPolyline);
+        }
       }
     })
 
     this.polylines.forEach(line =>{ //Activa as polylines
       this.map.addLayer(line);
+      //this.layerGroup.addLayer(line);
     })
-    this.map.fitBounds(this.layerGroup.getBounds().pad(0.5));
-  }
-
-  showLast48h(){
-    alert("showLast48h");
-  }
-
-  showLast72h(){
-    alert("showLast72h");
-    /* TODO!!!! - CONFIRM
-    if(confirm("showLast72h"))
-      alert("showLast72h");
-    */  
+    
+    if(this.polylines.length != 0)
+      this.map.fitBounds(this.layerGroup.getBounds().pad(0.5));
+    
   }
 
   NewMarkerToMap(latitude: number, longitude: number, msg: String){
@@ -208,9 +224,9 @@ export class HomemapComponent implements OnInit {
     smoothFactor: 1
     });
 
-    var newMarker = this.NewMarkerToMap(pointList[0].lat,pointList[0].lng,obuName+" Start")
+    var newMarker = this.NewMarkerToMap(pointList[0].lat,pointList[0].lng,obuName+" End")
     newMarker.addTo(this.layerGroup);
-    var newMarker1 = this.NewMarkerToMap(pointList[pointList.length-1].lat,pointList[pointList.length-1].lng,obuName+" End")
+    var newMarker1 = this.NewMarkerToMap(pointList[pointList.length-1].lat,pointList[pointList.length-1].lng,obuName+" Start")
     newMarker1.addTo(this.layerGroup);
 
     return firstpolyline
@@ -219,9 +235,14 @@ export class HomemapComponent implements OnInit {
   cleanMap(){
     //Limpar Mapa de Polylines e Markers
     this.layerGroup.clearLayers();
-
+    
     this.polylines.forEach(line =>{ 
       this.map.removeLayer(line);
+    })
+    this.polylines = new Array()
+    //this.filteredPositions = new Array()
+    this.filteredPositions.forEach( obj =>{
+      obj.obuStatus = new Array()
     })
     
   }
@@ -238,7 +259,7 @@ export class HomemapComponent implements OnInit {
 
   }
 
-  getLast24h(obustatus:OBUStatus[]){
+  getPointList(obustatus:OBUStatus[]){
 
     var pointList = new Array(), newPoint
     obustatus.forEach( _obustatus=>{
@@ -250,6 +271,13 @@ export class HomemapComponent implements OnInit {
 
   updateMap(event, obuId:number){
     
+    this.filteredPositions.forEach(obj=>{
+      if(obj.obuId == obuId){
+        obj.visible = event.currentTarget.checked
+      }
+    })
+    this.showPlaces()
+    /*
     //alert(event.currentTarget.checked)
     this.cleanMap()
     if(!event.currentTarget.checked){ //está a ir para false
@@ -265,25 +293,7 @@ export class HomemapComponent implements OnInit {
         }
       })
 
-      /*
-      this.obusToShow = this.obusToShow.reduce((acc,curr)=>{
-        if(curr === obuId)
-          return acc
-        
-          acc.push(curr)
-        let pos = this.positions.find(c=>c.obuId == curr)
-        if(pos){
-          var 
-          coordenadas = this.getLastDate(pos.obuStatus),
-          latitude = coordenadas.location.lat,
-          longitude = coordenadas.location.lon, 
-          newMarker = this.addNewMarkerToMap(latitude, longitude, pos.obuName)
-
-          this.markerArray = [...this.markerArray,newMarker]//Adiciona o marker ao array de markers
-        }
-        return acc
-      },[])
-      */
+      
       
       
 
@@ -291,9 +301,9 @@ export class HomemapComponent implements OnInit {
     }else{ //se esta a ir para true
       
     }
-         
+         */
   }
-
+  
 
   
 }
@@ -302,4 +312,5 @@ class Positions{ //Classe auxiliar
   obuId: number
   obuName: string
   obuStatus: OBUStatus[]
+  visible: boolean = true
 }

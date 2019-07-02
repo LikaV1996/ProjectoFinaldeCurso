@@ -44,4 +44,19 @@ as SELECT
 	 INNER JOIN obu o ON po.obu_id = o.id 
 	ORDER BY po.role;
 	
+CREATE OR REPLACE VIEW view_obu_testplan_setup
+as SELECT
+	OT.obu_id,
+	O.obu_name,
+	OT.test_plan_id,
+	T.testplan_name,
+	TS.setup_id,
+	S.setup_name
+   FROM obu O
+	 INNER JOIN obu_has_testplan OT ON O.id = OT.obu_id
+	 INNER JOIN testplan T ON OT.test_plan_id = T.id
+	 INNER JOIN testplan_has_setup TS ON OT.test_plan_id = TS.test_plan_id
+	 INNER JOIN setup S ON TS.setup_id = S.id
+	ORDER BY OT.obu_id;
+	
 COMMIT;

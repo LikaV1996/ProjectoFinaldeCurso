@@ -27,7 +27,7 @@ public class InputConfig {
     private String configName;
 
     @JsonProperty("activationDate")
-    @NotNull(message = "An activationDate must be provided.")
+    //@NotNull(message = "An activationDate must be provided.")
     private String activationDate;
 
     @JsonProperty("archive")
@@ -144,9 +144,20 @@ public class InputConfig {
         if (configName == null) {
             throw new BadRequestException("Invalid configuration.", "configName is null.", "string", "about:blank");
         }
+        /*
         if (activationDate == null) {
             throw new BadRequestException("Invalid configuration.", "ActivationDate is null.", "string", "about:blank");
         }
+        if (getActivationLocalDateTime() == null) {
+            throw new BadRequestException("Invalid configuration.", "ActivationDate is not on ISO format.", "string", "about:blank");
+        }
+        */
+        if (activationDate != null) {
+            if (getActivationLocalDateTime() == null) {
+                throw new BadRequestException("Invalid configuration.", "ActivationDate is not on ISO format.", "string", "about:blank");
+            }
+        }
+
         if (archive == null) {
             throw new BadRequestException("Invalid configuration.", "Archive is null.", "string", "about:blank");
         }
@@ -178,9 +189,7 @@ public class InputConfig {
             throw new BadRequestException("Invalid configuration.", "Voice is null.", "string", "about:blank");
         }
 
-        if (getActivationLocalDateTime() == null) {
-            throw new BadRequestException("Invalid configuration.", "ActivationDate is not on ISO format.", "string", "about:blank");
-        }
+
         archive.validate();
         controlConnection.validate();
         core.validate();

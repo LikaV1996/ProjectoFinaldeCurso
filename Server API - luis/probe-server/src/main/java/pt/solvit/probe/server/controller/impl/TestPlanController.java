@@ -74,7 +74,7 @@ public class TestPlanController implements ITestPlanController {
     }
 
     @Override
-    public ResponseEntity<TestPlan> updateTestPlan(HttpServletRequest request, long testPlanId, @RequestBody InputTestPlan body) {
+    public ResponseEntity<TestPlan> updateTestPlan(HttpServletRequest request, @PathVariable("test-plan-id") long testPlanId, @RequestBody InputTestPlan body) {
 
         User user = (User) request.getAttribute("user");
 
@@ -87,8 +87,6 @@ public class TestPlanController implements ITestPlanController {
 
         testPlan = testPlanService.getTestPlan(testPlanId);
 
-
-        //URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_TESTPLAN_ID, testPlanId);
 
         return ResponseEntity.ok().body(testPlan);
     }

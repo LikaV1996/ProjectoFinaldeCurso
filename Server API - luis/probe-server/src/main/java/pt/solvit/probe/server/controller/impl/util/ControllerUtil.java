@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import pt.solvit.probe.server.controller.model.input.InputComponent;
 import pt.solvit.probe.server.controller.model.input.InputHardware;
 import pt.solvit.probe.server.controller.model.input.InputObuUser;
+import pt.solvit.probe.server.controller.model.input.config.InputConfig;
 import pt.solvit.probe.server.controller.model.input.controlconnection.InputConfigState;
 import pt.solvit.probe.server.controller.model.input.controlconnection.InputConfigStatus;
 import pt.solvit.probe.server.controller.model.input.controlconnection.InputTestPlanState;
@@ -31,6 +32,16 @@ import pt.solvit.probe.server.util.DateUtil;
  * @author AnaRita
  */
 public class ControllerUtil {
+
+    //Config
+    public static Config transformToConfig(InputConfig inputConfig, String creator) {
+        return new Config(null, inputConfig.getConfigName(),
+                inputConfig.getActivationDate() != null ? inputConfig.getActivationLocalDateTime() : null,
+                inputConfig.getArchive(), inputConfig.getControlConnection(), inputConfig.getCore(), inputConfig.getData(),
+                inputConfig.getDownload(), inputConfig.getScanning(), inputConfig.getServer(), inputConfig.getTestPlan(),
+                inputConfig.getUpload(), inputConfig.getVoice(), creator, LocalDateTime.now(),
+                null, null);
+    }
 
     //TestPlan
     public static TestPlan transformToTestPlan(InputTestPlan inputTestPlan, String creator) {

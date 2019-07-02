@@ -26,7 +26,7 @@ import static pt.solvit.probe.server.util.ServerUtil.GSON;
  * @author AnaRita
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ApiModel(value = "TestPlan", description = "Test plan data tranfer object")
+@ApiModel(value = "TestPlan", description = "Test plan data transfer object")
 public class TestPlan extends CreatorModel {
 
     @JsonView(Profile.ShortView.class)

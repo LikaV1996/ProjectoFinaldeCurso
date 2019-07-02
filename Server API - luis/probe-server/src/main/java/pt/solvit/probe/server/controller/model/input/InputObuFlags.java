@@ -7,7 +7,9 @@ package pt.solvit.probe.server.controller.model.input;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
+import pt.solvit.probe.server.controller.exception.BadRequestException;
 
 /**
  *
@@ -46,5 +48,12 @@ public class InputObuFlags {
 
     public Boolean isShutdownRequest() {
         return shutdownRequest;
+    }
+
+    @ApiModelProperty(hidden = true)
+    public void validate() {
+        if (authenticate != null || uploadRequest != null || clearAlarmsRequest != null || resetRequest != null || shutdownRequest != null)
+            throw new BadRequestException("Invalid obu flags.", "Nothing fields to update.", "boolean", "about:blank");
+
     }
 }

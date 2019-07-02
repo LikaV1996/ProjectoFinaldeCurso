@@ -171,7 +171,7 @@ public class InputTestPlan {
         }
         if (setups != null) {
             for (InputSetup curSetup : setups) {
-                curSetup.validate();
+                curSetup.validateForCreate();
             }
             int i = 0;
             for (InputSetup curSetup1 : setups) {

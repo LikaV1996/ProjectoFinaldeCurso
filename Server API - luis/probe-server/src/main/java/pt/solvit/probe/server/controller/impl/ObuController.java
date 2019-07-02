@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.config.AppConfiguration;
 import pt.solvit.probe.server.controller.api.IObuController;
+import pt.solvit.probe.server.controller.impl.util.ControllerUtil;
 import pt.solvit.probe.server.controller.impl.util.UriBuilder;
 import pt.solvit.probe.server.controller.model.input.InputObu;
 import pt.solvit.probe.server.controller.model.input.InputObuFlags;
@@ -51,7 +52,7 @@ public class ObuController implements IObuController {
 
         User user = (User) request.getAttribute("user");
 
-        body.validate();
+        body.validateForCreate();
         Hardware hardware = hardwareService.getHardware( body.getHardwareId() );
         Obu obu = Obu.makeObuFromInput( body, user.getUserName() );
         long obuId = obuService.createObu(obu, user);
@@ -79,12 +80,11 @@ public class ObuController implements IObuController {
 
         User user = (User) request.getAttribute("user");
 
-        //TODO getObuByID returns "OBU doesn't exist" instead of "User doesn't have permission to update a OBU"
-
-        body.validate();
+        body.validateForUpdate();
         Obu updateObu = obuService.getObuByID(obuId, user);
 
         updateObu(updateObu, body, user.getUserName());
+
         obuService.updateObu(updateObu, user);
 
         updateObu = obuService.getObuByID(obuId, user);
@@ -104,6 +104,7 @@ public class ObuController implements IObuController {
         return ResponseEntity.ok().build();
     }
 
+    /*
     @Override
     public ResponseEntity<Void> updateObuFlags(HttpServletRequest request, @PathVariable("obu-id") long obuId, @RequestBody InputObuFlags body) {
 
@@ -111,34 +112,44 @@ public class ObuController implements IObuController {
 
         Obu obu = obuService.getObuByID(obuId, user);
 
-        if (body.isAuthenticate() != null) {
-            obu.setAuthenticate(body.isAuthenticate());
-        }
-        if (body.isUploadRequest() != null) {
-            obu.setUploadRequest(body.isUploadRequest());
-        }
-        if (body.isClearAlarmsRequest() != null) {
-            obu.setClearAlarmsRequest(body.isClearAlarmsRequest());
-        }
-        if (body.isResetRequest() != null) {
-            obu.setResetRequest(body.isResetRequest());
-        }
-        if (body.isShutdownRequest() != null) {
-            obu.setShutdownRequest(body.isShutdownRequest());
-        }
+        body.validateForCreate();
+        updateObuFlags(obu, body, user.getUserName());
+
+
         obuService.updateObu(obu, user);
 
 
         return ResponseEntity.ok().build();
     }
+    */
 
     private void updateObu(Obu obu, InputObu inputObu, String modifier){
         obu.setHardwareId(inputObu.getHardwareId());
         obu.setSims(inputObu.getSims());
         obu.setObuName(inputObu.getObuName());
 
+        obu.setFactoryConfig(ControllerUtil.transformToConfig( inputObu.getFactoryConfig(), obu.getCreator() ));
+
+        obu.setAuthenticate(inputObu.isAuthenticate());
+        obu.setUploadRequest(inputObu.isUploadRequest());
+        obu.setClearAlarmsRequest(inputObu.isClearAlarmsRequest());
+        obu.setResetRequest(inputObu.isResetRequest());
+        obu.setShutdownRequest(inputObu.isShutdownRequest());
+
         obu.setModifier(modifier);
     }
+
+    /*
+    private void updateObuFlags(Obu obu, InputObuFlags inputObuFlags, String modifier){
+        obu.setAuthenticate(inputObuFlags.isAuthenticate());
+        obu.setUploadRequest(inputObuFlags.isUploadRequest());
+        obu.setClearAlarmsRequest(inputObuFlags.isClearAlarmsRequest());
+        obu.setResetRequest(inputObuFlags.isResetRequest());
+        obu.setShutdownRequest(inputObuFlags.isShutdownRequest());
+
+        obu.setModifier(modifier);
+    }
+    */
 
     /*
     private static String generateObuPassword() {

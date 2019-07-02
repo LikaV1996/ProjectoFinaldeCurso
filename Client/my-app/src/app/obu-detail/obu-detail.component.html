@@ -95,7 +95,7 @@
         <div><b>Configurations: </b>
             <mat-form-field>
             <select matNativeControl required [(ngModel)]="configToAddId">
-                <option value="null">Choose Configuration</option>
+                <option value="">Choose Configuration</option>
                 <option *ngFor="let config of configs" value="{{config.id}}">{{config.configName}}</option>
             </select>
             </mat-form-field>
@@ -125,7 +125,7 @@
             <div><b>Test Plans: </b>
                 <mat-form-field>
                 <select matNativeControl required [(ngModel)]="testPlanToAddId">
-                    <option value="null">Choose Test Plan</option>
+                    <option value="">Choose Test Plan</option>
                     <option *ngFor="let testPlan of testPlans" value="{{testPlan.id}}">{{testPlan.testplanName}}</option>
                 </select>
                 </mat-form-field>

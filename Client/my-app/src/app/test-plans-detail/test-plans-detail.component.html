@@ -1,7 +1,7 @@
 <p></p>
 
 <div class="ui raised very padded text container segment">
-
+    <mat-spinner *ngIf="testPlan == null"></mat-spinner>
     <div *ngIf="testPlan">
         <h2>Test Plan Details</h2>
         <div><b>id: </b>{{testPlan.id}}</div>
@@ -25,6 +25,8 @@
                    [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1">
             <owl-date-time #dtPicker1></owl-date-time>
         </div>
+
+        <p></p>
 
         <div class="input-wrapper">
             <b>Stop Date:&nbsp;&nbsp;</b>
@@ -59,7 +61,34 @@
           </b>
       </div>
 
-      FALTA SETUPS AQUI!
+      
+      <div class="ui container segment" >
+          <h4>Test Plan Setups</h4>
+          <mat-spinner *ngIf="test_plan_has_setup == null"></mat-spinner>
+          <div class="ui segment" *ngFor="let testPlanSetup of test_plan_has_setup">
+              <div class="ui middle aligned grid">
+                  <div class="four wide column">{{testPlanSetup.setupName}}</div>
+                  <div class="eight wide column">{{testPlanSetup.modemType}}</div>      
+                  <div class="four wide right aligned column">
+                      <div class="ui suspend button" (click)="deleteSetup(testPlan.id,testPlanSetup.id)" data-tooltip="Delete Setup From Test Plan">Delete</div>
+                  </div>
+              </div>
+          </div>
+  
+          <p></p>
+  
+          <div><b>Setups: </b>
+              <mat-form-field>
+              <select matNativeControl required [(ngModel)]="setupToAddId">
+                  <option value="">Choose Setup</option>
+                  <option *ngFor="let setup of setups" value="{{setup.id}}">{{setup.setupName}}</option>
+              </select>
+              </mat-form-field>
+          </div>
+          <button class="ui primary button" (click)="addSetupToTestPlan(testPlan.id,setupToAddId)" data-tooltip="Add Setup To Test Plan"> Add Setup</button>
+          
+      </div>
+  
         
     
     </div>

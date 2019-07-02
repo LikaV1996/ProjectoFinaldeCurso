@@ -5,36 +5,62 @@
         <div class="ui middle aligned grid">
             <div class="four wide column"><h2>Show on Map:</h2></div> 
             <div class="three wide column">
+                
+                <button mat-button (click)="showLastPlace()">Show Last Places</button>
+
+                <!--
                 <div class="field">
                     <div class="ui radio checkbox">
                         <input type="radio" name="frequency" (change)="showLastPlace()">
                         <label>Last Place</label>
                     </div>
                 </div>
+                -->
             </div>
             <div class="three wide column">
+
+                <button mat-button (click)="showLast24h()">Show Places Between Dates</button>
+
+                <!--
                 <div class="field">
                     <div class="ui radio checkbox">
                         <input type="radio" name="frequency" (change)="showLast24h()">
                         <label>Last 24h</label>
                     </div>
                 </div>
+                -->
             </div>
             <div class="three wide column">
+                    <div class="input-wrapper">
+                        <b>Start Date:&nbsp;&nbsp;</b>
+                        <input [(ngModel)]="startDate"
+                                [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1">
+                        <owl-date-time #dtPicker1></owl-date-time>
+                    </div>
+                <!--
                 <div class="field">
                     <div class="ui radio checkbox">
                       <input type="radio" name="frequency" (change)="showLast48h()">
                       <label>Last 48h</label>
                     </div>
                 </div>
+                -->
             </div>
             <div class="three wide column">
+                    <div class="input-wrapper">
+                        <b>End Date:&nbsp;&nbsp;</b>
+                         <input [(ngModel)]="endDate"
+                                [owlDateTimeTrigger]="dtPicker2" [owlDateTime]="dtPicker2">
+                        <owl-date-time #dtPicker2></owl-date-time>
+                    </div>
+                    <!--                
                     <div class="field">
                         <div class="ui radio checkbox">
                           <input type="radio" name="frequency" (change)="showLast72h()">
                           <label>Last 72h</label>
                         </div>
                     </div>
+                    -->
                 </div>
         </div>
     </div>

@@ -5,6 +5,11 @@ import { Location } from '@angular/common';
 import { TestPlan } from '../Model/TestPlan';
 import {ActivatedRoute} from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { TestPlanHasSetupService } from '../_services/test-plansHasSetup.service';
+import { TestPlanHasSetup } from '../Model/TestPlanHasSetup';
+import { SetupService } from '../_services/setup.service';
+import { Setup } from '../Model/Setup';
+
 
 @Component({
   selector: 'app-test-plans-detail',
@@ -15,13 +20,18 @@ export class TestPlansDetailComponent implements OnInit {
   @Input() testPlan: TestPlan;
 
   private id: number;
+  private test_plan_has_setup: TestPlanHasSetup[];
+  private setups: Setup[];
+  private setupToAddId: number;
 
   constructor(
     private router: Router,
     private _testPlanService: TestPlanService,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private _location: Location
+    private _location: Location,
+    private _testPlanHasSetupService: TestPlanHasSetupService,
+    private _setupService: SetupService
   ) { }
   
   ngOnInit() {
@@ -29,6 +39,15 @@ export class TestPlansDetailComponent implements OnInit {
     
     this._testPlanService.getTestPlanByID(this.id).subscribe(testplan => {
       this.testPlan = testplan
+
+      this._testPlanHasSetupService.getTestPlanSetups(this.id).subscribe(testplansetups =>{
+        this.test_plan_has_setup = testplansetups
+      })
+
+      this._setupService.getSetups().subscribe(setups => {
+        this.setups = setups
+      })
+
     })
 
   }
@@ -51,4 +70,41 @@ export class TestPlansDetailComponent implements OnInit {
   }
   */
  
+ 
+ addSetupToTestPlan(testPlanId:number, setupId:number){
+  if(!setupId){
+    alert('You must choose a setup!')
+    return
+  }
+
+  if(confirm("This will save immediately, do you want to continue?")){  
+    this._testPlanHasSetupService.addSetupToTestPlan(testPlanId,setupId).subscribe(
+        data =>{
+          //sucesso
+          alert('Setup associated sucessfully')
+          this._testPlanHasSetupService.getTestPlanSetups(this.id).subscribe(tpSetups =>{
+          this.test_plan_has_setup = tpSetups
+        })
+        },
+        error => alert(error.error.detail) //erro
+      )
+  }
+}
+
+ deleteSetup(testPlanId:number, setupId:number){
+  if(confirm("This will save immediately, do you want to continue?")){
+    this._testPlanHasSetupService.deleteSetupFromTestPlan(testPlanId, setupId).subscribe(
+      data =>{
+        //sucesso
+        alert('Setup disassociated sucessfully')
+        this._testPlanHasSetupService.getTestPlanSetups(this.id).subscribe(testplansetups =>{
+          this.test_plan_has_setup = testplansetups
+        })
+      },
+      error => alert(error.error.detail) //erro
+    )
+  }  
+}
+
+
 }

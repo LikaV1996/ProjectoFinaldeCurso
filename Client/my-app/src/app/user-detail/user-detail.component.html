@@ -7,7 +7,12 @@
   <div><b>id: </b>{{user.id}}</div>
 
   <div>
-    <b>User Name: </b>{{user.userName}}     
+    <b>User Name:
+    <mat-form-field appearance="standard">
+    <mat-label>{{user.userName}}</mat-label>
+    <input [(ngModel)]="user.userName" matInput placeholder="User Name">
+    </mat-form-field>
+    </b>
   </div>
 
   <b>User Profile: </b>
@@ -19,7 +24,7 @@
     </select>
   </mat-form-field>
 
-  <div><mat-checkbox [(ngModel)]="user.suspended" [checked]="user.suspended"><b>Suspended</b></mat-checkbox></div>
+  <div><mat-checkbox [(ngModel)]="user.suspended" [checked]="user.suspended" onclick="return false" ><b>Suspended</b></mat-checkbox></div>
 
     
     <div *ngIf="user.userProfile!='ADMIN'" class="ui container segment" >

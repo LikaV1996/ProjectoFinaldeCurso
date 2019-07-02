@@ -11,7 +11,7 @@ import { SetupService } from '../_services/setup.service';
 export class SetupCreateComponent implements OnInit {
 
   private newSetup = new Setup;
-
+  
   private scanning = { 
     enableScanning: false,
     sampleTime: null,
@@ -35,12 +35,12 @@ export class SetupCreateComponent implements OnInit {
   }
 
   createSetup(){
-    //alert('Doing nothing yet!')
+
     if(!this.newSetup.setupName){ 
       alert("You must enter a Setup Name!")
       return
     }
-    if(!this.newSetup.modemType){ 
+    if(!this.newSetup.modemType || this.newSetup.modemType==""){ 
       alert("You must choose a Modem Type!")
       return
     }
@@ -51,14 +51,17 @@ export class SetupCreateComponent implements OnInit {
         alert("Sample Time must be a number!")
         return
       }
-      this.newSetup.scanning = this.scanning
     }
-      
+    else{
+      this.scanning.sampleTime = 0
+    }
+    this.newSetup.scanning = this.scanning
+
     this._setupService.createSetup(this.newSetup)
       .subscribe(mynewsetup => {
         alert("Setup created!")
         this.goBack();
-      })
+    })
     
   }
 

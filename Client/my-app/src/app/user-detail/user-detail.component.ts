@@ -64,7 +64,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   saveChanges(){
-    this._userService.updateUser(this.user.id, this.user.userProfile, this.user.suspended).subscribe(user => {
+    this._userService.updateUser(this.user.id, this.user.userProfile, this.user.userName).subscribe(user => {
       this.user = user
       alert("User updated!")
       this.goBack()
@@ -73,9 +73,10 @@ export class UserDetailComponent implements OnInit {
 
   
   addObuToUser(obuId:number, userId:number){
-    if(obuId==null)
+    if(obuId==null){
       alert('You must choose a configuration!')
-
+      return
+    }
     if(confirm("This will save immediately, do you want to continue?")){  
       this._userHasObuService.addObuToUser(obuId,userId, this.selectedRole).subscribe(
           data =>{

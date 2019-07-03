@@ -22,6 +22,7 @@ import pt.solvit.probe.server.service.api.IDatabaseService;
 import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.repository.api.IUserRepository;
 import pt.solvit.probe.server.repository.api.IHardwareRepository;
+import pt.solvit.probe.server.service.exception.impl.PermissionException;
 
 /**
  *
@@ -55,7 +56,8 @@ public class DatabaseService implements IDatabaseService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void resetDb(User user) {
-        userService.checkUserPermissions(user, UserProfile.SUPER_USER);
+        if ( ! userService.checkUserPermissions(user, UserProfile.ADMIN))
+            throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Reseting database");
         obuRepository.deleteAll();
@@ -69,7 +71,8 @@ public class DatabaseService implements IDatabaseService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void factoryResetDb(User user) {
-        userService.checkUserPermissions(user, UserProfile.ADMIN);
+        if ( ! userService.checkUserPermissions(user, UserProfile.ADMIN))
+            throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Factory reseting database");
         resetDb(user);

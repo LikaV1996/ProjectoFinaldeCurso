@@ -76,11 +76,8 @@ public class ConfigService implements IConfigService {
         LOGGER.log(Level.INFO, "Checking if configuration {0} exists", configId);
         ConfigDao configDao = configRepository.findById(configId);
 
-        try {
-            userService.checkUserPermissions(user, UserProfile.SUPER_USER);
-        } catch (PermissionException e) {
+        if ( ! userService.checkUserPermissions(user, UserProfile.SUPER_USER))
             userOwnsConfig(configDao, user);
-        }
 
         verifyConfigOnUseCondition(configId);
 

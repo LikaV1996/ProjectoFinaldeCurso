@@ -119,10 +119,6 @@ public class ObuService implements IObuService {
 
         ObuDao obuDao = obuRepository.findById(obuId, null);
 
-        //check if superuser is editor or viewer
-        if (!userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN)) {
-
-        }
 
         //check if superuser...
         if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN)) {
@@ -132,6 +128,8 @@ public class ObuService implements IObuService {
             //...owns obu
             userOwnsObu(obuDao, loggedInUser);
         }
+
+        
 
         //check if obu has config
         if ( ! obuConfigRepository.findByObuId(obuId).isEmpty())

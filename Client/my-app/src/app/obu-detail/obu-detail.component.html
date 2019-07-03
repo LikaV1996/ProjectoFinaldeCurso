@@ -1,7 +1,7 @@
 <p></p>
 
 <div class="ui raised very padded text container segment">
-
+<mat-spinner *ngIf="obu == null"></mat-spinner>
 <div *ngIf="obu">
     <h2>OBU Details</h2>
     <div><b>id: </b>{{obu.id}}</div>
@@ -64,7 +64,7 @@
         </select>
         </mat-form-field>
     </div>
-    -->
+    
 
     <div><b>Factory Configuration: </b>
         <mat-form-field>
@@ -74,6 +74,10 @@
         </select>
         </mat-form-field>
     </div>
+    -->
+
+    <div *ngIf="obu.factoryConfig == null"><b>Factory Configuration: </b>No Configuration</div> 
+    <div *ngIf="obu.factoryConfig != null"><b>Factory Configuration: </b>obu.factoryConfig</div> 
 
     <div class="ui container segment" >
         <h4>OBU Configurations</h4>

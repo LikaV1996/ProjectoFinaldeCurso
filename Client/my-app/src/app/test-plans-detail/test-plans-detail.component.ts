@@ -56,19 +56,16 @@ export class TestPlansDetailComponent implements OnInit {
     this._location.back();
   }
 
-  /*
+  
   saveChanges(){
-    console.log("updating config")
-    this._configService.updateConfig(this.obu.id, this.obu.hardwareId, this.obu.obuName, this.obu.properties)
-    .subscribe(obu => {
-      console.log(JSON.stringify(obu))
-      this.obu = obu
-      //this.users.push(userObj.user)
-      alert("Configuration updated!")
-      console.log("config updated")
+    this._testPlanService.updateTestPlan(this.testPlan)
+    .subscribe(t => {
+      this.testPlan = t
+      alert("Test Plan updated!")
+      this.goBack()
     })
   }
-  */
+  
  
  
  addSetupToTestPlan(testPlanId:number, setupId:number){

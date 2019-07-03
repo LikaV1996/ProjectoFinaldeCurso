@@ -38,20 +38,17 @@ export class TestPlanService {
       })
   }
 
-  /*
-  updateTestPlan(id: number, hardware_id: number, obuState: String, currentConfigId: number, currentTestPlanId: number, obu_name: String, obu_password: String, sims){
-    const updateObuById = routes.updateObu.replace(":id", id.toString());
-    return this.http.put<OBU>(updateObuById, {
-      hardwareId: hardware_id, 
-      obuState: obuState,
-      currentConfigId: currentConfigId,
-      currentTestPlanId: currentTestPlanId,
-      obuName: obu_name, 
-      obuPassword: obu_password,
-      sims: sims
+  
+  updateTestPlan(testPlan: TestPlan){
+    const updatetestPlanById = routes.updateObu.replace(":id", testPlan.id.toString());
+    return this.http.put<TestPlan>(updatetestPlanById, {
+      testplanName: testPlan.testplanName, 
+      startDate: testPlan.startDate,
+      stopDate: testPlan.stopDate,
+      period: testPlan.period,
     })
   }
-  */
+  
 
   deleteTestPlanByID(id: number){
     const deleteTestPlanByIDUrl = routes.deleteTestPlan.replace(":id", id.toString());

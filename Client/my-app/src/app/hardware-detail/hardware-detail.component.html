@@ -1,6 +1,6 @@
 <p></p>
 <div class="ui raised very padded text container segment">
-
+    <mat-spinner *ngIf="hardware == null"></mat-spinner>
     <div *ngIf="hardware">
         <h2>Hardware Details</h2>
         <div><b>Id: </b>{{hardware.id}}</div>

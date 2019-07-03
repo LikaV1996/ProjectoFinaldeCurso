@@ -32,16 +32,16 @@ export class OBUService {
     return this.http.post<{obu: OBU}>(routes.createObu,{obuName: newObu.obuName, hardwareId: newObu.hardwareId, sims: newObu.sims })
   }
 
-  updateObu(id: number, hardware_id: number, obuState: String, currentConfigId: number, currentTestPlanId: number, obu_name: String, obu_password: String, sims){
-    const updateObuById = routes.updateObu.replace(":id", id.toString());
+  updateObu(obu: OBU){
+    const updateObuById = routes.updateObu.replace(":id", obu.id.toString());
     return this.http.put<OBU>(updateObuById, {
-      hardwareId: hardware_id, 
-      obuState: obuState,
-      currentConfigId: currentConfigId,
-      currentTestPlanId: currentTestPlanId,
-      obuName: obu_name, 
-      obuPassword: obu_password,
-      sims: sims
+      hardwareId: obu.hardwareId,
+      obuName: obu.obuName, 
+      sims: obu.sims,
+      uploadRequest: obu.uploadRequest,
+      clearAlarmsRequest : obu.clearAlarmsRequest,
+      resetRequest: obu.resetRequest,
+      shutdownRequest : obu.shutdownRequest
     })
   }
 

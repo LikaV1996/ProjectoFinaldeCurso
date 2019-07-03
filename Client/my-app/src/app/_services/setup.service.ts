@@ -32,12 +32,17 @@ export class SetupService {
     return this.http.post<{setup: Setup}>(routes.createSetup,{setupName: newSetup.setupName, modemType: newSetup.modemType, scanning: newSetup.scanning })
   }
 
-  /*
-  updateHardware(id: number, serialNumber: string, components){
-    const updateHardwareById = routes.updateHardware.replace(":id", id.toString());
-    return this.http.put<Setup>(updateHardwareById, {serialNumber: serialNumber, components: components})
+  
+  updateSetup(setup :Setup){
+    const updateSetupById = routes.updateSetup.replace(":id", setup.id.toString());
+    return this.http.put<Setup>(updateSetupById, 
+      {
+        setupName: setup.setupName, 
+        modemType: setup.modemType,
+        scanning: setup.scanning
+      })
   }
-  */
+  
 
   deleteSetupByID(id: number){
     const deleteSetupByIDUrl = routes.deleteSetup.replace(":id", id.toString());

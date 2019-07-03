@@ -38,4 +38,15 @@ export class SetupDetailComponent implements OnInit {
     this._location.back();
   }
 
+  saveChanges(){
+    
+    this._setupService.updateSetup(this.setup)
+    .subscribe(s => {
+      this.setup = s
+      alert("Setup updated!")
+      this.goBack()
+    })
+    
+  }
+
 }

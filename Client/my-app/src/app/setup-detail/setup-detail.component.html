@@ -33,7 +33,15 @@
             
             <div><b><mat-checkbox [(ngModel)]="setup.scanning.enableScanning" [checked]="setup.scanning.enableScanning" >Enable Scanning</mat-checkbox></b></div>
             
-            <div><b>Sample Time: </b>{{setup.scanning.sampleTime}}</div>
+            <!--<div><b>Sample Time: </b>{{setup.scanning.sampleTime}}</div>-->
+            <div>
+                    <b>Sample Time:
+                    <mat-form-field appearance="standard">
+                    <mat-label>{{setup.setupName}}</mat-label>
+                    <input [(ngModel)]="setup.scanning.sampleTime" matInput placeholder="Sample Time">
+                    </mat-form-field>
+                    </b>
+            </div>
     
             <div><b><mat-checkbox [(ngModel)]="setup.scanning.enableCsq" [checked]="setup.scanning.enableCsq" >Enable Csq</mat-checkbox></b></div>
     

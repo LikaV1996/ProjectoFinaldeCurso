@@ -39,16 +39,14 @@ export class SetupDetailComponent implements OnInit {
   }
 
   saveChanges(){
-    //TODO
-    /*
+    
     this._setupService.updateSetup(this.setup)
-    .subscribe(hardware => {
-      this.hardware = hardware
-      alert("Hardware updated!")
+    .subscribe(s => {
+      this.setup = s
+      alert("Setup updated!")
       this.goBack()
-      console.log("Hardware updated")
     })
-    */
+    
   }
 
 }

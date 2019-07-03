@@ -149,7 +149,7 @@ public class ServerLogRepository implements IServerLogRepository {
 
         //ASCENDING or DESCENDING
         String orderBy = " ORDER BY " + "log_date" + " ",
-                order = "ASC";
+                order = "DESC";
         if (ascending != null){
             order = ascending ? "ASC" : "DESC";
         }

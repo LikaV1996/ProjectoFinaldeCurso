@@ -35,10 +35,13 @@ public class SysLogRepository implements ISysLogRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    private static final String INSERT_POSTGRES = "INSERT INTO SysLog (obu_id, file_name, close_date, upload_date, file_data, properties) VALUES (?, ?, ?, ?, ?, cast(? as jsonb)) RETURNING id;";
-    private static final String INSERT_MYSQL = "INSERT INTO SysLog (obu_id, file_name, close_date, upload_date, file_data, properties) VALUES (?, ?, ?, ?, ?, ?);";
-    private static final String SELECT_BY_ID = "SELECT id, obu_id AS obuId, file_name AS fileName, close_date AS closeDate, upload_date AS uploadDate, file_data AS fileData, properties FROM SysLog WHERE id = ? AND obu_id = ?;";
-    private static final String SELECT_ALL = "SELECT id, obu_id AS obuId, file_name AS fileName, close_date AS closeDate, upload_date AS uploadDate, file_data AS fileData, properties FROM SysLog WHERE obu_id = ?;";
+    private static final String INSERT_BASE = "INSERT INTO SysLog (obu_id, file_name, close_date, upload_date, file_data, properties)";
+    private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, cast(? as jsonb)) RETURNING id;";
+    private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?);";
+
+    private static final String SELECT_ALL = "SELECT id, obu_id AS obuId, file_name AS fileName, close_date AS closeDate, upload_date AS uploadDate, file_data AS fileData, properties FROM SysLog";
+    private static final String SELECT_BY_OBU_ID = SELECT_ALL + " WHERE obu_id = ?;";
+    private static final String SELECT_BY_ID_AND_OBU_ID = SELECT_ALL + " WHERE id = ? AND obu_id = ?;";
 
     public SysLogRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -49,17 +52,17 @@ public class SysLogRepository implements ISysLogRepository {
     }
 
     @Override
-    public SysLogDao findSysLogFromObu(long obuId, long id) {
+    public SysLogDao findByObuIDAndID(long obuId, long id) {
         try {
-            return jdbcTemplate.queryForObject(SELECT_BY_ID, new BeanPropertyRowMapper<>(SysLogDao.class), id, obuId);
+            return jdbcTemplate.queryForObject(SELECT_BY_ID_AND_OBU_ID, new BeanPropertyRowMapper<>(SysLogDao.class), id, obuId);
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new EntityWithIdNotFoundException(EntityType.TESTLOG);
         }
     }
 
     @Override
-    public List<SysLogDao> findAllSysLogsByObuId(long obuId) {
-        return jdbcTemplate.query(SELECT_ALL, new BeanPropertyRowMapper<>(SysLogDao.class), obuId);
+    public List<SysLogDao> findAllByObuId(long obuId, boolean ascending, String filename, Integer pageNumber, Integer pageLimit) {
+        return jdbcTemplate.query(makeFilteredSysLogQuery(obuId, ascending, filename, pageNumber, pageLimit), new BeanPropertyRowMapper<>(SysLogDao.class));
     }
 
     @Transactional()
@@ -87,5 +90,31 @@ public class SysLogRepository implements ISysLogRepository {
         }, holder);
 
         return holder.getKey().longValue();
+    }
+
+    private String makeFilteredSysLogQuery(long obuID, Boolean ascending, String filename, Integer pageNumber, Integer pageLimit){
+
+        //ASCENDING or DESCENDING
+        String orderBy = " ORDER BY " + "close_date" + " ",
+                order = "DESC";
+        if (ascending != null){
+            order = ascending ? "ASC" : "DESC";
+        }
+        orderBy += order;
+
+
+        String filenameWhereStmt = filename != null ? ("file_name LIKE '%' || '"+ filename +"' || '%'") : "";
+
+        String whereStmt = " WHERE obu_id = " + obuID + (filename != null ? " AND " + filenameWhereStmt : "");
+
+        //pagination
+        String limit = "";
+        if (pageNumber != null && pageLimit != null){
+            int offset = ((pageNumber -1) * pageLimit);
+            limit = " LIMIT " + pageLimit + (offset <= 0 ? " OFFSET " + ((pageNumber -1) * pageLimit) : "" );
+        }
+
+
+        return SELECT_ALL + whereStmt + orderBy + limit;
     }
 }

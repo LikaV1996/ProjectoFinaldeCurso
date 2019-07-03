@@ -35,7 +35,7 @@ public class ServerLogController implements IServerLogController {
     private IServerLogService serverLogService;
 
     @Override
-    public ResponseEntity<OutputServerLog> getServerLog(
+    public ResponseEntity<OutputServerLog> getServerLogs(
             HttpServletRequest request,
             @RequestParam(value = "order", required = false) Boolean ascending,
             @RequestParam(value = "accessType", required = false) String accessType,
@@ -44,13 +44,15 @@ public class ServerLogController implements IServerLogController {
             @RequestParam(value = "limit", required = false) Integer pageLimit
     ) {
 
+        User user = (User) request.getAttribute("user");
+
         boolean asc = ascending == null ? false : ascending;
         if (accessType != null)
             accessType = validateAccessType(accessType);
         String accessor_name = accessor != null && accessor.equals("") ? null : accessor;
 
 
-        List<ServerLog> serverLogList = serverLogService.getAllServerLogs(asc, accessType, accessor_name, pageNumber, pageLimit);
+        List<ServerLog> serverLogList = serverLogService.getAllServerLogs(asc, accessType, accessor_name, pageNumber, pageLimit, user);
 
 
         return ResponseEntity.ok().body( new OutputServerLog(serverLogList.size(), serverLogList) );
@@ -58,7 +60,7 @@ public class ServerLogController implements IServerLogController {
 
     //not being used
     @Override
-    public ResponseEntity<String> getObuServerLog(HttpServletRequest request) {
+    public ResponseEntity<String> getObuServerLogs(HttpServletRequest request) {
 
         String accessType = validateAccessType("OBU");
         List<ServerLog> obuServerLogList = serverLogService.getServerLogsByType(accessType);
@@ -69,7 +71,7 @@ public class ServerLogController implements IServerLogController {
 
     //not being used
     @Override
-    public ResponseEntity<String> getUserServerLog(HttpServletRequest request) {
+    public ResponseEntity<String> getUserServerLogs(HttpServletRequest request) {
 
         String accessType = validateAccessType("USER");
         List<ServerLog> userServerLogList = serverLogService.getServerLogsByType(accessType);

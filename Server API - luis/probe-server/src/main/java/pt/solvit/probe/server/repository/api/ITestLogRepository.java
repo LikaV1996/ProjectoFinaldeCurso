@@ -14,9 +14,9 @@ import pt.solvit.probe.server.repository.model.TestLogDao;
  */
 public interface ITestLogRepository {
 
-    public TestLogDao findTestLogFromObu(long obuId, long id);
+    public TestLogDao findByObuIDAndID(long obuId, long id);
 
-    public List<TestLogDao> findAllTestLogsByObuId(long obuId);
+    public List<TestLogDao> findAllByObuId(long obuId, boolean ascending, String filename, Integer pageNumber, Integer pageLimit);
 
     public long add(TestLogDao testLogDao);
 }

@@ -526,4 +526,15 @@ INSERT INTO obustatus (obu_id,status_date,latitude,longitude,speed,location_prop
 ('2','2019-06-18T00:30:09','38.706','-9.14628','0.0288','{"date": "2019-06-17T23:29:59.415", "gpsFix": "FIX_3D", "heading": 84.64356, "heightAboveMSL": 13.623000000000001, "heightAboveEllipsoid": 61.906}','1565540352','1752305664','0','0','6406','0','[{"ip": "77.54.15.123", "name": "eth1"}]'),
 ('2','2019-06-18T05:05:38','38.706','-9.14629','0.0144','{"date": "2019-06-18T04:05:29.501", "gpsFix": "FIX_3D", "heading": 0.0, "heightAboveMSL": 23.263, "heightAboveEllipsoid": 71.547}','1580138496','1766903808','0','0','6406','0','[]');
 
+
+INSERT INTO testlog(obu_id, file_name, close_date, upload_date, file_data, properties) VALUES
+(1,'mock_file_1_obu1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, '{}'::jsonb),
+(1,'mock_file_2_obu1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, '{}'::jsonb),
+(2,'mock_file_1_obu2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, '{}'::jsonb);
+
+INSERT INTO syslog(obu_id, file_name, close_date, upload_date, file_data, properties) VALUES
+(1,'mock_file_1_obu1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, '{}'::jsonb),
+(2,'mock_file_1_obu2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, '{}'::jsonb),
+(2,'mock_file_2_obu2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, '{}'::jsonb);
+
 COMMIT;

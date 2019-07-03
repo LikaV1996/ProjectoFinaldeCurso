@@ -25,7 +25,7 @@ public class TestLog extends ObuFile {
     @JsonProperty("data")
     private List<LogData> logData;
 
-    public TestLog(Long id, long obuId, String fileName, LocalDateTime closeDate, LocalDateTime uploadDate, byte[] fileData, long testPlanId, long setupId, List<LogData> logData) {
+    public TestLog(Long id, Long obuId, String fileName, LocalDateTime closeDate, LocalDateTime uploadDate, byte[] fileData, Long testPlanId, Long setupId, List<LogData> logData) {
         super(id, obuId, fileName, FileType.TEST_LOG, closeDate, uploadDate, fileData);
         this.testPlanId = testPlanId;
         this.setupId = setupId;

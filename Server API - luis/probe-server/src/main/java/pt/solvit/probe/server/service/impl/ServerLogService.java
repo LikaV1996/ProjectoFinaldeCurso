@@ -20,6 +20,7 @@ import pt.solvit.probe.server.repository.api.IServerLogRepository;
 import pt.solvit.probe.server.repository.model.ServerLogDao;
 import pt.solvit.probe.server.service.api.IServerLogService;
 import pt.solvit.probe.server.service.api.IUserService;
+import pt.solvit.probe.server.service.exception.impl.PermissionException;
 import pt.solvit.probe.server.service.impl.util.ServiceUtil;
 
 /**
@@ -51,23 +52,25 @@ public class ServerLogService implements IServerLogService {
     }
 
     @Override
-    public List<ServerLog> getAllServerLogs() {
-        return getAllServerLogs(true);
+    public List<ServerLog> getAllServerLogs(User loggedInUser) {
+        return getAllServerLogs(true, loggedInUser);
     }
 
     @Override
-    public List<ServerLog> getAllServerLogs(boolean ascending) {
+    public List<ServerLog> getAllServerLogs(boolean ascending, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Finding all server logs");
         List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(ascending, null, null, null, null);
         return ServiceUtil.map(serverLogDaoList, this::transformToServerLog);
     }
 
     @Override
-    public List<ServerLog> getAllServerLogs(boolean ascending, String accessType, String accessor_name, Integer pageNumber, Integer pageLimit) {
+    public List<ServerLog> getAllServerLogs(boolean ascending, String accessType, String accessor_name, Integer pageNumber, Integer pageLimit, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Finding all server logs with a page limit");
-
         List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(ascending, accessType, accessor_name, pageNumber, pageLimit);
-
         return ServiceUtil.map(serverLogDaoList, this::transformToServerLog);
     }
 
@@ -79,8 +82,8 @@ public class ServerLogService implements IServerLogService {
     }
 
     @Override
-    public void deleteAllServerLogs(User user) {
-        userService.checkUserPermissions(user, UserProfile.ADMIN);
+    public void deleteAllServerLogs(User loggedInUser) {
+        checkUserPermissions(loggedInUser);
 
         LOGGER.log(Level.INFO, "Deleting all server logs");
         serverLogRepository.deleteAll();
@@ -149,5 +152,12 @@ public class ServerLogService implements IServerLogService {
 
         return new ServerLog(serverLogDao.getId(), serverLogDao.getLogDate().toLocalDateTime(), accessType, serverLogDao.getAccessPath(),
                 serverLogDao.getAccessorName(), responseDate, serverLogDao.getStatus(), serverLogDao.getDetail());
+    }
+
+
+
+    private void checkUserPermissions(User loggedInUser) {
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
     }
 }

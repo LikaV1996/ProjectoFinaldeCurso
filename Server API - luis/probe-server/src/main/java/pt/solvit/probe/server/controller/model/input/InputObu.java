@@ -78,15 +78,15 @@ public class InputObu {
 
 
     @ApiModelProperty(value = "Flag authenticate")
-    public Boolean isAuthenticate() { return authenticate; }    //used on update
+    public boolean isAuthenticate() { return authenticate != null ? authenticate : false; }    //used on update
     @ApiModelProperty(value = "Flag uploadRequest")
-    public Boolean isUploadRequest() { return uploadRequest; }  //used on update
+    public boolean isUploadRequest() { return uploadRequest != null ? uploadRequest : false; }  //used on update
     @ApiModelProperty(value = "Flag clearAlarmsRequest")
-    public Boolean isClearAlarmsRequest() { return clearAlarmsRequest; }  //used on update
+    public boolean isClearAlarmsRequest() { return clearAlarmsRequest != null ? clearAlarmsRequest : false; }  //used on update
     @ApiModelProperty(value = "Flag resetRequest")
-    public Boolean isResetRequest() { return resetRequest; }  //used on update
+    public boolean isResetRequest() { return resetRequest != null ? resetRequest : false; }  //used on update
     @ApiModelProperty(value = "Flag shutdownRequest")
-    public Boolean isShutdownRequest() { return shutdownRequest; }  //used on update
+    public boolean isShutdownRequest() { return shutdownRequest != null ? shutdownRequest : false; }  //used on update
 
 
     @ApiModelProperty(hidden = true)

@@ -2,7 +2,7 @@
 
 
 <div class="ui raised very padded text container segment">
-
+    <mat-spinner *ngIf="setup == null"></mat-spinner>
     <div *ngIf="setup">
         <h2>Setup Details</h2>
         <div><b>id: </b>{{setup.id}}</div>

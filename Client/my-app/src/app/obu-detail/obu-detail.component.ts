@@ -89,13 +89,11 @@ export class ObuDetailComponent implements OnInit {
   saveChanges(){
     
     console.log("obu hardware")
-    this._obuService.updateObu(this.obu.id, this.obu.hardwareId, this.obu.obuState, this.obu.currentConfigId, this.obu.currentTestPlanId, this.obu.obuName, this.obu.obuPassword, this.obu.sims)
+    this._obuService.updateObu(this.obu)
     .subscribe(obu => {
-      console.log('OBU: ' + JSON.stringify(obu))
       this.obu = obu
       alert("Obu updated!")
       this.goBack()
-      console.log("obu updated")
     })
     
   }

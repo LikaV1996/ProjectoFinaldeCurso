@@ -239,7 +239,6 @@ export class HomemapComponent implements OnInit {
       this.map.removeLayer(line);
     })
     this.polylines = new Array()
-    //this.filteredPositions = new Array()
     this.filteredPositions.forEach( obj =>{
       obj.obuStatus = new Array()
     })

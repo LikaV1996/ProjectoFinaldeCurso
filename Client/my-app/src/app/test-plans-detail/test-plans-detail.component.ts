@@ -58,8 +58,7 @@ export class TestPlansDetailComponent implements OnInit {
 
   
   saveChanges(){
-    this._testPlanService.updateTestPlan(this.testPlan)
-    .subscribe(t => {
+    this._testPlanService.updateTestPlan(this.testPlan).subscribe(t => {
       this.testPlan = t
       alert("Test Plan updated!")
       this.goBack()

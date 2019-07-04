@@ -34,12 +34,12 @@
     </div>
 
 
-    <div class="ui" style="width: 29%; float:left; padding-left: 1%;">
+    <div class="ui" style="width: 24%; float:left; padding-left: 1%;">
         <mat-spinner *ngIf="obus == null"></mat-spinner>
         <div class="ui segment" *ngFor="let obu of obus">
             <div class="ui middle aligned grid">
                 <div class="six wide column">{{obu.obuName}}</div>
-                <div class="six wide column"></div>
+                <div class="five wide column"></div>
                 <div class="four wide right aligned column">
                     <div class="ui toggle checkbox">
                         <input *ngIf="toogleButtonVisible==true" type="checkbox" name="public" checked="" (change)="updateMap($event,obu.id)">
@@ -57,7 +57,25 @@
         (leafletMapReady)="onMapReady($event)"
         [leafletOptions]="options">
     </div>
+    
+    
+    
     <div class="chart">
-    <canvas #lineChart>{{ chart }}</canvas>
+        <canvas #lineChart>{{ chart }}</canvas>
+    </div>
+
+    <div class="ui segment center aligned" style="float: right; height: 31%;">
+        <div>
+            <h2>Graphic:</h2>
+            <mat-form-field style="width: 70%;">
+                <select matNativeControl required [(ngModel)]="graphicToShow">
+                    <option value=null>Choose an option</option>
+                    <option value="groundSpeed">Ground Speed</option>
+                    <option value="criticalAlarms">Critical Alarms</option>
+                </select>
+            </mat-form-field>
+            <p></p>
+            <div><button mat-button (click)="updateGraphic()">Update Graphic</button></div>
+        </div>
     </div>
 

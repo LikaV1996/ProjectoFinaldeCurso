@@ -28,14 +28,6 @@ export class HomemapComponent implements OnInit {
 
   @ViewChild('lineChart') private chartRef; 
   chart :any;
-
-  chartPoints = [{  
-      x: this.tomorrow,//new Date(),  
-      y: 10
-    },{  
-      x: this.tomorrow,//new Date().setMinutes(),  
-      y: 20
-  }];
   
   private obus: OBU[];
   private positions= new Array() //Todas as posiçoes
@@ -47,12 +39,13 @@ export class HomemapComponent implements OnInit {
   private startDate = null
   private endDate = null
   private toogleButtonVisible : boolean = false
+  //private chartPoints
+  private graphicToShow = null
 
   ngOnInit() {
     this.user = this._localStorage.getCurrentUserDetails()
 
-    this._obuService.getOBUs()
-      .subscribe(obus => {
+    this._obuService.getOBUs().subscribe(obus => {
         this.obus = obus
         this.orderById()
         this.obus.forEach(obu => { //Em cada OBU, fazer o pedido das localizaçoes
@@ -64,7 +57,6 @@ export class HomemapComponent implements OnInit {
               aux.obuStatus = obuStatus
               this.positions.push(aux)
             }
-           
           })
         });
         
@@ -74,21 +66,7 @@ export class HomemapComponent implements OnInit {
       this.chart = new Chart(this.chartRef.nativeElement, {
         type: 'line',
         data: {
-          //labels: ["wow"], // your labels array
           datasets: [
-            {
-              label: "Blue!",
-              data: this.chartPoints, // Azul
-              borderColor: '#00AEFF',
-              fill: false
-            },
-            {
-              label: "Red!",
-              data: this.chartPoints, // Vermelho
-              borderColor: '#C45850',
-              fill: false
-            }
-
           ]
         },
         options: {
@@ -100,14 +78,7 @@ export class HomemapComponent implements OnInit {
           scales: {
             xAxes: [{
               display: true,
-              type: 'time',
-              /*
-                time: { //nao faz nada
-                  displayFormats: {
-                    quarter: 'MMM D'
-                  }
-                }
-                */
+              type: 'time'
             }],
             yAxes: [{
               display: true
@@ -119,6 +90,7 @@ export class HomemapComponent implements OnInit {
    
   }
 
+  //MAPA
   welcomeMarker = marker([38.7573838, -9.1153841], {
     icon: icon({
       iconSize: [ 25, 41 ],
@@ -291,7 +263,12 @@ export class HomemapComponent implements OnInit {
     this.showPlaces()
   }
   
-
+  //GRAFICO
+  updateGraphic(){
+    this.chart.data.datasets.push(this.graphicUtil.createDataSet("Dinamico!!"))
+    this.chart.update()
+  }
+  
   
 }
 

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import pt.solvit.probe.server.config.AppConfiguration;
 import pt.solvit.probe.server.model.ObuFile;
 
@@ -37,7 +38,14 @@ public interface IFilesController {
             value = AppConfiguration.URL_OBU_TESTLOG, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<ObuFile>> getAllObuTestLogs(HttpServletRequest request, @PathVariable("obu-id") long obuId);
+    public ResponseEntity<List<ObuFile>> getAllObuTestLogs(
+            HttpServletRequest request,
+            @PathVariable("obu-id") long obuId,
+            @RequestParam(value = "order", required = false) Boolean ascending,
+            @RequestParam(value = "filename", required = false) String filename,
+            @RequestParam(value = "page", required = false) Integer pageNumber,
+            @RequestParam(value = "limit", required = false) Integer pageLimit
+    );
 
     @ApiOperation(value = "Returns obu test log", tags = {"Files",})
     @ApiResponses(
@@ -65,7 +73,14 @@ public interface IFilesController {
                 @ApiResponse(code = 404, message = "The obu with the requested id was not found.")
             }
     )
-    public ResponseEntity<List<ObuFile>> getAllObuSysLogs(HttpServletRequest request, @PathVariable("obu-id") long obuId);
+    public ResponseEntity<List<ObuFile>> getAllObuSysLogs(
+            HttpServletRequest request,
+            @PathVariable("obu-id") long obuId,
+            @RequestParam(value = "order", required = false) Boolean ascending,
+            @RequestParam(value = "filename", required = false) String filename,
+            @RequestParam(value = "page", required = false) Integer pageNumber,
+            @RequestParam(value = "limit", required = false) Integer pageLimit
+    );
 
     @ApiOperation(value = "Returns obu system log", tags = {"Files",})
     @ApiResponses(

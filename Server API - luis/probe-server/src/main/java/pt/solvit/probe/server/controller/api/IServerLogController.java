@@ -38,11 +38,11 @@ public interface IServerLogController {
             value = AppConfiguration.URL_SERVER_LOG
             //produces = {MediaType.TEXT_PLAIN_VALUE}
     )
-    public ResponseEntity<OutputServerLog> getServerLog(
+    public ResponseEntity<OutputServerLog> getServerLogs(
             HttpServletRequest request,
             @RequestParam(value = "order", required = false) Boolean ascending,
             @RequestParam(value = "accessType", required = false) String accessType,
-            @RequestParam(value = "user", required = false) String user,
+            @RequestParam(value = "accessor", required = false) String accessor,
             @RequestParam(value = "page", required = false) Integer pageNumber,
             @RequestParam(value = "limit", required = false) Integer pageLimit
     );
@@ -59,7 +59,7 @@ public interface IServerLogController {
             value = AppConfiguration.URL_SERVER_LOG_OBU
             //produces = {MediaType.TEXT_PLAIN_VALUE}
     )
-    public ResponseEntity<String> getObuServerLog(HttpServletRequest request);
+    public ResponseEntity<String> getObuServerLogs(HttpServletRequest request);
 
     @ApiOperation(value = "Returns users server log", tags = {"Server Log",})
     @ApiResponses(
@@ -73,7 +73,7 @@ public interface IServerLogController {
             value = AppConfiguration.URL_SERVER_LOG_USER
             //produces = {MediaType.TEXT_PLAIN_VALUE}
     )
-    public ResponseEntity<String> getUserServerLog(HttpServletRequest request);
+    public ResponseEntity<String> getUserServerLogs(HttpServletRequest request);
 
     @ApiOperation(value = "Clear server log", tags = {"Server Log",})
     @ApiResponses(

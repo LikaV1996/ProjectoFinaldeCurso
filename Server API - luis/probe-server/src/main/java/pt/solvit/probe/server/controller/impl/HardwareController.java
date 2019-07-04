@@ -22,6 +22,7 @@ import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.controller.api.IHardwareController;
 import pt.solvit.probe.server.service.api.IHardwareService;
+import pt.solvit.probe.server.service.exception.impl.PermissionException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,7 +39,8 @@ public class HardwareController implements IHardwareController {
 
         User user = (User) request.getAttribute("user");
 
-        userService.checkUserPermissions(user, UserProfile.ADMIN);
+        if ( ! userService.checkUserPermissions(user, UserProfile.ADMIN))
+            throw new PermissionException();
 
         List<Hardware> hardwareList = hardwareService.getAllHardware();
 
@@ -51,7 +53,8 @@ public class HardwareController implements IHardwareController {
 
         User user = (User) request.getAttribute("user");
 
-        userService.checkUserPermissions(user, UserProfile.ADMIN);
+        if ( ! userService.checkUserPermissions(user, UserProfile.ADMIN))
+            throw new PermissionException();
 
         body.validate();
         Hardware hardware = ControllerUtil.transformToHardware(body, user.getUserName());
@@ -69,7 +72,8 @@ public class HardwareController implements IHardwareController {
 
         User user = (User) request.getAttribute("user");
 
-        userService.checkUserPermissions(user, UserProfile.ADMIN);
+        if ( ! userService.checkUserPermissions(user, UserProfile.ADMIN))
+            throw new PermissionException();
 
         Hardware hardware = hardwareService.getHardware(hardwareId);
 
@@ -82,7 +86,8 @@ public class HardwareController implements IHardwareController {
 
         User user = (User) request.getAttribute("user");
 
-        userService.checkUserPermissions(user, UserProfile.ADMIN);
+        if ( ! userService.checkUserPermissions(user, UserProfile.ADMIN))
+            throw new PermissionException();
 
         hardwareService.deleteHardware(hardwareId, user);
 
@@ -95,7 +100,8 @@ public class HardwareController implements IHardwareController {
 
         User user = (User) request.getAttribute("user");
 
-        userService.checkUserPermissions(user, UserProfile.ADMIN);
+        if ( ! userService.checkUserPermissions(user, UserProfile.ADMIN))
+            throw new PermissionException();
 
 
         body.validate();

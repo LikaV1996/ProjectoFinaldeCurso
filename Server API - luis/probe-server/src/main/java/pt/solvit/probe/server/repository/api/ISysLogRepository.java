@@ -14,9 +14,9 @@ import pt.solvit.probe.server.repository.model.SysLogDao;
  */
 public interface ISysLogRepository {
 
-    public SysLogDao findSysLogFromObu(long obuId, long id);
+    public SysLogDao findByObuIDAndID(long obuId, long id);
 
-    public List<SysLogDao> findAllSysLogsByObuId(long obuId);
+    public List<SysLogDao> findAllByObuId(long obuId, boolean ascending, String filename, Integer pageNumber, Integer pageLimit);
 
     public long add(SysLogDao sysLogDao);
 }

@@ -108,11 +108,9 @@ public class TestPlanService implements ITestPlanService {
         LOGGER.log(Level.INFO, "Checking if test plan {0} exists", testPlanId);
         TestPlanDao testPlanDao = testPlanRepository.findById(testPlanId);
 
-        try {
-            userService.checkUserPermissions(user, UserProfile.SUPER_USER);
-        } catch (PermissionException e) {
+        if ( ! userService.checkUserPermissions(user, UserProfile.SUPER_USER))
             userOwnsTestPlan(testPlanDao, user);
-        }
+
 
         verifyTestPlanOnUseCondition(testPlanId);
 

@@ -20,13 +20,13 @@ public interface IServerLogService {
 
     public ServerLog getServerLog(long logId);
 
-    public List<ServerLog> getAllServerLogs();
-    public List<ServerLog> getAllServerLogs(boolean ascending);
-    public List<ServerLog> getAllServerLogs(boolean ascending, String accessType, String user, Integer pageNumber, Integer pageLimit);
+    public List<ServerLog> getAllServerLogs(User loggedInUser);
+    public List<ServerLog> getAllServerLogs(boolean ascending, User loggedInUser);
+    public List<ServerLog> getAllServerLogs(boolean ascending, String accessType, String user, Integer pageNumber, Integer pageLimit, User loggedInUser);
 
     public List<ServerLog> getServerLogsByType(String accessType);
 
-    public void deleteAllServerLogs(User user);
+    public void deleteAllServerLogs(User loggedInUser);
 
     public void updateServerLog(ServerLog serverLog);
 }

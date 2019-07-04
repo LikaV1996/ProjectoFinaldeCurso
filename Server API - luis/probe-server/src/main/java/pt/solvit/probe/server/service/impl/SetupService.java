@@ -109,11 +109,8 @@ public class SetupService implements ISetupService {
         LOGGER.log(Level.INFO, "Checking if setup {0} exists", setupId);
         SetupDao setupDao = setupRepository.findById(setupId);
 
-        try {
-            userService.checkUserPermissions(user, UserProfile.SUPER_USER);
-        } catch (PermissionException e) {
+        if ( ! userService.checkUserPermissions(user, UserProfile.SUPER_USER))
             userOwnsSetup(setupDao, user);
-        }
 
         verifySetupOnUseCondition(setupDao.getId());
 

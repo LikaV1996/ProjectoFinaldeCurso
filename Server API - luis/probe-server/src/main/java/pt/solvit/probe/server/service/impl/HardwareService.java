@@ -18,6 +18,7 @@ import pt.solvit.probe.server.model.enums.EntityType;
 import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.repository.model.HardwareDao;
+import pt.solvit.probe.server.service.exception.impl.PermissionException;
 import pt.solvit.probe.server.service.impl.util.ServiceUtil;
 import pt.solvit.probe.server.service.api.IHardwareService;
 import pt.solvit.probe.server.repository.api.IHardwareRepository;
@@ -71,7 +72,8 @@ public class HardwareService implements IHardwareService {
         LOGGER.log(Level.INFO, "Checking if hardware {0} exists", hardwareId);
         HardwareDao hardwareDao = hardwareRepository.findById(hardwareId);
 
-        userService.checkUserPermissions(user, UserProfile.SUPER_USER);
+        if ( ! userService.checkUserPermissions(user, UserProfile.ADMIN))
+            throw new PermissionException();
 
         verifyHardwareOnUseCondition(hardwareId);
 

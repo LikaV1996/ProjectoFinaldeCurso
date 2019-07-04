@@ -20,11 +20,15 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.solvit.probe.server.config.AppConfiguration;
+import pt.solvit.probe.server.model.User;
+import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.model.logfiles.TestLog;
 import pt.solvit.probe.server.model.ObuFile;
 import pt.solvit.probe.server.model.enums.FileType;
 import pt.solvit.probe.server.model.enums.LogDataType;
 import pt.solvit.probe.server.repository.model.TestLogDao;
+import pt.solvit.probe.server.service.api.IUserService;
+import pt.solvit.probe.server.service.exception.impl.PermissionException;
 import pt.solvit.probe.server.util.FilesUtil;
 import pt.solvit.probe.server.model.logfiles.FileHeader;
 import pt.solvit.probe.server.model.logfiles.LogData;
@@ -47,6 +51,9 @@ public class FileService implements IFileService {
     private static final Logger LOGGER = Logger.getLogger(FileService.class.getName());
 
     @Autowired
+    private IUserService userService;
+
+    @Autowired
     private ITestLogRepository testLogRepository;
     @Autowired
     private ISysLogRepository sysLogRepository;
@@ -55,16 +62,20 @@ public class FileService implements IFileService {
     private AppConfiguration appConfiguration;
 
     @Override
-    public List<TestLog> getAllObuTestLogs(long obuId) {
+    public List<TestLog> getAllObuTestLogs(long obuId, boolean ascending, String filename, Integer pageNumber, Integer pageLimit, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Getting obu {0} test log list", obuId);
-        List<TestLogDao> logFileList = testLogRepository.findAllTestLogsByObuId(obuId);
+        List<TestLogDao> logFileList = testLogRepository.findAllByObuId(obuId, ascending, filename, pageNumber, pageLimit);
         return ServiceUtil.map(logFileList, this::parseTestLog);
     }
 
     @Override
-    public List<SysLog> getAllObuSysLogs(long obuId) {
+    public List<SysLog> getAllObuSysLogs(long obuId, boolean ascending, String filename, Integer pageNumber, Integer pageLimit, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Getting obu {0} system log list", obuId);
-        List<SysLogDao> logFileList = sysLogRepository.findAllSysLogsByObuId(obuId);
+        List<SysLogDao> logFileList = sysLogRepository.findAllByObuId(obuId, ascending, filename, pageNumber, pageLimit);
         return ServiceUtil.map(logFileList, this::parseSysLog);
     }
 
@@ -81,21 +92,28 @@ public class FileService implements IFileService {
     }
 
     @Override
-    public TestLog getObuTestLog(long obuId, long testLogId) {
+    public TestLog getObuTestLog(long obuId, long testLogId, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Finding test log {0} from obu {1}", new String[]{String.valueOf(testLogId), String.valueOf(obuId)});
-        TestLogDao testLogDao = testLogRepository.findTestLogFromObu(obuId, testLogId);
+        TestLogDao testLogDao = testLogRepository.findByObuIDAndID(obuId, testLogId);
         return parseTestLog(testLogDao);
     }
 
     @Override
-    public SysLog getObuSysLog(long obuId, long sysLogId) {
+    public SysLog getObuSysLog(long obuId, long sysLogId, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Finding system log {0} from obu {1}", new String[]{String.valueOf(sysLogId), String.valueOf(obuId)});
-        SysLogDao sysLogDao = sysLogRepository.findSysLogFromObu(obuId, sysLogId);
+        SysLogDao sysLogDao = sysLogRepository.findByObuIDAndID(obuId, sysLogId);
         return parseSysLog(sysLogDao);
     }
 
     private SysLog parseSysLog(SysLogDao sysLogDao) {
         LOGGER.log(Level.INFO, "Parsing system log");
+
+        if (sysLogDao.getFileData() == null)
+            return transformToSysLog(sysLogDao, null);
 
         //Unzip data
         String fileName = appConfiguration.multipartLocation + "/unzippedFile";
@@ -132,6 +150,10 @@ public class FileService implements IFileService {
 
     private TestLog parseTestLog(TestLogDao testLogDao) {
         LOGGER.log(Level.INFO, "Parsing test log");
+
+        if (testLogDao.getFileData() == null)
+            return transformToTestLog(testLogDao, null);
+
 
         //Unzip data
         String fileName = appConfiguration.multipartLocation + "/unzippedFile";
@@ -213,7 +235,15 @@ public class FileService implements IFileService {
         FileProperties properties = GSON.fromJson(testLogDao.getProperties(), FileProperties.class);
 
         return new TestLog(testLogDao.getId(), testLogDao.getObuId(), testLogDao.getFileName(), testLogDao.getCloseDate().toLocalDateTime(),
-                testLogDao.getUploadDate().toLocalDateTime(), testLogDao.getFileData(), properties.getTestPlanId(),
-                properties.getSetupId(), logData);
+                testLogDao.getUploadDate().toLocalDateTime(), testLogDao.getFileData(),
+                properties.getTestPlanId(), properties.getSetupId(),
+                logData);
+    }
+
+
+
+    private void checkUserPermissions(User loggedInUser) {
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
     }
 }

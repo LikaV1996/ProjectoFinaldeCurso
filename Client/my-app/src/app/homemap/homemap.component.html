@@ -49,7 +49,7 @@
                 </div>
             </div>
         </div>
-        <canvas #lineChart>{{ chart }}</canvas>
+       
     </div>
 
     <div class="map"
@@ -57,6 +57,7 @@
         (leafletMapReady)="onMapReady($event)"
         [leafletOptions]="options">
     </div>
-
-
+    <div class="chart">
+    <canvas #lineChart>{{ chart }}</canvas>
+    </div>
 

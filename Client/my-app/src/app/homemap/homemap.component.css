@@ -1,5 +1,12 @@
   .map {
-    height: 81%; 
+    height: 45%; 
+    width: 70%;
+    float:right;
+    z-index: -1;
+  }
+
+  .chart {
+    height: 35%; 
     width: 70%;
     float:right;
     z-index: -1;

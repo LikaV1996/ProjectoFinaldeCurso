@@ -7,8 +7,8 @@ import { LocalStorageService } from '../_services/localStorage.service';
 import { Router } from '@angular/router';
 import { OBUStatus } from '../Model/OBUStatus';
 import * as L from 'leaflet';
-//import { Chart } from 'chart.js';
-
+import { Chart } from 'chart.js';
+import { GraphicUtils } from './graphicUtils'
 
 @Component({
   selector: 'app-homemap',
@@ -23,17 +23,20 @@ export class HomemapComponent implements OnInit {
     private _localStorage: LocalStorageService
   ) { }
 
-  /*
+  tomorrow = new Date();
+  graphicUtil = new GraphicUtils() 
+
   @ViewChild('lineChart') private chartRef; 
   chart :any;
+
   chartPoints = [{  
-      x: new Date(),  
+      x: this.tomorrow,//new Date(),  
       y: 10
     },{  
-      x: new Date(),  
+      x: this.tomorrow,//new Date().setMinutes(),  
       y: 20
   }];
-  */
+  
   private obus: OBU[];
   private positions= new Array() //Todas as posiçoes
   private filteredPositions: Positions[] = new Array()
@@ -67,21 +70,30 @@ export class HomemapComponent implements OnInit {
         
       });
 
-
-      /*
+      //GRAFICO
       this.chart = new Chart(this.chartRef.nativeElement, {
         type: 'line',
         data: {
-          //labels: ["2015-03-15", "2015-03-25T13:02:00Z", (new Date().getDate())+"-"+(new Date().getMonth()+1)+""], // your labels array
+          //labels: ["wow"], // your labels array
           datasets: [
             {
-              data: this.chartPoints, // your data array
+              label: "Blue!",
+              data: this.chartPoints, // Azul
               borderColor: '#00AEFF',
               fill: false
+            },
+            {
+              label: "Red!",
+              data: this.chartPoints, // Vermelho
+              borderColor: '#C45850',
+              fill: false
             }
+
           ]
         },
         options: {
+          responsive:true,
+          maintainAspectRatio: false,
           legend: {
             display: true
           },
@@ -89,11 +101,13 @@ export class HomemapComponent implements OnInit {
             xAxes: [{
               display: true,
               type: 'time',
+              /*
                 time: { //nao faz nada
                   displayFormats: {
                     quarter: 'MMM D'
                   }
                 }
+                */
             }],
             yAxes: [{
               display: true
@@ -101,7 +115,7 @@ export class HomemapComponent implements OnInit {
           }
         }
       });
-      */
+      
    
   }
 

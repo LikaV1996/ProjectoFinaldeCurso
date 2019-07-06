@@ -39,7 +39,6 @@ export class HomemapComponent implements OnInit {
   private startDate = null
   private endDate = null
   private toogleButtonVisible : boolean = false
-  //private chartPoints
   private graphicToShow = null
 
   ngOnInit() {
@@ -78,10 +77,16 @@ export class HomemapComponent implements OnInit {
           scales: {
             xAxes: [{
               display: true,
-              type: 'time'
+              type: 'time',
+              scaleLabel: {
+                display: true
+              }
             }],
             yAxes: [{
-              display: true
+              display: true,
+              scaleLabel: {
+                display: true
+              }
             }],
           }
         }
@@ -265,8 +270,29 @@ export class HomemapComponent implements OnInit {
   
   //GRAFICO
   updateGraphic(){
-    this.chart.data.datasets.push(this.graphicUtil.createDataSet("Dinamico!!"))
+  
+    if(!this.graphicToShow || this.graphicToShow == "null"){
+      alert("You must choose an option!")
+      return
+    }
+    this.cleanChart()
+
+    this.chart.options.scales.xAxes[0].scaleLabel.labelString = 'Time'
+    this.chart.options.scales.yAxes[0].scaleLabel.labelString = this.graphicUtil.getAxisYLabel(this.graphicToShow)  
+
+    this.positions.forEach(pos =>{
+      this.chart.data.datasets.push(this.graphicUtil.createDataSet(pos, this.graphicToShow))
+    })
+    
     this.chart.update()
+  }
+
+  cleanChart(){
+
+    this.chart.options.scales.xAxes[0].scaleLabel.labelString = ''
+    this.chart.options.scales.yAxes[0].scaleLabel.labelString = '' 
+    this.chart.data.datasets = new Array()
+
   }
   
   

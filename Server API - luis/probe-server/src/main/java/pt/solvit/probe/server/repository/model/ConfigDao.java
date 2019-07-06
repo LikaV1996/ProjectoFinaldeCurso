@@ -73,11 +73,11 @@ public class ConfigDao extends CreatorDao{
         ConfigProperties properties = GSON.fromJson(configDao.getProperties(), ConfigProperties.class);
 
         return new Config(configDao.getId(), configDao.getConfigName(),
-                configDao.getActivationDate() != null ? configDao.getActivationDate().toLocalDateTime(): null,
+                configDao.getActivationDate() != null ? configDao.getActivationDate().toLocalDateTime() : null,
                 properties.getArchive(), properties.getControlConnection(), properties.getCore(), properties.getData(), properties.getDownload(),
                 properties.getScanning(), properties.getServer(), properties.getTestPlan(), properties.getUpload(),
                 properties.getVoice(), configDao.getCreator(), configDao.getCreationDate().toLocalDateTime(), configDao.getModifier(),
-                configDao.getModifiedDate() != null ? configDao.getActivationDate().toLocalDateTime():null);
+                configDao.getModifiedDate() != null ? configDao.getModifiedDate().toLocalDateTime() : null);
 
         //(userDao.getModifiedDate() != null ? userDao.getModifiedDate().toLocalDateTime() : null)
 

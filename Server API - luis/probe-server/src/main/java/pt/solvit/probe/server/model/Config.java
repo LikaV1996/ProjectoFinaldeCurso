@@ -235,7 +235,9 @@ public class Config extends CreatorModel {
     }
 
     public static ConfigDao transformToConfigDao(Config config) {
-        return new ConfigDao(null, config.getConfigName(), Timestamp.valueOf(config.getActivationLocalDateTime()), config.getPropertiesString(),
+        return new ConfigDao(config.getId(), config.getConfigName(),
+                config.getActivationLocalDateTime() != null ? Timestamp.valueOf(config.getActivationLocalDateTime()) : null,
+                config.getPropertiesString(),
                 config.getCreator(), Timestamp.valueOf(config.getCreationLocalDateTime()),
                 config.getModifier(), config.getModifiedLocalDateTime() != null ? Timestamp.valueOf(config.getModifiedLocalDateTime()) : null);
     }

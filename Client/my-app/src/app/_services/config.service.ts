@@ -27,11 +27,15 @@ export class ConfigService {
     return this.http.get<Config>(getConfigByIdUrl)
   }
 
-  /*
-  createConfig(obu_name: string, obu_password: string){//verificar ****** 
-    return this.http.post<{obu: OBU}>(routes.createObu,{obu_name: obu_name, obu_password: obu_password, properties: "null", hardware_id:-1, current_config_id:-1,current_test_plan_id:-1 })
+  
+  createConfig(config_name: string,       /**/): Observable<Config> {//verificar ****** 
+    return this.http.post<Config>(routes.createObu,{configName: config_name,      /**/})
   }
-  */
+
+  updateConfig(id: number, conf: Config         /**/): Observable<Config> {
+    const updateConfig = routes.updateConfig.replace(":id", id.toString());
+    return this.http.put<Config>(updateConfig, {config: config, /**/})
+  }
 
   deleteConfigByID(id: number) {
     const deleteConfigByIDUrl = routes.deleteConfig.replace(":id", id.toString());

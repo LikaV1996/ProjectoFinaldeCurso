@@ -81,7 +81,7 @@ public class InputConfig {
     @JsonIgnore
     @ApiModelProperty(hidden = true)
     public LocalDateTime getActivationLocalDateTime() {
-        return DateUtil.getDateFromIsoString(activationDate);
+        return activationDate != null ? DateUtil.getDateFromIsoString(activationDate) : null;
     }
 
     @ApiModelProperty(example = "2019-01-01T10:00:00", required = true, value = "Activation date (ISO 8601)")

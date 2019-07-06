@@ -72,12 +72,12 @@ public class ConfigService implements IConfigService {
     }
 
     @Override
-    public void deleteConfig(long configId, User user) {
+    public void deleteConfig(long configId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Checking if configuration {0} exists", configId);
         ConfigDao configDao = configRepository.findById(configId);
 
-        if ( ! userService.checkUserPermissions(user, UserProfile.SUPER_USER))
-            userOwnsConfig(configDao, user);
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
+            userOwnsConfig(configDao, loggedInUser);
 
         verifyConfigOnUseCondition(configId);
 
@@ -86,8 +86,12 @@ public class ConfigService implements IConfigService {
     }
 
     @Override
-    public void updateConfig(Config config) {
+    public void updateConfig(Config config, User loggedInUser) {
         LOGGER.log(Level.INFO, "Updating configuration {0}", config.getId());
+
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
+
         configRepository.update(Config.transformToConfigDao(config));
     }
 

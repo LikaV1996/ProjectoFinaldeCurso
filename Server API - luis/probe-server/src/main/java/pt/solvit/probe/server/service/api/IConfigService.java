@@ -22,9 +22,9 @@ public interface IConfigService {
 
     public List<Config> getAllConfigs();
 
-    public void deleteConfig(long configId, User user);
+    public void deleteConfig(long configId, User loggedInUser);
 
-    public void updateConfig(Config config);
+    public void updateConfig(Config config, User loggedInUser);
 
     //Obu Configuration
     public ObuConfig getObuConfig(long obuId, long configId);

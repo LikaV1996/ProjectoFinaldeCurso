@@ -86,7 +86,7 @@ public interface IConfigurationController {
     )
     @RequestMapping(
             method = RequestMethod.PUT,
-            value = AppConfiguration.URL_CONFIG,
+            value = AppConfiguration.URL_CONFIG_ID,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
@@ -101,7 +101,7 @@ public interface IConfigurationController {
             }
     )
     @RequestMapping(
-            method = RequestMethod.DELETE, 
+            method = RequestMethod.DELETE,
             value = AppConfiguration.URL_CONFIG_ID,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )

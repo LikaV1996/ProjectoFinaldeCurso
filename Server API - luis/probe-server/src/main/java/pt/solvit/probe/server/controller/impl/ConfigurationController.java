@@ -66,7 +66,7 @@ public class ConfigurationController implements IConfigurationController {
     }
 
     @Override
-    public ResponseEntity<Config> updateConfig(HttpServletRequest request, long configId, InputConfig body) {
+    public ResponseEntity<Config> updateConfig(HttpServletRequest request, @PathVariable("config-id") long configId, @RequestBody InputConfig body) {
 
         User user = (User) request.getAttribute("user");
 
@@ -75,7 +75,7 @@ public class ConfigurationController implements IConfigurationController {
 
         updateConfig(body, config, user.getUserName());
 
-        configService.updateConfig(config);
+        configService.updateConfig(config, user);
 
         config = configService.getConfig(configId);
 

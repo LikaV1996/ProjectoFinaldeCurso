@@ -1,7 +1,7 @@
 <p></p>
 
 <div class="ui raised very padded text container segment">
-  <mat-spinner *ngIf="config == null"></mat-spinner>
+
   <div *ngIf="config">
       <h2>Configuration Details</h2>
       <div><b>id: </b>{{config.id}}</div>
@@ -35,9 +35,13 @@
                 <div class="ui right labeled input" style="width:90px;">
                     <input [(ngModel)]="config.archive.expiration" type="text" placeholder="days">
                     <div class="ui basic label">
-                      days
+                        <select id="archiveExpirationTimeformat" matNativeControl required>
+                          <option value="3600">hours</option>
+                          <option value="60">minutes</option>
+                          <option value="1" selected>seconds</option>
+                        </select>
                     </div>
-                </div>
+                </div> 
             </b>
             <!--  
             <mat-form-field appearance="standard">

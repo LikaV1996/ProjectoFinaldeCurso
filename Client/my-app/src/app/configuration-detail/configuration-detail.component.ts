@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { Config } from '../Model/Config';
 import {ActivatedRoute} from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { debug } from 'util';
 
 @Component({
   selector: 'app-configuration-detail',
@@ -32,6 +33,33 @@ export class ConfigurationDetailComponent implements OnInit {
       this.config = config
     })
 
+  }
+
+  saveChanges() {
+    console.log(`updating config ${this.config.id}`)
+
+
+    let archiveExpirationTimeOptionValue = (document.getElementById("archiveExpirationTimeformat") as HTMLSelectElement).value
+    
+    this.config.archive.expiration *= parseInt(archiveExpirationTimeOptionValue)
+
+
+    this._configService.updateConfig(this.config.id, this.config)
+    .subscribe( config => {
+      this.config = config
+    
+      /*
+    this._hardwareService.updateHardware(this.hardware.id, this.hardware.serialNumber, this.hardware.components)
+    .subscribe(hardware => {
+      console.log('Hardware: ' + JSON.stringify(hardware))
+      this.hardware = hardware
+      */
+
+
+      alert("Config updated!")
+      console.log("Config updated")
+      this.goBack()
+    })
   }
 
   goBack(){

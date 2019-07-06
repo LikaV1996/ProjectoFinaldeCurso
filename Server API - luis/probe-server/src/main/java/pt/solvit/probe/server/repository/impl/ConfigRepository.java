@@ -38,10 +38,13 @@ public class ConfigRepository implements IConfigRepository {
     private static final String INSERT_BASE = "INSERT INTO Config (config_name, activation_date, properties, creator, creation_date)";
     private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?, cast(? as jsonb), ?, ?) RETURNING id;";
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?);";
+
     private static final String SELECT_ALL = "SELECT id, config_name, activation_date AS activationDate, properties, creator, creation_date AS creationDate, modifier, modified_date AS modifiedDate FROM Config";
     private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
+
     private static final String UPDATE_POSTGRES = "UPDATE Config SET config_name = ?, activation_date = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
     private static final String UPDATE_MYSQL = "UPDATE Config SET config_name = ?, activation_date = ?, properties = ?, modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
+
     private static final String DELETE_ALL = "DELETE FROM Config";
     private static final String DELETE_BY_ID = DELETE_ALL + " WHERE id = ?;";
 
@@ -72,7 +75,8 @@ public class ConfigRepository implements IConfigRepository {
     @Override
     public long add(ConfigDao configDao) {
         if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
-            return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, configDao.getConfigName(), configDao.getActivationDate(), configDao.getProperties(), configDao.getCreator(), configDao.getCreationDate());
+            return jdbcTemplate.queryForObject(INSERT_POSTGRES, Long.class, configDao.getConfigName(), configDao.getActivationDate(),
+                    configDao.getProperties(), configDao.getCreator(), configDao.getCreationDate());
         }
 
         //mysql
@@ -115,20 +119,12 @@ public class ConfigRepository implements IConfigRepository {
 
     @Override
     public void update(ConfigDao configDao) {
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement statement = null;
-                if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
-                    statement = con.prepareStatement(UPDATE_POSTGRES);
-                } else { //mysql
-                    statement = con.prepareStatement(UPDATE_MYSQL);
-                }
-                statement.setString(1, configDao.getConfigName());
-                statement.setTimestamp(2, configDao.getActivationDate());
-                statement.setString(3, configDao.getProperties());
-                return statement;
-            }
-        });
+        if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
+            jdbcTemplate.update(UPDATE_POSTGRES, configDao.getConfigName(),
+                    configDao.getActivationDate(), configDao.getProperties(), configDao.getModifier(), configDao.getId());
+        }
+
+        String rip = "not implemented exception";
     }
+
 }

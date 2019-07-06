@@ -1,8 +1,17 @@
   .map {
-    height: 81%; 
-    width: 70%;
+    height: 35%; 
+    width: 74%;
     float:right;
     z-index: -1;
+    margin-right: 1%;
+  }
+
+  .chart {
+    height: 35%; 
+    width: 74%;
+    float:right;
+    z-index: -1;
+    margin-right: 1%;
   }
 
   .sidenav-container {

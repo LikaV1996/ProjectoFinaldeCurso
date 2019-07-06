@@ -7,8 +7,8 @@ import { LocalStorageService } from '../_services/localStorage.service';
 import { Router } from '@angular/router';
 import { OBUStatus } from '../Model/OBUStatus';
 import * as L from 'leaflet';
-//import { Chart } from 'chart.js';
-
+import { Chart } from 'chart.js';
+import { GraphicUtils } from './graphicUtils'
 
 @Component({
   selector: 'app-homemap',
@@ -23,17 +23,12 @@ export class HomemapComponent implements OnInit {
     private _localStorage: LocalStorageService
   ) { }
 
-  /*
+  tomorrow = new Date();
+  graphicUtil = new GraphicUtils() 
+
   @ViewChild('lineChart') private chartRef; 
   chart :any;
-  chartPoints = [{  
-      x: new Date(),  
-      y: 10
-    },{  
-      x: new Date(),  
-      y: 20
-  }];
-  */
+  
   private obus: OBU[];
   private positions= new Array() //Todas as posiçoes
   private filteredPositions: Positions[] = new Array()
@@ -44,12 +39,12 @@ export class HomemapComponent implements OnInit {
   private startDate = null
   private endDate = null
   private toogleButtonVisible : boolean = false
+  private graphicToShow = null
 
   ngOnInit() {
     this.user = this._localStorage.getCurrentUserDetails()
 
-    this._obuService.getOBUs()
-      .subscribe(obus => {
+    this._obuService.getOBUs().subscribe(obus => {
         this.obus = obus
         this.orderById()
         this.obus.forEach(obu => { //Em cada OBU, fazer o pedido das localizaçoes
@@ -61,27 +56,21 @@ export class HomemapComponent implements OnInit {
               aux.obuStatus = obuStatus
               this.positions.push(aux)
             }
-           
           })
         });
         
       });
 
-
-      /*
+      //GRAFICO
       this.chart = new Chart(this.chartRef.nativeElement, {
         type: 'line',
         data: {
-          //labels: ["2015-03-15", "2015-03-25T13:02:00Z", (new Date().getDate())+"-"+(new Date().getMonth()+1)+""], // your labels array
           datasets: [
-            {
-              data: this.chartPoints, // your data array
-              borderColor: '#00AEFF',
-              fill: false
-            }
           ]
         },
         options: {
+          responsive:true,
+          maintainAspectRatio: false,
           legend: {
             display: true
           },
@@ -89,22 +78,24 @@ export class HomemapComponent implements OnInit {
             xAxes: [{
               display: true,
               type: 'time',
-                time: { //nao faz nada
-                  displayFormats: {
-                    quarter: 'MMM D'
-                  }
-                }
+              scaleLabel: {
+                display: true
+              }
             }],
             yAxes: [{
-              display: true
+              display: true,
+              scaleLabel: {
+                display: true
+              }
             }],
           }
         }
       });
-      */
+      
    
   }
 
+  //MAPA
   welcomeMarker = marker([38.7573838, -9.1153841], {
     icon: icon({
       iconSize: [ 25, 41 ],
@@ -277,7 +268,33 @@ export class HomemapComponent implements OnInit {
     this.showPlaces()
   }
   
+  //GRAFICO
+  updateGraphic(){
+  
+    if(!this.graphicToShow || this.graphicToShow == "null"){
+      alert("You must choose an option!")
+      return
+    }
+    this.cleanChart()
 
+    this.chart.options.scales.xAxes[0].scaleLabel.labelString = 'Time'
+    this.chart.options.scales.yAxes[0].scaleLabel.labelString = this.graphicUtil.getAxisYLabel(this.graphicToShow)  
+
+    this.positions.forEach(pos =>{
+      this.chart.data.datasets.push(this.graphicUtil.createDataSet(pos, this.graphicToShow))
+    })
+    
+    this.chart.update()
+  }
+
+  cleanChart(){
+
+    this.chart.options.scales.xAxes[0].scaleLabel.labelString = ''
+    this.chart.options.scales.yAxes[0].scaleLabel.labelString = '' 
+    this.chart.data.datasets = new Array()
+
+  }
+  
   
 }
 

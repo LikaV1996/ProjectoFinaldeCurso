@@ -41,10 +41,20 @@ export class TestPlanService {
   
   updateTestPlan(testPlan: TestPlan){
     const updatetestPlanById = routes.updateTestPlan.replace(":id", testPlan.id.toString());
+    var start, stop
+    if(typeof(testPlan.startDate)=="object")
+        start = testPlan.startDate.toISOString().slice(0,22)
+    else start = testPlan.startDate
+
+    if(typeof(testPlan.stopDate)=="object")
+        stop = testPlan.stopDate.toISOString().slice(0,22)
+    else stop = testPlan.stopDate
+
     return this.http.put<TestPlan>(updatetestPlanById, {
-      testplanName: testPlan.testplanName, 
-      startDate: testPlan.startDate.toISOString().slice(0,22),
-      stopDate: testPlan.stopDate.toISOString().slice(0,22),
+      testplanName: testPlan.testplanName,
+      
+      startDate: start,
+      stopDate: stop,
       period: testPlan.period,
     })
   }

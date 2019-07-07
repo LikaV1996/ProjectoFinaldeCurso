@@ -15,6 +15,7 @@
   
   
       <div class="ui" style="height: 70%;">
+        <mat-spinner *ngIf="obus == null"></mat-spinner>
         <div class="ui segment" *ngFor="let obu of obus">
           <div class="ui middle aligned grid">
             <div class="four wide column">{{obu.obuName}}</div>

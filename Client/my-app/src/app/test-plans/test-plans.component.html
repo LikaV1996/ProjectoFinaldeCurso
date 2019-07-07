@@ -15,6 +15,7 @@
     <div class="ui divider"></div>
 
     <div class="ui" style="height: 70%;">
+      <mat-spinner *ngIf="testPlans == null"></mat-spinner>
         <div class="ui segment" *ngFor="let testplan of testPlans">
           <div class="ui middle aligned grid">
             <div class="four wide column">{{testplan.testplanName}}</div>

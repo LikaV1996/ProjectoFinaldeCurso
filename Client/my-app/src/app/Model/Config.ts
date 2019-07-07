@@ -1,7 +1,7 @@
 export class Config{
     id: number
     configName: string
-    activationDate: Date
+    activationDate
     archive
     controlConnection
     core

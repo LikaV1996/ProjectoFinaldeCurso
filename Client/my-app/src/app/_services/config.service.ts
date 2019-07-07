@@ -26,10 +26,36 @@ export class ConfigService {
     const getConfigByIdUrl = routes.getConfigById.replace(":id", id.toString());
     return this.http.get<Config>(getConfigByIdUrl)
   }
-
   
-  createConfig(config_name: string,       /**/): Observable<Config> {//verificar ****** 
-    return this.http.post<Config>(routes.createObu,{configName: config_name,      /**/})
+  createConfig(newConfig: Config) {
+    
+    if(newConfig.activationDate)
+      newConfig.activationDate = newConfig.activationDate.toISOString().slice(0,22)
+    
+    if(newConfig.archive.referenceDate)
+      newConfig.archive.referenceDate = newConfig.archive.referenceDate.toISOString().slice(0,22)
+    
+    if(newConfig.controlConnection.referenceDate)
+      newConfig.controlConnection.referenceDate = newConfig.controlConnection.referenceDate.toISOString().slice(0,22)
+    
+    if(newConfig.upload.referenceDate)
+      newConfig.upload.referenceDate = newConfig.upload.referenceDate.toISOString().slice(0,22)
+
+    return this.http.post<Config>(routes.createConfig,
+      {
+        configName: newConfig.configName,
+        activationDate: newConfig.activationDate,
+        archive: newConfig.archive,
+        controlConnection: newConfig.controlConnection,
+        core: newConfig.core,
+        data: newConfig.data,
+        download: newConfig.download,
+        scanning: newConfig.scanning,
+        server: newConfig.server,
+        testPlan: newConfig.testPlan,
+        upload: newConfig.upload,
+        voice: newConfig.voice
+      })
   }
 
   updateConfig(config: Config): Observable<Config> {

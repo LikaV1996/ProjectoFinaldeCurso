@@ -31,7 +31,7 @@
         <div>
             <b>Expiration:&nbsp;&nbsp;
                 <div class="ui right labeled input" style="width:90px;">
-                    <input [(ngModel)]="config.archive.expiration" type="text" placeholder="days">
+                    <input [(ngModel)]="config.archive.expiration" type="text" >
                     <div class="ui basic label">
                         <select id="archiveExpirationTimeformat" matNativeControl required>
                           <option value="3600">hours</option>
@@ -47,7 +47,7 @@
 
         <b>Period:&nbsp;&nbsp;
           <div class="ui right labeled input" style="width:90px;">
-              <input [(ngModel)]="config.archive.period" type="text" placeholder="days">
+              <input [(ngModel)]="config.archive.period" type="text">
               <div class="ui basic label">
                   <select id="archivePeriodTimeformat" matNativeControl required>
                     <option value="3600">hours</option>
@@ -83,7 +83,7 @@
 
         <b>Period:&nbsp;&nbsp;
           <div class="ui right labeled input" style="width:90px;">
-              <input [(ngModel)]="config.controlConnection.period" type="text" placeholder="days">
+              <input [(ngModel)]="config.controlConnection.period" type="text">
               <div class="ui basic label">
                   <select id="controlConnectionPeriodTimeformat" matNativeControl required>
                     <option value="3600">hours</option>
@@ -98,7 +98,7 @@
 
         <b>Retry Delay:&nbsp;&nbsp;
           <div class="ui right labeled input" style="width:90px;">
-              <input [(ngModel)]="config.controlConnection.retryDelay" type="text" placeholder="days">
+              <input [(ngModel)]="config.controlConnection.retryDelay" type="text">
               <div class="ui basic label">
                   <select id="controlConnectionRetryDelayTimeformat" matNativeControl required>
                     <option value="3600">hours</option>
@@ -138,7 +138,7 @@
 
         <b>Storage Monitor Period:&nbsp;&nbsp;
           <div class="ui right labeled input" style="width:90px;">
-              <input [(ngModel)]="config.core.storageMonitorPeriod" type="text" placeholder="days">
+              <input [(ngModel)]="config.core.storageMonitorPeriod" type="text">
               <div class="ui basic label">
                   <select id="coreStorageMonitorPeriodTimeformat" matNativeControl required>
                     <option value="3600">hours</option>
@@ -190,7 +190,7 @@
 
         <b>Retry Delay:&nbsp;&nbsp;
           <div class="ui right labeled input" style="width:90px;">
-              <input [(ngModel)]="config.download.retryDelay" type="text" placeholder="days">
+              <input [(ngModel)]="config.download.retryDelay" type="text">
               <div class="ui basic label">
                   <select id="downloadRetryDelayTimeformat" matNativeControl required>
                     <option value="3600">hours</option>
@@ -222,7 +222,7 @@
 
         <b>Sample Time:&nbsp;&nbsp;
           <div class="ui right labeled input" style="width:90px;">
-              <input [(ngModel)]="config.scanning.sampleTime" type="text" placeholder="days">
+              <input [(ngModel)]="config.scanning.sampleTime" type="text" >
               <div class="ui basic label">
                   <select id="scanningSampleTimeTimeformat" matNativeControl required>
                     <option value="3600">hours</option>
@@ -261,7 +261,7 @@
 
         <b>Registration Retry Delay:&nbsp;&nbsp;
           <div class="ui right labeled input" style="width:90px;">
-              <input [(ngModel)]="config.server.registrationRetryDelay" type="text" placeholder="days">
+              <input [(ngModel)]="config.server.registrationRetryDelay" type="text">
               <div class="ui basic label">
                   <select id="serverRegRetDelayTimeTimeformat" matNativeControl required>
                     <option value="3600">hours</option>
@@ -319,7 +319,7 @@
 
           <b>Default Retry Delay:&nbsp;&nbsp;
             <div class="ui right labeled input" style="width:90px;">
-                <input [(ngModel)]="config.testPlan.defaultRetryDelay" type="text" placeholder="days">
+                <input [(ngModel)]="config.testPlan.defaultRetryDelay" type="text">
                 <div class="ui basic label">
                     <select id="defRetDelTimeformat" matNativeControl required>
                       <option value="3600">hours</option>
@@ -359,7 +359,7 @@
 
         <b>Period:&nbsp;&nbsp;
           <div class="ui right labeled input" style="width:90px;">
-              <input [(ngModel)]="config.upload.period" type="text" placeholder="days">
+              <input [(ngModel)]="config.upload.period" type="text">
               <div class="ui basic label">
                   <select id="uploadPeriodTimeformat" matNativeControl required>
                     <option value="3600">hours</option>
@@ -374,7 +374,7 @@
 
         <b>Retry Delay:&nbsp;&nbsp;
           <div class="ui right labeled input" style="width:90px;">
-              <input [(ngModel)]="config.upload.retryDelay" type="text" placeholder="days">
+              <input [(ngModel)]="config.upload.retryDelay" type="text">
               <div class="ui basic label">
                   <select id="uploadRetDelTimeformat" matNativeControl required>
                     <option value="3600">hours</option>
@@ -412,7 +412,7 @@
 
       <b>Default Call Duration:&nbsp;&nbsp;
         <div class="ui right labeled input" style="width:90px;">
-            <input [(ngModel)]="config.voice.defaultCallDuration" type="text" placeholder="days">
+            <input [(ngModel)]="config.voice.defaultCallDuration" type="text">
             <div class="ui basic label">
                 <select id="voiceDefaultCallDurationTimeformat" matNativeControl required>
                   <option value="3600">hours</option>
@@ -427,7 +427,7 @@
       
       <b>Incoming Call Timeout:&nbsp;&nbsp;
         <div class="ui right labeled input" style="width:90px;">
-            <input [(ngModel)]="config.voice.incomingCallTimeout" type="text" placeholder="days">
+            <input [(ngModel)]="config.voice.incomingCallTimeout" type="text">
             <div class="ui basic label">
                 <select id="voiceIncomingCallTimeoutTimeformat" matNativeControl required>
                   <option value="3600">hours</option>

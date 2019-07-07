@@ -44,9 +44,11 @@ export class OBUComponent implements OnInit {
     this.router.navigate(['home/obu/create']);
   }
 
+  /*
   edit(id: number){
     this.router.navigate(['home/obu/'+id+'/edit']);
   }
+  */
 
   orderById(){
     this.obus.sort( (h1,h2)=> h1.id - h2.id)

@@ -41,7 +41,7 @@ export class ConfigurationDetailComponent implements OnInit {
 
     let archiveExpirationTimeOptionValue = (document.getElementById("archiveExpirationTimeformat") as HTMLSelectElement).value
     
-    this.config.archive.expiration *= parseInt(archiveExpirationTimeOptionValue)
+    //this.config.archive.expiration *= parseInt(archiveExpirationTimeOptionValue)
 
 
     this._configService.updateConfig(this.config.id, this.config)

@@ -39,6 +39,8 @@ import { SetupComponent } from './setup/setup.component';
 import { SetupCreateComponent } from './setup-create/setup-create.component';
 import { SetupDetailComponent } from './setup-detail/setup-detail.component';
 import { ServerLogComponent } from './serverlog/serverlog.component';
+import { TestLogComponent } from './testlog/testlog.component';
+import { SystemLogComponent } from './systemlog/systemlog.component';
 
 
 
@@ -66,7 +68,9 @@ import { ServerLogComponent } from './serverlog/serverlog.component';
     SetupComponent,
     SetupCreateComponent,
     SetupDetailComponent,
-    ServerLogComponent
+    ServerLogComponent,
+    TestLogComponent,
+    SystemLogComponent
   ],
   imports: [
     BrowserModule,

@@ -39,6 +39,7 @@ public class TestLogRepository implements ITestLogRepository {
     private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, cast(? as jsonb)) RETURNING id;";
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?);";
 
+    private static final String SELECT_ENTRIES = "SELECT count(*) FROM TestLog";
     private static final String SELECT_ALL = "SELECT id, obu_id AS obuId, file_name AS fileName, close_date AS closeDate, upload_date AS uploadDate, file_data AS fileData, properties FROM TestLog";
     private static final String SELECT_BY_OBU_ID = SELECT_ALL + " WHERE obu_id = ?;";
     private static final String SELECT_BY_ID_AND_OBU_ID = SELECT_ALL + " WHERE id = ? AND obu_id = ?;";
@@ -63,6 +64,11 @@ public class TestLogRepository implements ITestLogRepository {
     @Override
     public List<TestLogDao> findAllByObuId(long obuId, boolean ascending, String filename, Integer pageNumber, Integer pageLimit) {
         return jdbcTemplate.query(makeFilteredTestLogQuery(obuId, ascending, filename, pageNumber, pageLimit), new BeanPropertyRowMapper<>(TestLogDao.class));
+    }
+
+    @Override
+    public long findAllEntriesByObuId(long obuId, String filename) {
+        return jdbcTemplate.queryForObject(makeFilteredTestLogEntriesQuery(obuId, filename), Long.class);
     }
 
     @Transactional()
@@ -103,9 +109,8 @@ public class TestLogRepository implements ITestLogRepository {
         }
         orderBy += order;
 
-
+        //filter/where statements
         String filenameWhereStmt = filename != null ? ("file_name LIKE '%' || '"+ filename +"' || '%'") : "";
-
         String whereStmt = " WHERE obu_id = " + obuID + (filename != null ? " AND " + filenameWhereStmt : "");
 
         //pagination
@@ -117,5 +122,14 @@ public class TestLogRepository implements ITestLogRepository {
 
 
         return SELECT_ALL + whereStmt + orderBy + limit;
+    }
+
+    private String makeFilteredTestLogEntriesQuery(long obuID, String filename){
+
+        String filenameWhereStmt = filename != null ? ("file_name LIKE '%' || '"+ filename +"' || '%'") : "";
+        String whereStmt = " WHERE obu_id = " + obuID + (filename != null ? " AND " + filenameWhereStmt : "");
+
+
+        return SELECT_ENTRIES + whereStmt;
     }
 }

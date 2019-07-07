@@ -1,4 +1,3 @@
-<p></p>
 <div id="content" class="ui container">
   <div class="ui segment">
 
@@ -18,7 +17,7 @@
         <div class="four wide column">
           <b>Access type: </b>
           <mat-form-field>
-          <select matNativeControl [(ngModel)]="accessType">
+          <select matNativeControl [(ngModel)]="accessor">
             <option value="">All</option>
             <option value="user">User</option>
             <option value="obu">OBU</option>
@@ -32,7 +31,7 @@
             </mat-form-field>
           </b>
         </div>
-        <div class="one wide column">
+        <div class="two wide column">
           <button class="ui primary button" (click)="applyFilter()" data-tooltip="Apply filter">Apply</button>
         </div>
       </div>
@@ -65,20 +64,22 @@
         </div>
         <div class="ui divider"></div>
       </ng-container>
-      <div class="ui middle alligned grid">
-        <div class="six wide column"></div>
-        <div class="one wide column">
+      <div class="ui middle aligned grid">
+        <div class="five wide column"></div>
+        <div class="six wide column" style="display: grid, inline-block">
+
           <ng-container *ngIf="! isFirstPage()">
             <button class="ui primary button" (click)="getPage( curPage - 1 )" data-tooltip="Previous Page"> Prev</button>
           </ng-container>
-        </div>
-        <div class="two wide column"><h3>{{curPage}}</h3></div>
-        <div class="one wide column">
+        
+          <b>{{curPage}} of {{totalNumberOfPages}}</b>
+
           <ng-container *ngIf="! isLastPage()">
             <button class="ui primary button" (click)="getPage( curPage + 1 )" data-tooltip="Next Page"> Next</button>
           </ng-container>
+
         </div>
-        <div class="six wide column"></div>
+        <div class="five wide column"></div>
     </div>
 
   </div>

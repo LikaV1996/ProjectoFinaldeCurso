@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
         }
       },
       err => {
-        alert("Invalid credentials!")
+        //alert("Invalid credentials!")
         //console.log("err: " + JSON.stringify(err))
       }
     )

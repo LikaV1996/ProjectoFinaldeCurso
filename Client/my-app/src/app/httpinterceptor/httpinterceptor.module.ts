@@ -51,14 +51,8 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
     return next.handle(req)
         .pipe(
           //retry(1),
-          //catchError(this.errorHandler()) //DEVIA ESTAR A FUNCIONAR!
+          catchError(this.errorHandler())
         )
-  }
-
-  loginErrorHandler(e: HttpErrorResponse){
-    
-
-    return throwError(e)
   }
 
   errorHandler() {
@@ -77,7 +71,6 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
       }
 
       if(unknownError){
-        debugger
         console.error("Uknown error --- type: " + e.error.type + " status: " + (e.error ? e.error.status : e.status) + " \n\nfull error: " + JSON.stringify(e))
         debugger
       }
@@ -86,32 +79,39 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
     }
   }
 
+
+
+  
   //4XX errors handler
   private errorHandler4XX(e: HttpErrorResponse) : boolean { //returns if the error was handled or if unknown
-    if(e.error.status == 400){  //400
-      if(e.error.type == 'login-error'){
+    if(e.error.status == 400) {
+      if(e.error.type == 'invalid-login') {  //invalid login
         alert("Invalid Credentials")
-        return false
       }
-      if(e.error.type == 'create-user-error'){
+      else if(e.error.type == 'create-user-error') {
         alert("Body isn't fully complete")
-        return false
       }
+      return false
     }
-    else if(e.error.status == 403){ //403
+    else if(e.error.status == 401) {
+      /*
       if(e.error.type == 'user_profile-error'){
         alert("You are not allowed to do this action")
       }
-      else if(e.error.type == 'user-suspended-error') {
-        this.router.navigate(['/logout'], {state: {alertMsg: 'User has been been suspended'}})
-        return false
-      }
+      */
+     return false
     }
+    else if(e.error.status == 403){
+      if(e.error.type == 'user-suspended-error') {  //user is suspended
+        this.router.navigate(['/logout'], {state: {alertMsg: 'User has been been suspended'}})
+        
+      }
+      return false
+    }
+    
 
     return true
   }
-
-
 
 
 }

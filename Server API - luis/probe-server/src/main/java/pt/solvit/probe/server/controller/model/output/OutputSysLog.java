@@ -1,11 +1,11 @@
 package pt.solvit.probe.server.controller.model.output;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import pt.solvit.probe.server.model.ServerLog;
+import pt.solvit.probe.server.model.logfiles.SysLog;
 
 import java.util.List;
 
-public class OutputServerLog {
+public class OutputSysLog {
 
     @JsonProperty("fullCount")
     private long fullCount;
@@ -13,13 +13,13 @@ public class OutputServerLog {
     @JsonProperty("listCount")
     private int listCount;
 
-    @JsonProperty("serverLogList")
-    private List<ServerLog> serverLogs;
+    @JsonProperty("sysLogList")
+    private List<SysLog> sysLogList;
 
-    public OutputServerLog(long fullCount, int listCount, List<ServerLog> serverLogs){
+    public OutputSysLog(long fullCount, int listCount, List<SysLog> sysLogList){
         this.fullCount = fullCount;
         this.listCount = listCount;
-        this.serverLogs = serverLogs;
+        this.sysLogList = sysLogList;
     }
 
     public long getFullCount() {
@@ -30,8 +30,8 @@ public class OutputServerLog {
         return listCount;
     }
 
-    public List<ServerLog> getServerLogs() {
-        return serverLogs;
+    public List<SysLog> getSysLogList() {
+        return sysLogList;
     }
 
 
@@ -43,7 +43,7 @@ public class OutputServerLog {
         this.listCount = listCount;
     }
 
-    public void setServerLogs(List<ServerLog> serverLogs) {
-        this.serverLogs = serverLogs;
+    public void setSysLogList(List<SysLog> sysLogList) {
+        this.sysLogList = sysLogList;
     }
 }

@@ -30,11 +30,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             String authHeader = request.getHeader("Authorization");
 
             if (authHeader == null)
-                throw new UnauthorizedException("Invalid token.", "Token is null.", "string", "about:blank");
+                throw new UnauthorizedException("Invalid token.", "Token is null.", "string", "invalid-token");
 
             String[] authHeaderArr = authHeader.split(" ");
             if (authHeaderArr.length != 2 && !authHeaderArr[0].equals("Basic")) {
-                throw new UnauthorizedException("Invalid token.", "Token is null or not Basic.", "string", "about:blank");
+                throw new UnauthorizedException("Invalid token.", "Token is null or not Basic.", "string", "invalid-token");
             }
 
             User user = verify(authHeaderArr[1]);
@@ -55,13 +55,13 @@ public class AuthInterceptor implements HandlerInterceptor {
         String[] decodedToken = new String(Base64.getDecoder().decode(token)).split(":");
 
         if(decodedToken.length != 2)
-            throw new UnauthorizedException("Invalid token.", "Token is not Basic.", "string", "about:blank");
+            throw new UnauthorizedException("Invalid token.", "Token is not Basic.", "string", "invalid-token");
 
         User user = authenticationService.getAuthenticatedUser(decodedToken[0], decodedToken[1]);
 
 
         if (user.getSuspended())
-            throw new ForbiddenException("User suspended.", "This user is suspended.", "string", "about:blank");
+            throw new ForbiddenException("User suspended.", "This user is suspended.", "boolean", "user-suspended-error");
 
         return user;
     }

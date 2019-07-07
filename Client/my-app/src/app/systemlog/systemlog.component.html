@@ -1,0 +1,71 @@
+<div id="content" class="ui container">
+    <div class="ui segment">
+  
+      <div class="ui segment">
+      <!-- filters -->
+        <div class="ui middle aligned grid">
+          <div class="two wide column"><h2>Filters:</h2></div> 
+          <div class="six wide column">
+            <b>Date order: </b>
+            <mat-form-field>
+            <select matNativeControl required [(ngModel)]="dateOrder">
+              <option value="false">Descending</option>
+              <option value="true">Ascending</option>
+            </select>
+            </mat-form-field>
+          </div>
+          <div class="six wide column">
+            <b>File name:
+              <mat-form-field appearance="standard">
+              <input [(ngModel)]="filename" matInput placeholder="Search by file...">
+              </mat-form-field>
+            </b>
+          </div>
+          <div class="one wide column">
+            <button class="ui primary button" (click)="applyFilter()" data-tooltip="Apply filter">Apply</button>
+          </div>
+        </div>
+      </div>
+  
+      
+      
+  
+      <!-- syslogs header -->
+      <div class="ui middle aligned grid">
+        <div class="three wide column"><h3>File Name</h3></div>
+        <div class="four wide column"><h3>Close Date</h3></div>
+        <div class="four wide column"><h3>Upload Date</h3></div>
+        <div class="five wide column"><h3>File Data</h3></div>
+      </div>
+    
+      <div class="ui divider"></div>
+      <!-- syslogs entries -->
+      <div class="ui" style="height: 70%;">
+        <ng-container *ngFor="let sysLog of sysLogs">
+          <div class="ui middle aligned grid">
+            <div class="three wide column">{{sysLog.fileName}}</div>
+            <div class="four wide column">{{sysLog.closeDate}}</div>
+            <div class="four wide column">{{sysLog.uploadDate}}</div>
+            <div class="five wide column">{{sysLog.data}}</div>
+          </div>
+          <div class="ui divider"></div>
+        </ng-container>
+        <div class="ui middle aligned grid">
+          <div class="six wide column"></div>
+          <div class="one wide column">
+            <ng-container *ngIf="! isFirstPage()">
+              <button class="ui primary button" (click)="getPage( curPage - 1 )" data-tooltip="Previous Page"> Prev</button>
+            </ng-container>
+          </div>
+          <div class="two wide middle aligned column"><span><h3>{{curPage}} of {{totalNumberOfPages}}</h3></span></div>
+          <div class="one wide column">
+            <ng-container *ngIf="! isLastPage()">
+              <button class="ui primary button" (click)="getPage( curPage + 1 )" data-tooltip="Next Page"> Next</button>
+            </ng-container>
+          </div>
+          <div class="six wide column"></div>
+      </div>
+  
+    </div>
+  </div>
+  

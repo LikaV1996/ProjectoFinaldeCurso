@@ -18,6 +18,8 @@ public interface IServerLogRepository {
 
     public List<ServerLogDao> findAll(Boolean ascending, String accessor_name, String access_type, Integer pageNumber, Integer pageLimit);
 
+    public long findNumberOfEntries(String accessor_name, String access_type);
+
     public long add(ServerLogDao serverLogDao);
 
     public int deleteById(long id);

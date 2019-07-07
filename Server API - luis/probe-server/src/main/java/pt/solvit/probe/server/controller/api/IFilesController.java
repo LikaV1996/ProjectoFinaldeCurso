@@ -16,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import pt.solvit.probe.server.config.AppConfiguration;
+import pt.solvit.probe.server.controller.model.output.OutputSysLog;
+import pt.solvit.probe.server.controller.model.output.OutputTestLog;
 import pt.solvit.probe.server.model.ObuFile;
+import pt.solvit.probe.server.model.logfiles.SysLog;
+import pt.solvit.probe.server.model.logfiles.TestLog;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,7 +42,7 @@ public interface IFilesController {
             value = AppConfiguration.URL_OBU_TESTLOG, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<ObuFile>> getAllObuTestLogs(
+    public ResponseEntity<OutputTestLog> getAllObuTestLogs(
             HttpServletRequest request,
             @PathVariable("obu-id") long obuId,
             @RequestParam(value = "order", required = false) Boolean ascending,
@@ -73,7 +77,7 @@ public interface IFilesController {
                 @ApiResponse(code = 404, message = "The obu with the requested id was not found.")
             }
     )
-    public ResponseEntity<List<ObuFile>> getAllObuSysLogs(
+    public ResponseEntity<OutputSysLog> getAllObuSysLogs(
             HttpServletRequest request,
             @PathVariable("obu-id") long obuId,
             @RequestParam(value = "order", required = false) Boolean ascending,

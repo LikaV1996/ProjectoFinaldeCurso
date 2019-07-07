@@ -25,6 +25,7 @@ export class AuthGuard implements CanActivate {
 
       //everytime you navigate make a request to getUserByID to get self and see suspention (in httpInterceptor)
       this.checkNotSuspended()
+
       return this.checkLogin(url) && this.checkClearance(route)
   }
 
@@ -73,27 +74,8 @@ export class AuthGuard implements CanActivate {
   }
 
 
-  private checkNotSuspended() /*: Promise<boolean>*/{
-    //let notSuspended : boolean = true
-    /*await */this._authService.hasSuspension().subscribe( 
-        isSuspended => {
-          
-          //console.log("PromiseFinished")
-          if(isSuspended){
-            this.router.navigate(['/logout'], {state: {alertMsg: 'User is suspended'}})
-            
-            //notSuspended = false
-          }
-          /*
-          else{
-            notSuspended = true
-          }
-          */
-        },
-        err => console.error("error = " + JSON.stringify(err))
-      )
-    //console.log("MethodFinished")
-    //return notSuspended;
+  private checkNotSuspended() {
+    this._authService.hasSuspension()
   }
 
 

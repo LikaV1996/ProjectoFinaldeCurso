@@ -24,6 +24,8 @@ import { SetupComponent } from './setup/setup.component'
 import { SetupDetailComponent } from './setup-detail/setup-detail.component';
 import { SetupCreateComponent } from './setup-create/setup-create.component';
 import { ServerLogComponent } from './serverlog/serverlog.component';
+import { TestLogComponent } from './testlog/testlog.component';
+import { SystemLogComponent } from './systemlog/systemlog.component';
 
 
 const routes: Routes = [
@@ -52,7 +54,9 @@ const routes: Routes = [
         { path: 'setups', component: SetupComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'setup/:id/edit', component: SetupDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'setup/create', component: SetupCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
-        { path: 'serverLogs', component: ServerLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.ADMIN }}
+        { path: 'serverLogs', component: ServerLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.ADMIN }},
+        { path: 'obu/:id/testLogs', component: TestLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'sysLogs', component: SystemLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }}
         
       ]
   }

@@ -25,7 +25,10 @@
               
                 <button mat-button [matMenuTriggerFor]="menu">Options</button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item (click)="edit(obu.id)" data-tooltip="Edit OBU">Edit OBU / Details</button>
+                    
+                  <button mat-menu-item [routerLink] = "['../obu/'+obu.id+'/edit']" data-tooltip="Edit OBU">Edit OBU / Details</button>
+                  <button mat-menu-item [routerLink] = "['../obu/'+obu.id+'/testLogs']">Test Logs</button>
+                  <button mat-menu-item [routerLink] = "['../obu/'+obu.id+'/sysLogs']">System Logs</button>
                   <button mat-menu-item (click)="delete(obu.id)">Delete OBU</button>
                 </mat-menu>
               

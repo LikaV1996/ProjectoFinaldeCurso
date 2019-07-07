@@ -18,5 +18,7 @@ public interface ISysLogRepository {
 
     public List<SysLogDao> findAllByObuId(long obuId, boolean ascending, String filename, Integer pageNumber, Integer pageLimit);
 
+    public long findAllEntriesByObuId(long obuId, String filename);
+
     public long add(SysLogDao sysLogDao);
 }

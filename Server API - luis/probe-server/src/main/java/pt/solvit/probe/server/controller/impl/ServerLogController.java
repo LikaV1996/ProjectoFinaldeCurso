@@ -51,11 +51,12 @@ public class ServerLogController implements IServerLogController {
             accessType = validateAccessType(accessType);
         String accessor_name = accessor != null && accessor.equals("") ? null : accessor;
 
+        long serverLogEntries = serverLogService.getAllServerLogsEntries(accessType, accessor_name, user);
 
         List<ServerLog> serverLogList = serverLogService.getAllServerLogs(asc, accessType, accessor_name, pageNumber, pageLimit, user);
 
 
-        return ResponseEntity.ok().body( new OutputServerLog(serverLogList.size(), serverLogList) );
+        return ResponseEntity.ok().body( new OutputServerLog(serverLogEntries, serverLogList.size(), serverLogList) );
     }
 
     //not being used

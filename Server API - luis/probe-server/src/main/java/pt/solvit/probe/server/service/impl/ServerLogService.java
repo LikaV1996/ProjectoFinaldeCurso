@@ -52,6 +52,14 @@ public class ServerLogService implements IServerLogService {
     }
 
     @Override
+    public long getAllServerLogsEntries(String accessType, String accessor_name, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
+        LOGGER.log(Level.INFO, "Finding server logs entries");
+        return serverLogRepository.findNumberOfEntries(accessor_name, accessType);
+    }
+
+    @Override
     public List<ServerLog> getAllServerLogs(User loggedInUser) {
         return getAllServerLogs(true, loggedInUser);
     }
@@ -70,7 +78,7 @@ public class ServerLogService implements IServerLogService {
         checkUserPermissions(loggedInUser);
 
         LOGGER.log(Level.INFO, "Finding all server logs with a page limit");
-        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(ascending, accessType, accessor_name, pageNumber, pageLimit);
+        List<ServerLogDao> serverLogDaoList = serverLogRepository.findAll(ascending, accessor_name, accessType, pageNumber, pageLimit);
         return ServiceUtil.map(serverLogDaoList, this::transformToServerLog);
     }
 

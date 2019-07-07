@@ -101,27 +101,17 @@ export class AuthService {
   }
 
 
-  hasSuspension() : Observable<boolean>{
-    let userID = this._localStorageService.getCurrentUserDetails().id
-
-    return new Observable<boolean>(observer => {
-      this.getLoginUser()
-        .subscribe( user => {
+  hasSuspension() {
+    
+    this.getLoginUser()
+      .subscribe( user => {
           //console.log(JSON.stringify(userObj.user))
           this._localStorageService.insertCurrentUserDetails(user)
-          observer.next(user.suspended)
-          observer.complete()
         },
         err => {
-          if(err.error.status == 403 && err.error.type == 'user-suspended'){
-            observer.next(true)
-            observer.complete()
-          }
-          else{
-            observer.error(err)
-          }
+          //error handled in httpinterceptor
         })
-    })
+        
   }
 
 

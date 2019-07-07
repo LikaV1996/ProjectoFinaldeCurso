@@ -18,6 +18,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pt.solvit.probe.server.config.AppConfiguration;
+import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.enums.EntityType;
 import pt.solvit.probe.server.repository.api.IServerLogRepository;
 import pt.solvit.probe.server.repository.exception.impl.EntityWithIdNotFoundException;
@@ -38,10 +39,14 @@ public class ServerLogRepository implements IServerLogRepository {
     private static final String INSERT_BASE = "INSERT INTO ServerLog (log_date, access_type, access_path, accessor_name, response_date, status, detail)";
     private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?::AccessType, ?, ?, ?, ?, ?) RETURNING id;";
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+    private static final String SELECT_ENTRIES = "SELECT count(*) FROM ServerLog";
     private static final String SELECT_ALL = "SELECT id, log_date AS logDate, access_type AS accessType, access_path AS accessPath, accessor_name AS accessorName, response_date AS responseDate, status, detail FROM ServerLog";
     private static final String SELECT_ALL_W_LIMIT_OFFSET = SELECT_ALL + " LIMIT ? OFFSET ?";
     private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ? ";
+
     private static final String UPDATE = "UPDATE ServerLog SET accessor_name = ?, response_date = ?, status = ?, detail = ? WHERE id = ?;";
+
     private static final String DELETE_BY_ID = "DELETE FROM ServerLog WHERE id = ?;";
     private static final String DELETE_ALL = "DELETE FROM ServerLog;";
 
@@ -65,8 +70,12 @@ public class ServerLogRepository implements IServerLogRepository {
 
     @Override
     public List<ServerLogDao> findAll(Boolean ascending, String accessor_name, String access_type, Integer pageNumber, Integer pageLimit) {
-
         return jdbcTemplate.query(makeFilteredServerLogQuery(ascending, accessor_name, access_type, pageNumber, pageLimit) , new BeanPropertyRowMapper<>(ServerLogDao.class));
+    }
+
+    @Override
+    public long findNumberOfEntries(String accessor_name, String access_type) {
+        return jdbcTemplate.queryForObject(makeFilteredServerLogEntriesQuery(accessor_name, access_type), Long.class);
     }
 
     @Transactional()
@@ -145,7 +154,7 @@ public class ServerLogRepository implements IServerLogRepository {
 
 
 
-    private String makeFilteredServerLogQuery(Boolean ascending, String access_type, String accessor_name, Integer pageNumber, Integer pageLimit){
+    private String makeFilteredServerLogQuery(Boolean ascending, String accessor_name, String access_type, Integer pageNumber, Integer pageLimit){
 
         //ASCENDING or DESCENDING
         String orderBy = " ORDER BY " + "log_date" + " ",
@@ -155,14 +164,8 @@ public class ServerLogRepository implements IServerLogRepository {
         }
         orderBy += order;
 
-        //filter/where statements
-        boolean whereStmtBool = accessor_name != null || access_type != null,
-                doubleWhereStmtBool = accessor_name != null && access_type != null;
 
-        String accessor_nameWhereStmt = accessor_name != null ? ("accessor_name LIKE '%' || '"+ accessor_name +"' || '%'") : "";
-        String access_typeWhereStmt = access_type != null ? ("access_type = '"+ access_type +"'") : "";
-
-        String whereStmt = whereStmtBool ? (" WHERE " + accessor_nameWhereStmt + (doubleWhereStmtBool ? " AND " : "") + access_typeWhereStmt) : "";
+        String whereStmt = makeWhereStatement(accessor_name, access_type);
 
         //pagination
         String limit = "";
@@ -173,6 +176,25 @@ public class ServerLogRepository implements IServerLogRepository {
 
 
         return SELECT_ALL + whereStmt + orderBy + limit;
+    }
+
+    private String makeFilteredServerLogEntriesQuery(String accessor_name, String access_type){
+
+        String whereStmt = makeWhereStatement(accessor_name, access_type);
+
+        return SELECT_ENTRIES + whereStmt;
+    }
+
+
+    //filter/where statements
+    private String makeWhereStatement(String accessor_name, String access_type) {
+        boolean whereStmtBool = accessor_name != null || access_type != null,
+                doubleWhereStmtBool = accessor_name != null && access_type != null;
+
+        String accessor_nameWhereStmt = accessor_name != null ? ("accessor_name LIKE '%' || '"+ accessor_name +"' || '%'") : "";
+        String access_typeWhereStmt = access_type != null ? ("access_type = '"+ access_type +"'") : "";
+
+        return whereStmtBool ? (" WHERE " + accessor_nameWhereStmt + (doubleWhereStmtBool ? " AND " : "") + access_typeWhereStmt) : "";
     }
 
 }

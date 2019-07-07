@@ -63,6 +63,18 @@ public class ExceptionHandlerController {
     }
 
     /**
+     * Forbidden. Http status = 403
+     */
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(value = {ForbiddenException.class})
+    protected ErrorModelOutput handleUnauthorized(HttpServletRequest request, ForbiddenException ex) {
+        LOGGER.log(Level.SEVERE, ex.getExceptionDetail());
+        forServerLog(request, ex.getExceptionDetail());
+        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.UNAUTHORIZED.toString(), ex.getExceptionDetail());
+        return ex.getError();
+    }
+
+    /**
      * Not Acceptable. Http status = 406
      */
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)

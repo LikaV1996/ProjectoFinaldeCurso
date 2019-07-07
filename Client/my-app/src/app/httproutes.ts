@@ -16,6 +16,8 @@ export class Routes{
     deleteObuFromUser = this.basePath + "/obu-user/obu/:idObu/user/:idUser"
 
     getServerLogs = this.basePath + "/server-log";
+    getTestLogs = this.basePath + "/obu/:id/test-log";
+    getSysLogs = this.basePath + "/obu/:id/system-log";
 
     getHardwares = this.basePath + "/hardware";
     getHardwareById = this.basePath + "/hardware/:id";

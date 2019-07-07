@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.controller.api.IFilesController;
+import pt.solvit.probe.server.controller.model.output.OutputSysLog;
+import pt.solvit.probe.server.controller.model.output.OutputTestLog;
 import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.model.logfiles.TestLog;
 import pt.solvit.probe.server.model.ObuFile;
@@ -31,7 +33,7 @@ public class FilesController implements IFilesController {
     private IUserService userService;
 
     @Override
-    public ResponseEntity<List<ObuFile>> getAllObuTestLogs(
+    public ResponseEntity<OutputTestLog> getAllObuTestLogs(
             HttpServletRequest request,
             @PathVariable("obu-id") long obuId,
             @RequestParam(value = "order", required = false) Boolean ascending,
@@ -47,12 +49,15 @@ public class FilesController implements IFilesController {
         String file_name = filename != null && filename.equals("") ? null : filename;
 
 
+        long testLogEntries = obuFilesService.getAllObuTestLogsEntries(obuId, file_name, user);
+
         List<TestLog> testLogList = obuFilesService.getAllObuTestLogs(obuId, asc, file_name, pageNumber, pageLimit, user);
 
-        List<ObuFile> obuFileList = ServiceUtil.map(testLogList, this::transformToObuFile);
+        return ResponseEntity.ok(new OutputTestLog(testLogEntries, testLogList.size(), testLogList));
 
 
-        return ResponseEntity.ok(obuFileList);
+        //List<ObuFile> obuFileList = ServiceUtil.map(testLogList, this::transformToObuFile);
+        //return ResponseEntity.ok(obuFileList);
     }
 
     @Override
@@ -70,7 +75,7 @@ public class FilesController implements IFilesController {
     }
 
     @Override
-    public ResponseEntity<List<ObuFile>> getAllObuSysLogs(
+    public ResponseEntity<OutputSysLog> getAllObuSysLogs(
             HttpServletRequest request,
             @PathVariable("obu-id") long obuId,
             @RequestParam(value = "order", required = false) Boolean ascending,
@@ -86,12 +91,15 @@ public class FilesController implements IFilesController {
         String file_name = filename != null && filename.equals("") ? null : filename;
 
 
+        long sysLogEntries = obuFilesService.getAllObuSysLogsEntries(obuId, file_name, user);
+
         List<SysLog> sysLogList = obuFilesService.getAllObuSysLogs(obuId, asc, file_name, pageNumber, pageLimit, user);
 
-        List<ObuFile> obuFileList = ServiceUtil.map(sysLogList, this::transformToObuFile);
+        return ResponseEntity.ok(new OutputSysLog(sysLogEntries, sysLogList.size(), sysLogList));
 
 
-        return ResponseEntity.ok(obuFileList);
+        //List<ObuFile> obuFileList = ServiceUtil.map(sysLogList, this::transformToObuFile);
+        //return ResponseEntity.ok(obuFileList);
     }
 
     @Override

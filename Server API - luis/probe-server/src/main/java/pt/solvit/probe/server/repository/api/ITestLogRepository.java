@@ -18,5 +18,7 @@ public interface ITestLogRepository {
 
     public List<TestLogDao> findAllByObuId(long obuId, boolean ascending, String filename, Integer pageNumber, Integer pageLimit);
 
+    public long findAllEntriesByObuId(long obuId, String filename);
+
     public long add(TestLogDao testLogDao);
 }

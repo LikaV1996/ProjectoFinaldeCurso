@@ -92,6 +92,22 @@ public class FileService implements IFileService {
     }
 
     @Override
+    public long getAllObuTestLogsEntries(long obuId, String filename, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
+        LOGGER.log(Level.INFO, "Getting test log entries to obu {0}", obuId);
+        return testLogRepository.findAllEntriesByObuId(obuId, filename);
+    }
+
+    @Override
+    public long getAllObuSysLogsEntries(long obuId, String filename, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
+        LOGGER.log(Level.INFO, "Getting sys log entries to obu {0}", obuId);
+        return sysLogRepository.findAllEntriesByObuId(obuId, filename);
+    }
+
+    @Override
     public TestLog getObuTestLog(long obuId, long testLogId, User loggedInUser) {
         checkUserPermissions(loggedInUser);
 

@@ -18,12 +18,13 @@ import pt.solvit.probe.server.model.logfiles.SysLog;
 public interface IFileService {
 
     public List<TestLog> getAllObuTestLogs(long obuId, boolean ascending, String filename, Integer pageNumber, Integer pageLimit, User loggedInUser);
-
     public List<SysLog> getAllObuSysLogs(long obuId, boolean ascending, String filename, Integer pageNumber, Integer pageLimit, User loggedInUser);
 
     public long addTestLogToObu(ObuFile obuFile);
-
     public long addSysLogToObu(ObuFile obuFile);
+
+    public long getAllObuTestLogsEntries(long obuId, String filename, User loggedInUser);
+    public long getAllObuSysLogsEntries(long obuId, String filename, User loggedInUser);
 
     public TestLog getObuTestLog(long obuId, long testLogId, User loggedInUser);
 

@@ -34,7 +34,7 @@ export class ConfigService {
 
   updateConfig(id: number, conf: Config         /**/): Observable<Config> {
     const updateConfig = routes.updateConfig.replace(":id", id.toString());
-    return this.http.put<Config>(updateConfig, {config: config, /**/})
+    return this.http.put<Config>(updateConfig, {config: conf, /**/})
   }
 
   deleteConfigByID(id: number) {

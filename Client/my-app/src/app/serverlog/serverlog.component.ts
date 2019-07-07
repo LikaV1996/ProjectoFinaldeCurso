@@ -34,9 +34,9 @@ export class ServerLogComponent implements OnInit {
     //debugger
     this.serverLogs = null;
     this._serverLogService.getServerLogs(order, this.curPage, this.pageLimit, this.accessor, this.accessType).subscribe(
-      ServerLogObj => {
-        this.serverLogs = ServerLogObj.serverLogList
-        this.updateNumberOfPages(ServerLogObj.fullCount)
+      ServerLogResp => {
+        this.serverLogs = ServerLogResp.serverLogList
+        this.updateNumberOfPages(ServerLogResp.fullCount)
         
       }
     )

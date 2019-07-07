@@ -56,7 +56,7 @@ const routes: Routes = [
         { path: 'setup/create', component: SetupCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'serverLogs', component: ServerLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.ADMIN }},
         { path: 'obu/:id/testLogs', component: TestLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
-        { path: 'sysLogs', component: SystemLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }}
+        { path: 'obu/:id/sysLogs', component: SystemLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }}
         
       ]
   }

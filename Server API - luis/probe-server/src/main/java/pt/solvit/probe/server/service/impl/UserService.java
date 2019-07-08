@@ -143,12 +143,12 @@ public class UserService implements IUserService {
         try {
             userDao = userRepository.findByName(values[0]);
         } catch (IncorrectResultSizeDataAccessException e) {
-            throw new UnauthorizedException("You are not authorized to make that request.", "Your credentials are invalid.", "string", "about:blank");
+            throw new UnauthorizedException("You are not authorized to make that request.", "Your credentials are invalid.", "/probs/user-rip", "about:blank");
         }
 
         LOGGER.log(Level.INFO, "Validating user credentials");
         if (!values[1].equals(userDao.getUserPassword())) {
-            throw new UnauthorizedException("You are not authorized to make that request.", "Your credentials are invalid.", "string", "about:blank");
+            throw new UnauthorizedException("You are not authorized to make that request.", "Your credentials are invalid.", "/probs/user-rip", "about:blank");
         }
         LOGGER.log(Level.INFO, "Authentication completed");
 

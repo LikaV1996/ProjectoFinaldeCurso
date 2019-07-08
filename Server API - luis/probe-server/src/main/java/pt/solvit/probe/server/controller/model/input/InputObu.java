@@ -92,10 +92,10 @@ public class InputObu {
     @ApiModelProperty(hidden = true)
     public void validateForCreate() {
         if(obuName == null){
-            throw new BadRequestException("Invalid obu.", "obuName is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid obu.", "obuName is null.", "/probs/obu-null-params", "about:blank");
         }
         if (hardwareId == null) {
-            throw new BadRequestException("Invalid obu.", "HardwareId is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid obu.", "HardwareId is null.", "/probs/obu-null-params", "about:blank");
         }
         if (sims != null) {
             for (SimCard curSim : sims) {
@@ -104,7 +104,7 @@ public class InputObu {
         }
         /*
         if(obuPassword == null){
-            throw new BadRequestException("Invalid obu.", "obuPassword is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid obu.", "obuPassword is null.", "/probs/obu-null-params", "about:blank");
         }
         */
     }
@@ -113,7 +113,7 @@ public class InputObu {
     public void validateForUpdate() {
         boolean updatingFlags = authenticate != null || uploadRequest != null || clearAlarmsRequest != null || resetRequest != null || shutdownRequest != null;
         if (hardwareId == null && sims == null && obuName == null && !updatingFlags) { //&& factoryConfig == null) {
-            throw new BadRequestException("Invalid obu.", "Nothing fields to update.", "string", "about:blank");
+            throw new BadRequestException("Invalid obu.", "Nothing fields to update.", "/probs/obu-null-params", "about:blank");
         }
         /*  //removed
         if (factoryConfig != null) {

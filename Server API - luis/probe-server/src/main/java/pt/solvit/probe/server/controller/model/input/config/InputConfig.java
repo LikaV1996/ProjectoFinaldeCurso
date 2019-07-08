@@ -142,46 +142,46 @@ public class InputConfig {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (configName == null) {
-            throw new BadRequestException("Invalid configuration.", "configName is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "configName is null.", "/probs/config-null-params", "about:blank");
         }
         /*
         if (activationDate == null || getActivationLocalDateTime() == null) {
-            throw new BadRequestException("Invalid configuration.", "ActivationDate is null or not on ISO format.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "ActivationDate is null or not on ISO format.", "/probs/config-invalid-activationdate", "about:blank");
         }
         */
         if (activationDate != null && getActivationLocalDateTime() == null) {
-                throw new BadRequestException("Invalid configuration.", "ActivationDate is not on ISO format.", "string", "about:blank");
+                throw new BadRequestException("Invalid configuration.", "ActivationDate is not on ISO format.", "/probs/config-invalid-activationdate", "about:blank");
         }
 
         if (archive == null) {
-            throw new BadRequestException("Invalid configuration.", "Archive is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Archive is null.", "/probs/config-null-params", "about:blank");
         }
         if (controlConnection == null) {
-            throw new BadRequestException("Invalid configuration.", "ControlConnection is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "ControlConnection is null.", "/probs/config-null-params", "about:blank");
         }
         if (core == null) {
-            throw new BadRequestException("Invalid configuration.", "Core is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Core is null.", "/probs/config-null-params", "about:blank");
         }
         if (data == null) {
-            throw new BadRequestException("Invalid configuration.", "Data is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Data is null.", "/probs/config-null-params", "about:blank");
         }
         if (download == null) {
-            throw new BadRequestException("Invalid configuration.", "Download is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Download is null.", "/probs/config-null-params", "about:blank");
         }
         if (scanning == null) {
-            throw new BadRequestException("Invalid configuration.", "Scanning is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Scanning is null.", "/probs/config-null-params", "about:blank");
         }
         if (server == null) {
-            throw new BadRequestException("Invalid configuration.", "Server is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Server is null.", "/probs/config-null-params", "about:blank");
         }
         if (testPlan == null) {
-            throw new BadRequestException("Invalid configuration.", "TestPlan is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "TestPlan is null.", "/probs/config-null-params", "about:blank");
         }
         if (upload == null) {
-            throw new BadRequestException("Invalid configuration.", "Upload is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Upload is null.", "/probs/config-null-params", "about:blank");
         }
         if (voice == null) {
-            throw new BadRequestException("Invalid configuration.", "Voice is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Voice is null.", "/probs/config-null-params", "about:blank");
         }
 
 

@@ -64,12 +64,16 @@ public class InputObuUser {
 
     @ApiModelProperty(hidden = true)
     public void validate() {
+
+
+
+
         if (userID == null)
-            throw new BadRequestException("Invalid obu_user registry.", "Invalid userID.", "string", "about:blank");
+            throw new BadRequestException("Invalid obu_user registry.", "userID is null.", "/probs/obu_user-null-params", "about:blank");
         if (obuID == null)
-            throw new BadRequestException("Invalid obu_user registry.", "Invalid obuID.", "string", "about:blank");
+            throw new BadRequestException("Invalid obu_user registry.", "obuID is null.", "/probs/obu_user-null-params", "about:blank");
         if (role == null || getRole() == null )
-            throw new BadRequestException("Invalid obu_user registry.", "Invalid role.", "string", "about:blank");
+            throw new BadRequestException("Invalid obu_user registry.", "role is null.", "/probs/obu_user-null-params", "about:blank");
 
     }
 }

@@ -74,19 +74,19 @@ public class ControlConnectionConfig {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (referenceDate == null) {
-            throw new BadRequestException("Invalid configuration.", "Control Connection: referenceDate is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Control Connection: referenceDate is null.", "/probs/controlconnection-null-params", "about:blank");
         }
         if (period == null) {
-            throw new BadRequestException("Invalid configuration.", "Control Connection: period is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Control Connection: period is null.", "/probs/controlconnection-null-params", "about:blank");
         }
         if (retryDelay == null) {
-            throw new BadRequestException("Invalid configuration.", "Control Connection: retryDelay is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Control Connection: retryDelay is null.", "/probs/controlconnection-null-params", "about:blank");
         }
         if (maxRetries == null) {
-            throw new BadRequestException("Invalid configuration.", "Control Connection: maxRetries is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Control Connection: maxRetries is null.", "/probs/controlconnection-null-params", "about:blank");
         }
         if (getReferenceLocalDateTime() == null) {
-            throw new BadRequestException("Invalid configuration.", "Control Connection: referenceDate is not on ISO format.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Control Connection: referenceDate is not on ISO format.", "/probs/controlconnection-invalid-referencedate", "about:blank");
         }
     }
 }

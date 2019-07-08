@@ -50,10 +50,10 @@ public class InputStorage {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (free == null) {
-            throw new BadRequestException("Invalid storage.", "Free is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid storage.", "Free is null.", "/probs/storage-null-params", "about:blank");
         }
         if (usable == null) {
-            throw new BadRequestException("Invalid storage.", "Usable is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid storage.", "Usable is null.", "/probs/storage-null-params", "about:blank");
         }
     }
 }

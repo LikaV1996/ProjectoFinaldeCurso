@@ -94,25 +94,25 @@ public class UploadConfig {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (autoUpload == null) {
-            throw new BadRequestException("Invalid configuration.", "Upload: autoUpload is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Upload: autoUpload is null.", "/probs/uploadconfig-null-params", "about:blank");
         }
         if (referenceDate == null) {
-            throw new BadRequestException("Invalid configuration.", "Upload: referenceDate is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Upload: referenceDate is null.", "/probs/uploadconfig-null-params", "about:blank");
         }
         if (period == null) {
-            throw new BadRequestException("Invalid configuration.", "Upload: period is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Upload: period is null.", "/probs/uploadconfig-null-params", "about:blank");
         }
         if (retryDelay == null) {
-            throw new BadRequestException("Invalid configuration.", "Upload: retryDelay is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Upload: retryDelay is null.", "/probs/uploadconfig-null-params", "about:blank");
         }
         if (maxRetries == null) {
-            throw new BadRequestException("Invalid configuration.", "Upload: maxRetries is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Upload: maxRetries is null.", "/probs/uploadconfig-null-params", "about:blank");
         }
         if (maxUploadSize == null) {
-            throw new BadRequestException("Invalid configuration.", "Upload: maxUploadSize is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Upload: maxUploadSize is null.", "/probs/uploadconfig-null-params", "about:blank");
         }
         if (getReferenceLocalDateTime() == null) {
-            throw new BadRequestException("Invalid configuration.", "Upload: referenceDate is not on ISO format.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Upload: referenceDate is not on ISO format.", "/probs/uploadconfig-invalid-referencedate", "about:blank");
         }
     }
 }

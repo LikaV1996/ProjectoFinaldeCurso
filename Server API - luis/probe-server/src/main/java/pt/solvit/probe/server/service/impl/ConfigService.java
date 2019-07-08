@@ -175,7 +175,7 @@ public class ConfigService implements IConfigService {
 
         LOGGER.log(Level.INFO, "Removing configuration {0} from obu {1}", new String[]{String.valueOf(configId), String.valueOf(obuId)});
         if (obuConfig.getStateList() != null) { //If configuration was already downloaded
-            throw new BadRequestException("Invalid operation.", "Configuration has already been downloaded by obu.", "string", "about:blank");
+            throw new BadRequestException("Invalid operation.", "Configuration has already been downloaded by obu.", "/probs/config-already-downloaded", "about:blank");
         }
         obuConfigRepository.removeConfigFromObu(obuId, configId);
     }

@@ -14,6 +14,6 @@ import pt.solvit.probe.server.service.exception.DomainException;
 public class PermissionException extends DomainException {
 
     public PermissionException() {
-        super("Invalid operation.", "User profile does not allows this action.");
+        super("Invalid operation.", "User profile does not allow this action.");
     }
 }

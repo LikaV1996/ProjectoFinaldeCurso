@@ -45,10 +45,10 @@ public class VoiceConfig {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (defaultCallDuration == null) {
-            throw new BadRequestException("Invalid configuration.", "Voice: defaultCallDuration is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Voice: defaultCallDuration is null.", "/probs/voice-null-params", "about:blank");
         }
         if (incomingCallTimeout == null) {
-            throw new BadRequestException("Invalid configuration.", "Voice: incomingCallTimeout is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Voice: incomingCallTimeout is null.", "/probs/voice-null-params", "about:blank");
         }
     }
 }

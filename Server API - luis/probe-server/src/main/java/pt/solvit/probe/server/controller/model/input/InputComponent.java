@@ -91,27 +91,27 @@ public class InputComponent {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (componentType == null) {
-            throw new BadRequestException("Invalid component.", "ComponentType is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid component.", "ComponentType is null.", "/probs/component-null-params", "about:blank");
         }
         if (manufacturer == null) {
-            throw new BadRequestException("Invalid component.", "Manufacturer is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid component.", "Manufacturer is null.", "/probs/component-null-params", "about:blank");
         }
         if (model == null) {
-            throw new BadRequestException("Invalid component.", "Model is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid component.", "Model is null.", "/probs/component-null-params", "about:blank");
         }
         ComponentType componentTypeEnum = getComponentType();
         if (componentTypeEnum == null) {
-            throw new BadRequestException("Invalid component.", "Invalid componentType.", "string", "about:blank");
+            throw new BadRequestException("Invalid component.", "Invalid componentType.", "/probs/component-invalid-componenttype", "about:blank");
         }
         if (componentTypeEnum == ComponentType.MODEM) {
             if (modemType == null) {
-                throw new BadRequestException("Invalid component.", "ModemType is null.", "string", "about:blank");
+                throw new BadRequestException("Invalid component.", "ModemType is null.", "/probs/component-null-params", "about:blank");
             }
             if (imei == null) {
-                throw new BadRequestException("Invalid component.", "Imei is null.", "string", "about:blank");
+                throw new BadRequestException("Invalid component.", "Imei is null.", "/probs/component-null-params", "about:blank");
             }
         } else if (serialNumber == null) {
-            throw new BadRequestException("Invalid component.", "SerialNumber is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid component.", "SerialNumber is null.", "/probs/component-null-params", "about:blank");
         }
     }
 }

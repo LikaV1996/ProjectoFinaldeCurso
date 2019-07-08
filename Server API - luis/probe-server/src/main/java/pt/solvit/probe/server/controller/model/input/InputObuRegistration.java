@@ -43,10 +43,10 @@ public class InputObuRegistration {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (serialNumber == null) {
-            throw new BadRequestException("Invalid obu.", "SerialNumber is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid obu.", "SerialNumber is null.", "/probs/oburegistration-null-params", "about:blank");
         }
         if (factoryConfig == null) {
-            throw new BadRequestException("Invalid obu.", "FactoryConfig is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid obu.", "FactoryConfig is null.", "/probs/oburegistration-null-params", "about:blank");
         }
         factoryConfig.validate();
     }

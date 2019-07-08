@@ -65,16 +65,16 @@ public class CoreConfig {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (maxSystemLogSize == null) {
-            throw new BadRequestException("Invalid configuration.", "Core: maxSystemLogSize is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Core: maxSystemLogSize is null.", "/probs/coreconfig-null-params", "about:blank");
         }
         if (storageMonitorPeriod == null) {
-            throw new BadRequestException("Invalid configuration.", "Core: storageMonitorPeriod is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Core: storageMonitorPeriod is null.", "/probs/coreconfig-null-params", "about:blank");
         }
         if (storageWarningThreshold == null) {
-            throw new BadRequestException("Invalid configuration.", "Core: storageWarningThreshold is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Core: storageWarningThreshold is null.", "/probs/coreconfig-null-params", "about:blank");
         }
         if (storageCriticalThreshold == null) {
-            throw new BadRequestException("Invalid configuration.", "Core: storageCriticalThreshold is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Core: storageCriticalThreshold is null.", "/probs/coreconfig-null-params", "about:blank");
         }
     }
 }

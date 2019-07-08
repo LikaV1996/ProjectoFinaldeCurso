@@ -52,16 +52,16 @@ public class InputTestPlanState {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (state == null) {
-            throw new BadRequestException("Invalid testPlanState.", "State is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid testPlanState.", "State is null.", "/probs/testplan-null-params", "about:blank");
         }
         if (date == null) {
-            throw new BadRequestException("Invalid testPlanState.", "Date is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid testPlanState.", "Date is null.", "/probs/testplan-null-params", "about:blank");
         }
         if (getState() == null) {
-            throw new BadRequestException("Invalid testPlanState.", "Invalid state.", "string", "about:blank");
+            throw new BadRequestException("Invalid testPlanState.", "Invalid state.", "/probs/testplan-invalid-state", "about:blank");
         }
         if (DateUtil.getDateFromIsoString(date) == null) {
-            throw new BadRequestException("Invalid testPlanState.", "Date is not on ISO format.", "string", "about:blank");
+            throw new BadRequestException("Invalid testPlanState.", "Date is not on ISO format.", "/probs/testplan-invalid-date", "about:blank");
         }
     }
 }

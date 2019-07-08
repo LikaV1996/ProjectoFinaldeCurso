@@ -41,10 +41,10 @@ public class InputCoordinates {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (lat == null) {
-            throw new BadRequestException("Invalid coordinates.", "Lat is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid coordinates.", "Lat is null.", "/probs/coordinates-null-params", "about:blank");
         }
         if (lon == null) {
-            throw new BadRequestException("Invalid coordinates.", "Lon is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid coordinates.", "Lon is null.", "/probs/coordinates-null-params", "about:blank");
         }
     }
 }

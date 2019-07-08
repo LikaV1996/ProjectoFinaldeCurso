@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 public class ErrorModelOutput {
 
@@ -26,7 +27,12 @@ public class ErrorModelOutput {
     protected Integer status;
 
     @JsonProperty("instance")
-    protected String instance = "";
+    protected String instance = "about:blank";
+
+    /*
+    @JsonProperty("invalid-params")
+    protected HashMap<String,Object> invalidParams;
+    */
 
     public ErrorModelOutput(String title, String detail, HttpStatus status) {
         this.title = title;
@@ -83,4 +89,14 @@ public class ErrorModelOutput {
     public void setInstance(String instance) {
         this.instance = instance;
     }
+
+    /*
+    public HashMap<String, Object> getInvalidParams() {
+        return invalidParams;
+    }
+
+    public void setInvalidParams(HashMap<String, Object> invalidParams) {
+        this.invalidParams = invalidParams;
+    }
+    */
 }

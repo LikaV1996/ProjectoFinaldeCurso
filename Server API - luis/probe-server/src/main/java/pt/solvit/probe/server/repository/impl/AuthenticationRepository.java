@@ -69,7 +69,7 @@ public class AuthenticationRepository implements IAuthenticationRepository {
 
         } catch (EmptyResultDataAccessException ex) {
             if (ex.getExpectedSize() == 1 && ex.getActualSize() == 0) {
-                throw new BadRequestException("Invalid credentials.", "User credentials are wrong", "string", "invalid-login");
+                throw new BadRequestException("Invalid credentials.", "User credentials are wrong", "/probs/invalid-login-credentials", "about:blank");
             }
             throw ex;
         }

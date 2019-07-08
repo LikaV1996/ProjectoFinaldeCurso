@@ -32,12 +32,7 @@ public class ExceptionHandlerController {
 
     private static final Logger LOGGER = Logger.getLogger(ExceptionHandlerController.class.getName());
 
-    /*
-    @Autowired
-    ServerLogService serverLogService;
-    */
-
-
+    
     /**
      * Bad Request. Http status = 400
      */
@@ -46,7 +41,6 @@ public class ExceptionHandlerController {
     protected ErrorModelOutput handleBadRequestException(HttpServletRequest request, BadRequestException ex) {
         LOGGER.log(Level.SEVERE, ex.getExceptionDetail());
         forServerLog(request, ex.getExceptionDetail());
-        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.BAD_REQUEST.toString(), ex.getExceptionDetail());
         return ex.getError();
     }
 
@@ -58,7 +52,6 @@ public class ExceptionHandlerController {
     protected ErrorModelOutput handleUnauthorized(HttpServletRequest request, UnauthorizedException ex) {
         LOGGER.log(Level.SEVERE, ex.getExceptionDetail());
         forServerLog(request, ex.getExceptionDetail());
-        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.UNAUTHORIZED.toString(), ex.getExceptionDetail());
         return ex.getError();
     }
 
@@ -70,7 +63,6 @@ public class ExceptionHandlerController {
     protected ErrorModelOutput handleUnauthorized(HttpServletRequest request, ForbiddenException ex) {
         LOGGER.log(Level.SEVERE, ex.getExceptionDetail());
         forServerLog(request, ex.getExceptionDetail());
-        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.UNAUTHORIZED.toString(), ex.getExceptionDetail());
         return ex.getError();
     }
 
@@ -82,7 +74,6 @@ public class ExceptionHandlerController {
     protected ErrorModelOutput handleNotAcceptableException(HttpServletRequest request, NotAcceptableException ex) {
         LOGGER.log(Level.SEVERE, ex.getExceptionDetail());
         forServerLog(request, ex.getExceptionDetail());
-        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.NOT_ACCEPTABLE.toString(), ex.getExceptionDetail());
         return ex.getError();
     }
 
@@ -90,9 +81,9 @@ public class ExceptionHandlerController {
     @ExceptionHandler(value = {HttpRequestMethodNotSupportedException.class})
     public ErrorModelOutput handleThrowable(HttpServletRequest request,  HttpRequestMethodNotSupportedException ex) {
         LOGGER.log(Level.SEVERE, "", ex);
-        forServerLog(request, "Method not allowed.");
-        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.INTERNAL_SERVER_ERROR.toString(), "Internal server error");
-        return new ErrorModelOutput("Method not allowed.", "This method is not allowed for the requested path.", HttpStatus.METHOD_NOT_ALLOWED);
+        String title = "Method not allowed.";
+        forServerLog(request, title);
+        return new ErrorModelOutput(title, "This method is not allowed for the requested path.", HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     /**
@@ -105,9 +96,9 @@ public class ExceptionHandlerController {
     @ExceptionHandler(Throwable.class)
     public ErrorModelOutput handleThrowable(HttpServletRequest request, final Throwable ex) {
         LOGGER.log(Level.SEVERE, "", ex);
+        String title = "Internal server error.";
         forServerLog(request, "Internal server error");
-        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.INTERNAL_SERVER_ERROR.toString(), "Internal server error");
-        return new ErrorModelOutput("Internal server error.", "An unexpected internal server error occured.", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ErrorModelOutput(title, "An unexpected internal server error occured.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
     /**
@@ -117,8 +108,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(value = {InternalException.class})
     protected ErrorModelOutput handleInternalException(HttpServletRequest request, DomainException ex) {
         LOGGER.log(Level.SEVERE, "", ex);
-        forServerLog(request, ex.getDetail());
-        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.BAD_REQUEST.toString(), ex.getDetail());
+        forServerLog(request, ex.getTitle());
         return HttpExceptionMapper.map(ex, request, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -129,8 +119,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(value = {DomainException.class})
     protected ErrorModelOutput handleDomainException(HttpServletRequest request, DomainException ex) {
         LOGGER.log(Level.SEVERE, ex.getMessage());
-        forServerLog(request, ex.getDetail());
-        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.BAD_REQUEST.toString(), ex.getDetail());
+        forServerLog(request, ex.getTitle());
         return HttpExceptionMapper.map(ex, request, HttpStatus.BAD_REQUEST);
     }
 
@@ -141,14 +130,13 @@ public class ExceptionHandlerController {
     @ExceptionHandler(value = {RepositoryException.class})
     protected ErrorModelOutput handleRepositoryException(HttpServletRequest request, RepositoryException ex) {
         LOGGER.log(Level.SEVERE, ex.getMessage());
-        forServerLog(request, ex.getDetail());
-        //makeServerLog(request.getRequestURI(), (User)request.getAttribute("user"), HttpStatus.BAD_REQUEST.toString(), ex.getDetail());
+        forServerLog(request, ex.getTitle());
         return HttpExceptionMapper.map(ex, request, HttpStatus.BAD_REQUEST);
     }
 
 
 
-    private void forServerLog(HttpServletRequest request, String detail){
-        request.setAttribute("response_detail", detail);
+    private void forServerLog(HttpServletRequest request, String title){
+        request.setAttribute("response_detail", title);
     }
 }

@@ -85,22 +85,22 @@ public class ServerConfig {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (serverInterface == null) {
-            throw new BadRequestException("Invalid configuration.", "Server: serverInterface is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Server: serverInterface is null.", "/probs/serverconfig-null-params", "about:blank");
         }
         if (getServerInterface() == null) {
-            throw new BadRequestException("Invalid configuration.", "Server: invalid networkInterface.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Server: invalid networkInterface.", "/probs/serverconfig-invalid-networkinterface", "about:blank");
         }
         if (registrationRetryDelay == null) {
-            throw new BadRequestException("Invalid configuration.", "Server: registrationRetryDelay is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Server: registrationRetryDelay is null.", "/probs/serverconfig-null-params", "about:blank");
         }
         if (serverAddress == null) {
-            throw new BadRequestException("Invalid configuration.", "Network: serverAddress is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Network: serverAddress is null.", "/probs/serverconfig-null-params", "about:blank");
         }
         if (serverUser == null) {
-            throw new BadRequestException("Invalid configuration.", "Network: serverUser is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Network: serverUser is null.", "/probs/serverconfig-null-params", "about:blank");
         }
         if (serverPassword == null) {
-            throw new BadRequestException("Invalid configuration.", "Network: serverPassword is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Network: serverPassword is null.", "/probs/serverconfig-null-params", "about:blank");
         }
     }
 }

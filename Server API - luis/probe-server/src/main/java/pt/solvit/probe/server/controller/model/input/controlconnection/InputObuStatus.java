@@ -62,15 +62,15 @@ public class InputObuStatus {
             location.validate();
         }
         if (alarmCount == null) {
-            throw new BadRequestException("Invalid status.", "AlarmCount is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid status.", "AlarmCount is null.", "/probs/obustatus-null-params", "about:blank");
         }
         alarmCount.validate();
         if (storage == null) {
-            throw new BadRequestException("Invalid status.", "Storage is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid status.", "Storage is null.", "/probs/obustatus-null-params", "about:blank");
         }
         storage.validate();
         if (temperature == null) {
-            throw new BadRequestException("Invalid status.", "Temperature is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid status.", "Temperature is null.", "/probs/obustatus-null-params", "about:blank");
         }
     }
 }

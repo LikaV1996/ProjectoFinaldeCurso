@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.*;
-import pt.solvit.probe.server.Interceptors.AuthInterceptor;
-import pt.solvit.probe.server.Interceptors.LoggingInterceptor;
+import pt.solvit.probe.server.interceptor.AuthInterceptor;
+import pt.solvit.probe.server.interceptor.LoggingInterceptor;
 import springfox.documentation.RequestHandler;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -33,7 +33,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Controller
 public class Config extends WebMvcConfigurationSupport{// implements WebMvcConfigurer {
 
-    //Interceptors
+    //interceptor
     @Autowired
     AuthInterceptor authInterceptor;
 

@@ -95,21 +95,21 @@ public class Scanning {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (enableScanning == null) {
-            throw new BadRequestException("Invalid setup.", "Scanning: enableScanning is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid setup.", "Scanning: enableScanning is null.", "/probs/scanning-null-params", "about:blank");
         }
         if (enableScanning == true) {
             if (sampleTime == null) {
-                throw new BadRequestException("Invalid setup.", "Scanning: sampleTime is null.", "string", "about:blank");
+                throw new BadRequestException("Invalid setup.", "Scanning: sampleTime is null.", "/probs/scanning-null-params", "about:blank");
             }
             if (enableCsq == null && enableMoni == null && enableMonp == null && enableSmond == null && enableSmonc == null) {
-                throw new BadRequestException("Invalid setup.", "Scanning: enableCsq and enableMoni and enableMonp and enableSmond and enableSmonc are all null.", "string", "about:blank");
+                throw new BadRequestException("Invalid setup.", "Scanning: enableCsq and enableMoni and enableMonp and enableSmond and enableSmonc are all null.", "/probs/scanning-null-params", "about:blank");
             }
             if ((enableCsq != null && enableCsq == true) || (enableMoni != null && enableMoni == true)
                     || (enableMonp != null && enableMonp == true) || (enableSmond != null && enableSmond == true)
                     || (enableSmonc != null && enableSmonc == true)) {
                 return;
             }
-            throw new BadRequestException("Invalid setup.", "Scanning: enableCsq and enableMoni and enableMonp and enableSmond and enableSmonc are all false or null.", "string", "about:blank");
+            throw new BadRequestException("Invalid setup.", "Scanning: enableCsq and enableMoni and enableMonp and enableSmond and enableSmonc are all false or null.", "/probs/scanning-invalid-enableflags", "about:blank");
         }
     }
 }

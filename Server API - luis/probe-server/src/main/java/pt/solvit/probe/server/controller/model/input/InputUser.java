@@ -70,26 +70,26 @@ public class InputUser {
     @ApiModelProperty(hidden = true)
     public void validateForCreate() {
         if (userName == null) {
-            throw new BadRequestException("Invalid user.", "UserName is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid user.", "UserName is null.", "/probs/user-null-params", "about:blank");
         }
         if (userPassword == null) {
-            throw new BadRequestException("Invalid user.", "UserPassword is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid user.", "UserPassword is null.", "/probs/user-null-params", "about:blank");
         }
         if (userProfile == null) {
-            throw new BadRequestException("Invalid user.", "UserProfile is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid user.", "UserProfile is null.", "/probs/user-null-params", "about:blank");
         }
         if (getUserProfile() == null) {
-            throw new BadRequestException("Invalid user.", "Invalid userProfile.", "string", "about:blank");
+            throw new BadRequestException("Invalid user.", "Invalid userProfile.", "/probs/user-invalid-userprofile", "about:blank");
         }
     }
 
     @ApiModelProperty(hidden = true)
     public void validateForUpdate() {
         if (userName == null && userPassword == null && userProfile == null && suspended == null) {
-            throw new BadRequestException("Invalid user.", "All fields are null.", "JSON object", "about:blank");
+            throw new BadRequestException("Invalid user.", "All fields are null.", "/probs/user-null-params", "about:blank");
         }
         if (userProfile != null && getUserProfile() == null) {
-            throw new BadRequestException("Invalid user.", "Invalid userProfile.", "string", "about:blank");
+            throw new BadRequestException("Invalid user.", "Invalid userProfile.", "/probs/user-invalid-userprofile", "about:blank");
         }
     }
 }

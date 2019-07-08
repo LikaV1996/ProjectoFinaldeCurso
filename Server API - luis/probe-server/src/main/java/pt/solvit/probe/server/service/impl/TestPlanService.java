@@ -221,7 +221,7 @@ public class TestPlanService implements ITestPlanService {
 
         LOGGER.log(Level.INFO, "Removing test plan {0} from obu {1}", new String[]{String.valueOf(testPlanId), String.valueOf(obuId)});
         if (obuTestPlan.getStateList() != null) {//If test plan was already downloaded
-            throw new BadRequestException("Invalid operation.", "Test plan has already been downloaded by obu.", "string", "about:blank");
+            throw new BadRequestException("Invalid operation.", "Test plan has already been downloaded by obu.", "/probs/testplan-already-downloaded", "about:blank");
         }
         obuTestPlanRepository.deleteById(obuId, testPlanId);
     }

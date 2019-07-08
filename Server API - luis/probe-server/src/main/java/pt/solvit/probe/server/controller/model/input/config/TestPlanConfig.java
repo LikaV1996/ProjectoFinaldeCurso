@@ -55,13 +55,13 @@ public class TestPlanConfig {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (defaultMaxRetries == null) {
-            throw new BadRequestException("Invalid configuration.", "Test Plan: defaultMaxRetries null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Test Plan: defaultMaxRetries null.", "/probs/testplanconfig-null-params", "about:blank");
         }
         if (defaultRetryDelay == null) {
-            throw new BadRequestException("Invalid configuration.", "Test Plan: defaultRetryDelay null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Test Plan: defaultRetryDelay null.", "/probs/testplanconfig-null-params", "about:blank");
         }
         if (maxLogSize == null) {
-            throw new BadRequestException("Invalid configuration.", "Test Plan: maxLogSize null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Test Plan: maxLogSize null.", "/probs/testplanconfig-null-params", "about:blank");
         }
     }
 }

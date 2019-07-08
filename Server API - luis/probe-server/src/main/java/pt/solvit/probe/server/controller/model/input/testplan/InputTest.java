@@ -94,46 +94,46 @@ public class InputTest {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (index == null) {
-            throw new BadRequestException("Invalid test.", "Index is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid test.", "Index is null.", "/probs/test-null-params", "about:blank");
         }
         if (type == null) {
-            throw new BadRequestException("Invalid test.", "Type is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid test.", "Type is null.", "/probs/test-null-params", "about:blank");
         }
         if (destination == null) {
-            throw new BadRequestException("Invalid test.", "Destination is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid test.", "Destination is null.", "/probs/test-null-params", "about:blank");
         }
         for (String curDestination : destination) {
             if (curDestination.isEmpty()) {
-                throw new BadRequestException("Invalid test.", "Destination is empty.", "string", "about:blank");
+                throw new BadRequestException("Invalid test.", "Destination is empty.", "/probs/test-invalid-destination", "about:blank");
             }
             if (!StringUtils.isStrictlyNumeric(curDestination)) {
-                throw new BadRequestException("Invalid test.", "Destination is not strictly numeric.", "string", "about:blank");
+                throw new BadRequestException("Invalid test.", "Destination is not strictly numeric.", "/probs/test-invalid-destination", "about:blank");
             }
         }
         TestType testTypeEnum = getType();
         if (testTypeEnum == null) {
-            throw new BadRequestException("Invalid test.", "Invalid type.", "string", "about:blank");
+            throw new BadRequestException("Invalid test.", "Invalid type.", "/probs/test-invalid-type", "about:blank");
         }
         if (testTypeEnum == TestType.SMS) {
             if (duration != null) {
-                throw new BadRequestException("Invalid test.", "SMS test can not have duration.", "string", "about:blank");
+                throw new BadRequestException("Invalid test.", "SMS test can not have duration.", "/probs/test-invalid-type", "about:blank");
             }
             if (priority != null) {
-                throw new BadRequestException("Invalid test.", "SMS test can not have priority.", "string", "about:blank");
+                throw new BadRequestException("Invalid test.", "SMS test can not have priority.", "/probs/test-invalid-type", "about:blank");
             }
         } else {
             if (message != null) {
-                throw new BadRequestException("Invalid test.", "Test " + type + " can not have message.", "string", "about:blank");
+                throw new BadRequestException("Invalid test.", "Test " + type + " can not have message.", "/probs/test-invalid-type", "about:blank");
             }
             if (testTypeEnum != TestType.MPTY && destination.length != 1) {
-                throw new BadRequestException("Invalid test.", "Test " + type + " can not have more than one destination.", "string", "about:blank");
+                throw new BadRequestException("Invalid test.", "Test " + type + " can not have more than one destination.", "/probs/test-invalid-type", "about:blank");
             }
             if (priority != null) {
                 if (testTypeEnum == TestType.P2P || testTypeEnum == TestType.MPTY) {
-                    throw new BadRequestException("Invalid test.", "Test " + type + " can not have priority.", "string", "about:blank");
+                    throw new BadRequestException("Invalid test.", "Test " + type + " can not have priority.", "/probs/test-invalid-type", "about:blank");
                 }
                 if (!ControllerUtil.validatePriority(priority)) {
-                    throw new BadRequestException("Invalid test.", "Priority invalid.", "string", "about:blank");
+                    throw new BadRequestException("Invalid test.", "Priority invalid.", "/probs/test-invalid-type", "about:blank");
                 }
             }
         }

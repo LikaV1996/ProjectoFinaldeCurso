@@ -108,10 +108,10 @@ public class SimCard {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (modemType == null) {
-            throw new BadRequestException("Invalid component.", "ModemType is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid component.", "ModemType is null.", "/probs/simcard-null-params", "about:blank");
         }
         if (getModemType() == null) {
-            throw new BadRequestException("Invalid component.", "Invalid modemType.", "string", "about:blank");
+            throw new BadRequestException("Invalid component.", "Invalid modemType.", "/probs/simcard-invalid-modemtype", "about:blank");
         }
     }
 }

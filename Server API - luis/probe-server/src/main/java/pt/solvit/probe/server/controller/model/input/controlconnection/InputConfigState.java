@@ -52,16 +52,16 @@ public class InputConfigState {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (state == null) {
-            throw new BadRequestException("Invalid configState.", "State is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configState.", "State is null.", "/probs/configstate-null-params", "about:blank");
         }
         if (date == null) {
-            throw new BadRequestException("Invalid configState.", "Date is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configState.", "Date is null.", "/probs/configstate-null-params", "about:blank");
         }
         if (getState() == null) {
-            throw new BadRequestException("Invalid configState.", "Invalid state.", "string", "about:blank");
+            throw new BadRequestException("Invalid configState.", "Invalid state.", "/probs/configstate-invalid-state", "about:blank");
         }
         if (DateUtil.getDateFromIsoString(date) == null) {
-            throw new BadRequestException("Invalid configState.", "Date is not on ISO format.", "string", "about:blank");
+            throw new BadRequestException("Invalid configState.", "Date is not on ISO format.", "/probs/configstate-invalid-date", "about:blank");
         }
     }
 }

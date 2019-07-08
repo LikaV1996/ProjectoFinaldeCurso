@@ -42,21 +42,21 @@ const routes: Routes = [
         { path: 'hardwares', component: HardwareComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.ADMIN }},
         { path: 'hardware/:id/edit', component: HardwareDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.ADMIN }},
         { path: 'hardware/create', component: HardwareCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.ADMIN }},
-        { path: 'obus', component: OBUComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'obus', component: OBUComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.NORMAL_USER }},
         { path: 'obu/:id/edit', component: ObuDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'obu/create', component: ObuCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
-        { path: 'configs', component: ConfigurationComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'configs', component: ConfigurationComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.NORMAL_USER }},
         { path: 'config/:id/edit', component: ConfigurationDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'config/create', component: ConfigurationCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
-        { path: 'testPlans', component: TestPlansComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'testPlans', component: TestPlansComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.NORMAL_USER }},
         { path: 'testPlan/:id/edit', component: TestPlansDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'testPlan/create', component: TestPlansCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
-        { path: 'setups', component: SetupComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
+        { path: 'setups', component: SetupComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.NORMAL_USER }},
         { path: 'setup/:id/edit', component: SetupDetailComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'setup/create', component: SetupCreateComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
         { path: 'serverLogs', component: ServerLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.ADMIN }},
-        { path: 'obu/:id/testLogs', component: TestLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }},
-        { path: 'obu/:id/sysLogs', component: SystemLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.SUPER_USER }}
+        { path: 'obu/:id/testLogs', component: TestLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.NORMAL_USER }},
+        { path: 'obu/:id/sysLogs', component: SystemLogComponent, canActivate: [AuthGuard], data: { min_user_profile: UserProfile.NORMAL_USER }}
         
       ]
   }

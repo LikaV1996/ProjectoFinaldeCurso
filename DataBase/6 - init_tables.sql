@@ -25,7 +25,7 @@ DO $$
 	DECLARE hw_id_3 INT;
 BEGIN
 	INSERT INTO Hardware (serial_number, properties, creator) VALUES (
-		'OBU001',
+		'HW001',
 		'{
 			"components":[
 				{
@@ -71,7 +71,7 @@ BEGIN
 		}'::jsonb,
 		'rita') RETURNING id INTO hw_id_1;
 	INSERT INTO Hardware (serial_number, properties, creator) VALUES (
-		'OBU002',
+		'HW002',
 		'{
 			"components":[
 				{
@@ -117,7 +117,7 @@ BEGIN
 		}'::jsonb,
 		'rita') RETURNING id INTO hw_id_2;
 	INSERT INTO Hardware (serial_number, properties, creator) VALUES (
-		'OBU003',
+		'HW003',
 		'{
   			"components": [
   			 	{
@@ -165,8 +165,8 @@ BEGIN
 		
 		
 	INSERT INTO Obu (hardware_id, obu_name, obu_password, properties, creator) VALUES (
-		hw_id_2,	--"factoryConfig: 1"
-		'OBU002',
+		hw_id_1,
+		'OBU001',
 		'1234',
 		'{
 			"authenticate": false,
@@ -198,8 +198,8 @@ BEGIN
 		}'::jsonb,
 		'rita');
 	INSERT INTO Obu (hardware_id, obu_name, obu_password, properties, creator) VALUES (
-		hw_id_3,
-		'OBU003',
+		hw_id_2,
+		'OBU002',
 		'0000',
 		'{
   			"sims": [
@@ -219,6 +219,25 @@ BEGIN
   			  	  	"simPuk": "Unknown",
   			  	  	"iccid": "110101001791",
   			  	  	"apn": "exploracao.refertelecom.pt",
+  			  	  	"apnUser": "",
+  			  	  	"apnPass": ""
+  			  	}
+  			]
+		}'::jsonb,
+		'rita');
+		
+		INSERT INTO Obu (hardware_id, obu_name, obu_password, properties, creator) VALUES (
+		hw_id_3,
+		'OBU003',
+		'0000',
+		'{
+  			"sims": [
+  			  	{
+  			  	  	"modemType": "PLMN",
+  			  	  	"msisdn": "968995024",
+  			  	  	"simPin": "",
+  			  	  	"simPuk": "Unknown",
+  			  	  	"apn": "internet",
   			  	  	"apnUser": "",
   			  	  	"apnPass": ""
   			  	}

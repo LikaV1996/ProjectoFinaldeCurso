@@ -53,7 +53,7 @@ public class ObuController implements IObuController {
         User user = (User) request.getAttribute("user");
 
         body.validateForCreate();
-        Hardware hardware = hardwareService.getHardware( body.getHardwareId() );
+        Hardware hardware = hardwareService.getHardware( body.getHardwareId(), user );
         Obu obu = Obu.makeObuFromInput( body, user.getUserName() );
         long obuId = obuService.createObu(obu, user);
 

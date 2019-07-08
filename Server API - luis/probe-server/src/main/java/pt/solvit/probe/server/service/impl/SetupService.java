@@ -62,7 +62,9 @@ public class SetupService implements ISetupService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public long createSetup(Setup setup) {
+    public long createSetup(Setup setup, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Creating new setup");
         long setupId = setupRepository.add(transformToSetupDao(setup));
 
@@ -98,19 +100,31 @@ public class SetupService implements ISetupService {
     }
 
     @Override
-    public void updateSetup(Setup setup) {
+    public void updateSetup(Setup setup, User loggedInUser) {
+
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ) {    //not admin
+            if ( userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER) ) { //but is super_user
+                userOwnsSetup(transformToSetupDao(setup), loggedInUser);
+            }
+            else throw new PermissionException();
+        }
+
         LOGGER.log(Level.INFO, "Updating setup {0}", setup.getId());
         setupRepository.update(transformToSetupDao(setup));
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void deleteSetup(long setupId, User user) {
+    public void deleteSetup(long setupId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Checking if setup {0} exists", setupId);
         SetupDao setupDao = setupRepository.findById(setupId);
 
-        if ( ! userService.checkUserPermissions(user, UserProfile.SUPER_USER))
-            userOwnsSetup(setupDao, user);
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ) {    //not admin
+            if ( userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER) ) { //but is super_user
+                userOwnsSetup(setupDao, loggedInUser);
+            }
+            else throw new PermissionException();
+        }
 
         verifySetupOnUseCondition(setupDao.getId());
 
@@ -140,7 +154,11 @@ public class SetupService implements ISetupService {
     }
 
     @Override
-    public void addSetupToTestPlan(long testPlanId, long setupId) {
+    public void addSetupToTestPlan(long testPlanId, long setupId, User loggedInUser) {
+
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
+
         testPlanService.getTestPlan(testPlanId);
 
         testPlanService.verifyTestPlanOnUseCondition(testPlanId);
@@ -158,7 +176,11 @@ public class SetupService implements ISetupService {
     }
 
     @Override
-    public void removeSetupFromTestPlan(long testPlanId, long setupId) {
+    public void removeSetupFromTestPlan(long testPlanId, long setupId, User loggedInUser) {
+
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
+
         getTestPlanSetup(testPlanId, setupId);
 
         testPlanService.verifyTestPlanOnUseCondition(testPlanId);
@@ -168,7 +190,11 @@ public class SetupService implements ISetupService {
     }
 
     @Override
-    public void removeAllSetupsFromTestPlan(long testPlanId) {
+    public void removeAllSetupsFromTestPlan(long testPlanId, User loggedInUser) {
+
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
+
         testPlanService.getTestPlan(testPlanId);
 
         testPlanService.verifyTestPlanOnUseCondition(testPlanId);
@@ -240,5 +266,10 @@ public class SetupService implements ISetupService {
 
         return new Test(testDao.getId(), testDao.getTestIndex(), type, testDao.getDelay(), voiceProperties.getDestination(),
                 voiceProperties.getDuration(), null, voiceProperties.getPriority());
+    }
+
+    private void checkUserPermissions(User loggedInUser) {
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
+            throw new PermissionException();
     }
 }

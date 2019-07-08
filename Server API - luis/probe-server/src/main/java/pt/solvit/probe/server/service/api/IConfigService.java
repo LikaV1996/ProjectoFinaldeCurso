@@ -16,7 +16,7 @@ import pt.solvit.probe.server.model.User;
  */
 public interface IConfigService {
 
-    public long createConfig(Config config);
+    public long createConfig(Config config, User loggedInUser);
 
     public Config getConfig(long configId);
 
@@ -31,11 +31,11 @@ public interface IConfigService {
 
     public List<ObuConfig> getAllObuConfigs(long obuId);
 
-    public void addConfigToObu(long obuId, long configId);
+    public void addConfigToObu(long obuId, long configId, User loggedInUser);
 
-    public boolean cancelConfigFromObu(long obuId, long configId);
+    public boolean cancelConfigFromObu(long obuId, long configId, User loggedInUser);
 
-    public void removeConfigFromObu(long obuId, long configId);
+    public void removeConfigFromObu(long obuId, long configId, User loggedInUser);
 
-    public void removeAllConfigsFromObu(long obuId);
+    public void removeAllConfigsFromObu(long obuId, User loggedInUser);
 }

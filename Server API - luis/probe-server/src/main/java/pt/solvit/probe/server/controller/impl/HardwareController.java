@@ -35,14 +35,14 @@ public class HardwareController implements IHardwareController {
     private IUserService userService;
 
     @Override
-    public ResponseEntity<List<Hardware>> getAllHardware(HttpServletRequest request) {
+    public ResponseEntity<List<Hardware>> getAllHardwares(HttpServletRequest request) {
 
         User user = (User) request.getAttribute("user");
 
         if ( ! userService.checkUserPermissions(user, UserProfile.ADMIN))
             throw new PermissionException();
 
-        List<Hardware> hardwareList = hardwareService.getAllHardware();
+        List<Hardware> hardwareList = hardwareService.getAllHardware(user);
 
 
         return ResponseEntity.ok().body(hardwareList);
@@ -58,8 +58,8 @@ public class HardwareController implements IHardwareController {
 
         body.validate();
         Hardware hardware = ControllerUtil.transformToHardware(body, user.getUserName());
-        long hardwareId = hardwareService.createHardware(hardware);
-        hardware = hardwareService.getHardware(hardwareId);
+        long hardwareId = hardwareService.createHardware(hardware, user);
+        hardware = hardwareService.getHardware(hardwareId, user);
 
 
         URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_HARDWARE_ID, hardwareId);
@@ -75,7 +75,7 @@ public class HardwareController implements IHardwareController {
         if ( ! userService.checkUserPermissions(user, UserProfile.ADMIN))
             throw new PermissionException();
 
-        Hardware hardware = hardwareService.getHardware(hardwareId);
+        Hardware hardware = hardwareService.getHardware(hardwareId, user);
 
 
         return ResponseEntity.ok(hardware);
@@ -105,13 +105,13 @@ public class HardwareController implements IHardwareController {
 
 
         body.validate();
-        Hardware hardware = hardwareService.getHardware(hardwareId);
+        Hardware hardware = hardwareService.getHardware(hardwareId, user);
 
         updateHardware(body, hardware, user.getUserName());
 
-        hardwareService.updateHardware(hardware);
+        hardwareService.updateHardware(hardware, user);
 
-        hardware = hardwareService.getHardware(hardwareId);
+        hardware = hardwareService.getHardware(hardwareId, user);
 
 
         //URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_HARDWARE_ID, hardwareId);

@@ -50,11 +50,9 @@ public class ObuService implements IObuService {
 
     @Override
     public long createObu(Obu obu, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Creating new obu");
-
-        if (!userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
-            throw new PermissionException();
-
         return obuRepository.add(Obu.transformToObuDao(obu));
     }
 
@@ -95,31 +93,26 @@ public class ObuService implements IObuService {
 
     @Override
     public void updateObu(Obu obu, User loggedInUser) {
-        LOGGER.log(Level.INFO, "Updating obu with id {0}", obu.getId());
+        checkUserPermissions(loggedInUser);
 
-        //not at least superuser
-        LOGGER.log(Level.INFO, "Checking user permissions for obu update");
-        if (!userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
-            throw new PermissionException();
-
+        /*
         //check if superuser is editor or viewer
         if (!userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
             checkObuUserRoleIsEDITOR(obu.getId(), loggedInUser.getId());
+        */
 
+        LOGGER.log(Level.INFO, "Updating obu with id {0}", obu.getId());
         obuRepository.update(Obu.transformToObuDao(obu));
     }
 
     @Override
     public void deleteObu(long obuId, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Checking if obu {0} exists", obuId);
-
-        //not at least superuser
-        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
-            throw new PermissionException();
-
         ObuDao obuDao = obuRepository.findById(obuId, null);
 
-
+        /*
         //check if superuser...
         if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN)) {
             //...is editor or viewer
@@ -128,6 +121,7 @@ public class ObuService implements IObuService {
             //...owns obu
             userOwnsObu(obuDao, loggedInUser);
         }
+        */
 
         
 
@@ -139,9 +133,10 @@ public class ObuService implements IObuService {
         if ( ! obuTestPlanRepository.findByObuId(obuId).isEmpty())
             throw new ObuHasTestPlanException();
 
-        //obu not active    TODO check ObuState for delete
+        //obu not READY
         if ( ! obuDao.getObuState().equals(ObuState.READY.name()))
             throw new ObuActiveException();
+
 
         LOGGER.log(Level.INFO, "Deleting obu {0}", obuId);
         obuRepository.deleteById(obuId);
@@ -166,4 +161,8 @@ public class ObuService implements IObuService {
             throw new PermissionException();
     }
 
+    private void checkUserPermissions(User loggedInUser) {
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
+    }
 }

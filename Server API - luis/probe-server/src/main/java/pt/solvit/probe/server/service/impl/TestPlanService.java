@@ -65,7 +65,11 @@ public class TestPlanService implements ITestPlanService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public long createTestPlan(TestPlan testPlan) {
+    public long createTestPlan(TestPlan testPlan, User loggedInUser) {
+
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
+            throw new PermissionException();
+
         LOGGER.log(Level.INFO, "Creating new test plan");
         long testPlanId = testPlanRepository.add(transformToTestPlanDao(testPlan));
 
@@ -104,13 +108,16 @@ public class TestPlanService implements ITestPlanService {
     }
 
     @Override
-    public void deleteTestPlan(long testPlanId, User user) {
+    public void deleteTestPlan(long testPlanId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Checking if test plan {0} exists", testPlanId);
         TestPlanDao testPlanDao = testPlanRepository.findById(testPlanId);
 
-        if ( ! userService.checkUserPermissions(user, UserProfile.SUPER_USER))
-            userOwnsTestPlan(testPlanDao, user);
-
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ) {    //not admin
+            if ( userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER) ) { //but is super_user
+                userOwnsTestPlan(testPlanDao, loggedInUser);
+            }
+            else throw new PermissionException();
+        }
 
         verifyTestPlanOnUseCondition(testPlanId);
 
@@ -119,7 +126,15 @@ public class TestPlanService implements ITestPlanService {
     }
 
     @Override
-    public void updateTestPlan(TestPlan testPlan) {
+    public void updateTestPlan(TestPlan testPlan, User loggedInUser) {
+
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ) {    //not admin
+            if ( userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER) ) { //but is super_user
+                userOwnsTestPlan(transformToTestPlanDao(testPlan), loggedInUser);
+            }
+            else throw new PermissionException();
+        }
+
         LOGGER.log(Level.INFO, "Updating test plan {0}", testPlan.getId());
         testPlanRepository.update(transformToTestPlanDao(testPlan));
     }
@@ -148,10 +163,13 @@ public class TestPlanService implements ITestPlanService {
     }
 
     @Override
-    public void addTestPlanToObu(long obuId, long testPlanId) {
+    public void addTestPlanToObu(long obuId, long testPlanId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Checking if obu with ID {0} already exists", obuId);
 
-        //TODO
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ) {
+            throw new PermissionException();
+        }
+
         obuRepository.findById(obuId, null);
 
         LOGGER.log(Level.INFO, "Checking if test plan {0} exists", testPlanId);
@@ -167,7 +185,12 @@ public class TestPlanService implements ITestPlanService {
     }
 
     @Override
-    public boolean cancelTestPlanFromObu(long obuId, long testPlanId) {
+    public boolean cancelTestPlanFromObu(long obuId, long testPlanId, User loggedInUser) {
+
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ) {
+            throw new PermissionException();
+        }
+
         ObuTestPlan obuTestPlan = getObuTestPlan(obuId, testPlanId);
 
         LOGGER.log(Level.INFO, "Canceling test plan {0} from obu {1}", new String[]{String.valueOf(testPlanId), String.valueOf(obuId)});
@@ -188,7 +211,12 @@ public class TestPlanService implements ITestPlanService {
     }
 
     @Override
-    public void removeTestPlanFromObu(long obuId, long testPlanId) {
+    public void removeTestPlanFromObu(long obuId, long testPlanId, User loggedInUser) {
+
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ) {
+            throw new PermissionException();
+        }
+
         ObuTestPlan obuTestPlan = getObuTestPlan(obuId, testPlanId);
 
         LOGGER.log(Level.INFO, "Removing test plan {0} from obu {1}", new String[]{String.valueOf(testPlanId), String.valueOf(obuId)});
@@ -199,7 +227,12 @@ public class TestPlanService implements ITestPlanService {
     }
 
     @Override
-    public void removeAllTestPlansFromObu(long obuId) {
+    public void removeAllTestPlansFromObu(long obuId, User loggedInUser) {
+
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ) {
+            throw new PermissionException();
+        }
+
         LOGGER.log(Level.INFO, "Removing all test plans from obu {0}", obuId);
         obuTestPlanRepository.deleteAllByObuId(obuId);
     }
@@ -250,5 +283,10 @@ public class TestPlanService implements ITestPlanService {
         ObuTestPlanProperties properties = GSON.fromJson(obuTestPlanDao.getProperties(), ObuTestPlanProperties.class);
 
         return new ObuTestPlan(obuTestPlanDao.getObuId(), obuTestPlanDao.getTestPlanId(), properties.getCancelState(), properties.getStateList(), testPlan);
+    }
+
+    private void checkUserPermissions(User loggedInUser) {
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
+            throw new PermissionException();
     }
 }

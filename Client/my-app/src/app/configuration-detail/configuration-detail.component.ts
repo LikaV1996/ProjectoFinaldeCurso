@@ -36,28 +36,38 @@ export class ConfigurationDetailComponent implements OnInit {
   }
 
   saveChanges() {
-    console.log(`updating config ${this.config.id}`)
-
-
+    
     let archiveExpirationTimeOptionValue = (document.getElementById("archiveExpirationTimeformat") as HTMLSelectElement).value
-    
-    //this.config.archive.expiration *= parseInt(archiveExpirationTimeOptionValue)
+    this.config.archive.expiration *= parseInt(archiveExpirationTimeOptionValue)
+    let archivePeriodTimeOptionValue = (document.getElementById("archivePeriodTimeformat") as HTMLSelectElement).value
+    this.config.archive.period *= parseInt(archivePeriodTimeOptionValue)
+    let controlConPeriodTimeOptionValue = (document.getElementById("controlConnectionPeriodTimeformat") as HTMLSelectElement).value
+    this.config.controlConnection.period *= parseInt(archiveExpirationTimeOptionValue)
+    let controlConRetryDelayTimeOptionValue = (document.getElementById("controlConnectionRetryDelayTimeformat") as HTMLSelectElement).value
+    this.config.controlConnection.retryDelay *= parseInt(archivePeriodTimeOptionValue)
+    let coreStorageMonitorPeriodTimeOptionValue = (document.getElementById("coreStorageMonitorPeriodTimeformat") as HTMLSelectElement).value
+    this.config.core.storageMonitorPeriod *= parseInt(coreStorageMonitorPeriodTimeOptionValue)
+    let downloadRetryDelayTimeOptionValue = (document.getElementById("downloadRetryDelayTimeformat") as HTMLSelectElement).value
+    this.config.download.retryDelay *= parseInt(downloadRetryDelayTimeOptionValue)
+    let scanningSampleTimeTimeOptionValue = (document.getElementById("scanningSampleTimeTimeformat") as HTMLSelectElement).value
+    this.config.scanning.sampleTime *= parseInt(scanningSampleTimeTimeOptionValue)
+    let serverRegRetDelayTimeTimeOptionValue = (document.getElementById("serverRegRetDelayTimeTimeformat") as HTMLSelectElement).value
+    this.config.server.registrationRetryDelay *= parseInt(serverRegRetDelayTimeTimeOptionValue)
+    let defRetDelTimeOptionValue = (document.getElementById("defRetDelTimeformat") as HTMLSelectElement).value
+    this.config.testPlan.defaultRetryDelay *= parseInt(defRetDelTimeOptionValue)
+    let uploadPeriodTimeOptionValue = (document.getElementById("uploadPeriodTimeformat") as HTMLSelectElement).value
+    this.config.upload.period *= parseInt(uploadPeriodTimeOptionValue)
+    let uploadRetDelTimeOptionValue = (document.getElementById("uploadRetDelTimeformat") as HTMLSelectElement).value
+    this.config.upload.retryDelay *= parseInt(uploadRetDelTimeOptionValue)
+    let voiceDefaultCallDurationTimeOptionValue = (document.getElementById("voiceDefaultCallDurationTimeformat") as HTMLSelectElement).value
+    this.config.voice.defaultCallDuration *= parseInt(voiceDefaultCallDurationTimeOptionValue)
+    let voiceIncomingCallTimeoutTimeOptionValue = (document.getElementById("voiceIncomingCallTimeoutTimeformat") as HTMLSelectElement).value
+    this.config.voice.incomingCallTimeout *= parseInt(voiceIncomingCallTimeoutTimeOptionValue)
 
-
-    this._configService.updateConfig(this.config.id, this.config)
-    .subscribe( config => {
+  
+    this._configService.updateConfig(this.config).subscribe( config => {
       this.config = config
-    
-      /*
-    this._hardwareService.updateHardware(this.hardware.id, this.hardware.serialNumber, this.hardware.components)
-    .subscribe(hardware => {
-      console.log('Hardware: ' + JSON.stringify(hardware))
-      this.hardware = hardware
-      */
-
-
       alert("Config updated!")
-      console.log("Config updated")
       this.goBack()
     })
   }
@@ -66,18 +76,5 @@ export class ConfigurationDetailComponent implements OnInit {
     this._location.back();
   }
 
-  /*
-  saveChanges(){
-    console.log("updating config")
-    this._configService.updateConfig(this.obu.id, this.obu.hardwareId, this.obu.obuName, this.obu.properties)
-    .subscribe(obu => {
-      console.log(JSON.stringify(obu))
-      this.obu = obu
-      //this.users.push(userObj.user)
-      alert("Configuration updated!")
-      console.log("config updated")
-    })
-  }
-  */
 
 }

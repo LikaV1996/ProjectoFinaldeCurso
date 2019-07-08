@@ -18,8 +18,6 @@
           </mat-form-field>
           </b>
       </div>
-
-      <!--<div><b>Activation Date: </b>{{config.activationDate}}</div>-->
       
       <div class="input-wrapper">
           <b>Activation Date:&nbsp;&nbsp;</b>
@@ -33,7 +31,7 @@
         <div>
             <b>Expiration:&nbsp;&nbsp;
                 <div class="ui right labeled input" style="width:90px;">
-                    <input [(ngModel)]="config.archive.expiration" type="text" placeholder="days">
+                    <input [(ngModel)]="config.archive.expiration" type="text" >
                     <div class="ui basic label">
                         <select id="archiveExpirationTimeformat" matNativeControl required>
                           <option value="3600">hours</option>
@@ -43,23 +41,30 @@
                     </div>
                 </div> 
             </b>
-            <!--  
-            <mat-form-field appearance="standard">
-            <mat-label>{{config.archive.expiration}}</mat-label>
-            <input [(ngModel)]="config.archive.expiration" matInput placeholder="Expiration">
-            </mat-form-field>
-            </b>days
-            -->
         </div>
 
-        <div><b>Period: </b>{{config.archive.period}}</div>
-        
-        <div><b>Reference Date: </b>
-          <mat-form-field>
-            <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="config.archive.referenceDate">
-            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
-            <mat-datepicker #myDatepicker></mat-datepicker>
-          </mat-form-field>
+        <p></p>
+
+        <b>Period:&nbsp;&nbsp;
+          <div class="ui right labeled input" style="width:90px;">
+              <input [(ngModel)]="config.archive.period" type="text">
+              <div class="ui basic label">
+                  <select id="archivePeriodTimeformat" matNativeControl required>
+                    <option value="3600">hours</option>
+                    <option value="60">minutes</option>
+                    <option value="1" selected>seconds</option>
+                  </select>
+              </div>
+          </div> 
+        </b>
+
+        <p></p>
+
+        <div class="input-wrapper">
+          <b>Reference Date:&nbsp;&nbsp;</b>
+          <input [(ngModel)]="config.archive.referenceDate"
+                 [owlDateTimeTrigger]="dtPicker2" [owlDateTime]="dtPicker2">
+          <owl-date-time #dtPicker2></owl-date-time>
         </div>
         
       </div>
@@ -67,32 +72,102 @@
       <div *ngIf="config.controlConnection!=null" class="ui container segment" >
         <h4>Control Connection</h4>
         
-        <div><b>Reference Date: </b>
-          <mat-form-field>
-            <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="config.controlConnection.referenceDate">
-            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
-            <mat-datepicker #myDatepicker></mat-datepicker>
-          </mat-form-field>
+        <div class="input-wrapper">
+          <b>Reference Date:&nbsp;&nbsp;</b>
+          <input [(ngModel)]="config.controlConnection.referenceDate"
+                 [owlDateTimeTrigger]="dtPicker3" [owlDateTime]="dtPicker3">
+          <owl-date-time #dtPicker3></owl-date-time>
         </div>
 
-        <div><b>Period: </b>{{config.controlConnection.period}}</div>
+        <p></p>
 
-        <div><b>Retry Delay: </b>{{config.controlConnection.retryDelay}}</div>
+        <b>Period:&nbsp;&nbsp;
+          <div class="ui right labeled input" style="width:90px;">
+              <input [(ngModel)]="config.controlConnection.period" type="text">
+              <div class="ui basic label">
+                  <select id="controlConnectionPeriodTimeformat" matNativeControl required>
+                    <option value="3600">hours</option>
+                    <option value="60">minutes</option>
+                    <option value="1" selected>seconds</option>
+                  </select>
+              </div>
+          </div> 
+        </b>
 
-        <div><b>Maximum Retries: </b>{{config.controlConnection.maxRetries}}</div>
+        <p></p>
+
+        <b>Retry Delay:&nbsp;&nbsp;
+          <div class="ui right labeled input" style="width:90px;">
+              <input [(ngModel)]="config.controlConnection.retryDelay" type="text">
+              <div class="ui basic label">
+                  <select id="controlConnectionRetryDelayTimeformat" matNativeControl required>
+                    <option value="3600">hours</option>
+                    <option value="60">minutes</option>
+                    <option value="1" selected>seconds</option>
+                  </select>
+              </div>
+          </div> 
+        </b>
+
+        <p></p>
+
+        <div>
+          <b>Maximum Retries:
+          <mat-form-field appearance="standard">
+          <mat-label>{{config.controlConnection.maxRetries}}</mat-label>
+          <input [(ngModel)]="config.controlConnection.maxRetries" matInput placeholder="Maximum Retries">
+          </mat-form-field>
+          </b>
+        </div>
 
       </div>
 
       <div *ngIf="config.core!=null" class="ui container segment" >
         <h4>Core</h4>
 
-        <div><b>Maximum System Log Size: </b>{{config.core.maxSystemLogSize}}</div>
+        <div>
+          <b>Maximum System Log Size:
+          <mat-form-field appearance="standard">
+          <mat-label>{{config.core.maxSystemLogSize}}</mat-label>
+          <input [(ngModel)]="config.core.maxSystemLogSize" matInput placeholder="Maximum System Log Size">
+          </mat-form-field>
+          </b> (bytes)
+        </div>
+        
+        <p></p>
 
-        <div><b>Storage Monitor Period: </b>{{config.core.storageMonitorPeriod}}</div>
+        <b>Storage Monitor Period:&nbsp;&nbsp;
+          <div class="ui right labeled input" style="width:90px;">
+              <input [(ngModel)]="config.core.storageMonitorPeriod" type="text">
+              <div class="ui basic label">
+                  <select id="coreStorageMonitorPeriodTimeformat" matNativeControl required>
+                    <option value="3600">hours</option>
+                    <option value="60">minutes</option>
+                    <option value="1" selected>seconds</option>
+                  </select>
+              </div>
+          </div> 
+        </b>
 
-        <div><b>Storage Warning Threshold: </b>{{config.core.storageWarningThreshold}}</div>
+        <p></p>
 
-        <div><b>Storage Critical Threshold: </b>{{config.core.storageCriticalThreshold}}</div>
+        <div>
+          <b>Storage Warning Threshold:
+          <mat-form-field appearance="standard">
+          <mat-label>{{config.core.storageWarningThreshold}}</mat-label>
+          <input [(ngModel)]="config.core.storageWarningThreshold" matInput placeholder="Storage Warning Threshold">
+          </mat-form-field>
+          </b> (bytes)
+        </div>
+
+        <div>
+          <b>Storage Critical Threshold:
+          <mat-form-field appearance="standard">
+          <mat-label>{{config.core.storageCriticalThreshold}}</mat-label>
+          <input [(ngModel)]="config.core.storageCriticalThreshold" matInput placeholder="Storage Critical Threshold">
+          </mat-form-field>
+          </b> (bytes)
+        </div>
         
       </div>
 
@@ -113,9 +188,29 @@
       <div *ngIf="config.download!=null" class="ui container segment" >
         <h4>Download</h4>
 
-        <div><b>Retry Delay: </b>{{config.download.retryDelay}}</div>
+        <b>Retry Delay:&nbsp;&nbsp;
+          <div class="ui right labeled input" style="width:90px;">
+              <input [(ngModel)]="config.download.retryDelay" type="text">
+              <div class="ui basic label">
+                  <select id="downloadRetryDelayTimeformat" matNativeControl required>
+                    <option value="3600">hours</option>
+                    <option value="60">minutes</option>
+                    <option value="1" selected>seconds</option>
+                  </select>
+              </div>
+          </div> 
+        </b>
 
-        <div><b>Maximum Retries: </b>{{config.download.maxRetries}}</div>
+        <p></p>
+        
+        <div>
+          <b>Maximum Retries:
+          <mat-form-field appearance="standard">
+          <mat-label>{{config.download.maxRetries}}</mat-label>
+          <input [(ngModel)]="config.download.maxRetries" matInput placeholder="Maximum Retries">
+          </mat-form-field>
+          </b>
+        </div>
 
       </div>
 
@@ -124,7 +219,19 @@
         
         <div><b><mat-checkbox [(ngModel)]="config.scanning.enableMonitor" [checked]="config.scanning.enableMonitor" >Enable Monitor</mat-checkbox></b></div>
         
-        <div><b>Sample Time: </b>{{config.scanning.sampleTime}}</div>
+
+        <b>Sample Time:&nbsp;&nbsp;
+          <div class="ui right labeled input" style="width:90px;">
+              <input [(ngModel)]="config.scanning.sampleTime" type="text" >
+              <div class="ui basic label">
+                  <select id="scanningSampleTimeTimeformat" matNativeControl required>
+                    <option value="3600">hours</option>
+                    <option value="60">minutes</option>
+                    <option value="1" selected>seconds</option>
+                  </select>
+              </div>
+          </div> 
+        </b>
 
         <div><b><mat-checkbox [(ngModel)]="config.scanning.enableCsq" [checked]="config.scanning.enableCsq" >Enable Csq</mat-checkbox></b></div>
 
@@ -150,7 +257,22 @@
           </b>
         </div>
 
-        <div><b>Registration Retry Delay: </b>{{config.server.registrationRetryDelay}}</div>
+        <p></p>
+
+        <b>Registration Retry Delay:&nbsp;&nbsp;
+          <div class="ui right labeled input" style="width:90px;">
+              <input [(ngModel)]="config.server.registrationRetryDelay" type="text">
+              <div class="ui basic label">
+                  <select id="serverRegRetDelayTimeTimeformat" matNativeControl required>
+                    <option value="3600">hours</option>
+                    <option value="60">minutes</option>
+                    <option value="1" selected>seconds</option>
+                  </select>
+              </div>
+          </div> 
+        </b>
+
+        <p></p>
 
         <div>
           <b>Server Address: 
@@ -183,9 +305,42 @@
 
       <div *ngIf="config.testPlan!=null" class="ui container segment" >
           <h4>TestPlan</h4>
-          <div><b>defaultMaxRetries: </b>{{config.testPlan.defaultMaxRetries}}</div>
-          <div><b>defaultRetryDelay: </b>{{config.testPlan.defaultRetryDelay}}</div>
-          <div><b>maxLogSize: </b>{{config.testPlan.maxLogSize}}</div>
+
+          <div>
+            <b>Default Maximum Retries:
+            <mat-form-field appearance="standard">
+            <mat-label>{{config.testPlan.defaultMaxRetries}}</mat-label>
+            <input [(ngModel)]="config.testPlan.defaultMaxRetries" matInput placeholder="Default Maximum Retries">
+            </mat-form-field>
+            </b>
+          </div>
+
+          <p></p>
+
+          <b>Default Retry Delay:&nbsp;&nbsp;
+            <div class="ui right labeled input" style="width:90px;">
+                <input [(ngModel)]="config.testPlan.defaultRetryDelay" type="text">
+                <div class="ui basic label">
+                    <select id="defRetDelTimeformat" matNativeControl required>
+                      <option value="3600">hours</option>
+                      <option value="60">minutes</option>
+                      <option value="1" selected>seconds</option>
+                    </select>
+                </div>
+            </div> 
+          </b>
+
+          <p></p>
+
+          <div>
+            <b>Maximum Log Size:
+            <mat-form-field appearance="standard">
+            <mat-label>{{config.testPlan.maxLogSize}}</mat-label>
+            <input [(ngModel)]="config.testPlan.maxLogSize" matInput placeholder="Maximum Log Size">
+            </mat-form-field>
+            </b> (bytes)
+          </div>
+      
       </div>
 
       <div *ngIf="config.upload!=null" class="ui container segment" >
@@ -193,36 +348,101 @@
 
         <div><b><mat-checkbox [(ngModel)]="config.upload.autoUpload" [checked]="config.upload.autoUpload" >Auto Upload</mat-checkbox></b></div>
         
-        <div><b>Reference Date: </b>
-          <mat-form-field>
-            <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="config.upload.referenceDate">
-            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
-            <mat-datepicker #myDatepicker></mat-datepicker>
-          </mat-form-field>
+        <div class="input-wrapper">
+          <b>Reference Date:&nbsp;&nbsp;</b>
+          <input [(ngModel)]="config.upload.referenceDate"
+                 [owlDateTimeTrigger]="dtPicker4" [owlDateTime]="dtPicker4">
+          <owl-date-time #dtPicker4></owl-date-time>
         </div>
 
-        <div><b>Period: </b>{{config.upload.period}}</div>
+        <p></p>
 
-        <div><b>Retry Delay: </b>{{config.upload.retryDelay}}</div>
+        <b>Period:&nbsp;&nbsp;
+          <div class="ui right labeled input" style="width:90px;">
+              <input [(ngModel)]="config.upload.period" type="text">
+              <div class="ui basic label">
+                  <select id="uploadPeriodTimeformat" matNativeControl required>
+                    <option value="3600">hours</option>
+                    <option value="60">minutes</option>
+                    <option value="1" selected>seconds</option>
+                  </select>
+              </div>
+          </div> 
+        </b>
 
-        <div><b>Maximum Retries: </b>{{config.upload.maxRetries}}</div>
+        <p></p>
 
-        <div><b>Maximum UploadSize: </b>{{config.upload.maxUploadSize}}</div>
+        <b>Retry Delay:&nbsp;&nbsp;
+          <div class="ui right labeled input" style="width:90px;">
+              <input [(ngModel)]="config.upload.retryDelay" type="text">
+              <div class="ui basic label">
+                  <select id="uploadRetDelTimeformat" matNativeControl required>
+                    <option value="3600">hours</option>
+                    <option value="60">minutes</option>
+                    <option value="1" selected>seconds</option>
+                  </select>
+              </div>
+          </div> 
+        </b>
+        
+        <p></p>
+
+        <div>
+          <b>Maximum Retries:
+          <mat-form-field appearance="standard">
+          <mat-label>{{config.upload.maxRetries}}</mat-label>
+          <input [(ngModel)]="config.upload.maxRetries" matInput placeholder="Maximum Retries">
+          </mat-form-field>
+          </b> (bytes)
+        </div>
+
+        <div>
+          <b>Maximum Upload Size:
+          <mat-form-field appearance="standard">
+          <mat-label>{{config.upload.maxUploadSize}}</mat-label>
+          <input [(ngModel)]="config.upload.maxUploadSize" matInput placeholder="Maximum Upload Size">
+          </mat-form-field>
+          </b> (bytes)
+        </div>
 
     </div>
       
     <div *ngIf="config.voice!=null" class="ui container segment" >
       <h4>Voice</h4>
 
-      <div><b>defaultCallDuration: </b>{{config.voice.defaultCallDuration}}</div>
+      <b>Default Call Duration:&nbsp;&nbsp;
+        <div class="ui right labeled input" style="width:90px;">
+            <input [(ngModel)]="config.voice.defaultCallDuration" type="text">
+            <div class="ui basic label">
+                <select id="voiceDefaultCallDurationTimeformat" matNativeControl required>
+                  <option value="3600">hours</option>
+                  <option value="60">minutes</option>
+                  <option value="1" selected>seconds</option>
+                </select>
+            </div>
+        </div> 
+      </b>
 
-      <div><b>incomingCallTimeout: </b>{{config.voice.incomingCallTimeout}}</div>
+      <p></p>
+      
+      <b>Incoming Call Timeout:&nbsp;&nbsp;
+        <div class="ui right labeled input" style="width:90px;">
+            <input [(ngModel)]="config.voice.incomingCallTimeout" type="text">
+            <div class="ui basic label">
+                <select id="voiceIncomingCallTimeoutTimeformat" matNativeControl required>
+                  <option value="3600">hours</option>
+                  <option value="60">minutes</option>
+                  <option value="1" selected>seconds</option>
+                </select>
+            </div>
+        </div> 
+      </b>
       
     </div>
   
       <div *ngIf="config.modified_date!=null || config.modifier!=null">
-      <div><b>modifier: </b>{{config.modifier}}</div>
-      <div><b>modified_date: </b>{{config.modifiedDate}}</div>
+      <div><b>Modifier: </b>{{config.modifier}}</div>
+      <div><b>Modified Date: </b>{{config.modifiedDate}}</div>
       </div>
   
   </div>

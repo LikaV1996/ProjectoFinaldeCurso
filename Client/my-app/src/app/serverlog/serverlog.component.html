@@ -53,6 +53,7 @@
     <div class="ui divider"></div>
     <!-- serverlogs entries -->
     <div class="ui" style="height: 70%;">
+      <mat-spinner *ngIf="serverLogs == null"></mat-spinner>
       <ng-container *ngFor="let serverLog of serverLogs">
         <div class="ui middle aligned grid">
           <div class="four wide column">{{serverLog.date}}</div>

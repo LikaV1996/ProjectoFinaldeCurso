@@ -13,6 +13,7 @@
   
   
       <div class="ui" style="height: 70%;">
+        <mat-spinner *ngIf="setups == null"></mat-spinner>
         <div class="ui segment" *ngFor="let setup of setups">
           <div class="ui middle aligned grid">
             <div class="six wide column">{{setup.setupName}}</div>

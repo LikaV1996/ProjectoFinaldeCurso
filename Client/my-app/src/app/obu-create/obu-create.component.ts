@@ -17,19 +17,8 @@ import { OBUService } from '../_services/obu.service';
 export class ObuCreateComponent implements OnInit {
 
   private hardwares : Hardware[];
-  //private configs : Config[];
-  //private testPlans: TestPlan[];
-  
-  //private hardwareId: number;
-  //private obuName: string;
-  private newObu = new OBU;
 
-  /*
-  private obuState: string = "READY";
-  private currentConfigId: number = null;
-  private currentTestPlanId: number = null;
-  private factoryConfig: number = null;
-  */
+  private newObu = new OBU;
 
   private sims = [];
   private sim = {
@@ -49,8 +38,6 @@ export class ObuCreateComponent implements OnInit {
     private _hardwareService: HardwareService,
     private _location: Location,
     private _obuService: OBUService
-    //private _configService: ConfigService,
-    //private _testPlanService: TestPlanService
   ) { }
 
   ngOnInit() {
@@ -59,18 +46,6 @@ export class ObuCreateComponent implements OnInit {
       this.hardwares = hardwares
       this.hardwares.sort( (h1,h2)=> h1.id - h2.id)
     })
-
-    /*
-    this._configService.getConfigs().subscribe(configs =>{
-      this.configs = configs
-      this.configs.sort( (h1,h2)=> h1.id - h2.id)
-    })
-
-    this._testPlanService.getTestPlans().subscribe(testplans =>{
-      this.testPlans = testplans
-      this.testPlans.sort( (h1,h2)=> h1.id - h2.id)
-    })
-    */
   }
 
   goBack(){
@@ -78,7 +53,6 @@ export class ObuCreateComponent implements OnInit {
   }
 
   createObu(){
-    //console.log("creating obu")
     
     if(!this.newObu.hardwareId){ 
       alert("You must choose an Hardware!")
@@ -93,8 +67,6 @@ export class ObuCreateComponent implements OnInit {
     if(this.sims.length != 0)
       this.newObu.sims = this.sims
 
-    //console.log("SIMS:")
-    //console.log(JSON.stringify(this.newObu.sims))
     this._obuService.createObu(this.newObu)
       .subscribe(mynewobu => {
         alert("OBU created!")

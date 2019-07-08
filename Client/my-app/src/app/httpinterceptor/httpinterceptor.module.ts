@@ -34,7 +34,7 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
 
     console.log("HTTP intercepted for route: " + req.url)
 
-    req = req.clone({ headers: req.headers.set( 'Request_Date', Date.now().toString() )})
+    //req = req.clone({ headers: req.headers.set( 'Request_Date', Date.now().toString() )})
     if (!req.headers.has('Content-Type')) {
       req = req.clone({ headers: req.headers.set( 'Content-Type', 'application/json' )})
     }

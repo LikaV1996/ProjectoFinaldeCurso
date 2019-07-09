@@ -15,6 +15,8 @@ import { UserProfile } from '../Model/UserProfile';
 export class NavMenuComponent {
 
   private display_AllUsers_Button : boolean
+  private display_AllHardwares_Button : boolean
+  private display_ServerLogs_Button : boolean
 
   constructor(
     private router: Router,
@@ -27,7 +29,9 @@ export class NavMenuComponent {
 
   displayButtons(){
     let curUser = this._localStorageService.getCurrentUserDetails()
-    this.display_AllUsers_Button = UserProfile.getValueFromString(curUser.userProfile) > UserProfile.NORMAL_USER
+    this.display_AllUsers_Button = UserProfile.getValueFromString(curUser.userProfile) > UserProfile.SUPER_USER
+    this.display_AllHardwares_Button = UserProfile.getValueFromString(curUser.userProfile) > UserProfile.SUPER_USER
+    this.display_ServerLogs_Button = UserProfile.getValueFromString(curUser.userProfile) > UserProfile.SUPER_USER
   }
 
   logout(){

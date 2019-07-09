@@ -8,12 +8,12 @@
     <mat-nav-list id="menulist" on-release="closeMenuOnSelect()">
       <a mat-list-item [routerLink] = "['./map']">Home</a>
       <a mat-list-item [routerLink] = "['./users']" *ngIf="display_AllUsers_Button">All users</a>
-      <a mat-list-item [routerLink] = "['./hardwares']">All Hardwares</a>
+      <a mat-list-item [routerLink] = "['./hardwares']" *ngIf="display_AllHardwares_Button">All Hardwares</a>
       <a mat-list-item [routerLink] = "['./obus']">All OBUs</a>
       <a mat-list-item [routerLink] = "['./configs']">All Configurations</a>
       <a mat-list-item [routerLink] = "['./testPlans']">All Test Plans</a>
       <a mat-list-item [routerLink] = "['./setups']">All Setups</a>
-      <a mat-list-item [routerLink] = "['./serverLogs']">Server Logs</a>
+      <a mat-list-item [routerLink] = "['./serverLogs']" *ngIf="display_ServerLogs_Button">Server Logs</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content id="nav-content">

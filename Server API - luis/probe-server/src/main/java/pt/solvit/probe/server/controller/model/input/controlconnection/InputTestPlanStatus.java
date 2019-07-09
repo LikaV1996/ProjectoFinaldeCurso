@@ -43,10 +43,10 @@ public class InputTestPlanStatus {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (id == null) {
-            throw new BadRequestException("Invalid testPlanStatus.", "Id is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid testPlanStatus.", "Id is null.", "/probs/testplan-null-params", "about:blank");
         }
         if (stateList == null) {
-            throw new BadRequestException("Invalid testPlanStatus.", "StateList is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid testPlanStatus.", "StateList is null.", "/probs/testplan-null-params", "about:blank");
         }
         for (InputTestPlanState curState : stateList) {
             curState.validate();

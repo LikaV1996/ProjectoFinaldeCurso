@@ -45,10 +45,10 @@ public class DownloadConfig {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (retryDelay == null) {
-            throw new BadRequestException("Invalid configuration.", "Download: retryDelay is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Download: retryDelay is null.", "/probs/downloadconfig-null-params", "about:blank");
         }
         if (maxRetries == null) {
-            throw new BadRequestException("Invalid configuration.", "Download: maxRetries is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Download: maxRetries is null.", "/probs/downloadconfig-null-params", "about:blank");
         }
     }
 }

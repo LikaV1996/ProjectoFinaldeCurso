@@ -16,15 +16,15 @@ import pt.solvit.probe.server.model.User;
  */
 public interface ITestPlanService {
 
-    public long createTestPlan(TestPlan testPlan);
+    public long createTestPlan(TestPlan testPlan, User loggedInUser);
 
     public TestPlan getTestPlan(long testPlanId);
 
     public List<TestPlan> getAllTestPlans();
 
-    public void deleteTestPlan(long testPlanId, User user);
+    public void deleteTestPlan(long testPlanId, User loggedInUser);
 
-    public void updateTestPlan(TestPlan testPlan);
+    public void updateTestPlan(TestPlan testPlan, User loggedInUser);
 
     public void verifyTestPlanOnUseCondition(long testPlanId);
 
@@ -33,11 +33,11 @@ public interface ITestPlanService {
 
     public List<ObuTestPlan> getAllObuTestPlans(long obuId);
 
-    public void addTestPlanToObu(long obuId, long testPlanId);
+    public void addTestPlanToObu(long obuId, long testPlanId, User loggedInUser);
 
-    public boolean cancelTestPlanFromObu(long obuId, long testPlanId);
+    public boolean cancelTestPlanFromObu(long obuId, long testPlanId, User loggedInUser);
 
-    public void removeTestPlanFromObu(long obuId, long testPlanId);
+    public void removeTestPlanFromObu(long obuId, long testPlanId, User loggedInUser);
 
-    public void removeAllTestPlansFromObu(long obuId);
+    public void removeAllTestPlansFromObu(long obuId, User loggedInUser);
 }

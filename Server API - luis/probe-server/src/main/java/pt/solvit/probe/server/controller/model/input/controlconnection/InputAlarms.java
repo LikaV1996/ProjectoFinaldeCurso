@@ -50,13 +50,13 @@ public class InputAlarms {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (critical == null) {
-            throw new BadRequestException("Invalid alarmCount.", "Critical is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid alarmCount.", "Critical is null.", "/probs/alarms-null-params", "about:blank");
         }
         if (major == null) {
-            throw new BadRequestException("Invalid alarmCount.", "Major is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid alarmCount.", "Major is null.", "/probs/alarms-null-params", "about:blank");
         }
         if (warning == null) {
-            throw new BadRequestException("Invalid alarmCount.", "Warning is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid alarmCount.", "Warning is null.", "/probs/alarms-null-params", "about:blank");
         }
     }
 }

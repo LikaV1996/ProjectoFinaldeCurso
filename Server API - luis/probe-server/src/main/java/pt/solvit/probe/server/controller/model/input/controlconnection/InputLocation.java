@@ -94,17 +94,17 @@ public class InputLocation {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (date == null) {
-            throw new BadRequestException("Invalid location.", "Date is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid location.", "Date is null.", "/probs/location-null-params", "about:blank");
         }
         if (DateUtil.getDateFromIsoString(date) == null) {
-            throw new BadRequestException("Invalid location.", "Date is not on ISO format.", "string", "about:blank");
+            throw new BadRequestException("Invalid location.", "Date is not on ISO format.", "/probs/location-invalide-date", "about:blank");
         }
         if (coordinates == null) {
-            throw new BadRequestException("Invalid location.", "Coordinates is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid location.", "Coordinates is null.", "/probs/location-null-params", "about:blank");
         }
         coordinates.validate();
         if (groundSpeed == null) {
-            throw new BadRequestException("Invalid location.", "GroundSpeed is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid location.", "GroundSpeed is null.", "/probs/location-null-params", "about:blank");
         }
     }
 }

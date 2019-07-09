@@ -49,7 +49,7 @@ public class SetupController implements ISetupController {
 
         body.validateForCreate();
         Setup setup = ControllerUtil.transformToSetup(body, user.getUserName());
-        long setupId = setupService.createSetup(setup);
+        long setupId = setupService.createSetup(setup, user);
 
 
         URI createdURI = UriBuilder.buildUri(AppConfiguration.URL_SETUP_ID, setupId);
@@ -76,7 +76,7 @@ public class SetupController implements ISetupController {
 
         updateSetup(body, setup, user.getUserName());
 
-        setupService.updateSetup(setup);
+        setupService.updateSetup(setup, user);
 
         setup = setupService.getSetup(setupId);
 

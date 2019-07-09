@@ -64,16 +64,16 @@ public class ArchiveConfig {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (expiration == null) {
-            throw new BadRequestException("Invalid configuration.", "Archive: expiration is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Archive: expiration is null.", "/probs/archiveconfig-null-params", "about:blank");
         }
         if (period == null) {
-            throw new BadRequestException("Invalid configuration.", "Archive: period is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Archive: period is null.", "/probs/archiveconfig-null-params", "about:blank");
         }
         if (referenceDate == null) {
-            throw new BadRequestException("Invalid configuration.", "Archive: referenceDate is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Archive: referenceDate is null.", "/probs/archiveconfig-null-params", "about:blank");
         }
         if (getReferenceLocalDateTime() == null) {
-            throw new BadRequestException("Invalid configuration.", "Archive: referenceDate is not on ISO format.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Archive: referenceDate is not on ISO format.", "/probs/archiveconfig-invalid-referencedate", "about:blank");
         }
     }
 }

@@ -149,29 +149,29 @@ public class InputTestPlan {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (testplanName == null) {
-            throw new BadRequestException("Invalid test plan.", "testplanName is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid test plan.", "testplanName is null.", "/probs/testplan-null-params", "about:blank");
         }
             if (startDate == null) {
-            throw new BadRequestException("Invalid test plan.", "StartDate is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid test plan.", "StartDate is null.", "/probs/testplan-null-params", "about:blank");
         }
         if (stopDate == null) {
-            throw new BadRequestException("Invalid test plan.", "StopDate is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid test plan.", "StopDate is null.", "/probs/testplan-null-params", "about:blank");
         }
         if (DateUtil.getDateFromIsoString(startDate) == null) {
-            throw new BadRequestException("Invalid test plan.", "StartDate is not on ISO format.", "string", "about:blank");
+            throw new BadRequestException("Invalid test plan.", "StartDate is not on ISO format.", "/probs/testplan-invalid-startdate", "about:blank");
         }
         if (DateUtil.getDateFromIsoString(stopDate) == null) {
-            throw new BadRequestException("Invalid test plan.", "StopDate is not on ISO format.", "string", "about:blank");
+            throw new BadRequestException("Invalid test plan.", "StopDate is not on ISO format.", "/probs/testplan-invalid-stopdate", "about:blank");
         }
         if (triggerCoordinates != null) {
             if (triggerCoordinates.size() != 2) {
-                throw new BadRequestException("Invalid test plan.", "TriggerCoordinates size is not 2.", "string", "about:blank");
+                throw new BadRequestException("Invalid test plan.", "TriggerCoordinates size is not 2.", "/probs/testplan-invalid-triggercoordinates", "about:blank");
             }
             for (InputCoordinates curCoordinates : triggerCoordinates) {
                 curCoordinates.validate();
             }
         } else if (period != null && getPeriod() == null) {
-            throw new BadRequestException("Invalid test plan.", "Invalid period.", "string", "about:blank");
+            throw new BadRequestException("Invalid test plan.", "Invalid period.", "/probs/testplan-invalid-period", "about:blank");
         }
         /*  //removed
         if (setups != null) {
@@ -184,7 +184,7 @@ public class InputTestPlan {
                 for (InputSetup curSetup2 : setups) {
                     if (i != j) {
                         if (curSetup1.getModemType().equals(curSetup2.getModemType())) {
-                            throw new BadRequestException("Invalid test plan.", "Different setups can not have same modemType.", "string", "about:blank");
+                            throw new BadRequestException("Invalid test plan.", "Different setups can not have same modemType.", "/probs/testplan-setup-rip", "about:blank");
                         }
                     }
                     j++;
@@ -194,7 +194,7 @@ public class InputTestPlan {
         }
         */
         if (redialTriggers != null && getRedialTriggers() == null) {
-            throw new BadRequestException("Invalid test plan.", "Invalid redialTriggers.", "string", "about:blank");
+            throw new BadRequestException("Invalid test plan.", "Invalid redialTriggers.", "/probs/testplan-invalid-redialtriggers", "about:blank");
         }
     }
 }

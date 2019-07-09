@@ -11,6 +11,6 @@ import pt.solvit.probe.server.service.exception.DomainException;
 public class NormalObuUserEditorException extends DomainException {
 
     public NormalObuUserEditorException(String username) {
-        super("Invalid operation.", "The user " + username + " is a normal user cannot be an editor of any OBUs.");
+        super("Invalid operation.", "The user " + username + " is a normal user and cannot be an editor of any OBUs.");
     }
 }

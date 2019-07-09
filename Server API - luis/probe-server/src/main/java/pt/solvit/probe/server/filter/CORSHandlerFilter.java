@@ -1,4 +1,4 @@
-package pt.solvit.probe.server.config;
+package pt.solvit.probe.server.filter;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class ErrorHandlerFilter implements Filter {
+public class CORSHandlerFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -25,10 +25,10 @@ public class ErrorHandlerFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
+        //response.setHeader("Access-Control-Max-Age", "3600");
+        //response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Headers", "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
-        if(request.getMethod().equals(HttpMethod.OPTIONS.name())){
+        if(request.getMethod().equals(HttpMethod.OPTIONS.name())) {
             response.setStatus(HttpStatus.NO_CONTENT.value());
         }else{
             chain.doFilter(req, res);

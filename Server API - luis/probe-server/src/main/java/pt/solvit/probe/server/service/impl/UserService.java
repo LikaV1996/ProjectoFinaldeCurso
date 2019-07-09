@@ -38,15 +38,11 @@ public class UserService implements IUserService {
 
     @Override
     public long createUser(InputUser input, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
 
         checkIfUserAlreadyExists(input.getUserName());
 
         User addUser = User.makeUserFromInput(input, loggedInUser.getUserName());
-
-        if( !checkUserPermissions(loggedInUser, UserProfile.ADMIN)
-                //&& !checkLoggedInUserPermissionsHigherThanUser(loggedInUser, addUser)
-        )
-            throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Creating new user");
         UserDao userDao = User.transformToUserDao(addUser);
@@ -55,9 +51,12 @@ public class UserService implements IUserService {
 
     @Override
     public void updateUser(User userToUpdate, InputUser input, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
 
+        /*
         if ( userToUpdate.getId().equals( loggedInUser.getId() ) )
             throw new SelfUpdateException();
+        */
 
         if( !checkLoggedInUserPermissionsHigherThanUser(loggedInUser, userToUpdate) )
             throw new PermissionException();
@@ -73,8 +72,7 @@ public class UserService implements IUserService {
 
     @Override
     public User getUser(long userId, User loggedInUser) {
-        if( !checkUserPermissions(loggedInUser, UserProfile.SUPER_USER) )
-            throw new PermissionException();
+        checkUserPermissions(loggedInUser);
 
         LOGGER.log(Level.INFO, "Finding user {0}", userId);
         UserDao userDao = userRepository.findById(userId);
@@ -84,8 +82,7 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> getAllUsers(User loggedInUser) {
-        if( !checkUserPermissions(loggedInUser, UserProfile.SUPER_USER) )
-            throw new PermissionException();
+        checkUserPermissions(loggedInUser);
 
         LOGGER.log(Level.INFO, "Finding all users");
         List<UserDao> userList = userRepository.findAll();
@@ -94,12 +91,10 @@ public class UserService implements IUserService {
 
     @Override
     public void deleteUser(long userId, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
 
         if ( userId == loggedInUser.getId() )
             throw new SelfUpdateException();
-
-        if( !checkUserPermissions(loggedInUser, UserProfile.ADMIN) )
-            throw new PermissionException();
 
         LOGGER.log(Level.INFO, "Checking if user {0} exists", userId);
         UserDao userDao = userRepository.findById(userId);
@@ -114,6 +109,7 @@ public class UserService implements IUserService {
 
     @Override
     public void suspendUser(User userToSuspend, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
 
         if ( userToSuspend.getId().equals( loggedInUser.getId() ) )
             throw new SelfUpdateException();
@@ -147,12 +143,12 @@ public class UserService implements IUserService {
         try {
             userDao = userRepository.findByName(values[0]);
         } catch (IncorrectResultSizeDataAccessException e) {
-            throw new UnauthorizedException("You are not authorized to make that request.", "Your credentials are invalid.", "string", "about:blank");
+            throw new UnauthorizedException("You are not authorized to make that request.", "Your credentials are invalid.", "/probs/user-rip", "about:blank");
         }
 
         LOGGER.log(Level.INFO, "Validating user credentials");
         if (!values[1].equals(userDao.getUserPassword())) {
-            throw new UnauthorizedException("You are not authorized to make that request.", "Your credentials are invalid.", "string", "about:blank");
+            throw new UnauthorizedException("You are not authorized to make that request.", "Your credentials are invalid.", "/probs/user-rip", "about:blank");
         }
         LOGGER.log(Level.INFO, "Authentication completed");
 
@@ -191,5 +187,9 @@ public class UserService implements IUserService {
     }
 
 
+    private void checkUserPermissions(User loggedInUser) {
+        if( !checkUserPermissions(loggedInUser, UserProfile.ADMIN) )
+            throw new PermissionException();
+    }
 
 }

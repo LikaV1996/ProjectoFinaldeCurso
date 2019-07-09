@@ -48,7 +48,7 @@ public class ConfigurationController implements IConfigurationController {
 
         body.validate();
         Config config = Config.makeConfigFromInput(body, user.getUserName());
-        long configId = configService.createConfig(config);
+        long configId = configService.createConfig(config, user);
 
         config = configService.getConfig(configId);
 
@@ -106,7 +106,9 @@ public class ConfigurationController implements IConfigurationController {
     @Override
     public ResponseEntity<Void> removeAllConfigsFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId) {
 
-        configService.removeAllConfigsFromObu(obuId);
+        User user = (User) request.getAttribute("user");
+
+        configService.removeAllConfigsFromObu(obuId, user);
 
 
         return ResponseEntity.ok().build();
@@ -115,8 +117,9 @@ public class ConfigurationController implements IConfigurationController {
     @Override
     public ResponseEntity<Void> addConfigToObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId) {
 
-        //TODO which users can add configs? EDITORS? VIEWERS?
-        configService.addConfigToObu(obuId, configId);
+        User user = (User) request.getAttribute("user");
+
+        configService.addConfigToObu(obuId, configId, user);
 
 
         return ResponseEntity.ok().build();
@@ -137,7 +140,7 @@ public class ConfigurationController implements IConfigurationController {
 
         User user = (User) request.getAttribute("user");
 
-        boolean result = configService.cancelConfigFromObu(obuId, configId);
+        boolean result = configService.cancelConfigFromObu(obuId, configId, user);
 
 
         return !result ? ResponseEntity.accepted().build() : ResponseEntity.ok().build();
@@ -147,7 +150,9 @@ public class ConfigurationController implements IConfigurationController {
     @Override
     public ResponseEntity<Void> removeConfigFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId) {
 
-        configService.removeConfigFromObu(obuId, configId);
+        User user = (User) request.getAttribute("user");
+
+        configService.removeConfigFromObu(obuId, configId, user);
 
         return ResponseEntity.ok().build();
     }

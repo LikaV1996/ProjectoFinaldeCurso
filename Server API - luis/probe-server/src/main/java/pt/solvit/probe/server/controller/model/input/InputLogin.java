@@ -49,10 +49,10 @@ public class InputLogin {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (username == null) {
-            throw new BadRequestException("Invalid login.", "Username is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid login.", "Username is null.", "/probs/login-null-params", "about:blank");
         }
         if (password == null) {
-            throw new BadRequestException("Invalid login.", "Password is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid login.", "Password is null.", "/probs/login-null-params", "about:blank");
         }
     }
 }

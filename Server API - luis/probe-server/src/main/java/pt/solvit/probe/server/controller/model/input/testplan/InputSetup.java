@@ -71,13 +71,13 @@ public class InputSetup {
     @ApiModelProperty(hidden = true)
     public void validateForCreate() {
         if(setupName == null){
-            throw new BadRequestException("Invalid setup.", "SetupName is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid setup.", "SetupName is null.", "/probs/setup-null-params", "about:blank");
         }
         if (modemType == null) {
-            throw new BadRequestException("Invalid setup.", "ModemType is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid setup.", "ModemType is null.", "/probs/setup-null-params", "about:blank");
         }
         if (getModemType() == null) {
-            throw new BadRequestException("Invalid setup.", "Invalid modemType.", "string", "about:blank");
+            throw new BadRequestException("Invalid setup.", "Invalid modemType.", "/probs/setup-invalid-modemtype", "about:blank");
         }
         if (scanning != null) {
             scanning.validate();
@@ -90,11 +90,11 @@ public class InputSetup {
     @ApiModelProperty(hidden = true)
     public void validateForUpdate() {
         if(setupName == null && modemType == null && scanning == null && tests == null){
-            throw new BadRequestException("Invalid setup.", "No fields to update.", "string", "about:blank");
+            throw new BadRequestException("Invalid setup.", "No fields to update.", "/probs/setup-null-params", "about:blank");
         }
         if (modemType != null) {
             if (getModemType() == null) {
-                throw new BadRequestException("Invalid setup.", "Invalid modemType.", "string", "about:blank");
+                throw new BadRequestException("Invalid setup.", "Invalid modemType.", "/probs/setup-invalid-modemtype", "about:blank");
             }
         }
         if (scanning != null) {
@@ -115,7 +115,7 @@ public class InputSetup {
             for (InputTest curTest2 : tests) {
                 if (i != j) {
                     if (curTest1.getIndex() == curTest2.getIndex()) {
-                        throw new BadRequestException("Invalid setup.", "Different tests can not have the same index.", "string", "about:blank");
+                        throw new BadRequestException("Invalid setup.", "Different tests can not have the same index.", "/probs/setup-invalid-tests-index", "about:blank");
                     }
                 }
                 j++;

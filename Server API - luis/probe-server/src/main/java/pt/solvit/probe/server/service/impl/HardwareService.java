@@ -42,25 +42,33 @@ public class HardwareService implements IHardwareService {
     private IHardwareRepository hardwareRepository;
 
     @Override
-    public long createHardware(Hardware hardware) {
+    public long createHardware(Hardware hardware, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Creating new hardware");
         return hardwareRepository.add(Hardware.transformToHardwareDao(hardware));
     }
 
     @Override
-    public Hardware getHardware(long hardwareId) {
+    public Hardware getHardware(long hardwareId, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Finding hardware {0}", hardwareId);
         return HardwareDao.transformToHardware(hardwareRepository.findById(hardwareId));
     }
 
     @Override
-    public Hardware getHardware(String serialNumber) {
+    public Hardware getHardware(String serialNumber, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Finding hardware {0}", serialNumber);
         return HardwareDao.transformToHardware(hardwareRepository.findBySerialNumber(serialNumber));
     }
 
     @Override
-    public List<Hardware> getAllHardware() {
+    public List<Hardware> getAllHardware(User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Finding all hardware");
         List<HardwareDao> hardwareDaoList = hardwareRepository.findAll();
         return ServiceUtil.map(hardwareDaoList, HardwareDao::transformToHardware);
@@ -68,12 +76,11 @@ public class HardwareService implements IHardwareService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void deleteHardware(long hardwareId, User user) {
+    public void deleteHardware(long hardwareId, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Checking if hardware {0} exists", hardwareId);
         HardwareDao hardwareDao = hardwareRepository.findById(hardwareId);
-
-        if ( ! userService.checkUserPermissions(user, UserProfile.ADMIN))
-            throw new PermissionException();
 
         verifyHardwareOnUseCondition(hardwareId);
 
@@ -82,7 +89,9 @@ public class HardwareService implements IHardwareService {
     }
 
     @Override
-    public long updateHardware(Hardware hardware) {
+    public long updateHardware(Hardware hardware, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Updating hardware");
         return hardwareRepository.updateByID(Hardware.transformToHardwareDao(hardware));
     }
@@ -97,5 +106,9 @@ public class HardwareService implements IHardwareService {
 
 
 
+    private void checkUserPermissions(User loggedInUser) {
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
+    }
 
 }

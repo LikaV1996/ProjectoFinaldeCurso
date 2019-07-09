@@ -78,7 +78,7 @@ public class InputControlConnection {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (currentConfigId == null) {
-            throw new BadRequestException("Invalid controlConnection.", "CurrentConfigId is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid controlConnection.", "CurrentConfigId is null.", "/probs/controlconnection-null-params", "about:blank");
         }
         if (configList != null) {
             for (InputConfigStatus curStatus : configList) {
@@ -91,7 +91,7 @@ public class InputControlConnection {
             }
         }
         if (status == null) {
-            throw new BadRequestException("Invalid controlConnection.", "Status is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid controlConnection.", "Status is null.", "/probs/controlconnection-null-params", "about:blank");
         }
         status.validate();
     }

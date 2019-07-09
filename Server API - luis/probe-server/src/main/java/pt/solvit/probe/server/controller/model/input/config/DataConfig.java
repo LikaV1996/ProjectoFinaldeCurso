@@ -35,7 +35,7 @@ public class DataConfig {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (defaultMessage == null) {
-            throw new BadRequestException("Invalid configuration.", "Data: defaultMessage is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Data: defaultMessage is null.", "/probs/dataconfig-null-params", "about:blank");
         }
     }
 }

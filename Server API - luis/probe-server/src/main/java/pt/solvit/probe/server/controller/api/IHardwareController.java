@@ -42,7 +42,7 @@ public interface IHardwareController {
             value = AppConfiguration.URL_HARDWARE, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<Hardware>> getAllHardware(HttpServletRequest request);
+    public ResponseEntity<List<Hardware>> getAllHardwares(HttpServletRequest request);
 
     @ApiOperation(value = "Creates a hardware", tags = {"Hardware",})
     @ApiResponses(

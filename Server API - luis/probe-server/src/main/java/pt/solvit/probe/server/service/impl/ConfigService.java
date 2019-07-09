@@ -52,7 +52,9 @@ public class ConfigService implements IConfigService {
     private IObuConfigRepository obuConfigRepository;
 
     @Override
-    public long createConfig(Config config) {
+    public long createConfig(Config config, User loggedInUser) {
+        checkUserPermissions(loggedInUser);
+
         LOGGER.log(Level.INFO, "Creating new configuration");
         return configRepository.add(Config.transformToConfigDao(config));
     }
@@ -76,8 +78,12 @@ public class ConfigService implements IConfigService {
         LOGGER.log(Level.INFO, "Checking if configuration {0} exists", configId);
         ConfigDao configDao = configRepository.findById(configId);
 
-        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
-            userOwnsConfig(configDao, loggedInUser);
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ) {    //not admin
+            if ( userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER) ) { //but is super_user
+                userOwnsConfig(configDao, loggedInUser);
+            }
+            else throw new PermissionException();
+        }
 
         verifyConfigOnUseCondition(configId);
 
@@ -89,8 +95,13 @@ public class ConfigService implements IConfigService {
     public void updateConfig(Config config, User loggedInUser) {
         LOGGER.log(Level.INFO, "Updating configuration {0}", config.getId());
 
-        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
-            throw new PermissionException();
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ) {    //not admin
+            if ( userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER) ) { //but is super_user
+                userOwnsConfig(Config.transformToConfigDao(config), loggedInUser);
+            }
+            else throw new PermissionException();
+        }
+
 
         configRepository.update(Config.transformToConfigDao(config));
     }
@@ -110,10 +121,12 @@ public class ConfigService implements IConfigService {
     }
 
     @Override
-    public void addConfigToObu(long obuId, long configId) {
+    public void addConfigToObu(long obuId, long configId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Checking if obu {0} exists", obuId);
 
-        //TODO
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
+
         obuRepository.findById(obuId, null);
 
         LOGGER.log(Level.INFO, "Checking if configuration {0} exists", configId);
@@ -129,7 +142,11 @@ public class ConfigService implements IConfigService {
     }
 
     @Override
-    public boolean cancelConfigFromObu(long obuId, long configId) {
+    public boolean cancelConfigFromObu(long obuId, long configId, User loggedInUser) {
+
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
+
         ObuConfig obuConfig = getObuConfig(obuId, configId);
 
         LOGGER.log(Level.INFO, "Canceling configuration {0} from obu {1}", new String[]{String.valueOf(configId), String.valueOf(obuId)});
@@ -149,21 +166,36 @@ public class ConfigService implements IConfigService {
     }
 
     @Override
-    public void removeConfigFromObu(long obuId, long configId) {
+    public void removeConfigFromObu(long obuId, long configId, User loggedInUser) {
+
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
+
         ObuConfig obuConfig = getObuConfig(obuId, configId);
 
         LOGGER.log(Level.INFO, "Removing configuration {0} from obu {1}", new String[]{String.valueOf(configId), String.valueOf(obuId)});
         if (obuConfig.getStateList() != null) { //If configuration was already downloaded
-            throw new BadRequestException("Invalid operation.", "Configuration has already been downloaded by obu.", "string", "about:blank");
+            throw new BadRequestException("Invalid operation.", "Configuration has already been downloaded by obu.", "/probs/config-already-downloaded", "about:blank");
         }
         obuConfigRepository.removeConfigFromObu(obuId, configId);
     }
 
     @Override
-    public void removeAllConfigsFromObu(long obuId) {
+    public void removeAllConfigsFromObu(long obuId, User loggedInUser) {
+
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+            throw new PermissionException();
+
         LOGGER.log(Level.INFO, "Removing all configurations from obu {0}", obuId);
         obuConfigRepository.removeAllConfigsFromObu(obuId);
     }
+
+
+
+
+
+
+
 
     private void updateObuConfig(ObuConfig obuConfig) {
         LOGGER.log(Level.FINE, "Updating ObuConfig");
@@ -177,6 +209,7 @@ public class ConfigService implements IConfigService {
             throw new EntityOnUseException(EntityType.CONFIG);
         }
     }
+
 
     private void userOwnsConfig(ConfigDao configDao, User user) {
         LOGGER.log(Level.INFO, "Checking if user {0} owns configuration {1}", new String[]{user.getUserName(), String.valueOf(configDao.getId())});
@@ -197,5 +230,10 @@ public class ConfigService implements IConfigService {
         ObuConfigProperties properties = GSON.fromJson(obuConfigDao.getProperties(), ObuConfigProperties.class);
 
         return new ObuConfig(obuConfigDao.getObuId(), obuConfigDao.getConfigId(), properties.getCancelState(), properties.getStateList(), config);
+    }
+
+    private void checkUserPermissions(User loggedInUser) {
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
+            throw new PermissionException();
     }
 }

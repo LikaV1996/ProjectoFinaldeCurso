@@ -67,9 +67,9 @@ public class AuthenticationRepository implements IAuthenticationRepository {
 
             return jdbcTemplate.queryForObject(SELECT_BY_USERNAME_AND_PASSWORD, new BeanPropertyRowMapper<>(UserDao.class), userName, password);
 
-        } catch (EmptyResultDataAccessException ex){
-            if (ex.getExpectedSize() == 1 && ex.getActualSize() == 0){
-                throw new BadRequestException("Invalid credentials.", "User credentials are wrong", "string", "invalid-login");
+        } catch (EmptyResultDataAccessException ex) {
+            if (ex.getExpectedSize() == 1 && ex.getActualSize() == 0) {
+                throw new BadRequestException("Invalid credentials.", "User credentials are wrong", "/probs/invalid-login-credentials", "about:blank");
             }
             throw ex;
         }

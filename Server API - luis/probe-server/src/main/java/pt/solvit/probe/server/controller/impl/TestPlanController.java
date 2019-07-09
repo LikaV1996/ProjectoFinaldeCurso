@@ -54,7 +54,7 @@ public class TestPlanController implements ITestPlanController {
 
         body.validate();
         TestPlan testPlan = ControllerUtil.transformToTestPlan(body, user.getUserName());
-        long testPlanId = testPlanService.createTestPlan(testPlan);
+        long testPlanId = testPlanService.createTestPlan(testPlan, user);
 
         testPlan = testPlanService.getTestPlan(testPlanId);
 
@@ -83,7 +83,7 @@ public class TestPlanController implements ITestPlanController {
 
         updateTestPlan(body, testPlan, user.getUserName());
 
-        testPlanService.updateTestPlan(testPlan);
+        testPlanService.updateTestPlan(testPlan, user);
 
         testPlan = testPlanService.getTestPlan(testPlanId);
 
@@ -115,8 +115,9 @@ public class TestPlanController implements ITestPlanController {
     @Override
     public ResponseEntity<Void> removeAllSetupsFromTestPlan(HttpServletRequest request, @PathVariable("test-plan-id") long testPlanId) {
 
+        User user = (User) request.getAttribute("user");
 
-        setupService.removeAllSetupsFromTestPlan(testPlanId);
+        setupService.removeAllSetupsFromTestPlan(testPlanId, user);
 
 
         return ResponseEntity.ok().build();
@@ -125,8 +126,9 @@ public class TestPlanController implements ITestPlanController {
     @Override
     public ResponseEntity<Void> addSetupToTestPlan(HttpServletRequest request, @PathVariable("test-plan-id") long testPlanId, @PathVariable("setup-id") long setupId) {
 
+        User user = (User) request.getAttribute("user");
 
-        setupService.addSetupToTestPlan(testPlanId, setupId);
+        setupService.addSetupToTestPlan(testPlanId, setupId, user);
 
 
         return ResponseEntity.ok().build();
@@ -145,8 +147,9 @@ public class TestPlanController implements ITestPlanController {
     @Override
     public ResponseEntity<Void> removeSetupFromTestPlan(HttpServletRequest request, @PathVariable("test-plan-id") long testPlanId, @PathVariable("setup-id") long setupId) {
 
+        User user = (User) request.getAttribute("user");
 
-        setupService.removeSetupFromTestPlan(testPlanId, setupId);
+        setupService.removeSetupFromTestPlan(testPlanId, setupId, user);
 
 
         return ResponseEntity.ok().build();
@@ -165,8 +168,9 @@ public class TestPlanController implements ITestPlanController {
     @Override
     public ResponseEntity<Void> removelAllTestPlansFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId) {
 
+        User user = (User) request.getAttribute("user");
 
-        testPlanService.removeAllTestPlansFromObu(obuId);
+        testPlanService.removeAllTestPlansFromObu(obuId, user);
 
 
         return ResponseEntity.ok().build();
@@ -176,9 +180,9 @@ public class TestPlanController implements ITestPlanController {
     public ResponseEntity<Void> addTestPlanToObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("test-plan-id") long testPlanId) {
 
 
-        //TODO which users can add testplans? EDITORS? VIEWERS?
+        User user = (User) request.getAttribute("user");
 
-        testPlanService.addTestPlanToObu(obuId, testPlanId);
+        testPlanService.addTestPlanToObu(obuId, testPlanId, user);
 
 
         return ResponseEntity.ok().build();
@@ -197,8 +201,9 @@ public class TestPlanController implements ITestPlanController {
     @Override
     public ResponseEntity<Void> cancelTestPlanFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("test-plan-id") long testPlanId) {
 
+        User user = (User) request.getAttribute("user");
 
-        boolean result = testPlanService.cancelTestPlanFromObu(obuId, testPlanId);
+        boolean result = testPlanService.cancelTestPlanFromObu(obuId, testPlanId, user);
 
 
         return !result ? ResponseEntity.accepted().build() : ResponseEntity.ok().build();
@@ -207,8 +212,9 @@ public class TestPlanController implements ITestPlanController {
     @Override
     public ResponseEntity<Void> removeTestPlanFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("test-plan-id") long testPlanId) {
 
+        User user = (User) request.getAttribute("user");
 
-        testPlanService.removeTestPlanFromObu(obuId, testPlanId);
+        testPlanService.removeTestPlanFromObu(obuId, testPlanId, user);
 
 
         return ResponseEntity.ok().build();

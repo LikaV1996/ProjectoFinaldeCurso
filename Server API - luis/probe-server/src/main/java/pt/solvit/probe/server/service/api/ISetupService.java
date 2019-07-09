@@ -15,24 +15,24 @@ import pt.solvit.probe.server.model.User;
  */
 public interface ISetupService {
 
-    public long createSetup(Setup setup);
+    public long createSetup(Setup setup, User loggedInUser);
 
     public Setup getSetup(long setupId);
 
     public List<Setup> getAllSetups();
 
-    public void updateSetup(Setup setup);
+    public void updateSetup(Setup setup, User loggedInUser);
 
-    public void deleteSetup(long setupId, User user);
+    public void deleteSetup(long setupId, User loggedInUser);
 
     //Test Plan Setup    
     public Setup getTestPlanSetup(long testPlanId, long setupId);
 
     public List<Setup> getAllTestPlanSetups(long testPlanId);
 
-    public void addSetupToTestPlan(long testPlanId, long setupId);
+    public void addSetupToTestPlan(long testPlanId, long setupId, User loggedInUser);
 
-    public void removeSetupFromTestPlan(long testPlanId, long setupId);
+    public void removeSetupFromTestPlan(long testPlanId, long setupId, User loggedInUser);
 
-    public void removeAllSetupsFromTestPlan(long testPlanId);
+    public void removeAllSetupsFromTestPlan(long testPlanId, User loggedInUser);
 }

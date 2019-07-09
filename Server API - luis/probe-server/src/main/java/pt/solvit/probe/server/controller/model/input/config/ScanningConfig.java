@@ -90,25 +90,25 @@ public class ScanningConfig {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (enableMonitor == null) {
-            throw new BadRequestException("Invalid configuration.", "Scanning: enableMonitor is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Scanning: enableMonitor is null.", "/probs/scanningconfig-null-params", "about:blank");
         }
         if (sampleTime == null) {
-            throw new BadRequestException("Invalid configuration.", "Scanning: sampleTime is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Scanning: sampleTime is null.", "/probs/scanningconfig-null-params", "about:blank");
         }
         if (enableCsq == null) {
-            throw new BadRequestException("Invalid configuration.", "Scanning: enableCsq is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Scanning: enableCsq is null.", "/probs/scanningconfig-null-params", "about:blank");
         }
         if (enableMoni == null) {
-            throw new BadRequestException("Invalid configuration.", "Scanning: enableMoni is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Scanning: enableMoni is null.", "/probs/scanningconfig-null-params", "about:blank");
         }
         if (enableMonp == null) {
-            throw new BadRequestException("Invalid configuration.", "Scanning: enableMonp is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Scanning: enableMonp is null.", "/probs/scanningconfig-null-params", "about:blank");
         }
         if (enableSmond == null) {
-            throw new BadRequestException("Invalid configuration.", "Scanning: enableSmond is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Scanning: enableSmond is null.", "/probs/scanningconfig-null-params", "about:blank");
         }
         if (enableSmonc == null) {
-            throw new BadRequestException("Invalid configuration.", "Scanning: enableSmonc is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid configuration.", "Scanning: enableSmonc is null.", "/probs/scanningconfig-null-params", "about:blank");
         }
     }
 }

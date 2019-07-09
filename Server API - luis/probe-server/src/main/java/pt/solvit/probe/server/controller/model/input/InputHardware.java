@@ -43,7 +43,7 @@ public class InputHardware {
     @ApiModelProperty(hidden = true)
     public void validate() {
         if (serialNumber == null) {
-            throw new BadRequestException("Invalid hardware.", "SerialNumber is null.", "string", "about:blank");
+            throw new BadRequestException("Invalid hardware.", "SerialNumber is null.", "/probs/hardware-null-params", "about:blank");
         }
         if (components != null) {
             for (InputComponent curComponent : components) {

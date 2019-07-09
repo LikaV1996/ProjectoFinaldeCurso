@@ -35,15 +35,19 @@ public class HardwareRepository implements IHardwareRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    private static final String INSERT_POSTGRES = "INSERT INTO Hardware (serial_number, properties, creator, creation_date) VALUES (?, cast(? as jsonb), ?, ?) RETURNING id";
-    private static final String INSERT_MYSQL = "INSERT INTO Hardware (serial_number, properties, creator, creation_date) VALUES (?, ?, ?, ?);";
-    private static final String SELECT_BY_ID = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate, modifier, modified_date AS modifiedDate FROM Hardware WHERE id = ?;";
-    private static final String SELECT_BY_SERIAL_NUMBER = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate, modifier, modified_date AS modifiedDate FROM Hardware WHERE serial_number = ?;";
-    private static final String SELECT_ALL = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate, modifier, modified_date AS modifiedDate FROM Hardware;";
+    private static final String INSERT_BASE = "INSERT INTO Hardware (serial_number, properties, creator, creation_date) VALUES";
+    private static final String INSERT_POSTGRES = INSERT_BASE + " (?, cast(? as jsonb), ?, ?) RETURNING id";
+    private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?);";
+
+    private static final String SELECT_ALL = "SELECT id, serial_number as serialNumber, properties, creator, creation_date as creationDate, modifier, modified_date AS modifiedDate FROM Hardware";
+    private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?;";
+    private static final String SELECT_BY_SERIAL_NUMBER = " WHERE serial_number = ?;";
     private static final String UPDATE_POSTGRES = "UPDATE Hardware SET serial_number = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ? RETURNING id;";
     private static final String UPDATE_MYSQL = "UPDATE Hardware SET serial_number = ?, properties = cast(? as jsonb), modifier = ?, modified_date = CURRENT_TIMESTAMP WHERE id = ?;";
-    private static final String DELETE_BY_ID = "DELETE FROM Hardware WHERE id = ?;";
-    private static final String DELETE_ALL = "DELETE FROM Hardware;";
+
+    private static final String DELETE_ALL = "DELETE FROM Hardware";
+    private static final String DELETE_BY_ID = DELETE_ALL + " WHERE id = ?;";
+
 
     public HardwareRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -98,9 +102,10 @@ public class HardwareRepository implements IHardwareRepository {
     @Override
     public long updateByID(HardwareDao hardwareDao) {
         if (appConfiguration.datasourceDriverClassName.contains("postgresql")) {
-            return jdbcTemplate.queryForObject(UPDATE_POSTGRES, Long.class, hardwareDao.getSerialNumber(), hardwareDao.getProperties(), hardwareDao.getId());
+            return jdbcTemplate.queryForObject(UPDATE_POSTGRES, Long.class, hardwareDao.getSerialNumber(), hardwareDao.getProperties(), hardwareDao.getModifier(), hardwareDao.getId());
         }
 
+        //throw new Exception("not implemented exception");
         String rip = "not implemented exception";
         return -1;
     }

@@ -259,7 +259,7 @@ public class FileService implements IFileService {
 
 
     private void checkUserPermissions(User loggedInUser) {
-        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
+        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.NORMAL_USER))
             throw new PermissionException();
     }
 }

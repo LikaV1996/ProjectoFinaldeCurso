@@ -161,6 +161,8 @@ public class SetupService implements ISetupService {
 
         testPlanService.getTestPlan(testPlanId);
 
+        getSetup(setupId);
+
         testPlanService.verifyTestPlanOnUseCondition(testPlanId);
 
         LOGGER.log(Level.INFO, "Checking if setup {0} is already associated to  test plan {1}", new String[]{String.valueOf(setupId), String.valueOf(testPlanId)});
@@ -181,7 +183,7 @@ public class SetupService implements ISetupService {
         if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
             throw new PermissionException();
 
-        getTestPlanSetup(testPlanId, setupId);
+        //getTestPlanSetup(testPlanId, setupId);
 
         testPlanService.verifyTestPlanOnUseCondition(testPlanId);
 

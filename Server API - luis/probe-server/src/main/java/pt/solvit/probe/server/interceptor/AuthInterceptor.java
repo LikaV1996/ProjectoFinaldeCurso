@@ -54,7 +54,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
 
         if (user.getSuspended())
-            throw new ForbiddenException("User suspended.", "This user is suspended.", "/probs/user-suspended", "about:blank");
+            throw new ForbiddenException("User suspended.", "You are suspended.", "/probs/user-suspended", "about:blank");
 
         return user;
     }

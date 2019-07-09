@@ -42,18 +42,12 @@ public class ObuUserService implements IObuUserService {
 
     @Override
     public long createObuUserRegistry(ObuUser obuUser, User loggedInUser) {
-        LOGGER.log(Level.INFO, "Creating new obu_user registry.");
-
-        /*  //old check
-        //check permissions
-        if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
-            throw new PermissionException();
-        */
-
-        checkIfObuUserRegistryAlreadyExists(obuUser);
 
         checkIfObuUserCanBeCreatedOrUpdated(obuUser, loggedInUser);
 
+        checkIfObuUserRegistryAlreadyExists(obuUser);
+
+        LOGGER.log(Level.INFO, "Creating new obu_user registry.");
         return obuUserRepository.add(ObuUser.transformToObuUserDao(obuUser));
     }
 
@@ -225,7 +219,11 @@ public class ObuUserService implements IObuUserService {
         if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) )
             throw new PermissionException();
 
+        //will throw permission exception if loggedInUser profile is <= to obu_user ID
         User userToCheck = userService.getUser(obuUser.getUserID(), loggedInUser);
+
+        if (userService.checkUserPermissions(userToCheck, UserProfile.ADMIN))
+            throw new AdminNeedsNoRegistryException(userToCheck.getUserName());
 
         //if normal_user
         if ( ! userService.checkUserPermissions(userToCheck, UserProfile.SUPER_USER))

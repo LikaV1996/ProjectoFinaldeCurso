@@ -119,7 +119,7 @@ public class TestPlanService implements ITestPlanService {
             else throw new PermissionException();
         }
 
-        verifyTestPlanOnUseCondition(testPlanId);
+        verifyTestPlanOnUseCondition(testPlanId, loggedInUser);
 
         LOGGER.log(Level.INFO, "Deleting test plan {0}", testPlanId);
         testPlanRepository.deleteById(testPlanId);
@@ -140,25 +140,34 @@ public class TestPlanService implements ITestPlanService {
     }
 
     @Override
-    public void verifyTestPlanOnUseCondition(long testPlanId) {
+    public void verifyTestPlanOnUseCondition(long testPlanId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Checking if test plan is associated to any obu");
-        List<ObuTestPlanDao> obuTestPlanList = obuTestPlanRepository.findByTestPlanId(testPlanId);
+
+        Long userID = getUserIdIfNotAdmin(loggedInUser);
+
+        List<ObuTestPlanDao> obuTestPlanList = obuTestPlanRepository.findByTestPlanId(testPlanId, userID);
         if (!obuTestPlanList.isEmpty()) {
             throw new EntityOnUseException(EntityType.TESTPLAN);
         }
     }
 
     @Override
-    public ObuTestPlan getObuTestPlan(long obuId, long testPlanId) {
+    public ObuTestPlan getObuTestPlan(long obuId, long testPlanId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Finding test plan {0} from obu {1}", new String[]{String.valueOf(testPlanId), String.valueOf(obuId)});
-        ObuTestPlanDao obuTestPlan = obuTestPlanRepository.findById(obuId, testPlanId);
+
+        Long userID = getUserIdIfNotAdmin(loggedInUser);
+
+        ObuTestPlanDao obuTestPlan = obuTestPlanRepository.findById(obuId, testPlanId, userID);
         return transformToObuTestPlan(obuTestPlan);
     }
 
     @Override
-    public List<ObuTestPlan> getAllObuTestPlans(long obuId) {
+    public List<ObuTestPlan> getAllObuTestPlans(long obuId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Finding all configurations from obu {0}", obuId);
-        List<ObuTestPlanDao> obuTestPlanList = obuTestPlanRepository.findByObuId(obuId);
+
+        Long userID = getUserIdIfNotAdmin(loggedInUser);
+
+        List<ObuTestPlanDao> obuTestPlanList = obuTestPlanRepository.findByObuId(obuId, userID);
         return ServiceUtil.map(obuTestPlanList, this::transformToObuTestPlan);
     }
 
@@ -191,7 +200,7 @@ public class TestPlanService implements ITestPlanService {
             throw new PermissionException();
         }
 
-        ObuTestPlan obuTestPlan = getObuTestPlan(obuId, testPlanId);
+        ObuTestPlan obuTestPlan = getObuTestPlan(obuId, testPlanId, loggedInUser);
 
         LOGGER.log(Level.INFO, "Canceling test plan {0} from obu {1}", new String[]{String.valueOf(testPlanId), String.valueOf(obuId)});
         if (obuTestPlan.getStateList() == null) { //If test plan was not downloaded >> Canceled
@@ -217,7 +226,7 @@ public class TestPlanService implements ITestPlanService {
             throw new PermissionException();
         }
 
-        ObuTestPlan obuTestPlan = getObuTestPlan(obuId, testPlanId);
+        ObuTestPlan obuTestPlan = getObuTestPlan(obuId, testPlanId, loggedInUser);
 
         LOGGER.log(Level.INFO, "Removing test plan {0} from obu {1}", new String[]{String.valueOf(testPlanId), String.valueOf(obuId)});
         if (obuTestPlan.getStateList() != null) {//If test plan was already downloaded
@@ -288,5 +297,9 @@ public class TestPlanService implements ITestPlanService {
     private void checkUserPermissions(User loggedInUser) {
         if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
             throw new PermissionException();
+    }
+
+    private Long getUserIdIfNotAdmin(User loggedInUser){
+        return userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ? null : loggedInUser.getId();
     }
 }

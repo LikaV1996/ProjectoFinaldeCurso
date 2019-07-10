@@ -163,7 +163,7 @@ public class SetupService implements ISetupService {
 
         getSetup(setupId);
 
-        testPlanService.verifyTestPlanOnUseCondition(testPlanId);
+        testPlanService.verifyTestPlanOnUseCondition(testPlanId, loggedInUser);
 
         LOGGER.log(Level.INFO, "Checking if setup {0} is already associated to  test plan {1}", new String[]{String.valueOf(setupId), String.valueOf(testPlanId)});
         try {
@@ -185,7 +185,7 @@ public class SetupService implements ISetupService {
 
         //getTestPlanSetup(testPlanId, setupId);
 
-        testPlanService.verifyTestPlanOnUseCondition(testPlanId);
+        testPlanService.verifyTestPlanOnUseCondition(testPlanId, loggedInUser);
 
         LOGGER.log(Level.INFO, "Removing setup {0} from test plan {1}", new String[]{String.valueOf(setupId), String.valueOf(testPlanId)});
         testPlanSetupRepository.deleteById(testPlanId, setupId);
@@ -199,7 +199,7 @@ public class SetupService implements ISetupService {
 
         testPlanService.getTestPlan(testPlanId);
 
-        testPlanService.verifyTestPlanOnUseCondition(testPlanId);
+        testPlanService.verifyTestPlanOnUseCondition(testPlanId, loggedInUser);
 
         LOGGER.log(Level.INFO, "Removing all setups from test plan {0}", testPlanId);
         testPlanSetupRepository.deleteAllByTestPlanId(testPlanId);

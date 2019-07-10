@@ -158,8 +158,9 @@ public class TestPlanController implements ITestPlanController {
     @Override
     public ResponseEntity<List<ObuTestPlan>> getAllTestPlansFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId) {
 
+        User user = (User) request.getAttribute("user");
 
-        List<ObuTestPlan> obuTestPlanList = testPlanService.getAllObuTestPlans(obuId);
+        List<ObuTestPlan> obuTestPlanList = testPlanService.getAllObuTestPlans(obuId, user);
 
 
         return ResponseEntity.ok(obuTestPlanList);
@@ -191,8 +192,9 @@ public class TestPlanController implements ITestPlanController {
     @Override
     public ResponseEntity<ObuTestPlan> getTestPlanFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("test-plan-id") long testPlanId) {
 
+        User user = (User) request.getAttribute("user");
 
-        ObuTestPlan obuTestPlan = testPlanService.getObuTestPlan(obuId, testPlanId);
+        ObuTestPlan obuTestPlan = testPlanService.getObuTestPlan(obuId, testPlanId, user);
 
 
         return ResponseEntity.ok(obuTestPlan);

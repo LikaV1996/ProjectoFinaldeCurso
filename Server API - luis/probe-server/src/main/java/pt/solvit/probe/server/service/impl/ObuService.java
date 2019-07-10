@@ -123,14 +123,14 @@ public class ObuService implements IObuService {
         }
         */
 
-        
+        Long userID = getUserIdIfNotAdmin(loggedInUser);
 
         //check if obu has config
-        if ( ! obuConfigRepository.findByObuId(obuId).isEmpty())
+        if ( ! obuConfigRepository.findByObuId(obuId, userID).isEmpty())
             throw new ObuHasConfigException();
 
         //check if obu has testplans
-        if ( ! obuTestPlanRepository.findByObuId(obuId).isEmpty())
+        if ( ! obuTestPlanRepository.findByObuId(obuId, userID).isEmpty())
             throw new ObuHasTestPlanException();
 
         //obu not READY
@@ -165,4 +165,5 @@ public class ObuService implements IObuService {
         if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
             throw new PermissionException();
     }
+
 }

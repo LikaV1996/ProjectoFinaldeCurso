@@ -15,11 +15,11 @@ import pt.solvit.probe.server.repository.model.ObuStatusDao;
  */
 public interface IObuStatusRepository {
 
-    public List<ObuStatusDao> findByObuId(long obuId);
+    public List<ObuStatusDao> findByObuId(long obuId, Long userID);
 
-    public List<ObuStatusDao> findIntervalByObuId(long obuId, Timestamp endDateTS, Timestamp startDateTS);
+    public List<ObuStatusDao> findIntervalByObuId(long obuId, Timestamp endDateTS, Timestamp startDateTS, Long userID);
 
-    public ObuStatusDao findLastByObuId(long obuId);
+    public ObuStatusDao findLastByObuId(long obuId, Long userID);
 
     public long add(ObuStatusDao obuStatusDao);
 }

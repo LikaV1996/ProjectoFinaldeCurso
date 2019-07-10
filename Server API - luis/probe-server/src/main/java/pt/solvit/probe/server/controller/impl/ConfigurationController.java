@@ -96,8 +96,9 @@ public class ConfigurationController implements IConfigurationController {
     @Override
     public ResponseEntity<List<ObuConfig>> getAllConfigsFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId) {
 
+        User user = (User) request.getAttribute("user");
 
-        List<ObuConfig> obuConfigList = configService.getAllObuConfigs(obuId);
+        List<ObuConfig> obuConfigList = configService.getAllObuConfigs(obuId, user);
 
 
         return ResponseEntity.ok(obuConfigList);
@@ -128,8 +129,9 @@ public class ConfigurationController implements IConfigurationController {
     @Override
     public ResponseEntity<ObuConfig> getConfigFromObu(HttpServletRequest request, @PathVariable("obu-id") long obuId, @PathVariable("config-id") long configId) {
 
+        User user = (User) request.getAttribute("user");
 
-        ObuConfig obuConfig = configService.getObuConfig(obuId, configId);
+        ObuConfig obuConfig = configService.getObuConfig(obuId, configId, user);
 
 
         return ResponseEntity.ok(obuConfig);

@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import pt.solvit.probe.server.controller.api.IStatusController;
+import pt.solvit.probe.server.model.User;
 import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.service.api.IObuStatusService;
 
@@ -48,7 +49,9 @@ public class StatusController implements IStatusController {
             @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateLDT
         ) {
 
-        List<ObuStatus> obuStatusList = obuStatusService.getAllObuStatus(obuId, endDateLDT, startDateLDT);
+        User user = (User) request.getAttribute("user");
+
+        List<ObuStatus> obuStatusList = obuStatusService.getAllObuStatus(obuId, endDateLDT, startDateLDT, user);
 
         return ResponseEntity.ok().body(obuStatusList);
 

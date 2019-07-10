@@ -14,13 +14,13 @@ import pt.solvit.probe.server.repository.model.ObuTestPlanDao;
  */
 public interface IObuTestPlanRepository {
 
-    public ObuTestPlanDao findById(long obuId, long testPlanId);
+    public ObuTestPlanDao findById(long obuId, long testPlanId, Long userID);
 
-    public List<ObuTestPlanDao> findAll();
+    public List<ObuTestPlanDao> findAll(Long userID);
 
-    public List<ObuTestPlanDao> findByObuId(long obuId);
+    public List<ObuTestPlanDao> findByObuId(long obuId, Long userID);
 
-    public List<ObuTestPlanDao> findByTestPlanId(long testPlanId);
+    public List<ObuTestPlanDao> findByTestPlanId(long testPlanId, Long userID);
 
     public int add(ObuTestPlanDao obuTestPlanDao);
 

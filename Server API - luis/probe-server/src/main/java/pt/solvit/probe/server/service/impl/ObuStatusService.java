@@ -15,13 +15,13 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.solvit.probe.server.controller.model.input.controlconnection.NetworkInterface;
-import pt.solvit.probe.server.model.Alarms;
-import pt.solvit.probe.server.model.Location;
-import pt.solvit.probe.server.model.ObuStatus;
-import pt.solvit.probe.server.model.Storage;
+import pt.solvit.probe.server.model.*;
+import pt.solvit.probe.server.model.enums.UserProfile;
 import pt.solvit.probe.server.model.properties.LocationProperties;
 import pt.solvit.probe.server.repository.model.ObuStatusDao;
 import static pt.solvit.probe.server.util.ServerUtil.GSON;
+
+import pt.solvit.probe.server.service.api.IUserService;
 import pt.solvit.probe.server.service.impl.util.ServiceUtil;
 import pt.solvit.probe.server.repository.api.IObuStatusRepository;
 import pt.solvit.probe.server.service.api.IObuStatusService;
@@ -36,23 +36,32 @@ public class ObuStatusService implements IObuStatusService {
     private static final Logger LOGGER = Logger.getLogger(ObuStatusService.class.getName());
     @Autowired
     private IObuStatusRepository obuStatusRepository;
+    @Autowired
+    private IUserService userService;
 
     @Override
-    public List<ObuStatus> getAllObuStatus(long obuId, LocalDateTime endDateLDT, LocalDateTime startDateLDT) {
+    public List<ObuStatus> getAllObuStatus(long obuId, LocalDateTime endDateLDT, LocalDateTime startDateLDT, User loggedInUser) {
         LOGGER.log(Level.INFO, "Finding all status from obu {0}", obuId);
+
+        Long userID = getUserIdIfNotAdmin(loggedInUser);
+
         List<ObuStatusDao> obuStatusDaoList;
         obuStatusDaoList = obuStatusRepository.findIntervalByObuId(
                 obuId,
                 endDateLDT != null ? Timestamp.valueOf(endDateLDT) : null,
-                startDateLDT != null ? Timestamp.valueOf(startDateLDT) : null
+                startDateLDT != null ? Timestamp.valueOf(startDateLDT) : null,
+                userID
         );
         return ServiceUtil.map(obuStatusDaoList, this::transformToObuStatus);
     }
 
     @Override
-    public List<Location> getAllObuLocations(long obuId) {
+    public List<Location> getAllObuLocations(long obuId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Finding all status from obu {0}", obuId);
-        List<ObuStatusDao> obuStatusDaoList = obuStatusRepository.findByObuId(obuId);
+
+        Long userID = getUserIdIfNotAdmin(loggedInUser);
+
+        List<ObuStatusDao> obuStatusDaoList = obuStatusRepository.findByObuId(obuId, userID);
         List<ObuStatusDao> obuStatusDaoList_valid = new ArrayList();
         for (ObuStatusDao curObuStatusDao: obuStatusDaoList){
             if ( !(curObuStatusDao.getLat()==0.0 || curObuStatusDao.getLat()==null) ){
@@ -63,9 +72,12 @@ public class ObuStatusService implements IObuStatusService {
     }
 
     @Override
-    public ObuStatus getLastObuStatus(long obuId) {
+    public ObuStatus getLastObuStatus(long obuId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Finding last status from obu {0}", obuId);
-        ObuStatusDao obuStatusDao = obuStatusRepository.findLastByObuId(obuId);
+
+        Long userID = getUserIdIfNotAdmin(loggedInUser);
+
+        ObuStatusDao obuStatusDao = obuStatusRepository.findLastByObuId(obuId, userID);
         return transformToObuStatus(obuStatusDao);
     }
 
@@ -105,5 +117,9 @@ public class ObuStatusService implements IObuStatusService {
                         locationProperties.getHeightAboveEllipsoid(), locationProperties.getHeightAboveMSL(), obuStatusDao.getSpeed(),
                         locationProperties.getHeading(), locationProperties.getGpsFix()
                 );
+    }
+
+    private Long getUserIdIfNotAdmin(User loggedInUser){
+        return userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ? null : loggedInUser.getId();
     }
 }

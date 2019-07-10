@@ -26,12 +26,12 @@ public interface ITestPlanService {
 
     public void updateTestPlan(TestPlan testPlan, User loggedInUser);
 
-    public void verifyTestPlanOnUseCondition(long testPlanId);
+    public void verifyTestPlanOnUseCondition(long testPlanId, User loggedInUser);
 
     //Obu Test Plan
-    public ObuTestPlan getObuTestPlan(long obuId, long testPlanId);
+    public ObuTestPlan getObuTestPlan(long obuId, long testPlanId, User loggedInUser);
 
-    public List<ObuTestPlan> getAllObuTestPlans(long obuId);
+    public List<ObuTestPlan> getAllObuTestPlans(long obuId, User loggedInUser);
 
     public void addTestPlanToObu(long obuId, long testPlanId, User loggedInUser);
 

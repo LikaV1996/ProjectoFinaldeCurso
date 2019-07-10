@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import pt.solvit.probe.server.model.Location;
 import pt.solvit.probe.server.model.ObuStatus;
+import pt.solvit.probe.server.model.User;
 
 /**
  *
@@ -16,9 +17,9 @@ import pt.solvit.probe.server.model.ObuStatus;
  */
 public interface IObuStatusService {
 
-    public List<ObuStatus> getAllObuStatus(long obuId, LocalDateTime endDateLDT, LocalDateTime startDateLDT);
+    public List<ObuStatus> getAllObuStatus(long obuId, LocalDateTime endDateLDT, LocalDateTime startDateLDT, User loggedInUser);
 
-    public List<Location> getAllObuLocations(long obuId);
+    public List<Location> getAllObuLocations(long obuId, User loggedInUser);
 
-    public ObuStatus getLastObuStatus(long obuId);
+    public ObuStatus getLastObuStatus(long obuId, User loggedInUser);
 }

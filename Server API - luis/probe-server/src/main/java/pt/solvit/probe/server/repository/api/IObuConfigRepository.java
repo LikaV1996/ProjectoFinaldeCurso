@@ -14,13 +14,13 @@ import pt.solvit.probe.server.repository.model.ObuConfigDao;
  */
 public interface IObuConfigRepository {
 
-    public ObuConfigDao findById(long obuId, long configId);
+    public ObuConfigDao findById(long obuId, long configId, Long userID);
 
-    public List<ObuConfigDao> findAll();
+    public List<ObuConfigDao> findAll(Long userID);
 
-    public List<ObuConfigDao> findByObuId(long obuId);
+    public List<ObuConfigDao> findByObuId(long obuId, Long userID);
 
-    public List<ObuConfigDao> findByConfigId(long configId);
+    public List<ObuConfigDao> findByConfigId(long configId, Long userID);
 
     public int addConfigToObu(ObuConfigDao obuConfigDao);
 

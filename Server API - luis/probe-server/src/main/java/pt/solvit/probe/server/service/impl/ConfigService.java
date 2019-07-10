@@ -85,7 +85,7 @@ public class ConfigService implements IConfigService {
             else throw new PermissionException();
         }
 
-        verifyConfigOnUseCondition(configId);
+        verifyConfigOnUseCondition(configId, loggedInUser);
 
         LOGGER.log(Level.INFO, "Deleting configuration {0}", configId);
         configRepository.deleteById(configId);
@@ -107,16 +107,22 @@ public class ConfigService implements IConfigService {
     }
 
     @Override
-    public ObuConfig getObuConfig(long obuId, long configId) {
+    public ObuConfig getObuConfig(long obuId, long configId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Finding configuration {0} from obu {1}", new String[]{String.valueOf(configId), String.valueOf(obuId)});
-        ObuConfigDao obuConfigDao = obuConfigRepository.findById(obuId, configId);
+
+        Long userID = getUserIdIfNotAdmin(loggedInUser);
+
+        ObuConfigDao obuConfigDao = obuConfigRepository.findById(obuId, configId, userID);
         return transformToObuConfig(obuConfigDao);
     }
 
     @Override
-    public List<ObuConfig> getAllObuConfigs(long obuId) {
+    public List<ObuConfig> getAllObuConfigs(long obuId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Finding all configurations from obu {0}", obuId);
-        List<ObuConfigDao> obuConfigDaoList = obuConfigRepository.findByObuId(obuId);
+
+        Long userID = getUserIdIfNotAdmin(loggedInUser);
+
+        List<ObuConfigDao> obuConfigDaoList = obuConfigRepository.findByObuId(obuId, userID);
         return ServiceUtil.map(obuConfigDaoList, this::transformToObuConfig);
     }
 
@@ -147,7 +153,7 @@ public class ConfigService implements IConfigService {
         if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
             throw new PermissionException();
 
-        ObuConfig obuConfig = getObuConfig(obuId, configId);
+        ObuConfig obuConfig = getObuConfig(obuId, configId, loggedInUser);
 
         LOGGER.log(Level.INFO, "Canceling configuration {0} from obu {1}", new String[]{String.valueOf(configId), String.valueOf(obuId)});
         if (obuConfig.getStateList() == null) { //If configuration was not downloaded >> Canceled
@@ -171,7 +177,7 @@ public class ConfigService implements IConfigService {
         if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN))
             throw new PermissionException();
 
-        ObuConfig obuConfig = getObuConfig(obuId, configId);
+        ObuConfig obuConfig = getObuConfig(obuId, configId, loggedInUser);
 
         LOGGER.log(Level.INFO, "Removing configuration {0} from obu {1}", new String[]{String.valueOf(configId), String.valueOf(obuId)});
         if (obuConfig.getStateList() != null) { //If configuration was already downloaded
@@ -202,9 +208,12 @@ public class ConfigService implements IConfigService {
         obuConfigRepository.update(transformToObuConfigDao(obuConfig));
     }
 
-    private void verifyConfigOnUseCondition(long configId) {
+    private void verifyConfigOnUseCondition(long configId, User loggedInUser) {
         LOGGER.log(Level.INFO, "Checking if configuration {0} is associated to any obu", configId);
-        List<ObuConfigDao> obuConfigDaoList = obuConfigRepository.findByConfigId(configId);
+
+        Long userID = getUserIdIfNotAdmin(loggedInUser);
+
+        List<ObuConfigDao> obuConfigDaoList = obuConfigRepository.findByConfigId(configId, userID);
         if (!obuConfigDaoList.isEmpty()) {
             throw new EntityOnUseException(EntityType.CONFIG);
         }
@@ -235,5 +244,9 @@ public class ConfigService implements IConfigService {
     private void checkUserPermissions(User loggedInUser) {
         if ( ! userService.checkUserPermissions(loggedInUser, UserProfile.SUPER_USER))
             throw new PermissionException();
+    }
+
+    private Long getUserIdIfNotAdmin(User loggedInUser){
+        return userService.checkUserPermissions(loggedInUser, UserProfile.ADMIN) ? null : loggedInUser.getId();
     }
 }

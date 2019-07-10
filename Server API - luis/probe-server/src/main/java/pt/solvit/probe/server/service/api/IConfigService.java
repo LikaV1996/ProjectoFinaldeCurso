@@ -27,9 +27,9 @@ public interface IConfigService {
     public void updateConfig(Config config, User loggedInUser);
 
     //Obu Configuration
-    public ObuConfig getObuConfig(long obuId, long configId);
+    public ObuConfig getObuConfig(long obuId, long configId, User loggedInUser);
 
-    public List<ObuConfig> getAllObuConfigs(long obuId);
+    public List<ObuConfig> getAllObuConfigs(long obuId, User loggedInUser);
 
     public void addConfigToObu(long obuId, long configId, User loggedInUser);
 

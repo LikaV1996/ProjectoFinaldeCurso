@@ -39,8 +39,9 @@ public class ObuStatusRepository implements IObuStatusRepository {
     private static final String INSERT_BASE = "INSERT INTO ObuStatus (obu_id, status_date, latitude, longitude, speed, location_properties, usable_storage, free_storage, critical_alarms, major_alarms, warning_alarms, temperature, network_interfaces)";
     private static final String INSERT_POSTGRES = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, cast(? as jsonb), ?, ?, ?, ?, ?, ?, cast(? as jsonb)) RETURNING id;";
     private static final String INSERT_MYSQL = INSERT_BASE + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private static final String SELECT_ALL = "SELECT id, obu_id AS obuId, status_date AS statusDate, latitude AS lat, longitude AS lon, speed, location_properties AS locationProperties, usable_storage AS usableStorage, free_storage AS freeStorage, critical_alarms AS criticalAlarms, major_alarms AS majorAlarms, warning_alarms AS warningAlarms, temperature, network_interfaces AS networkInterfaces FROM ObuStatus AS OS";
-    private static final String INNERJOIN_USER_OBU = " INNER JOIN Probeuser_OBU AS PO ON OS.obu_id = PO.obu_id WHERE PO.probeuser_id = ?";
+
+    private static final String SELECT_ALL = "SELECT id, OS.obu_id AS obuId, status_date AS statusDate, latitude AS lat, longitude AS lon, speed, location_properties AS locationProperties, usable_storage AS usableStorage, free_storage AS freeStorage, critical_alarms AS criticalAlarms, major_alarms AS majorAlarms, warning_alarms AS warningAlarms, temperature, network_interfaces AS networkInterfaces FROM ObuStatus AS OS";
+    private static final String SELECT_ALL_INNERJOIN_PROBEUSER_OBU = SELECT_ALL + " INNER JOIN Probeuser_OBU AS PO ON OS.obu_id = PO.obu_id";
 
     private static final String ORDER_BY_STATUSDATE = " ORDER BY status_date DESC";
 
@@ -53,10 +54,10 @@ public class ObuStatusRepository implements IObuStatusRepository {
     }
 
 
-    private String makeFilteredObuStatusQuery(long obuId, Timestamp endDateTS, Timestamp startDateTS, boolean lastPosition) {
-        String SELECT_INTERVAL_BY_OBU_ID = SELECT_ALL;
+    private String makeFilteredObuStatusQuery(long obuId, Timestamp endDateTS, Timestamp startDateTS, boolean lastPosition, Long userID) {
+        String SELECT_INTERVAL_BY_OBU_ID = userID != null ? SELECT_ALL_INNERJOIN_PROBEUSER_OBU : SELECT_ALL;
 
-        SELECT_INTERVAL_BY_OBU_ID += " WHERE obu_id = " + obuId;
+        SELECT_INTERVAL_BY_OBU_ID += " WHERE " + (userID != null ? "PO.probeuser_id = " + userID + " AND " : "") + "OS.obu_id = " + obuId;
 
         if (endDateTS != null)  SELECT_INTERVAL_BY_OBU_ID += " AND status_date <= " + "'"+endDateTS.toString()+"'";
         if(startDateTS != null) SELECT_INTERVAL_BY_OBU_ID += " AND status_date >= " + "'"+startDateTS.toString()+"'";
@@ -70,8 +71,8 @@ public class ObuStatusRepository implements IObuStatusRepository {
 
 
     @Override
-    public List<ObuStatusDao> findByObuId(long obuId) {
-        return this.findIntervalByObuId(obuId, null, null);
+    public List<ObuStatusDao> findByObuId(long obuId, Long userID) {
+        return this.findIntervalByObuId(obuId, null, null, userID);
         /*
         try{
             return jdbcTemplate.query(makeFilteredObuStatusQuery(obuId, null, null), new BeanPropertyRowMapper<>(ObuStatusDao.class));
@@ -82,17 +83,17 @@ public class ObuStatusRepository implements IObuStatusRepository {
     }
 
     @Override
-    public List<ObuStatusDao> findIntervalByObuId(long obuId, Timestamp endDateLDT, Timestamp startDateLDT) {
+    public List<ObuStatusDao> findIntervalByObuId(long obuId, Timestamp endDateLDT, Timestamp startDateLDT, Long userID) {
         try{
-            return jdbcTemplate.query(makeFilteredObuStatusQuery(obuId, endDateLDT, startDateLDT, false), new BeanPropertyRowMapper<>(ObuStatusDao.class));
+            return jdbcTemplate.query(makeFilteredObuStatusQuery(obuId, endDateLDT, startDateLDT, false, userID), new BeanPropertyRowMapper<>(ObuStatusDao.class));
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new EntityWithIdNotFoundException(EntityType.OBU);
         }
     }
 
     @Override
-    public ObuStatusDao findLastByObuId(long obuId) {
-        return jdbcTemplate.queryForObject(makeFilteredObuStatusQuery(obuId, null, null, true), new BeanPropertyRowMapper<>(ObuStatusDao.class));
+    public ObuStatusDao findLastByObuId(long obuId, Long userID) {
+        return jdbcTemplate.queryForObject(makeFilteredObuStatusQuery(obuId, null, null, true, userID), new BeanPropertyRowMapper<>(ObuStatusDao.class));
     }
 
     @Transactional()

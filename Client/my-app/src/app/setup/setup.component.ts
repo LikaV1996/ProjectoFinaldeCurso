@@ -38,7 +38,7 @@ export class SetupComponent implements OnInit {
   }
   
   canCreateSetup() : boolean{
-    return UserProfile.getValueFromString(this.user.userProfile) >= UserProfile.ADMIN
+    return UserProfile.getValueFromString(this.user.userProfile) >= UserProfile.SUPER_USER
   }
 
   createSetup(){

@@ -61,7 +61,7 @@
     
     <div style="margin-top:30px;">
             <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
-            <div class="ui suspend button" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
+            <div class="ui suspend button" *ngIf="user.userProfile=='ADMIN' || setup.creator == user.userName" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
     </div>
     
 </div>

@@ -28,7 +28,7 @@ export class OBUComponent implements OnInit {
 
   ngOnInit() {
     this.user = this._localStorage.getCurrentUserDetails()
-
+    
     this._obuService.getOBUs()
     .subscribe(obus => {
       this.obus = obus

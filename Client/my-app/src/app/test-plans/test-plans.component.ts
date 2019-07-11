@@ -38,7 +38,7 @@ export class TestPlansComponent implements OnInit {
   }
   
   canCreateTestPlan() : boolean{
-    return UserProfile.getValueFromString(this.user.userProfile) >= UserProfile.ADMIN
+    return UserProfile.getValueFromString(this.user.userProfile) >= UserProfile.SUPER_USER
   }
 
   createTestPlan(){

@@ -6,6 +6,8 @@ import { Config } from '../Model/Config';
 import {ActivatedRoute} from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { debug } from 'util';
+import { User } from '../Model/User';
+import { LocalStorageService } from '../_services/localStorage.service';
 
 @Component({
   selector: 'app-configuration-detail',
@@ -16,19 +18,22 @@ export class ConfigurationDetailComponent implements OnInit {
   @Input() config: Config;
 
   private id: number;
-
+  private user : User;
+  
   constructor(
     private router: Router,
     private _configService: ConfigService,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private _location: Location
+    private _location: Location,
+    private _localStorage: LocalStorageService
   ) { }
 
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
-    
+    this.user = this._localStorage.getCurrentUserDetails()
+
     this._configService.getConfigById(this.id).subscribe(config => {
       this.config = config
     })

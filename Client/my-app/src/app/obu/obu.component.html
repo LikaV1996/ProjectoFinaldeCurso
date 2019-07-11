@@ -30,7 +30,7 @@
                   <button mat-menu-item [routerLink] = "['../obu/'+obu.id+'/edit']" data-tooltip="Edit OBU">Edit OBU / Details</button>
                   <button mat-menu-item [routerLink] = "['../obu/'+obu.id+'/testLogs']">Test Logs</button>
                   <button mat-menu-item [routerLink] = "['../obu/'+obu.id+'/sysLogs']">System Logs</button>
-                  <button mat-menu-item (click)="delete(obu.id)">Delete OBU</button>
+                  <button mat-menu-item *ngIf="user.userProfile == 'ADMIN'" (click)="delete(obu.id)">Delete OBU</button>
                 </mat-menu>
               
             </div>
@@ -46,7 +46,7 @@
           <div class="one wide column"></div>
           <div class="one wide column"></div>
           <div class="four wide right aligned column">
-            <div class="ui blue fluid button" (click)="createObu()">Create New OBU</div>
+            <div class="ui blue fluid button" *ngIf="user.userProfile == 'ADMIN'" (click)="createObu()">Create New OBU</div>
           </div>
       </div>
       

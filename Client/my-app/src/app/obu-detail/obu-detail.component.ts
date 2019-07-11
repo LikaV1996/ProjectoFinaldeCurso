@@ -15,6 +15,8 @@ import { TestPlan } from '../Model/TestPlan';
 import { TestPlanService } from '../_services/test-plans.service';
 import { OBUHasTestPlanService } from '../_services/obuHasTestPlan.service';
 import { OBUHasTestPlan } from '../Model/OBUHasTestPlan';
+import { User } from '../Model/User';
+import { LocalStorageService } from '../_services/localStorage.service';
 
 @Component({
   selector: 'app-obu-detail',
@@ -31,6 +33,7 @@ export class ObuDetailComponent implements OnInit {
   private testPlans: TestPlan[];
   private obu_has_configs: OBUHasConfig[];
   private obu_has_testplans: OBUHasTestPlan[];
+  private user : User;
 
   private configToAddId: number;
   private testPlanToAddId: number;
@@ -45,12 +48,14 @@ export class ObuDetailComponent implements OnInit {
     private _obuHasTestPlanService: OBUHasTestPlanService,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private _location: Location
+    private _location: Location,
+    private _localStorage: LocalStorageService
   ) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
-    
+    this.user = this._localStorage.getCurrentUserDetails()
+
     this._obuService.getOBUByID(this.id).subscribe(obu => {
       this.obu = obu
 

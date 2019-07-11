@@ -70,14 +70,14 @@
                   <div class="four wide column">{{testPlanSetup.setupName}}</div>
                   <div class="eight wide column">{{testPlanSetup.modemType}}</div>      
                   <div class="four wide right aligned column">
-                      <div class="ui suspend button" (click)="deleteSetup(testPlan.id,testPlanSetup.id)" data-tooltip="Delete Setup From Test Plan">Delete</div>
+                      <div class="ui suspend button" *ngIf="user.userProfile=='ADMIN' || testPlan.creator == user.userName" (click)="deleteSetup(testPlan.id,testPlanSetup.id)" data-tooltip="Delete Setup From Test Plan">Delete</div>
                   </div>
               </div>
           </div>
   
           <p></p>
   
-          <div><b>Setups: </b>
+          <div *ngIf="user.userProfile=='ADMIN' || testPlan.creator == user.userName"><b>Setups: </b>
               <mat-form-field>
               <select matNativeControl required [(ngModel)]="setupToAddId">
                   <option value="">Choose Setup</option>
@@ -85,7 +85,7 @@
               </select>
               </mat-form-field>
           </div>
-          <button class="ui primary button" (click)="addSetupToTestPlan(testPlan.id,setupToAddId)" data-tooltip="Add Setup To Test Plan"> Add Setup</button>
+          <button class="ui primary button" *ngIf="user.userProfile=='ADMIN' || testPlan.creator == user.userName" (click)="addSetupToTestPlan(testPlan.id,setupToAddId)" data-tooltip="Add Setup To Test Plan"> Add Setup</button>
           
       </div>
   
@@ -95,7 +95,7 @@
     
     <div style="margin-top:30px;">
             <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
-            <div class="ui suspend button" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
+            <div class="ui suspend button" *ngIf="user.userProfile=='ADMIN' || testPlan.creator == user.userName" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
     </div>
     
 </div>

@@ -9,7 +9,8 @@ import { TestPlanHasSetupService } from '../_services/test-plansHasSetup.service
 import { TestPlanHasSetup } from '../Model/TestPlanHasSetup';
 import { SetupService } from '../_services/setup.service';
 import { Setup } from '../Model/Setup';
-
+import { User } from '../Model/User';
+import { LocalStorageService } from '../_services/localStorage.service';
 
 @Component({
   selector: 'app-test-plans-detail',
@@ -23,6 +24,7 @@ export class TestPlansDetailComponent implements OnInit {
   private test_plan_has_setup: TestPlanHasSetup[];
   private setups: Setup[];
   private setupToAddId: number;
+  private user : User;
 
   constructor(
     private router: Router,
@@ -31,11 +33,13 @@ export class TestPlansDetailComponent implements OnInit {
     private http: HttpClient,
     private _location: Location,
     private _testPlanHasSetupService: TestPlanHasSetupService,
-    private _setupService: SetupService
+    private _setupService: SetupService,
+    private _localStorage: LocalStorageService
   ) { }
   
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
+    this.user = this._localStorage.getCurrentUserDetails()
     
     this._testPlanService.getTestPlanByID(this.id).subscribe(testplan => {
       this.testPlan = testplan

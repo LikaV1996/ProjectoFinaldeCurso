@@ -89,14 +89,14 @@
                 <div *ngIf="obuConfigs.config.activationDate != null" class="eight wide column">{{obuConfigs.config.activationDate}}</div>      
                 <!--<div class="four wide column"></div>-->
                 <div class="four wide right aligned column">
-                    <div class="ui suspend button" (click)="deleteConfig(obu.id,obuConfigs.config.id)" data-tooltip="Delete Config From OBU">Delete</div>
+                    <div class="ui suspend button" *ngIf="user.userProfile=='ADMIN'" (click)="deleteConfig(obu.id,obuConfigs.config.id)" data-tooltip="Delete Config From OBU">Delete</div>
                 </div>
             </div>
         </div>
 
         <p></p>
 
-        <div><b>Configurations: </b>
+        <div *ngIf="user.userProfile=='ADMIN'" ><b>Configurations: </b>
             <mat-form-field>
             <select matNativeControl required [(ngModel)]="configToAddId">
                 <option value="">Choose Configuration</option>
@@ -104,7 +104,7 @@
             </select>
             </mat-form-field>
         </div>
-        <button class="ui primary button" (click)="addConfigToObu(configToAddId)" data-tooltip="Add Configuration To OBU"> Add Config</button>
+        <button class="ui primary button" *ngIf="user.userProfile=='ADMIN'" (click)="addConfigToObu(configToAddId)" data-tooltip="Add Configuration To OBU"> Add Config</button>
         
     </div>
 
@@ -126,7 +126,7 @@
     
             <p></p>
     
-            <div><b>Test Plans: </b>
+            <div *ngIf="user.userProfile=='ADMIN'"><b>Test Plans: </b>
                 <mat-form-field>
                 <select matNativeControl required [(ngModel)]="testPlanToAddId">
                     <option value="">Choose Test Plan</option>
@@ -134,7 +134,7 @@
                 </select>
                 </mat-form-field>
             </div>
-            <button class="ui primary button" (click)="addTestPlanToObu(testPlanToAddId)" data-tooltip="Add Test Plan To OBU"> Add Test Plan</button>
+            <button class="ui primary button" *ngIf="user.userProfile=='ADMIN'" (click)="addTestPlanToObu(testPlanToAddId)" data-tooltip="Add Test Plan To OBU"> Add Test Plan</button>
             
         </div>
 
@@ -243,7 +243,7 @@
 
 <div style="margin-top:30px;">
         <div class="ui suspend button" (click)="goBack()" data-tooltip="Go back">Go Back</div>
-        <div class="ui suspend button" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
+        <div class="ui suspend button" *ngIf="user.userProfile=='ADMIN'" (click)="saveChanges()" data-tooltip="Save Changes">Save</div>
 </div>
 
 </div>

@@ -33,7 +33,7 @@ export class ConfigurationComponent implements OnInit {
   }
 
   canCreateConfig() : boolean{
-    return UserProfile.getValueFromString(this.user.userProfile) >= UserProfile.ADMIN
+    return UserProfile.getValueFromString(this.user.userProfile) >= UserProfile.SUPER_USER
   }
 
   

@@ -48,7 +48,7 @@ export class HomemapComponent implements OnInit {
         this.obus = obus
         this.orderById()
         this.obus.forEach(obu => { //Em cada OBU, fazer o pedido das localizaçoes
-          this._obuService.getPositionFromOBU(obu.id,null,null).subscribe( obuStatus =>{
+          this._obuService.getStatusFromOBU(obu.id,null,null).subscribe( obuStatus =>{
             if(obuStatus.length != 0){//Caso a OBU nao tenha a obuStatus
               var aux = new Positions()
               aux.obuId = obu.id
@@ -153,7 +153,7 @@ export class HomemapComponent implements OnInit {
 
     await Promise.all(
       this.obus.map(obu =>  //Em cada OBU, fazer o pedido das localizaçoes
-        this._obuService.getPositionFromOBU(obu.id,this.startDate,this.endDate).toPromise().then( obuStatus =>{
+        this._obuService.getStatusFromOBU(obu.id,this.startDate,this.endDate).toPromise().then( obuStatus =>{
           if(obuStatus.length != 0){//Caso a OBU nao tenha a obuStatus
             var aux = new Positions()
             aux.obuId = obu.id

@@ -42,7 +42,7 @@ public class StatusController implements IStatusController {
     private IUserService userService;
 
     @Override
-    public ResponseEntity<List<ObuStatus>> getObuPosition(
+    public ResponseEntity<List<ObuStatus>> getObuStatus(
             HttpServletRequest request,
             @PathVariable("obu-id") long obuId,
             @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateLDT,

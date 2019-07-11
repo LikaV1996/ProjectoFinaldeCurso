@@ -29,20 +29,20 @@ import java.util.List;
  */
 public interface IStatusController {
 
-    @ApiOperation(value = "Returns obu position", tags = {"Obu Status",})
+    @ApiOperation(value = "Returns obu status", tags = {"Obu Status",})
     @ApiResponses(
             value = {
-                @ApiResponse(code = 200, message = "Representation of obu position."),
+                @ApiResponse(code = 200, message = "Representation of obu status."),
                 @ApiResponse(code = 400, message = "Invalid input. A description of the error will be in the returned JSON."),
                 @ApiResponse(code = 401, message = "There was an error with authentication.")
             }
     )
     @RequestMapping(
             method = RequestMethod.GET,
-            value = AppConfiguration.URL_OBU_POSITION, 
+            value = AppConfiguration.URL_OBU_STATUS,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<ObuStatus>> getObuPosition(
+    public ResponseEntity<List<ObuStatus>> getObuStatus(
             HttpServletRequest request,
             @PathVariable("obu-id") long obuId,
             @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateStr,

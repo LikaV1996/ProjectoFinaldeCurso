@@ -45,14 +45,14 @@ export class OBUService {
     })
   }
 
-  getPositionFromOBU(id: number, startDate: Date, endDate: Date): Observable<OBUStatus[]>{
+  getStatusFromOBU(id: number, startDate: Date, endDate: Date): Observable<OBUStatus[]>{
     let params = new HttpParams()
     
     if(endDate) params = params.append("endDate", endDate.toISOString())
     if(startDate) params = params.append("startDate", startDate.toISOString())
     //debugger
-    const getPositionFromOBUByIDUrl = routes.getPositionFromOBU.replace(":id", id.toString());
-    return this.http.get<OBUStatus[]>(getPositionFromOBUByIDUrl, {params: ((endDate || startDate) ? params : null) })
+    const getStatusFromOBUByIDUrl = routes.getStatusFromOBU.replace(":id", id.toString());
+    return this.http.get<OBUStatus[]>(getStatusFromOBUByIDUrl, {params: ((endDate || startDate) ? params : null) })
   }
 
   deleteOBUByID(id: number) {

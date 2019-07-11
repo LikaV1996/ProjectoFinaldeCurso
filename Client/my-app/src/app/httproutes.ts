@@ -29,7 +29,7 @@ export class Routes{
     getOBUByID = this.basePath + "/obu/:id";
     createObu = this.basePath + "/obu";
     updateObu = this.basePath + "/obu/:id";
-    getPositionFromOBU = this.basePath + "/obu/:id/position";
+    getStatusFromOBU = this.basePath + "/obu/:id/status";
     deleteOBU = this.basePath + "/obu/:id";
 
     getConfigs = this.basePath + "/config";

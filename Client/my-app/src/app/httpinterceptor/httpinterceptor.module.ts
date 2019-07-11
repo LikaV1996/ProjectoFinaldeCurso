@@ -85,24 +85,24 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
   //4XX errors handler
   private errorHandler4XX(e: HttpErrorResponse) : boolean { //returns if the error was handled or if unknown
     if(e.error.status == 400) {
-      if(e.error.type == 'invalid-login') {  //invalid login
+      if(e.error.instance == '/probs/invalid-login') {  //invalid login
         alert("Invalid Credentials")
       }
-      else if(e.error.type == 'create-user-error') {
-        alert("Body isn't fully complete")
-      }
+      //else if(e.error.instance == '/probs/create-user-error') {
+      //  alert("Body isn't fully complete")
+      //}
+      
       return false
     }
     else if(e.error.status == 401) {
-      /*
-      if(e.error.type == 'user_profile-error'){
-        alert("You are not allowed to do this action")
-      }
-      */
+      //if(e.error.instance == 'user_profile-error'){
+      //  alert("You are not allowed to do this action")
+      //}
+      
      return false
     }
     else if(e.error.status == 403){
-      if(e.error.type == 'user-suspended-error') {  //user is suspended
+      if(e.error.instance == '/probs/user-suspended') {  //user is suspended
         this.router.navigate(['/logout'], {state: {alertMsg: 'User has been been suspended'}})
         
       }

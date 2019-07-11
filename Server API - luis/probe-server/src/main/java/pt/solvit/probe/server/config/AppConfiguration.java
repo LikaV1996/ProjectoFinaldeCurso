@@ -90,6 +90,7 @@ public class AppConfiguration {
             //URL_OBU_ID_USER_ID = URL_BEGINNING + "/obu/{obu-id}/user/{user-id}",
             URL_OBU_ID = URL_BEGINNING + "/obu/{obu-id}",
             URL_OBU_FLAGS = URL_BEGINNING + "/obu/{obu-id}/flags",
+            URL_OBU_STATUS = URL_BEGINNING + "/obu/{obu-id}/status",
             URL_OBU_POSITION = URL_BEGINNING + "/obu/{obu-id}/position",
             URL_OBU_NETWORK_INTERFACES = URL_BEGINNING + "/obu/{obu-id}/network-interfaces",
             URL_OBU_COMPONENT = URL_BEGINNING + "/obu/{obu-id}/component",

@@ -103,7 +103,7 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
     }
     else if(e.error.status == 403){
       if(e.error.instance == '/probs/user-suspended') {  //user is suspended
-        this.router.navigate(['/logout'], {state: {alertMsg: 'User has been been suspended'}})
+        this.router.navigate(['/logout'], {state: {alertMsg: 'User is suspended'}})
         
       }
       return false

@@ -17,12 +17,14 @@ export class TestLogComponent implements OnInit {
 
   private obuID: number
 
-  @Input() private dateOrder : string = "false"
-  @Input() private filename : string = ""
-
   private curPage : number = 1
   private totalNumberOfPages : number = this.curPage
   private pageLimit : number = 20
+
+  @Input() private dateOrder : string = "false"
+  @Input() private filename : string = ""
+  @Input() private inputPage : string = this.curPage.toString()
+
 
   private testLogs : TestLog[]
 
@@ -34,6 +36,7 @@ export class TestLogComponent implements OnInit {
 
   getTestLogs(pageNumber : number){
     this.curPage = pageNumber
+    this.inputPage = pageNumber.toString()
     let order : boolean = this.dateOrder && this.dateOrder === "true" ? true : false
 
     this.testLogs = null;
@@ -53,7 +56,7 @@ export class TestLogComponent implements OnInit {
   }
 
   applyFilter(){
-    this.getTestLogs(this.curPage)
+    this.getTestLogs( 1 ) //page 1
   }
 
   updateNumberOfPages(fullCount : number){

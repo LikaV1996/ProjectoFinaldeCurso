@@ -171,7 +171,7 @@ public class ServerLogRepository implements IServerLogRepository {
         String limit = "";
         if (pageNumber != null && pageLimit != null){
             int offset = ((pageNumber -1) * pageLimit);
-            limit = " LIMIT " + pageLimit + (offset <= 0 ? " OFFSET " + ((pageNumber -1) * pageLimit) : "" );
+            limit = " LIMIT " + pageLimit + (offset >= 0 ? " OFFSET " + ((pageNumber -1) * pageLimit) : "" );
         }
 
 

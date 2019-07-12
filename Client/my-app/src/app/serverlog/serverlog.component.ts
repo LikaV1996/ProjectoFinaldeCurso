@@ -13,13 +13,16 @@ export class ServerLogComponent implements OnInit {
     private _serverLogService : ServerLogService
   ) { }
 
-  @Input() private dateOrder : string = "false"
-  @Input() private accessType : string = ""
-  @Input() private accessor : string = ""
 
   private curPage : number = 1
   private totalNumberOfPages : number = this.curPage
   private pageLimit : number = 20
+
+  @Input() private dateOrder : string = "false"
+  @Input() private accessType : string = ""
+  @Input() private accessor : string = ""
+  @Input() private inputPage : string = this.curPage.toString()
+
 
   private serverLogs : ServerLog[]
 
@@ -29,8 +32,9 @@ export class ServerLogComponent implements OnInit {
 
   getServerLogs(pageNumber : number){
     this.curPage = pageNumber
+    this.inputPage = pageNumber.toString()
     let order : boolean = this.dateOrder && this.dateOrder == "true" ? true : false
-
+    this.pageLimit = parseInt(this.pageLimit.toString())
     //debugger
     this.serverLogs = null;
     this._serverLogService.getServerLogs(order, this.curPage, this.pageLimit, this.accessor, this.accessType).subscribe(
@@ -43,23 +47,23 @@ export class ServerLogComponent implements OnInit {
   }
 
   applyFilter(){
-    this.getServerLogs(this.curPage)
+    this.getServerLogs( 1 ) //page 1
   }
   
   updateNumberOfPages(fullCount : number){
-    /*
-    const incompletePage = (fullCount % this.pageLimit > 0) ? 1 : 0
-    this.totalNumberOfPages = fullCount / this.pageLimit + incompletePage +1
-    */
     this.totalNumberOfPages = Math.ceil(fullCount / this.pageLimit)
   }
 
 
   getPage(pageToGo : number){
-    if(pageToGo < 1 || pageToGo > this.totalNumberOfPages)
-      return;
-    
-    this.getServerLogs(pageToGo)
+    if(pageToGo != this.curPage) {
+      pageToGo = parseInt(pageToGo.toString())
+      if(pageToGo < 1 || pageToGo > this.totalNumberOfPages){
+        return;
+      }
+      
+      this.getServerLogs(pageToGo)
+    }
   }
 
   isFirstPage() : boolean {

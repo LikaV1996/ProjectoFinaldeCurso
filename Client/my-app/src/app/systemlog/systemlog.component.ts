@@ -16,12 +16,13 @@ export class SystemLogComponent implements OnInit {
 
   private obuID: number
 
-  @Input() private dateOrder : string = "false"
-  @Input() private filename : string = ""
-
   private curPage : number = 1
   private totalNumberOfPages : number = this.curPage
   private pageLimit : number = 20
+
+  @Input() private dateOrder : string = "false"
+  @Input() private filename : string = ""
+  @Input() private inputPage : string = this.curPage.toString()
 
   private sysLogs : SysLog[]
 
@@ -33,6 +34,7 @@ export class SystemLogComponent implements OnInit {
 
   getSysLogs(pageNumber : number){
     this.curPage = pageNumber
+    this.inputPage = pageNumber.toString()
     let order : boolean = this.dateOrder && this.dateOrder === "true" ? true : false
 
     this.sysLogs = null;
@@ -46,7 +48,7 @@ export class SystemLogComponent implements OnInit {
   }
 
   applyFilter(){
-    this.getSysLogs(this.curPage)
+    this.getSysLogs( 1 ) //page 1
   }
 
   updateNumberOfPages(fullCount : number){

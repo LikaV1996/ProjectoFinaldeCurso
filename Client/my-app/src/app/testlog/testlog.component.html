@@ -5,7 +5,17 @@
       <!-- filters -->
         <div class="ui middle aligned grid">
           <div class="two wide column"><h2>Filters:</h2></div> 
-          <div class="six wide column">
+          <div class="four wide column">
+              <b>Logs per Page: </b>
+              <select class="ui dropdown" [(ngModel)]="pageLimit">
+                <option value=50>50</option>
+                <option value=40>40</option>
+                <option value=30>30</option>
+                <option value=20 selected>20</option>
+                <option value=10>10</option>
+              </select>
+            </div> 
+          <div class="four wide column">
             <b>Date order: </b>
             <mat-form-field>
             <select matNativeControl required [(ngModel)]="dateOrder">
@@ -14,7 +24,7 @@
             </select>
             </mat-form-field>
           </div>
-          <div class="six wide column">
+          <div class="four wide column">
             <b>File name:
               <mat-form-field appearance="standard">
               <input [(ngModel)]="filename" matInput placeholder="Search by file...">
@@ -51,20 +61,33 @@
           <div class="ui divider"></div>
         </ng-container>
         <div class="ui middle aligned grid">
-          <div class="six wide column"></div>
-          <div class="one wide column">
-            <ng-container *ngIf="! isFirstPage()">
-              <button class="ui primary button" (click)="getPage( curPage - 1 )" data-tooltip="Previous Page"> Prev</button>
-            </ng-container>
-          </div>
-          <div class="two wide middle aligned column"><span><h3>{{curPage}} of {{totalNumberOfPages}}</h3></span></div>
-          <div class="one wide column">
-            <ng-container *ngIf="! isLastPage()">
-              <button class="ui primary button" (click)="getPage( curPage + 1 )" data-tooltip="Next Page"> Next</button>
-            </ng-container>
-          </div>
-          <div class="six wide column"></div>
-      </div>
+        
+            <div class="four wide column"></div>
+  
+            <div class="two wide column">
+              <ng-container *ngIf="! isFirstPage()">
+                <button class="ui primary button" (click)="getPage( curPage - 1 )" data-tooltip="Previous Page"> Prev</button>
+              </ng-container>
+            </div>
+  
+            <div class="four wide middle aligned column">
+                <div class="ui right labeled input">
+                    <input type="text" [(ngModel)]="inputPage" placeholder="{{curPage}}" (keydown.enter)="getPage( inputPage )">
+                    <div class="ui label">
+                      of {{totalNumberOfPages}}
+                    </div>
+                  </div>
+            </div>
+  
+            <div class="one wide column">
+              <ng-container *ngIf="! isLastPage()">
+                <button class="ui primary button" (click)="getPage( curPage + 1 )" data-tooltip="Next Page"> Next</button>
+              </ng-container>
+            </div>
+  
+            <div class="five wide column"></div>
+  
+        </div>
   
     </div>
   </div>

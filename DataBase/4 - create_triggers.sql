@@ -78,4 +78,49 @@ FOR EACH ROW
 EXECUTE PROCEDURE funcFor_trg_afterInsert_Obu();
 
 
+
+
+
+
+
+
+
+
+--trigger func for after update on probeuser.username
+CREATE OR REPLACE FUNCTION funcFor_trg_afterUpdate_ProbeUser_username()
+RETURNS TRIGGER
+LANGUAGE 'plpgsql'
+AS $$
+--DECLARE
+--	creatorID BIGINT := (SELECT id FROM Probeuser WHERE user_name = new.creator);
+--	creatorUserProfile VARCHAR(15):= (SELECT user_profile FROM ProbeUser WHERE user_name = new.creator);
+BEGIN
+
+	update Config set creator = new.user_name where creator = old.user_name;
+	update Config set modifier = new.user_name where modifier = old.user_name;
+	
+	update Hardware set creator = new.user_name where creator = old.user_name;
+	update Hardware set modifier = new.user_name where modifier = old.user_name;
+	
+	update Obu set creator = new.user_name where creator = old.user_name;
+	update Obu set modifier = new.user_name where modifier = old.user_name;
+	
+	update Probeuser set creator = new.user_name where creator = old.user_name;
+	update Probeuser set modifier = new.user_name where modifier = old.user_name;
+	
+	update Setup set creator = new.user_name where creator = old.user_name;
+	update setup set modifier = new.user_name where modifier = old.user_name;
+	
+	update TestPlan set creator = new.user_name where creator = old.user_name;
+	update TestPlan set modifier = new.user_name where modifier = old.user_name;
+	
+	RETURN new;
+END;
+$$;
+
+--trigger for after update on probeuser.username			drop trg_afterUpdate_ProbeUser_username
+CREATE TRIGGER trg_afterUpdate_ProbeUser_username after update OF user_name ON Probeuser
+FOR EACH ROW
+EXECUTE PROCEDURE funcFor_trg_afterUpdate_ProbeUser_username();
+
 COMMIT;
